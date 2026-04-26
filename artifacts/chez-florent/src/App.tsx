@@ -346,6 +346,7 @@ function Navbar({ activeSection }: { activeSection: string }) {
             <a href="#accueil" className={`link-underline hover:text-cream transition-colors ${activeSection === "accueil" ? "active text-cream" : ""}`}>Accueil</a>
             <a href="#a-propos" className={`link-underline hover:text-cream transition-colors ${activeSection === "a-propos" ? "active text-cream" : ""}`}>À propos</a>
             <a href="#menu" className={`link-underline hover:text-cream transition-colors ${activeSection === "menu" ? "active text-cream" : ""}`}>Menu</a>
+            <a href="#agenda" className={`link-underline hover:text-cream transition-colors ${activeSection === "agenda" ? "active text-cream" : ""}`}>Agenda</a>
             <a href="#reservation" className={`link-underline hover:text-cream transition-colors ${activeSection === "reservation" ? "active text-cream" : ""}`}>Réservation</a>
             <a href="#contact" className={`link-underline hover:text-cream transition-colors ${activeSection === "contact" ? "active text-cream" : ""}`}>Contact</a>
             <a
@@ -389,6 +390,7 @@ function Navbar({ activeSection }: { activeSection: string }) {
               <a href="#accueil" onClick={closeMenu} className="hover:text-orange transition-colors">Accueil</a>
               <a href="#a-propos" onClick={closeMenu} className="hover:text-orange transition-colors">À propos</a>
               <a href="#menu" onClick={closeMenu} className="hover:text-orange transition-colors">L'ardoise</a>
+              <a href="#agenda" onClick={closeMenu} className="hover:text-orange transition-colors">Agenda</a>
               <a href="#reservation" onClick={closeMenu} className="hover:text-orange transition-colors">Réserver une table</a>
               <a href="#contact" onClick={closeMenu} className="hover:text-orange transition-colors">Nous trouver</a>
             </div>
@@ -714,7 +716,7 @@ function Menu() {
             </div>
             
             {/* Image-through-text reveal (with @supports fallback in CSS) */}
-            <h2 className="ardoise-clip font-serif font-semibold uppercase text-[clamp(5rem,15vw,18rem)] leading-[0.85] tracking-tighter mb-8">
+            <h2 className="ardoise-clip font-serif font-semibold uppercase text-[clamp(4rem,12vw,12rem)] leading-[0.85] tracking-tighter mb-8 max-w-full">
               L'ARDOISE
             </h2>
             <AnimatePresence mode="wait">
@@ -735,7 +737,7 @@ function Menu() {
           <div
             role="tablist"
             aria-label="Catégories du menu"
-            className="flex gap-1 md:gap-3 mb-12 border-b border-border overflow-x-auto"
+            className="flex gap-1 md:gap-3 mb-12 border-b border-border overflow-x-auto no-scrollbar"
           >
             {menuCategories.map((c) => {
               const isActive = c.id === activeCategoryId;
@@ -890,7 +892,7 @@ function Menu() {
 
 function AmbianceStrip() {
   return (
-    <section className="bg-bg-primary pb-24 pt-32 relative">
+    <section className="bg-bg-primary pb-0 pt-32 relative">
       <SectionMarker number="—" />
       <div className="max-w-7xl mx-auto px-6 md:px-12 mb-20 relative z-10">
         <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-6">
@@ -958,6 +960,152 @@ function AmbianceStrip() {
   );
 }
 
+type AgendaEvent = {
+  date: { day: string; month: string };
+  title: string;
+  desc: string;
+  tag: string;
+};
+
+const agendaEvents: AgendaEvent[] = [
+  { date: { day: "30", month: "AVR" }, title: "Soirée Cocktails du Sapinage", desc: "Cinq cocktails signature au sapin baumier, à découvrir au 5 à 7. Bouchées chaudes incluses.", tag: "5 à 7 · 17h–19h" },
+  { date: { day: "09", month: "MAI" }, title: "Trio Jazz Manouche", desc: "Trois instrumentistes du Sud-Ouest, en visite pour une soirée. Entrée libre, bon vin recommandé.", tag: "Live · 20h" },
+  { date: { day: "17", month: "MAI" }, title: "Brunch — Fête des mères", desc: "Menu 4 services, mimosas maison, places limitées. Réservation fortement suggérée.", tag: "Menu spécial · 38 $" },
+  { date: { day: "23", month: "MAI" }, title: "Huîtres & bulles", desc: "Trois variétés de la Côte-Nord, accord avec champagnes et pétillants québécois.", tag: "Soirée · 19h" },
+  { date: { day: "06", month: "JUIN" }, title: "Open Mic — Poésie & guitare", desc: "Soirée micro ouvert, ambiance feutrée. Inscrivez-vous sur place.", tag: "Acoustique · 20h" },
+  { date: { day: "21", month: "JUIN" }, title: "Fête de la musique", desc: "Buffet québécois, DJ jusqu'à 1h. La devanture devient une terrasse-piste.", tag: "Toute la soirée" },
+];
+
+function Agenda() {
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  return (
+    <section id="agenda" className="bg-bg-primary pt-32 pb-32 relative border-t border-border">
+      <SectionMarker number="04" />
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+        <div className="mb-16">
+          <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-6">
+            04 — La programmation
+          </div>
+          <h2 className="font-serif font-light italic text-cream leading-[0.85] tracking-tighter text-[clamp(3.5rem,10vw,9rem)]">
+            L'agenda
+          </h2>
+          <p className="font-sans italic text-cream-soft/80 max-w-2xl text-lg mt-6">
+            Soirées, dégustations et concerts à venir — choisissez votre prochaine.
+          </p>
+        </div>
+
+        <div className="border-t border-border">
+          {agendaEvents.map((event, i) => {
+            const isActive = i === activeIdx;
+            return (
+              <motion.a
+                href="#reservation"
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6, ease: EASE, delay: i * 0.05 }}
+                onMouseEnter={() => setActiveIdx(i)}
+                onFocus={() => setActiveIdx(i)}
+                aria-label={`${event.date.day} ${event.date.month} · ${event.title} — réserver`}
+                className={`group grid grid-cols-[64px_1fr_auto] md:grid-cols-[120px_1fr_auto] gap-4 md:gap-12 py-8 md:py-10 border-b border-border transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset ${isActive ? 'bg-bg-secondary/40' : 'hover:bg-bg-secondary/30'} px-3 md:px-6`}
+              >
+                <div className="flex flex-col">
+                  <div className={`font-serif italic font-light text-[2rem] md:text-[2.75rem] leading-none transition-colors ${isActive ? 'text-orange' : 'text-cream'}`}>
+                    {event.date.day}
+                  </div>
+                  <div className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-cream-soft/60 mt-1">
+                    {event.date.month}
+                  </div>
+                </div>
+                <motion.div
+                  animate={{ x: isActive ? 12 : 0 }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                  className="flex flex-col gap-1"
+                >
+                  <h3 className="font-serif font-semibold text-[1.35rem] md:text-[1.65rem] text-cream leading-tight">
+                    {event.title}
+                  </h3>
+                  <p className="font-sans font-light italic text-cream-soft/70 max-w-[600px] leading-relaxed text-sm md:text-base">
+                    {event.desc}
+                  </p>
+                </motion.div>
+                <div className="flex flex-col items-end justify-between gap-2 pt-1">
+                  <span className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-orange whitespace-nowrap">
+                    {event.tag}
+                  </span>
+                  <span className="hidden md:inline-block text-[0.7rem] font-sans tracking-[0.15em] uppercase text-cream-soft/50 group-hover:text-cream transition-colors whitespace-nowrap">
+                    Réserver →
+                  </span>
+                </div>
+              </motion.a>
+            );
+          })}
+        </div>
+
+        <div className="mt-12 text-center">
+          <p className="font-sans italic text-cream-soft/55 text-sm">
+            « La programmation peut changer — un coup de fil et c'est confirmé. »
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function HoursBand() {
+  const status = useOpenStatus();
+  const hoursItems = [
+    "Mardi au Jeudi  ·  17h – 22h",
+    "Vendredi  ·  Samedi  ·  17h – 23h",
+    "Dimanche  ·  17h – 21h",
+    "Fermé le Lundi",
+  ];
+
+  return (
+    <div className="bg-cream-soft text-bg-primary relative">
+      {/* Top row: live status + hours marquee — Inter caps */}
+      <div className="overflow-hidden border-b border-bg-primary/10 py-3.5">
+        <div className="flex whitespace-nowrap animate-marquee-slow w-max font-sans text-[0.78rem] font-medium tracking-[0.22em] uppercase text-bg-primary/80">
+          {[...Array(3)].map((_, repeat) => (
+            <div key={repeat} className="flex items-center">
+              <span className="px-7 inline-flex items-center gap-2.5 text-bg-primary">
+                <span className="relative inline-flex w-1.5 h-1.5 shrink-0">
+                  {status.open && (
+                    <span className="absolute inset-0 rounded-full bg-orange opacity-60 animate-ping"></span>
+                  )}
+                  <span className={`relative inline-block w-1.5 h-1.5 rounded-full ${status.open ? 'bg-orange' : 'bg-bg-primary/40'}`}></span>
+                </span>
+                {status.label}
+              </span>
+              {hoursItems.map((item, i) => (
+                <React.Fragment key={i}>
+                  <span className="text-bg-primary/30 px-2">✶</span>
+                  <span className="px-7">{item}</span>
+                </React.Fragment>
+              ))}
+              <span className="text-bg-primary/30 px-2">✶</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom row: huge italic invitation, scrolling opposite direction */}
+      <div className="overflow-hidden py-7 md:py-10">
+        <div className="flex whitespace-nowrap animate-marquee-reverse w-max font-serif italic font-light text-bg-primary text-[clamp(2.75rem,8vw,6.5rem)] leading-none">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="flex items-center">
+              <span className="px-8">Réservez votre table</span>
+              <span className="px-2 text-orange">↘</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Reservation() {
   const [status, setStatus] = useState<"idle" | "success">("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -985,21 +1133,10 @@ function Reservation() {
 
   return (
     <>
-      <div className="w-full overflow-hidden py-3 bg-bg-tertiary border-y border-border">
-        <div className="flex whitespace-nowrap animate-marquee-slower w-max">
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className="flex items-center font-serif italic text-orange text-[1.125rem]">
-              <span className="px-8">◦ FERMÉ LE LUNDI</span>
-              <span className="px-8">◦ MARDI AU JEUDI 17H–22H</span>
-              <span className="px-8">◦ VENDREDI SAMEDI 17H–23H</span>
-              <span className="px-8">◦ DIMANCHE 17H–21H</span>
-            </div>
-          ))}
-        </div>
-      </div>
+      <HoursBand />
 
       <section id="reservation" className="bg-bg-tertiary py-32 px-6 md:px-12 relative">
-        <SectionMarker number="04" />
+        <SectionMarker number="05" />
         
         <div className="max-w-4xl mx-auto relative z-10">
           <motion.div 
@@ -1010,7 +1147,7 @@ function Reservation() {
             className="mb-16 text-center flex flex-col items-center"
           >
             <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-6">
-              04 — Une table pour vous
+              05 — Une table pour vous
             </div>
             <h2 className="font-serif font-light uppercase text-[clamp(4rem,12vw,14rem)] text-cream leading-[0.85] tracking-tighter mb-6">
               RÉSERVER
@@ -1141,7 +1278,7 @@ function Reservation() {
 function Contact() {
   return (
     <section id="contact" className="bg-cream-soft py-32 px-6 md:px-12 relative overflow-hidden">
-      <SectionMarker number="05" tone="light" />
+      <SectionMarker number="06" tone="light" />
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -1151,7 +1288,7 @@ function Contact() {
           className="mb-16"
         >
           <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-4">
-            05 — Nous trouver
+            06 — Nous trouver
           </div>
           <h2 className="font-display text-[clamp(4rem,10vw,9rem)] text-bg-primary leading-none mb-6">
             Passez nous voir
@@ -1372,6 +1509,7 @@ export default function App() {
           <About />
           <Menu />
           <AmbianceStrip />
+          <Agenda />
           <Reservation />
           <Contact />
         </main>

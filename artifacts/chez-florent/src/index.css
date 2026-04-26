@@ -88,10 +88,6 @@ button:focus-visible {
   animation: marquee 50s linear infinite;
 }
 
-.animate-marquee-slower {
-  animation: marquee 80s linear infinite;
-}
-
 html.has-custom-cursor,
 html.has-custom-cursor * {
   cursor: none !important;
@@ -148,7 +144,9 @@ html.has-custom-cursor * {
 
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
   .ardoise-clip {
-    background-image: url('/images/dish-tasting.png');
+    background-image:
+      linear-gradient(rgba(244, 201, 160, 0.78), rgba(244, 201, 160, 0.78)),
+      url('/images/dish-tasting.png');
     background-size: cover;
     background-position: center;
     background-clip: text;
@@ -158,10 +156,31 @@ html.has-custom-cursor * {
   }
 }
 
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.animate-marquee-reverse {
+  animation: marquee-reverse 45s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee,
   .animate-marquee-slow,
-  .animate-marquee-slower,
+  .animate-marquee-reverse,
   .animate-kenburns,
   .animate-pulse-gentle {
     animation: none !important;
