@@ -10,7 +10,7 @@ const EASE_SMOOTH: [number, number, number, number] = [0.22, 1, 0.36, 1];
 // -----------------------------------------------------------------------------
 function Preloader({ onComplete }: { onComplete: () => void }) {
   const prefersReducedMotion = useReducedMotion();
-  const DURATION_MS = 2200;
+  const DURATION_MS = 3600;
 
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -416,7 +416,7 @@ function Hero() {
   };
 
   return (
-    <section id="accueil" className="relative min-h-[100dvh] flex flex-col justify-between overflow-hidden pt-32 pb-0">
+    <section id="accueil" className="relative min-h-[100dvh] flex flex-col justify-between overflow-hidden pt-44 md:pt-52 pb-0">
       {/* Cinematic Background */}
       <div className="absolute inset-0 z-0 overflow-hidden bg-bg-primary">
         <div 
