@@ -1767,7 +1767,7 @@ function Footer() {
             fontStyle="italic"
             fontWeight="700"
             style={{
-              fontFamily: "'Bodoni Moda', 'Didot', 'Bodoni 72', Garamond, serif",
+              fontFamily: "'Caveat Brush', cursive",
               fontSize: "240px",
               fill: "rgb(244, 201, 160)",
               fillOpacity: 0.95,
