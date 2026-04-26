@@ -401,14 +401,14 @@ function Hero() {
             <motion.div variants={lineVariants} className="block italic ml-[8vw] md:ml-[12vw]">
               qui raconte
             </motion.div>
-            <motion.div variants={lineVariants} className="block ml-[12vw] md:ml-[24vw]">
-              des <span className="relative inline-block italic pb-[0.18em]">
+            <motion.div variants={lineVariants} className="block ml-[10vw] md:ml-[20vw] pr-[0.4em]">
+              des <span className="relative inline-block italic pb-[0.18em] pr-[0.15em]">
                 histoires.
                 <motion.svg 
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 1 }}
                   transition={{ duration: 1, delay: 1.5, ease: EASE_SMOOTH }}
-                  className="absolute left-0 -bottom-3 md:-bottom-5 w-full h-auto text-orange pointer-events-none" 
+                  className="absolute left-0 -bottom-3 md:-bottom-5 w-[92%] h-auto text-orange pointer-events-none" 
                   viewBox="0 0 200 15" 
                   fill="none" 
                   preserveAspectRatio="none"
@@ -420,18 +420,25 @@ function Hero() {
             </motion.div>
           </h1>
 
-          {/* Bottom layout */}
-          <div className="flex flex-col md:flex-row justify-between items-end gap-12 mt-12 mb-20">
-            <motion.div variants={fadeVariants} className="max-w-[420px]">
+          {/* Bottom layout — tagline left, CTAs right, status under tagline */}
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-10 mt-12 mb-20">
+            <motion.div variants={fadeVariants} className="max-w-[420px] order-2 md:order-1">
               <p className="font-sans font-light text-[1.0625rem] leading-[1.7] text-cream-soft mb-3">
                 « L'ardoise change selon les humeurs du chef et les arrivages du marché. »
               </p>
-              <p className="font-sans text-[0.95rem] leading-[1.6] text-cream/80">
+              <p className="font-sans text-[0.95rem] leading-[1.6] text-cream/80 mb-4">
                 Bistro de quartier, 30 places, du mardi au dimanche dès 17h.
               </p>
+              <div className="hidden md:inline-flex items-center gap-2 text-[0.7rem] font-medium tracking-[0.2em] uppercase text-cream-soft">
+                <span className="relative inline-flex w-1.5 h-1.5" aria-hidden="true">
+                  {status.open && <span className="absolute inset-0 rounded-full bg-orange opacity-60 animate-ping"></span>}
+                  <span className={`relative inline-block w-1.5 h-1.5 rounded-full ${status.open ? 'bg-orange' : 'bg-cream-soft/60'}`}></span>
+                </span>
+                {status.label} <span className="text-cream-soft/70">— en ce moment</span>
+              </div>
             </motion.div>
 
-            <motion.div variants={fadeVariants} className="flex flex-col sm:flex-row gap-3 w-full md:w-auto self-center md:absolute md:bottom-20 md:left-1/2 md:-translate-x-1/2">
+            <motion.div variants={fadeVariants} className="flex flex-col sm:flex-row gap-3 order-1 md:order-2 shrink-0">
               <a
                 href="#reservation"
                 className="inline-flex justify-center items-center gap-2 px-8 py-4 bg-orange text-bg-primary font-medium tracking-[0.05em] transition-transform duration-300 hover:bg-orange-dark hover:scale-[1.02] rounded-[2px]"
@@ -446,17 +453,6 @@ function Hero() {
                 Voir l'ardoise
                 <span aria-hidden="true">→</span>
               </a>
-            </motion.div>
-
-            <motion.div variants={fadeVariants} className="hidden md:flex flex-col items-end gap-1 text-[0.7rem] font-medium tracking-[0.2em] uppercase text-cream-soft">
-              <span className="inline-flex items-center gap-2">
-                <span className="relative inline-flex w-1.5 h-1.5" aria-hidden="true">
-                  {status.open && <span className="absolute inset-0 rounded-full bg-orange opacity-60 animate-ping"></span>}
-                  <span className={`relative inline-block w-1.5 h-1.5 rounded-full ${status.open ? 'bg-orange' : 'bg-cream-soft/60'}`}></span>
-                </span>
-                {status.label}
-              </span>
-              <span className="text-cream-soft/85">en ce moment</span>
             </motion.div>
           </div>
         </motion.div>
@@ -526,8 +522,8 @@ function About() {
           Un bistro de quartier, une certaine idée du temps qui passe.
         </motion.p>
 
-        {/* Asymmetric Image Stack */}
-        <div className="relative mb-32 min-h-[50vh] md:min-h-[80vh]">
+        {/* Asymmetric Image Stack — three images forming a triptych */}
+        <div className="relative mb-32 min-h-[60vh] md:min-h-[90vh]">
           <motion.div 
             style={{ y: ySlow }}
             className="w-[80%] md:w-[50%] aspect-[4/3] overflow-hidden relative z-10 ring-1 ring-bg-primary/10"
@@ -537,9 +533,19 @@ function About() {
           
           <motion.div 
             style={{ y: yFast }}
-            className="absolute top-[20%] right-0 w-[50%] md:w-[30%] aspect-[3/4] overflow-hidden z-20 mt-20 ring-1 ring-bg-primary/10"
+            className="absolute top-[18%] right-0 w-[50%] md:w-[30%] aspect-[3/4] overflow-hidden z-20 mt-20 ring-1 ring-bg-primary/10"
           >
             <img src="/images/wine-glass-macro.png" alt="Verre de vin" className="w-full h-full object-cover" />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.9, ease: EASE, delay: 0.15 }}
+            className="absolute bottom-0 left-[8%] md:left-[26%] w-[58%] md:w-[38%] aspect-[5/4] overflow-hidden z-[15] ring-1 ring-bg-primary/10"
+          >
+            <img src="/images/exterior-dusk.png" alt="La devanture au crépuscule" className="w-full h-full object-cover" />
           </motion.div>
         </div>
 
@@ -917,22 +923,22 @@ function Agenda() {
   const [activeIdx, setActiveIdx] = useState(0);
 
   return (
-    <section id="agenda" className="bg-bg-primary pt-32 pb-32 relative border-t border-border">
-      <SectionMarker number="04" />
+    <section id="agenda" className="bg-cream-soft pt-32 pb-32 relative">
+      <SectionMarker number="04" tone="light" />
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         <div className="mb-16">
-          <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-6">
+          <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-6">
             04 — La programmation
           </div>
-          <h2 className="font-display text-cream leading-[0.95] text-[clamp(4rem,11vw,10rem)]">
+          <h2 className="font-display text-bg-primary leading-[0.95] text-[clamp(4rem,11vw,10rem)]">
             L'agenda
           </h2>
-          <p className="font-sans italic text-cream-soft/80 max-w-2xl text-lg mt-6">
+          <p className="font-sans italic text-bg-primary/65 max-w-2xl text-lg mt-6">
             Soirées, dégustations et concerts à venir — choisissez votre prochaine.
           </p>
         </div>
 
-        <div className="border-t border-border">
+        <div className="border-t border-bg-primary/15">
           {agendaEvents.map((event, i) => {
             const isActive = i === activeIdx;
             const handleClick = () => {
@@ -957,15 +963,15 @@ function Agenda() {
               "aria-label": event.soldOut
                 ? `${event.date.day} ${event.date.month} · ${event.title} — complet`
                 : `${event.date.day} ${event.date.month} · ${event.title} — réserver`,
-              className: `group grid grid-cols-[64px_1fr_auto] md:grid-cols-[120px_1fr_auto] gap-4 md:gap-12 py-8 md:py-10 border-b border-border transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset ${event.soldOut ? 'opacity-60 cursor-not-allowed' : isActive ? 'bg-bg-secondary/40' : 'hover:bg-bg-secondary/30'} px-3 md:px-6`,
+              className: `group grid grid-cols-[64px_1fr_auto] md:grid-cols-[120px_1fr_auto] gap-4 md:gap-12 py-8 md:py-10 border-b border-bg-primary/15 transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset ${event.soldOut ? 'opacity-60 cursor-not-allowed' : isActive ? 'bg-bg-primary/[0.06]' : 'hover:bg-bg-primary/[0.04]'} px-3 md:px-6`,
             } as const;
             const inner = (
               <>
                 <div className="flex flex-col">
-                  <div className={`font-serif italic font-light text-[2rem] md:text-[2.75rem] leading-none transition-colors ${isActive && !event.soldOut ? 'text-orange' : 'text-cream'}`}>
+                  <div className={`font-serif italic font-light text-[2rem] md:text-[2.75rem] leading-none transition-colors ${isActive && !event.soldOut ? 'text-orange' : 'text-bg-primary'}`}>
                     {event.date.day}
                   </div>
-                  <div className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-cream-soft/80 mt-1">
+                  <div className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mt-1">
                     {event.date.month}
                   </div>
                 </div>
@@ -974,22 +980,22 @@ function Agenda() {
                   transition={{ duration: 0.3, ease: 'easeOut' }}
                   className="flex flex-col gap-1"
                 >
-                  <h3 className="font-serif font-semibold text-[1.35rem] md:text-[1.65rem] text-cream leading-tight">
+                  <h3 className="font-serif font-semibold text-[1.35rem] md:text-[1.65rem] text-bg-primary leading-tight">
                     {event.title}
                   </h3>
-                  <p className="font-sans font-light italic text-cream-soft/85 max-w-[600px] leading-relaxed text-sm md:text-base">
+                  <p className="font-sans font-light italic text-bg-primary/70 max-w-[600px] leading-relaxed text-sm md:text-base">
                     {event.desc}
                   </p>
                 </motion.div>
                 <div className="flex flex-col items-end justify-between gap-2 pt-1">
-                  <span className={`text-[0.7rem] font-medium tracking-[0.2em] uppercase whitespace-nowrap ${event.soldOut ? 'text-cream-soft/70' : 'text-orange'}`}>
+                  <span className={`text-[0.7rem] font-medium tracking-[0.2em] uppercase whitespace-nowrap ${event.soldOut ? 'text-bg-primary/70' : 'text-orange'}`}>
                     {event.tag}
                   </span>
                   <span className="hidden md:inline-block text-[0.7rem] font-sans tracking-[0.15em] uppercase whitespace-nowrap">
                     {event.soldOut ? (
-                      <span className="text-cream-soft/70">— Complet</span>
+                      <span className="text-bg-primary/70">— Complet</span>
                     ) : (
-                      <span className="text-cream-soft/85 group-hover:text-cream transition-colors">Réserver →</span>
+                      <span className="text-bg-primary/75 group-hover:text-bg-primary transition-colors">Réserver →</span>
                     )}
                   </span>
                 </div>
@@ -1016,7 +1022,7 @@ function Agenda() {
         </div>
 
         <div className="mt-12 text-center">
-          <p className="font-sans italic text-cream-soft/85 text-sm">
+          <p className="font-sans italic text-bg-primary/65 text-sm">
             « La programmation peut changer — un coup de fil et c'est confirmé. »
           </p>
         </div>
@@ -1035,8 +1041,8 @@ function HoursBand() {
   ];
 
   return (
-    <div className="bg-cream-soft text-bg-primary border-y border-bg-primary/10 overflow-hidden py-6 md:py-8 relative">
-      <div className="flex whitespace-nowrap animate-marquee-slow w-max font-serif italic font-light text-bg-primary text-[clamp(2rem,5.5vw,4.5rem)] leading-none">
+    <div className="bg-bg-primary text-cream border-y border-border overflow-hidden py-6 md:py-8 relative">
+      <div className="flex whitespace-nowrap animate-marquee-slow w-max font-serif italic font-light text-cream text-[clamp(2rem,5.5vw,4.5rem)] leading-none">
         {[...Array(4)].map((_, repeat) => (
           <div key={repeat} className="flex items-center">
             <span className="px-8 inline-flex items-center gap-4">
@@ -1044,22 +1050,22 @@ function HoursBand() {
                 {status.open && (
                   <span className="absolute inset-0 rounded-full bg-orange opacity-60 animate-ping"></span>
                 )}
-                <span className={`relative inline-block w-2.5 h-2.5 rounded-full ${status.open ? 'bg-orange' : 'bg-bg-primary/40'}`}></span>
+                <span className={`relative inline-block w-2.5 h-2.5 rounded-full ${status.open ? 'bg-orange' : 'bg-cream-soft/40'}`}></span>
               </span>
               {status.label}
             </span>
             {hoursItems.map((item, i) => (
               <React.Fragment key={i}>
-                <span aria-hidden="true" className="text-cream-soft/45 px-2">✶</span>
+                <span aria-hidden="true" className="text-cream-soft/35 px-2">✶</span>
                 <span className="px-8">{item}</span>
               </React.Fragment>
             ))}
-            <span aria-hidden="true" className="text-cream-soft/45 px-2">✶</span>
+            <span aria-hidden="true" className="text-cream-soft/35 px-2">✶</span>
             <span className="px-8 inline-flex items-center gap-3">
               Réservez votre table
               <span aria-hidden="true" className="text-orange">↘</span>
             </span>
-            <span aria-hidden="true" className="text-cream-soft/45 px-2">✶</span>
+            <span aria-hidden="true" className="text-cream-soft/35 px-2">✶</span>
           </div>
         ))}
       </div>
@@ -1188,7 +1194,7 @@ function Reservation() {
     <>
       <HoursBand />
 
-      <section id="reservation" className="bg-bg-tertiary py-32 md:py-40 px-6 md:px-12 relative overflow-hidden">
+      <section id="reservation" className="bg-bg-primary py-32 md:py-40 px-6 md:px-12 relative overflow-hidden">
         <SectionMarker number="05" />
 
         {/* Massive ghost number behind everything for editorial weight */}
@@ -1198,6 +1204,9 @@ function Reservation() {
           </span>
         </div>
 
+        {/* Soft orange accent wash — top-right, very subtle */}
+        <div aria-hidden="true" className="absolute top-0 right-0 w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] -translate-y-1/3 translate-x-1/4 pointer-events-none rounded-full" style={{ background: "radial-gradient(circle, rgba(216, 90, 44, 0.10) 0%, transparent 60%)" }} />
+
         <div className="max-w-7xl mx-auto relative z-10">
           {/* HEADER — full width, dramatic */}
           <motion.div
@@ -1205,20 +1214,42 @@ function Reservation() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: EASE }}
-            className="mb-16 md:mb-24 max-w-5xl"
+            className="mb-12 md:mb-16 max-w-5xl"
           >
-            <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-6">
-              05 — Une table pour vous
+            <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
+              <span aria-hidden="true">✶ </span>05 — Une table pour vous
             </div>
             <h2 className="font-display text-[clamp(5rem,16vw,16rem)] text-cream leading-[0.95] mb-8">
               Réserver
             </h2>
             <div className="flex items-baseline gap-4">
               <div className="h-[1px] w-12 bg-orange shrink-0 translate-y-[-0.4em]"></div>
-              <p className="font-serif italic text-cream-soft/85 text-lg md:text-2xl max-w-2xl leading-snug">
+              <p className="font-serif italic text-cream-soft/90 text-lg md:text-2xl max-w-2xl leading-snug">
                 Le téléphone reste le plus chaleureux — le formulaire fait très bien aussi.
               </p>
             </div>
+          </motion.div>
+
+          {/* 3-Step path — what happens after you submit */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 border-y border-border py-10 md:py-12 mb-16 md:mb-20"
+          >
+            {[
+              { n: "01", title: "Choisissez", body: "Date, heure, nombre de couverts. Le formulaire connaît nos heures de service." },
+              { n: "02", title: "On vous rappelle", body: "Confirmation par téléphone sous 24 h — toujours par une vraie voix." },
+              { n: "03", title: "À ce soir", body: "Une table près du four — sauf si vous nous demandez le coin tranquille." },
+            ].map((s, i) => (
+              <div key={s.n} className="flex flex-col gap-2 relative md:pl-6">
+                {i > 0 && <div aria-hidden="true" className="hidden md:block absolute left-0 top-2 bottom-2 w-[1px] bg-border" />}
+                <div className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-orange">{s.n}</div>
+                <h3 className="font-serif italic text-cream text-2xl md:text-3xl leading-tight">{s.title}</h3>
+                <p className="font-sans text-cream-soft/80 text-sm md:text-[0.95rem] leading-relaxed max-w-[28ch]">{s.body}</p>
+              </div>
+            ))}
           </motion.div>
 
           <AnimatePresence mode="wait">
@@ -1268,42 +1299,48 @@ function Reservation() {
               >
                 {/* LEFT — Info / live status / phone — sticky on desktop */}
                 <aside className="lg:col-span-5 lg:sticky lg:top-32 self-start space-y-8">
-                  {/* Live status panel */}
-                  <div className="border border-border bg-bg-primary/40 backdrop-blur-sm p-7 md:p-9">
-                    <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85 mb-5">
-                      <span aria-hidden="true">◦ </span>En ce moment
+                  {/* Phone CTA — the signature moment, oversized Pacifico */}
+                  <a
+                    href="tel:+14507431448"
+                    className="block group relative border border-border bg-bg-secondary/50 backdrop-blur-sm p-7 md:p-9 hover:border-orange/50 transition-colors overflow-hidden"
+                    aria-label="Appeler Chez Florent au 450 743-1448"
+                  >
+                    <div aria-hidden="true" className="absolute left-0 top-0 bottom-0 w-[3px] bg-orange" />
+                    <div className="text-[0.7rem] tracking-[0.22em] uppercase text-orange mb-3">
+                      <span aria-hidden="true">✶ </span>Le plus chaleureux
                     </div>
-                    <div className="flex items-center gap-3 mb-7">
-                      <span className="relative inline-flex w-2.5 h-2.5 shrink-0">
+                    <div className="font-display text-cream text-[clamp(2.75rem,7vw,4.5rem)] group-hover:text-orange transition-colors leading-[0.95] mb-3">
+                      450&nbsp;743-1448
+                    </div>
+                    <div className="text-[0.75rem] tracking-[0.18em] uppercase text-cream-soft/85 group-hover:text-cream transition-colors">
+                      Touchez pour appeler <span aria-hidden="true">↘</span>
+                    </div>
+                  </a>
+
+                  {/* Live status panel */}
+                  <div className="border border-border bg-bg-secondary/30 backdrop-blur-sm p-7 md:p-8">
+                    <div className="flex items-center justify-between mb-5">
+                      <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85">
+                        <span aria-hidden="true">◦ </span>En ce moment
+                      </div>
+                      <span className="relative inline-flex w-2 h-2 shrink-0">
                         {liveStatus.open && (
                           <span className="absolute inset-0 rounded-full bg-orange opacity-60 animate-ping"></span>
                         )}
-                        <span className={`relative inline-block w-2.5 h-2.5 rounded-full ${liveStatus.open ? 'bg-orange' : 'bg-cream-soft/40'}`}></span>
-                      </span>
-                      <span className="font-serif italic text-cream text-2xl md:text-3xl leading-none">
-                        {liveStatus.label}
+                        <span className={`relative inline-block w-2 h-2 rounded-full ${liveStatus.open ? 'bg-orange' : 'bg-cream-soft/40'}`}></span>
                       </span>
                     </div>
-                    <div className="space-y-1 mb-7">
+                    <div className="font-serif italic text-cream text-2xl md:text-3xl leading-none mb-6">
+                      {liveStatus.label}
+                    </div>
+                    <div className="flex items-baseline justify-between gap-4 pt-5 border-t border-border">
                       <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85">
                         Aujourd'hui
                       </div>
-                      <div className="font-serif text-cream text-xl md:text-2xl">
+                      <div className="font-serif text-cream text-lg md:text-xl">
                         {todaysHours}
                       </div>
                     </div>
-                    <a
-                      href="tel:+14507431448"
-                      className="block group pt-7 border-t border-border"
-                      aria-label="Appeler Chez Florent au 450 743-1448"
-                    >
-                      <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85 mb-2 group-hover:text-orange transition-colors">
-                        Appelez-nous
-                      </div>
-                      <div className="font-display text-cream text-3xl md:text-4xl group-hover:text-orange transition-colors leading-[0.95]">
-                        450&nbsp;743-1448
-                      </div>
-                    </a>
                   </div>
 
                   {/* Editorial promise — three lines with bullets */}
@@ -1477,14 +1514,14 @@ function Reservation() {
                     />
                   </div>
 
-                  {/* Submit row — big arrow CTA */}
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mt-6 pt-8 border-t border-border">
+                  {/* Submit row — big arrow CTA, full-width on mobile */}
+                  <div className="flex flex-col gap-6 mt-6 pt-8 border-t border-border md:flex-row md:items-center md:justify-between">
                     <p className="font-serif italic text-cream-soft/85 text-sm max-w-sm">
                       En envoyant, vous acceptez qu'on vous rappelle pour confirmer.
                     </p>
                     <MagneticButton
                       type="submit"
-                      className="group inline-flex items-center justify-center gap-4 px-10 py-5 bg-orange text-bg-primary font-medium tracking-[0.15em] uppercase text-sm transition-colors hover:bg-orange-dark focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange whitespace-nowrap"
+                      className="group inline-flex items-center justify-center gap-4 w-full md:w-auto px-10 md:px-14 py-6 bg-orange text-bg-primary font-medium tracking-[0.15em] uppercase text-sm md:text-base transition-colors hover:bg-orange-dark focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange whitespace-nowrap"
                     >
                       <span>Confirmer la réservation</span>
                       <span className="text-lg leading-none transition-transform duration-300 group-hover:translate-x-1">↘</span>
