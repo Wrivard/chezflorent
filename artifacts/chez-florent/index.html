@@ -2,13 +2,73 @@
 <html lang="fr-CA">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
     <title>Chez Florent — Bistro à Sorel-Tracy</title>
-    <meta name="description" content="Chez Florent, c'est l'ardoise qui change selon les humeurs du chef et les arrivages du marché. Des assiettes à partager, des produits d'ici, des soirées qui s'étirent." />
-    <link rel="icon" type="image/png" href="%BASE_URL%logo.png" />
+    <meta name="description" content="Chez Florent, bistro de quartier à Sorel-Tracy. L'ardoise change selon les humeurs du chef et les arrivages du marché. Réservez au 450 743-1448." />
+
+    <link rel="canonical" href="https://chezflorent.ca/" />
+    <meta name="theme-color" content="#0E1F1C" />
+
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%cf-monogram.svg" />
+    <link rel="alternate icon" type="image/png" href="%BASE_URL%logo.png" />
+    <link rel="apple-touch-icon" href="%BASE_URL%logo.png" />
+
+    <link rel="alternate" hreflang="fr-ca" href="https://chezflorent.ca/" />
+    <link rel="alternate" hreflang="x-default" href="https://chezflorent.ca/" />
+
+    <meta property="og:type" content="restaurant" />
+    <meta property="og:title" content="Chez Florent — Bistro à Sorel-Tracy" />
+    <meta property="og:description" content="L'ardoise qui change selon les humeurs du chef. Bistro de quartier à Sorel-Tracy." />
+    <meta property="og:image" content="https://chezflorent.ca/opengraph.jpg" />
+    <meta property="og:url" content="https://chezflorent.ca/" />
+    <meta property="og:locale" content="fr_CA" />
+    <meta property="og:site_name" content="Chez Florent" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Chez Florent — Bistro à Sorel-Tracy" />
+    <meta name="twitter:description" content="L'ardoise qui change selon les humeurs du chef. Bistro de quartier à Sorel-Tracy." />
+    <meta name="twitter:image" content="https://chezflorent.ca/opengraph.jpg" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,700;1,6..96,400;1,6..96,600;1,6..96,700&family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "name": "Chez Florent",
+      "url": "https://chezflorent.ca/",
+      "image": "https://chezflorent.ca/opengraph.jpg",
+      "description": "Bistro de quartier à Sorel-Tracy. L'ardoise change selon les humeurs du chef et les arrivages du marché.",
+      "telephone": "+1-450-743-1448",
+      "priceRange": "$$",
+      "servesCuisine": ["Bistro français", "Cuisine québécoise"],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "57 Rue du Roi",
+        "addressLocality": "Sorel-Tracy",
+        "addressRegion": "QC",
+        "postalCode": "J3P 4M6",
+        "addressCountry": "CA"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 46.0419,
+        "longitude": -73.1163
+      },
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday","Wednesday","Thursday"], "opens": "17:00", "closes": "22:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Friday","Saturday"], "opens": "17:00", "closes": "23:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "17:00", "closes": "21:00" }
+      ],
+      "acceptsReservations": "True",
+      "sameAs": [
+        "https://www.instagram.com/chezflorent.bistro/",
+        "https://www.facebook.com/chezflorent.bistro/"
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

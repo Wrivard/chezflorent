@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://chezflorent.ca/sitemap.xml
