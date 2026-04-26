@@ -1,0 +1,50 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "ScnYfycN2_H9C_D_gpMvA"
+uri = "file://artifacts/chez-florent/public/images/hero-interior.png"
+type = "image"
+title = "hero bistro interior"
+
+[[generated]]
+id = "64mKV0idT8AEjIyKRu02e"
+uri = "file://artifacts/chez-florent/public/images/about-hands.png"
+type = "image"
+title = "chef hands plating"
+
+[[generated]]
+id = "7EYwsS-xl48sdCzVJMIYU"
+uri = "file://artifacts/chez-florent/public/images/dish-charcuterie.png"
+type = "image"
+title = "charcuterie board overhead"
+
+[[generated]]
+id = "Agme1l1whzuZKASq_J5pC"
+uri = "file://artifacts/chez-florent/public/images/wine-pour.png"
+type = "image"
+title = "wine pour candlelit"
+
+[[generated]]
+id = "598qbyATeo8uIS8ZMhc5I"
+uri = "file://artifacts/chez-florent/public/images/exterior-dusk.png"
+type = "image"
+title = "bistro exterior dusk"
+
+[[generated]]
+id = "mkWXSCjuFEp0PCAr77fjg"
+uri = "file://artifacts/chez-florent/public/images/dish-pizza.png"
+type = "image"
+title = "pizza overhead"
+
+[[generated]]
+id = "HUty9e8oNXhvaum21cr5_"
+uri = "file://artifacts/chez-florent/public/images/bread-tearing.png"
+type = "image"
+title = "bread tearing rustic"
+
+[[generated]]
+id = "MmNcAVUHNh-EiqZ6PA02b"
+uri = "file://artifacts/chez-florent/public/images/ambiance-smoke.png"
+type = "image"
+title = "candle smoke ambiance"
