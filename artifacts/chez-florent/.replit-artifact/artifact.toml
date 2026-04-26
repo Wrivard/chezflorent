@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Chez Florent"
+version = "1.0.0"
+id = "artifacts/chez-florent"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24172
+
+[services.development]
+run = "pnpm --filter @workspace/chez-florent run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/chez-florent", "run", "build" ]
+publicDir = "artifacts/chez-florent/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24172"
+BASE_PATH = "/"
