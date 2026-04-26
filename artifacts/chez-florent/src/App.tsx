@@ -10,14 +10,14 @@ const EASE_SMOOTH: [number, number, number, number] = [0.22, 1, 0.36, 1];
 // -----------------------------------------------------------------------------
 function Preloader({ onComplete }: { onComplete: () => void }) {
   const prefersReducedMotion = useReducedMotion();
+  const DURATION_MS = 2200;
 
   useEffect(() => {
     if (prefersReducedMotion) {
       onComplete();
       return;
     }
-    // Snappy: 700ms total, folded into hero entrance via wipe-up exit.
-    const timer = setTimeout(onComplete, 700);
+    const timer = setTimeout(onComplete, DURATION_MS);
     return () => clearTimeout(timer);
   }, [prefersReducedMotion, onComplete]);
 
@@ -29,25 +29,92 @@ function Preloader({ onComplete }: { onComplete: () => void }) {
       className="fixed inset-0 z-[100] bg-bg-primary flex flex-col items-center justify-center overflow-hidden"
       initial={{ clipPath: "inset(0 0 0 0)" }}
       animate={{ clipPath: "inset(0 0 0 0)" }}
-      exit={{ clipPath: "inset(0 0 100% 0)", transition: { duration: 0.6, ease: EASE } }}
+      exit={{ clipPath: "inset(0 0 100% 0)", transition: { duration: 0.7, ease: EASE } }}
     >
-      <div className="text-center relative">
+      {/* Subtle radial warm glow behind the logo */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        aria-hidden="true"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 45%, rgba(216, 90, 44, 0.18), transparent 55%)",
+        }}
+      />
+
+      {/* Decorative thin frame — corner brackets */}
+      {[
+        "top-8 left-8 border-t border-l",
+        "top-8 right-8 border-t border-r",
+        "bottom-8 left-8 border-b border-l",
+        "bottom-8 right-8 border-b border-r",
+      ].map((pos) => (
+        <motion.span
+          key={pos}
+          aria-hidden="true"
+          className={`absolute w-10 h-10 md:w-14 md:h-14 border-cream-soft/35 ${pos}`}
+          initial={{ opacity: 0, scale: 0.6 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, ease: EASE_SMOOTH, delay: 0.05 }}
+        />
+      ))}
+
+      {/* Top eyebrow */}
+      <motion.div
+        className="absolute top-14 md:top-20 left-1/2 -translate-x-1/2 flex items-center gap-3 md:gap-4 text-[0.65rem] md:text-[0.72rem] tracking-[0.42em] uppercase text-cream-soft/70 font-sans whitespace-nowrap"
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.15, ease: EASE_SMOOTH }}
+      >
+        <span className="hidden sm:inline-block w-8 h-px bg-cream-soft/40" aria-hidden="true" />
+        <span aria-hidden="true">✶</span>
+        <span>Bistro · Bar à vins</span>
+        <span aria-hidden="true">✶</span>
+        <span className="hidden sm:inline-block w-8 h-px bg-cream-soft/40" aria-hidden="true" />
+      </motion.div>
+
+      {/* Centered logo with slow reveal */}
+      <div className="relative">
         <motion.img
           src="/logo.png"
           alt="Chez Florent"
-          className="block w-[min(78vw,520px)] h-auto"
-          initial={{ opacity: 0, scale: 0.94, y: 12 }}
+          className="block w-[min(72vw,460px)] h-auto relative z-10"
+          initial={{ opacity: 0, scale: 0.88, y: 14 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.55, ease: EASE }}
+          transition={{ duration: 1.1, delay: 0.2, ease: EASE_SMOOTH }}
         />
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-border">
+      {/* Editorial tagline in serif italic */}
+      <motion.div
+        className="mt-8 md:mt-10 font-serif italic text-cream/90 text-lg md:text-2xl text-center px-8 max-w-md leading-snug"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.85, ease: EASE_SMOOTH }}
+      >
+        Cuisine généreuse, vins vivants.
+      </motion.div>
+
+      {/* Bottom location strip */}
+      <motion.div
+        className="absolute bottom-12 md:bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-3 text-[0.62rem] md:text-[0.7rem] tracking-[0.32em] uppercase text-cream-soft/55 font-sans whitespace-nowrap"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 1.15, ease: EASE_SMOOTH }}
+      >
+        <span>57 Rue du Roi</span>
+        <span aria-hidden="true" className="text-orange/80">·</span>
+        <span>Sorel-Tracy</span>
+        <span aria-hidden="true" className="text-orange/80">·</span>
+        <span>MMXXVI</span>
+      </motion.div>
+
+      {/* Progress bar bottom edge */}
+      <div className="absolute bottom-0 left-0 w-full h-[2px] bg-cream-soft/12">
         <motion.div
           className="h-full bg-orange origin-left"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
-          transition={{ duration: 0.7, ease: "linear" }}
+          transition={{ duration: DURATION_MS / 1000, ease: "linear" }}
         />
       </div>
     </motion.div>
@@ -227,7 +294,7 @@ function Navbar({ activeSection }: { activeSection: string }) {
           <a
             href="#accueil"
             aria-label="Chez Florent — Accueil"
-            className="flex items-center text-cream hover:opacity-80 transition-opacity"
+            className="flex items-center text-cream hover:opacity-80 transition-opacity shrink-0"
           >
             <img
               src="/logo.png"
@@ -236,45 +303,48 @@ function Navbar({ activeSection }: { activeSection: string }) {
             />
           </a>
 
-          {/* Live status badge — visible on all sizes (Tier 1: a11y) */}
-          <a
-            href="#contact"
-            aria-label={`Statut du restaurant : ${status.label}`}
-            className="flex items-center gap-2.5 px-3 md:px-3.5 py-1.5 md:py-2 rounded-full border border-cream-soft/25 bg-bg-primary/40 backdrop-blur-sm text-[0.65rem] md:text-[0.7rem] font-medium tracking-[0.18em] uppercase text-cream hover:text-cream hover:border-cream-soft/40 transition-colors group"
-          >
-            <span className="relative inline-flex w-1.5 h-1.5 shrink-0" aria-hidden="true">
-              {status.open && (
-                <span className="absolute inset-0 rounded-full bg-orange opacity-60 animate-ping"></span>
-              )}
-              <span className={`relative inline-block w-1.5 h-1.5 rounded-full ${status.open ? 'bg-orange' : 'bg-cream-soft/60'}`}></span>
-            </span>
-            <span>{status.label}</span>
-          </a>
-
-          <div className="hidden md:flex items-center gap-8 text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft">
-            <a href="#accueil" className={`link-underline hover:text-cream transition-colors ${activeSection === "accueil" ? "active text-cream" : ""}`}>Accueil</a>
-            <a href="#a-propos" className={`link-underline hover:text-cream transition-colors ${activeSection === "a-propos" ? "active text-cream" : ""}`}>À propos</a>
-            <a href="#menu" className={`link-underline hover:text-cream transition-colors ${activeSection === "menu" ? "active text-cream" : ""}`}>Menu</a>
-            <a href="#agenda" className={`link-underline hover:text-cream transition-colors ${activeSection === "agenda" ? "active text-cream" : ""}`}>Agenda</a>
-            <a href="#reservation" className={`link-underline hover:text-cream transition-colors ${activeSection === "reservation" ? "active text-cream" : ""}`}>Réservation</a>
-            <a href="#contact" className={`link-underline hover:text-cream transition-colors ${activeSection === "contact" ? "active text-cream" : ""}`}>Contact</a>
+          {/* Right cluster — status + nav grouped together with deliberate spacing */}
+          <div className="flex items-center gap-5 md:gap-10">
+            {/* Live status badge — visible on all sizes */}
             <a
-              href="#reservation"
-              className="px-5 py-2 border border-orange text-orange hover:bg-orange hover:text-bg-primary transition-all duration-300 rounded-[2px]"
+              href="#contact"
+              aria-label={`Statut du restaurant : ${status.label}`}
+              className="flex items-center gap-2.5 px-3 md:px-3.5 py-1.5 md:py-2 rounded-full border border-cream-soft/25 bg-bg-primary/40 backdrop-blur-sm text-[0.65rem] md:text-[0.7rem] font-medium tracking-[0.18em] uppercase text-cream hover:text-cream hover:border-cream-soft/40 transition-colors group shrink-0"
             >
-              Réserver
+              <span className="relative inline-flex w-1.5 h-1.5 shrink-0" aria-hidden="true">
+                {status.open && (
+                  <span className="absolute inset-0 rounded-full bg-orange opacity-60 animate-ping"></span>
+                )}
+                <span className={`relative inline-block w-1.5 h-1.5 rounded-full ${status.open ? 'bg-orange' : 'bg-cream-soft/60'}`}></span>
+              </span>
+              <span className="hidden sm:inline">{status.label}</span>
+              <span className="sm:hidden">{status.open ? 'Ouvert' : 'Fermé'}</span>
             </a>
-          </div>
 
-          <button
-            className="md:hidden text-cream-soft p-2 focus-visible:outline-2 focus-visible:outline-orange"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Menu"
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
+            <div className="hidden md:flex items-center gap-7 lg:gap-8 text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft">
+              <a href="#a-propos" className={`link-underline hover:text-cream transition-colors ${activeSection === "a-propos" ? "active text-cream" : ""}`}>À propos</a>
+              <a href="#menu" className={`link-underline hover:text-cream transition-colors ${activeSection === "menu" ? "active text-cream" : ""}`}>Menu</a>
+              <a href="#agenda" className={`link-underline hover:text-cream transition-colors ${activeSection === "agenda" ? "active text-cream" : ""}`}>Agenda</a>
+              <a href="#reservation" className={`link-underline hover:text-cream transition-colors ${activeSection === "reservation" ? "active text-cream" : ""}`}>Réservation</a>
+              <a href="#contact" className={`link-underline hover:text-cream transition-colors ${activeSection === "contact" ? "active text-cream" : ""}`}>Contact</a>
+              <a
+                href="#reservation"
+                className="px-5 py-2 border border-orange text-orange hover:bg-orange hover:text-bg-primary transition-all duration-300 rounded-[2px]"
+              >
+                Réserver
+              </a>
+            </div>
+
+            <button
+              className="md:hidden text-cream-soft p-2 focus-visible:outline-2 focus-visible:outline-orange"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Menu"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
         </div>
       </nav>
 
