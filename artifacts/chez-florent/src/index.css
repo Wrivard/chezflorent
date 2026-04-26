@@ -84,6 +84,19 @@ button:focus-visible {
   animation: marquee 30s linear infinite;
 }
 
+.animate-marquee-slow {
+  animation: marquee 50s linear infinite;
+}
+
+.animate-marquee-slower {
+  animation: marquee 80s linear infinite;
+}
+
+html.has-custom-cursor,
+html.has-custom-cursor * {
+  cursor: none !important;
+}
+
 @keyframes kenburns {
   0% {
     transform: scale(1);
@@ -129,10 +142,32 @@ button:focus-visible {
   display: block;
 }
 
+.ardoise-clip {
+  color: var(--color-cream);
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .ardoise-clip {
+    background-image: url('/images/dish-tasting.png');
+    background-size: cover;
+    background-position: center;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee,
+  .animate-marquee-slow,
+  .animate-marquee-slower,
   .animate-kenburns,
   .animate-pulse-gentle {
-    animation: none;
+    animation: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
   }
 }

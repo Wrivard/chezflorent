@@ -48,3 +48,21 @@ id = "MmNcAVUHNh-EiqZ6PA02b"
 uri = "file://artifacts/chez-florent/public/images/ambiance-smoke.png"
 type = "image"
 title = "candle smoke ambiance"
+
+[[generated]]
+id = "xVW9GebR4M6Qira3VQ84i"
+uri = "file://artifacts/chez-florent/public/images/wine-glass-macro.png"
+type = "image"
+title = "wine glass macro candle"
+
+[[generated]]
+id = "3tS7sv8jwUzuhcEDE_4_O"
+uri = "file://artifacts/chez-florent/public/images/dish-tasting.png"
+type = "image"
+title = "tasting spread overhead"
+
+[[generated]]
+id = "y2vRV4gAp9ZnC8iz31JDE"
+uri = "file://artifacts/chez-florent/public/images/dish-sandwich.png"
+type = "image"
+title = "sandwich cheese pull"
