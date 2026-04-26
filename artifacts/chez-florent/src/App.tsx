@@ -62,90 +62,6 @@ function Preloader({ onComplete }: { onComplete: () => void }) {
 }
 
 // -----------------------------------------------------------------------------
-// 2) CUSTOM CURSOR
-// -----------------------------------------------------------------------------
-function CustomCursor() {
-  const cursorX = useMotionValue(-100);
-  const cursorY = useMotionValue(-100);
-  const ringX = useSpring(cursorX, { stiffness: 150, damping: 20 });
-  const ringY = useSpring(cursorY, { stiffness: 150, damping: 20 });
-  const dotX = useSpring(cursorX, { stiffness: 800, damping: 30 });
-  const dotY = useSpring(cursorY, { stiffness: 800, damping: 30 });
-
-  const [cursorState, setCursorState] = useState<"default" | "hover" | "hidden" | "view">("default");
-
-  useEffect(() => {
-    // Only enable if device has hover capability
-    if (window.matchMedia("(hover: none)").matches) return;
-
-    document.documentElement.classList.add("has-custom-cursor");
-
-    const moveCursor = (e: MouseEvent) => {
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
-    };
-
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      
-      if (target.closest('a') || target.closest('button')) {
-        setCursorState("hover");
-      } else if (target.closest('[data-cursor="hidden"]')) {
-        setCursorState("hidden");
-      } else if (target.closest('[data-cursor="view"]')) {
-        setCursorState("view");
-      } else {
-        setCursorState("default");
-      }
-    };
-
-    window.addEventListener("mousemove", moveCursor);
-    document.addEventListener("mouseover", handleMouseOver);
-
-    return () => {
-      document.documentElement.classList.remove("has-custom-cursor");
-      window.removeEventListener("mousemove", moveCursor);
-      document.removeEventListener("mouseover", handleMouseOver);
-    };
-  }, [cursorX, cursorY]);
-
-  if (window.matchMedia("(hover: none)").matches) return null;
-
-  return (
-    <div className="pointer-events-none fixed inset-0 z-[110] hidden lg:block overflow-hidden">
-      <motion.div
-        className="absolute left-0 top-0 w-2 h-2 bg-cream rounded-full -translate-x-1/2 -translate-y-1/2"
-        style={{ x: dotX, y: dotY }}
-        animate={{
-          opacity: cursorState === "default" ? 1 : 0,
-          scale: cursorState === "default" ? 1 : 0,
-        }}
-        transition={{ duration: 0.2 }}
-      />
-      <motion.div
-        className="absolute left-0 top-0 border border-cream/30 rounded-full flex items-center justify-center text-orange font-medium text-xs tracking-widest -translate-x-1/2 -translate-y-1/2"
-        style={{ 
-          x: ringX, 
-          y: ringY,
-          width: 40,
-          height: 40
-        }}
-        animate={{
-          width: cursorState === "hover" ? 80 : cursorState === "view" ? 100 : cursorState === "hidden" ? 0 : 40,
-          height: cursorState === "hover" ? 80 : cursorState === "view" ? 100 : cursorState === "hidden" ? 0 : 40,
-          backgroundColor: cursorState === "hover" ? "rgba(216, 90, 44, 0.2)" : cursorState === "view" ? "rgba(14, 31, 28, 0.6)" : "transparent",
-          borderColor: cursorState === "hover" ? "transparent" : cursorState === "view" ? "rgba(244, 201, 160, 0.5)" : "rgba(244, 201, 160, 0.3)",
-          backdropFilter: cursorState === "view" ? "blur(4px)" : "none",
-        }}
-        transition={{ duration: 0.2 }}
-      >
-        {cursorState === "view" && <span className="opacity-100">VOIR</span>}
-      </motion.div>
-    </div>
-  );
-}
-
-// -----------------------------------------------------------------------------
 // PROGRESS BAR
 // -----------------------------------------------------------------------------
 function ScrollProgress() {
@@ -716,8 +632,8 @@ function Menu() {
             </div>
             
             {/* Image-through-text reveal (with @supports fallback in CSS) */}
-            <h2 className="ardoise-clip font-serif font-semibold uppercase text-[clamp(4rem,12vw,12rem)] leading-[0.85] tracking-tighter mb-8 max-w-full">
-              L'ARDOISE
+            <h2 className="ardoise-clip font-display text-[clamp(5rem,14vw,14rem)] leading-[0.85] tracking-tight mb-8 max-w-full">
+              L'ardoise
             </h2>
             <AnimatePresence mode="wait">
               <motion.p
@@ -942,7 +858,6 @@ function AmbianceStrip() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: EASE, delay: i * 0.1 }}
             className="overflow-hidden relative group aspect-[4/5] md:aspect-[3/4]"
-            data-cursor="view"
           >
             <img 
               src={`/images/${img.src}`} 
@@ -987,7 +902,7 @@ function Agenda() {
           <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-6">
             04 — La programmation
           </div>
-          <h2 className="font-serif font-light italic text-cream leading-[0.85] tracking-tighter text-[clamp(3.5rem,10vw,9rem)]">
+          <h2 className="font-display text-cream leading-[0.85] tracking-tight text-[clamp(4rem,11vw,10rem)]">
             L'agenda
           </h2>
           <p className="font-sans italic text-cream-soft/80 max-w-2xl text-lg mt-6">
@@ -1064,51 +979,53 @@ function HoursBand() {
   ];
 
   return (
-    <div className="bg-cream-soft text-bg-primary relative">
-      {/* Top row: live status + hours marquee — Inter caps */}
-      <div className="overflow-hidden border-b border-bg-primary/10 py-3.5">
-        <div className="flex whitespace-nowrap animate-marquee-slow w-max font-sans text-[0.78rem] font-medium tracking-[0.22em] uppercase text-bg-primary/80">
-          {[...Array(3)].map((_, repeat) => (
-            <div key={repeat} className="flex items-center">
-              <span className="px-7 inline-flex items-center gap-2.5 text-bg-primary">
-                <span className="relative inline-flex w-1.5 h-1.5 shrink-0">
-                  {status.open && (
-                    <span className="absolute inset-0 rounded-full bg-orange opacity-60 animate-ping"></span>
-                  )}
-                  <span className={`relative inline-block w-1.5 h-1.5 rounded-full ${status.open ? 'bg-orange' : 'bg-bg-primary/40'}`}></span>
-                </span>
-                {status.label}
+    <div className="bg-cream-soft text-bg-primary border-y border-bg-primary/10 overflow-hidden py-6 md:py-8 relative">
+      <div className="flex whitespace-nowrap animate-marquee-slow w-max font-serif italic font-light text-bg-primary text-[clamp(2rem,5.5vw,4.5rem)] leading-none">
+        {[...Array(4)].map((_, repeat) => (
+          <div key={repeat} className="flex items-center">
+            <span className="px-8 inline-flex items-center gap-4">
+              <span className="relative inline-flex w-2.5 h-2.5 shrink-0">
+                {status.open && (
+                  <span className="absolute inset-0 rounded-full bg-orange opacity-60 animate-ping"></span>
+                )}
+                <span className={`relative inline-block w-2.5 h-2.5 rounded-full ${status.open ? 'bg-orange' : 'bg-bg-primary/40'}`}></span>
               </span>
-              {hoursItems.map((item, i) => (
-                <React.Fragment key={i}>
-                  <span className="text-bg-primary/30 px-2">✶</span>
-                  <span className="px-7">{item}</span>
-                </React.Fragment>
-              ))}
-              <span className="text-bg-primary/30 px-2">✶</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Bottom row: huge italic invitation, scrolling opposite direction */}
-      <div className="overflow-hidden py-7 md:py-10">
-        <div className="flex whitespace-nowrap animate-marquee-reverse w-max font-serif italic font-light text-bg-primary text-[clamp(2.75rem,8vw,6.5rem)] leading-none">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="flex items-center">
-              <span className="px-8">Réservez votre table</span>
-              <span className="px-2 text-orange">↘</span>
-            </div>
-          ))}
-        </div>
+              {status.label}
+            </span>
+            {hoursItems.map((item, i) => (
+              <React.Fragment key={i}>
+                <span className="text-orange px-2">✶</span>
+                <span className="px-8">{item}</span>
+              </React.Fragment>
+            ))}
+            <span className="text-orange px-2">✶</span>
+            <span className="px-8 inline-flex items-center gap-3">
+              Réservez votre table
+              <span className="text-orange">↘</span>
+            </span>
+            <span className="text-orange px-2">✶</span>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
+// Returns the human-readable hours string for today (e.g. "17h – 22h" or "Fermé").
+function useTodaysHours() {
+  const [hours, setHours] = useState("");
+  useEffect(() => {
+    const today = SCHEDULE[new Date().getDay()];
+    setHours(today ? `${today.open}h – ${today.close}h` : "Fermé aujourd'hui");
+  }, []);
+  return hours;
+}
+
 function Reservation() {
   const [status, setStatus] = useState<"idle" | "success">("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const liveStatus = useOpenStatus();
+  const todaysHours = useTodaysHours();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -1135,27 +1052,37 @@ function Reservation() {
     <>
       <HoursBand />
 
-      <section id="reservation" className="bg-bg-tertiary py-32 px-6 md:px-12 relative">
+      <section id="reservation" className="bg-bg-tertiary py-32 md:py-40 px-6 md:px-12 relative overflow-hidden">
         <SectionMarker number="05" />
-        
-        <div className="max-w-4xl mx-auto relative z-10">
-          <motion.div 
+
+        {/* Massive ghost number behind everything for editorial weight */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+          <span className="font-display text-[40vw] md:text-[28vw] text-cream/[0.025] leading-none -translate-y-12">
+            05
+          </span>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          {/* HEADER — full width, dramatic */}
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: EASE }}
-            className="mb-16 text-center flex flex-col items-center"
+            className="mb-16 md:mb-24 max-w-5xl"
           >
             <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-6">
               05 — Une table pour vous
             </div>
-            <h2 className="font-serif font-light uppercase text-[clamp(4rem,12vw,14rem)] text-cream leading-[0.85] tracking-tighter mb-6">
-              RÉSERVER
+            <h2 className="font-display text-[clamp(5rem,16vw,16rem)] text-cream leading-[0.82] tracking-tight mb-8">
+              Réserver
             </h2>
-            <p className="font-sans italic text-cream-soft/80 max-w-xl text-base md:text-lg mb-6">
-              On vous garde la meilleure table — confirmation par téléphone d'ici 24h.
-            </p>
-            <div className="w-20 h-[1px] bg-orange mb-8"></div>
+            <div className="flex items-baseline gap-4">
+              <div className="h-[1px] w-12 bg-orange shrink-0 translate-y-[-0.4em]"></div>
+              <p className="font-serif italic text-cream-soft/85 text-lg md:text-2xl max-w-2xl leading-snug">
+                Le téléphone reste le plus chaleureux — le formulaire fait très bien aussi.
+              </p>
+            </div>
           </motion.div>
 
           <AnimatePresence mode="wait">
@@ -1166,16 +1093,16 @@ function Reservation() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5, ease: EASE }}
-                className="text-center py-24 bg-bg-primary border border-border p-8"
+                className="text-center py-24 bg-bg-primary border border-border p-8 md:p-16 max-w-3xl mx-auto"
               >
                 <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
                   ✶ Confirmé
                 </div>
-                <h3 className="font-serif italic text-[clamp(3rem,8vw,5rem)] text-cream mb-8 leading-none">
-                  MERCI
+                <h3 className="font-display text-[clamp(4rem,10vw,8rem)] text-cream mb-8 leading-none">
+                  Merci
                 </h3>
-                <p className="font-sans font-light text-cream-soft text-lg mb-12">
-                  Nous vous confirmons par téléphone d'ici 24h.
+                <p className="font-serif italic text-cream-soft text-xl mb-12 max-w-md mx-auto">
+                  On vous appelle d'ici 24 heures pour tout confirmer.
                 </p>
                 <button
                   onClick={() => setStatus("idle")}
@@ -1185,88 +1112,190 @@ function Reservation() {
                 </button>
               </motion.div>
             ) : (
-              <motion.form
-                key="form"
+              <motion.div
+                key="form-grid"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                onSubmit={handleSubmit} 
-                className="flex flex-col gap-12 bg-bg-primary p-8 md:p-16 border border-border shadow-2xl relative" 
-                noValidate
+                transition={{ duration: 0.5, ease: EASE }}
+                className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16"
               >
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                  <div className="flex flex-col relative group">
-                    <label className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-2 transition-colors group-focus-within:text-orange">
-                      Nom complet
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      className="bg-transparent border-b border-border text-cream py-3 focus:outline-none focus:border-orange transition-colors rounded-none text-xl font-serif"
-                    />
-                    {errors.name && <span className="text-orange text-xs mt-2 absolute -bottom-6">{errors.name}</span>}
-                  </div>
-                  <div className="flex flex-col relative group">
-                    <label className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-2 transition-colors group-focus-within:text-orange">
-                      Téléphone
-                    </label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      className="bg-transparent border-b border-border text-cream py-3 focus:outline-none focus:border-orange transition-colors rounded-none text-xl font-serif"
-                    />
-                    {errors.phone && <span className="text-orange text-xs mt-2 absolute -bottom-6">{errors.phone}</span>}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                  <div className="flex flex-col relative group">
-                    <label className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-2 transition-colors group-focus-within:text-orange">
-                      Date
-                    </label>
-                    <input
-                      type="date"
-                      name="date"
-                      className="bg-transparent border-b border-border text-cream py-3 focus:outline-none focus:border-orange transition-colors rounded-none [color-scheme:dark] text-xl font-serif"
-                    />
-                    {errors.date && <span className="text-orange text-xs mt-2 absolute -bottom-6">{errors.date}</span>}
-                  </div>
-                  <div className="flex flex-col relative group">
-                    <label className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-2 transition-colors group-focus-within:text-orange">
-                      Heure
-                    </label>
-                    <input
-                      type="time"
-                      name="time"
-                      className="bg-transparent border-b border-border text-cream py-3 focus:outline-none focus:border-orange transition-colors rounded-none [color-scheme:dark] text-xl font-serif"
-                    />
-                    {errors.time && <span className="text-orange text-xs mt-2 absolute -bottom-6">{errors.time}</span>}
-                  </div>
-                  <div className="flex flex-col relative group">
-                    <label className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-2 transition-colors group-focus-within:text-orange">
-                      Personnes
-                    </label>
-                    <select
-                      name="guests"
-                      className="bg-transparent border-b border-border text-cream py-3 focus:outline-none focus:border-orange transition-colors rounded-none appearance-none text-xl font-serif"
+                {/* LEFT — Info / live status / phone — sticky on desktop */}
+                <aside className="lg:col-span-5 lg:sticky lg:top-32 self-start space-y-8">
+                  {/* Live status panel */}
+                  <div className="border border-border bg-bg-primary/40 backdrop-blur-sm p-7 md:p-9">
+                    <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/60 mb-5">
+                      ◦ En ce moment
+                    </div>
+                    <div className="flex items-center gap-3 mb-7">
+                      <span className="relative inline-flex w-2.5 h-2.5 shrink-0">
+                        {liveStatus.open && (
+                          <span className="absolute inset-0 rounded-full bg-orange opacity-60 animate-ping"></span>
+                        )}
+                        <span className={`relative inline-block w-2.5 h-2.5 rounded-full ${liveStatus.open ? 'bg-orange' : 'bg-cream-soft/40'}`}></span>
+                      </span>
+                      <span className="font-serif italic text-cream text-2xl md:text-3xl leading-none">
+                        {liveStatus.label}
+                      </span>
+                    </div>
+                    <div className="space-y-1 mb-7">
+                      <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/60">
+                        Aujourd'hui
+                      </div>
+                      <div className="font-serif text-cream text-xl md:text-2xl">
+                        {todaysHours}
+                      </div>
+                    </div>
+                    <a
+                      href="tel:+14505550199"
+                      className="block group pt-7 border-t border-border"
                     >
-                      <option value="" className="bg-bg-primary text-base font-sans">Sélectionner</option>
-                      {[1, 2, 3, 4, 5, 6, 7, 8].map(n => <option key={n} value={n} className="bg-bg-primary text-base font-sans">{n}</option>)}
-                      <option value="9+" className="bg-bg-primary text-base font-sans">9+</option>
-                    </select>
-                    {errors.guests && <span className="text-orange text-xs mt-2 absolute -bottom-6">{errors.guests}</span>}
+                      <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/60 mb-2 group-hover:text-orange transition-colors">
+                        Appelez-nous
+                      </div>
+                      <div className="font-display text-cream text-3xl md:text-4xl group-hover:text-orange transition-colors leading-none">
+                        450 555&nbsp;0199
+                      </div>
+                    </a>
                   </div>
-                </div>
 
-                <div className="flex flex-col relative group mt-4">
-                  <MagneticButton 
-                    type="submit"
-                    className="w-full md:w-auto self-center px-12 py-5 bg-orange text-bg-primary font-medium tracking-wide uppercase transition-colors hover:bg-orange-dark focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange"
-                  >
-                    Confirmer la réservation
-                  </MagneticButton>
-                </div>
-              </motion.form>
+                  {/* Editorial promise — three lines with bullets */}
+                  <ul className="space-y-3 pl-1">
+                    {[
+                      "Confirmation par téléphone sous 24h",
+                      "Annulation libre jusqu'à 4h avant",
+                      "Groupes de 9+ : on s'occupe de tout",
+                    ].map((line, i) => (
+                      <li key={i} className="flex items-start gap-3 font-sans text-[0.95rem] text-cream-soft/80">
+                        <span className="text-orange leading-none pt-[0.35rem]">✶</span>
+                        <span>{line}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </aside>
+
+                {/* RIGHT — the form, premium dark panel */}
+                <motion.form
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.7, ease: EASE }}
+                  onSubmit={handleSubmit}
+                  className="lg:col-span-7 flex flex-col gap-10 bg-bg-primary p-8 md:p-12 border border-border relative"
+                  noValidate
+                >
+                  {/* Decorative corner notation */}
+                  <div className="absolute top-6 right-6 text-[0.65rem] font-medium tracking-[0.25em] uppercase text-cream-soft/40">
+                    ◦ Formulaire
+                  </div>
+
+                  <div className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-orange">
+                    Vos coordonnées
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div className="flex flex-col relative group">
+                      <label htmlFor="res-name" className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-cream-soft mb-2 transition-colors group-focus-within:text-orange">
+                        Nom complet
+                      </label>
+                      <input
+                        id="res-name"
+                        type="text"
+                        name="name"
+                        autoComplete="name"
+                        className="bg-transparent border-b border-border text-cream py-3 focus:outline-none focus:border-orange transition-colors rounded-none text-xl font-serif"
+                      />
+                      {errors.name && <span className="text-orange text-xs mt-2 absolute -bottom-6">{errors.name}</span>}
+                    </div>
+                    <div className="flex flex-col relative group">
+                      <label htmlFor="res-phone" className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-cream-soft mb-2 transition-colors group-focus-within:text-orange">
+                        Téléphone
+                      </label>
+                      <input
+                        id="res-phone"
+                        type="tel"
+                        name="phone"
+                        autoComplete="tel"
+                        className="bg-transparent border-b border-border text-cream py-3 focus:outline-none focus:border-orange transition-colors rounded-none text-xl font-serif"
+                      />
+                      {errors.phone && <span className="text-orange text-xs mt-2 absolute -bottom-6">{errors.phone}</span>}
+                    </div>
+                  </div>
+
+                  <div className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-orange mt-2">
+                    Votre table
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div className="flex flex-col relative group">
+                      <label htmlFor="res-date" className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-cream-soft mb-2 transition-colors group-focus-within:text-orange">
+                        Date
+                      </label>
+                      <input
+                        id="res-date"
+                        type="date"
+                        name="date"
+                        className="bg-transparent border-b border-border text-cream py-3 focus:outline-none focus:border-orange transition-colors rounded-none [color-scheme:dark] text-xl font-serif"
+                      />
+                      {errors.date && <span className="text-orange text-xs mt-2 absolute -bottom-6">{errors.date}</span>}
+                    </div>
+                    <div className="flex flex-col relative group">
+                      <label htmlFor="res-time" className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-cream-soft mb-2 transition-colors group-focus-within:text-orange">
+                        Heure
+                      </label>
+                      <input
+                        id="res-time"
+                        type="time"
+                        name="time"
+                        className="bg-transparent border-b border-border text-cream py-3 focus:outline-none focus:border-orange transition-colors rounded-none [color-scheme:dark] text-xl font-serif"
+                      />
+                      {errors.time && <span className="text-orange text-xs mt-2 absolute -bottom-6">{errors.time}</span>}
+                    </div>
+                    <div className="flex flex-col relative group">
+                      <label htmlFor="res-guests" className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-cream-soft mb-2 transition-colors group-focus-within:text-orange">
+                        Personnes
+                      </label>
+                      <select
+                        id="res-guests"
+                        name="guests"
+                        className="bg-transparent border-b border-border text-cream py-3 focus:outline-none focus:border-orange transition-colors rounded-none appearance-none text-xl font-serif"
+                      >
+                        <option value="" className="bg-bg-primary text-base font-sans">Sélectionner</option>
+                        {[1, 2, 3, 4, 5, 6, 7, 8].map(n => <option key={n} value={n} className="bg-bg-primary text-base font-sans">{n}</option>)}
+                        <option value="9+" className="bg-bg-primary text-base font-sans">9+</option>
+                      </select>
+                      {errors.guests && <span className="text-orange text-xs mt-2 absolute -bottom-6">{errors.guests}</span>}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col relative group">
+                    <label htmlFor="res-note" className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-cream-soft mb-2 transition-colors group-focus-within:text-orange">
+                      Une note pour la maison <span className="text-cream-soft/40 normal-case tracking-normal">(facultatif)</span>
+                    </label>
+                    <textarea
+                      id="res-note"
+                      name="note"
+                      rows={2}
+                      placeholder="Anniversaire, allergie, table en coin…"
+                      className="bg-transparent border-b border-border text-cream py-3 focus:outline-none focus:border-orange transition-colors rounded-none text-base font-serif italic resize-none placeholder:text-cream-soft/30"
+                    />
+                  </div>
+
+                  {/* Submit row — big arrow CTA */}
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mt-6 pt-8 border-t border-border">
+                    <p className="font-serif italic text-cream-soft/60 text-sm max-w-sm">
+                      En envoyant, vous acceptez qu'on vous rappelle pour confirmer.
+                    </p>
+                    <MagneticButton
+                      type="submit"
+                      className="group inline-flex items-center justify-center gap-4 px-10 py-5 bg-orange text-bg-primary font-medium tracking-[0.15em] uppercase text-sm transition-colors hover:bg-orange-dark focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange whitespace-nowrap"
+                    >
+                      <span>Confirmer la réservation</span>
+                      <span className="text-lg leading-none transition-transform duration-300 group-hover:translate-x-1">↘</span>
+                    </MagneticButton>
+                  </div>
+                </motion.form>
+              </motion.div>
             )}
           </AnimatePresence>
         </div>
@@ -1494,7 +1523,6 @@ export default function App() {
 
   return (
     <div className="min-h-[100dvh] w-full bg-bg-primary text-cream selection:bg-orange selection:text-bg-primary relative">
-      <CustomCursor />
       <ScrollProgress />
       <FilmGrain />
       

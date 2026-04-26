@@ -88,10 +88,6 @@ button:focus-visible {
   animation: marquee 50s linear infinite;
 }
 
-html.has-custom-cursor,
-html.has-custom-cursor * {
-  cursor: none !important;
-}
 
 @keyframes kenburns {
   0% {
@@ -164,23 +160,9 @@ html.has-custom-cursor * {
   scrollbar-width: none;
 }
 
-@keyframes marquee-reverse {
-  0% {
-    transform: translateX(-50%);
-  }
-  100% {
-    transform: translateX(0%);
-  }
-}
-
-.animate-marquee-reverse {
-  animation: marquee-reverse 45s linear infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee,
   .animate-marquee-slow,
-  .animate-marquee-reverse,
   .animate-kenburns,
   .animate-pulse-gentle {
     animation: none !important;
