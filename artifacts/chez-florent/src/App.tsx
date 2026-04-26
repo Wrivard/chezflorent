@@ -619,24 +619,40 @@ function About() {
 
         {/* Text Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl ml-auto">
-          <motion.div
+          <motion.figure
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: EASE }}
-            className="font-serif font-normal text-bg-primary text-[1.125rem] leading-[1.8]"
+            className="m-0"
           >
-            « Florent n'est pas seulement un nom au-dessus de la porte. C'est une certaine idée du bistro : celle où l'on s'attable sans cérémonie, où le vin se verse au pichet, et où la cuisine ne triche jamais avec ses produits. »
-          </motion.div>
-          <motion.div
+            <blockquote className="font-serif font-normal text-bg-primary text-[1.125rem] leading-[1.8]">
+              « Florent n'est pas seulement un nom au-dessus de la porte. C'est une certaine idée du bistro : celle où l'on s'attable sans cérémonie, où le vin se verse au pichet, et où la cuisine ne triche jamais avec ses produits. »
+            </blockquote>
+            <figcaption className="mt-4 font-sans text-[0.75rem] tracking-[0.2em] uppercase text-bg-primary/65 flex items-center gap-3">
+              <span aria-hidden="true" className="inline-block w-8 h-px bg-orange/70" />
+              Florent Tremblay
+              <span aria-hidden="true" className="text-orange/70">·</span>
+              <span className="font-serif normal-case italic tracking-normal text-bg-primary/70">Propriétaire</span>
+            </figcaption>
+          </motion.figure>
+          <motion.figure
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
-            className="font-sans font-light text-bg-primary/75 text-[1rem] leading-[1.8]"
+            className="m-0"
           >
-            « On travaille avec des fermiers qu'on appelle par leur prénom — la Ferme J.N Beauchemin pour les saucisses, Fromagerie Fuoco pour la bufarella, Les Cowboys du BBQ pour le brisket. Le reste, c'est de l'huile de coude et du temps. »
-          </motion.div>
+            <blockquote className="font-sans font-light text-bg-primary/80 text-[1rem] leading-[1.8]">
+              « On travaille avec des fermiers qu'on appelle par leur prénom — la Ferme J.N Beauchemin pour les saucisses, Fromagerie Fuoco pour la bufarella, Les Cowboys du BBQ pour le brisket. Le reste, c'est de l'huile de coude et du temps. »
+            </blockquote>
+            <figcaption className="mt-4 font-sans text-[0.75rem] tracking-[0.2em] uppercase text-bg-primary/65 flex items-center gap-3">
+              <span aria-hidden="true" className="inline-block w-8 h-px bg-orange/70" />
+              Annie Vincent
+              <span aria-hidden="true" className="text-orange/70">·</span>
+              <span className="font-serif normal-case italic tracking-normal text-bg-primary/70">Sommelière</span>
+            </figcaption>
+          </motion.figure>
         </div>
       </div>
     </section>
@@ -896,70 +912,174 @@ function Menu() {
   );
 }
 
-function AmbianceStrip() {
+type PatronVoice = {
+  quote: string;
+  name: string;
+  context: string;
+  source: string;
+  date: string;
+  image: string;
+};
+
+const PATRON_VOICES: PatronVoice[] = [
+  {
+    quote: "Le grilled-cheese / vin orange du jeudi soir, c'est devenu notre rituel. Ils nous accueillent comme à la maison — sauf qu'à la maison, on ne mange pas aussi bien.",
+    name: "Marie-Pier Lafontaine",
+    context: "Sorel-Tracy · Habituée du jeudi",
+    source: "Google",
+    date: "Mars 2026",
+    image: "wine-pour.png",
+  },
+  {
+    quote: "Sans réservation un mardi, Florent nous a placés au comptoir avec un pichet de gamay et une planche. Trois heures plus tard, on parlait encore avec la table d'à côté.",
+    name: "Étienne Caron",
+    context: "Trois-Rivières · Premier passage",
+    source: "Tripadvisor",
+    date: "Janvier 2026",
+    image: "ambiance-smoke.png",
+  },
+  {
+    quote: "La pizza Vodka. Trois fois par mois. Pas la peine d'en dire plus.",
+    name: "Jean-Sébastien Boucher",
+    context: "Saint-Hyacinthe · 14 visites",
+    source: "Instagram",
+    date: "Avril 2026",
+    image: "dish-pizza.png",
+  },
+];
+
+function Testimonials() {
   return (
-    <section className="bg-bg-primary pb-0 pt-32 relative">
+    <section id="voix" className="bg-bg-primary pt-32 pb-32 relative overflow-hidden">
       <SectionMarker number="—" />
-      <div className="max-w-7xl mx-auto px-6 md:px-12 mb-20 relative z-10">
+
+      {/* Header */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 mb-20 md:mb-24">
         <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-6">
-          ◦ Interlude — L'ambiance
+          <span aria-hidden="true">◦ </span>Interlude — Voix de la salle
         </div>
-        <h2 className="font-serif font-light italic text-cream leading-[0.95] text-[clamp(2.5rem,6vw,5rem)] max-w-4xl">
+        <h2 className="font-display text-cream leading-[0.95] text-[clamp(4rem,11vw,9.5rem)] mb-8">
           <motion.span
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: EASE }}
             className="block"
           >
-            « On ne vient pas chez Florent pour manger vite.
-          </motion.span>
-          <motion.span
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: EASE, delay: 0.15 }}
-            className="block text-orange"
-          >
-            On vient pour rester. »
+            Bouche à oreille
           </motion.span>
         </h2>
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: EASE, delay: 0.3 }}
-          className="font-sans italic text-cream-soft/85 max-w-2xl text-base md:text-lg mt-8"
+          transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
+          className="font-serif italic text-cream-soft/85 max-w-2xl text-lg md:text-xl"
         >
-          Trois instants d'une soirée chez nous — de la salle au crépuscule.
+          Quelques voix glanées au comptoir, dans la presse, sur le téléphone du midi.
         </motion.p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 w-full">
-        {[
-          { src: "wine-pour.png", alt: "Service du vin", caption: "◦ La salle" },
-          { src: "exterior-dusk.png", alt: "L'extérieur", caption: "◦ La devanture", className: "object-cover object-center h-full aspect-[4/5] md:aspect-auto" },
-          { src: "ambiance-smoke.png", alt: "Ambiance fumée", caption: "◦ La fin de soirée" }
-        ].map((img, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: EASE, delay: i * 0.1 }}
-            className="overflow-hidden relative group aspect-[4/5] md:aspect-[3/4]"
-          >
-            <img 
-              src={`/images/${img.src}`} 
-              alt={img.alt} 
-              className={`w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105 ${img.className || ''}`}
-            />
-            <div className="absolute bottom-6 left-6 z-10">
-              <span className="font-sans text-[0.85rem] text-cream drop-shadow-md">{img.caption}</span>
-              <div className="h-[1px] bg-orange w-0 group-hover:w-full transition-all duration-500 ease-out mt-1"></div>
+      {/* Featured press critique — split editorial layout */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 mb-24 md:mb-32">
+        <motion.article
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.9, ease: EASE }}
+          className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14 items-center border-y border-border py-12 md:py-16"
+        >
+          <div className="md:col-span-7 relative">
+            <div className="aspect-[5/4] overflow-hidden ring-1 ring-cream/10">
+              <img
+                src="/images/exterior-dusk.png"
+                alt="Devanture de Chez Florent au crépuscule"
+                className="w-full h-full object-cover"
+              />
             </div>
-          </motion.div>
-        ))}
+            {/* Press stamp */}
+            <div className="absolute top-4 right-4 md:top-6 md:right-6 bg-cream-soft text-bg-primary px-4 py-2 font-sans text-[0.65rem] md:text-[0.7rem] font-medium tracking-[0.22em] uppercase rotate-2 shadow-lg">
+              <span aria-hidden="true">✶ </span>Presse · 2025
+            </div>
+          </div>
+          <div className="md:col-span-5">
+            <div className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-orange mb-5">
+              <span aria-hidden="true">✶ </span>Critique gastronomique
+            </div>
+            <blockquote className="font-serif italic font-light text-cream leading-[1.18] text-[clamp(1.6rem,2.5vw,2.2rem)] mb-8">
+              <span aria-hidden="true" className="text-orange/70 select-none">«&nbsp;</span>
+              Une cuisine qui ne joue pas la carte du « bistro chic », mais celle, plus rare, de la générosité tenue jusqu'au bout. À 19h45 un samedi, c'est une vraie réussite.
+              <span aria-hidden="true" className="text-orange/70 select-none">&nbsp;»</span>
+            </blockquote>
+            <cite className="not-italic block">
+              <div className="font-serif text-cream text-lg md:text-xl">Geneviève Forget</div>
+              <div className="font-sans text-[0.72rem] tracking-[0.22em] uppercase text-cream-soft/80 mt-2 flex items-center gap-3">
+                <span aria-hidden="true" className="inline-block w-8 h-px bg-orange/70" />
+                Le Devoir
+                <span aria-hidden="true" className="text-orange/70">·</span>
+                12 mai 2025
+              </div>
+            </cite>
+          </div>
+        </motion.article>
+      </div>
+
+      {/* Patron voices — asymmetric staggered grid */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 lg:gap-14">
+          {PATRON_VOICES.map((v, i) => (
+            <motion.article
+              key={v.name}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.8, ease: EASE, delay: i * 0.12 }}
+              className={`flex flex-col group ${
+                i === 0 ? "" : i === 1 ? "md:mt-8 lg:mt-16" : "md:mt-16 lg:mt-32"
+              }`}
+            >
+              {/* Photo with rating overlay */}
+              <div className="relative aspect-[4/5] overflow-hidden ring-1 ring-cream/10 mb-6">
+                <img
+                  src={`/images/${v.image}`}
+                  alt=""
+                  className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+                />
+                <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-bg-primary/85 backdrop-blur-sm px-3 py-1.5">
+                  <span
+                    className="text-orange tracking-[0.15em] text-sm leading-none"
+                    aria-label="5 étoiles sur 5"
+                  >
+                    ★★★★★
+                  </span>
+                </div>
+              </div>
+
+              {/* Quote */}
+              <blockquote className="font-serif italic text-cream/95 text-[1.08rem] md:text-[1.18rem] leading-[1.55] mb-6">
+                <span aria-hidden="true" className="text-orange/80">«&nbsp;</span>
+                {v.quote}
+                <span aria-hidden="true" className="text-orange/80">&nbsp;»</span>
+              </blockquote>
+
+              {/* Attribution */}
+              <div className="mt-auto pt-5 border-t border-border">
+                <div className="font-serif text-cream text-base md:text-lg leading-tight">
+                  {v.name}
+                </div>
+                <div className="font-sans italic text-cream-soft/80 text-[0.85rem] mt-1.5">
+                  {v.context}
+                </div>
+                <div className="flex items-center gap-3 mt-3 text-[0.7rem] font-medium tracking-[0.22em] uppercase text-cream-soft/70">
+                  <span aria-hidden="true" className="inline-block w-6 h-px bg-orange/60" />
+                  <span>{v.source}</span>
+                  <span aria-hidden="true" className="text-orange/60">·</span>
+                  <span>{v.date}</span>
+                </div>
+              </div>
+            </motion.article>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -1377,8 +1497,8 @@ function Reservation() {
                     <div className="text-[0.7rem] tracking-[0.22em] uppercase text-orange mb-3">
                       <span aria-hidden="true">✶ </span>Le plus chaleureux
                     </div>
-                    <div className="font-display text-cream text-[clamp(2.75rem,7vw,4.5rem)] group-hover:text-orange transition-colors leading-[0.95] mb-3">
-                      450&nbsp;743-1448
+                    <div className="font-display text-cream text-[clamp(2.25rem,4.6vw,3rem)] group-hover:text-orange transition-colors leading-[0.95] mb-3 whitespace-nowrap">
+                      450&nbsp;743&#8209;1448
                     </div>
                     <div className="text-[0.75rem] tracking-[0.18em] uppercase text-cream-soft/85 group-hover:text-cream transition-colors">
                       Touchez pour appeler <span aria-hidden="true">↘</span>
@@ -1981,7 +2101,7 @@ export default function App() {
           <Hero />
           <About />
           <Menu />
-          <AmbianceStrip />
+          <Testimonials />
           <Agenda />
           <Reservation />
           <Contact />
