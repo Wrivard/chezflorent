@@ -332,9 +332,11 @@ function Navbar({ activeSection }: { activeSection: string }) {
   );
 }
 
-function SectionMarker({ number }: { number: string }) {
+function SectionMarker({ number, tone = "dark" }: { number: string; tone?: "dark" | "light" }) {
+  const colorClass = tone === "light" ? "text-bg-primary/15" : "text-cream/10";
+  const blendClass = tone === "light" ? "mix-blend-multiply" : "mix-blend-difference";
   return (
-    <div className="absolute top-16 right-6 md:right-12 font-display text-[clamp(4rem,10vw,8rem)] text-cream/8 leading-none mix-blend-difference pointer-events-none select-none z-0">
+    <div className={`absolute top-16 right-6 md:right-12 font-display text-[clamp(4rem,10vw,8rem)] ${colorClass} leading-none ${blendClass} pointer-events-none select-none z-0`}>
       {number}
     </div>
   );
@@ -488,16 +490,16 @@ function About() {
   const quoteWords = "« On vient ici pour rester. »".split(" ");
 
   return (
-    <section id="a-propos" className="bg-bg-secondary pt-32 pb-32 overflow-hidden relative">
-      <SectionMarker number="02" />
+    <section id="a-propos" className="bg-cream-soft pt-32 pb-32 overflow-hidden relative">
+      <SectionMarker number="02" tone="light" />
       
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-        <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-12">
+        <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-12">
           02 — LA MAISON
         </div>
 
-        {/* Massive Pull Quote */}
-        <h2 className="font-serif italic font-light text-cream leading-[0.95] text-[clamp(4rem,11vw,10rem)] mb-24 max-w-6xl flex flex-wrap gap-x-[0.3em] gap-y-4">
+        {/* Massive Pull Quote — dark green text on cream */}
+        <h2 className="font-serif italic font-light text-bg-primary leading-[0.95] text-[clamp(4rem,11vw,10rem)] mb-24 max-w-6xl flex flex-wrap gap-x-[0.3em] gap-y-4">
           {quoteWords.map((word, i) => (
             <motion.span
               key={i}
@@ -516,14 +518,14 @@ function About() {
         <div className="relative mb-32 min-h-[50vh] md:min-h-[80vh]">
           <motion.div 
             style={{ y: ySlow }}
-            className="w-[80%] md:w-[50%] aspect-[4/3] overflow-hidden relative z-10"
+            className="w-[80%] md:w-[50%] aspect-[4/3] overflow-hidden relative z-10 ring-1 ring-bg-primary/10"
           >
             <img src="/images/about-hands.png" alt="Mains de chef" className="w-full h-full object-cover" />
           </motion.div>
           
           <motion.div 
             style={{ y: yFast }}
-            className="absolute top-[20%] right-0 w-[50%] md:w-[30%] aspect-[3/4] overflow-hidden z-20 mt-20"
+            className="absolute top-[20%] right-0 w-[50%] md:w-[30%] aspect-[3/4] overflow-hidden z-20 mt-20 ring-1 ring-bg-primary/10"
           >
             <img src="/images/wine-glass-macro.png" alt="Verre de vin" className="w-full h-full object-cover" />
           </motion.div>
@@ -536,7 +538,7 @@ function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: EASE }}
-            className="font-serif font-normal text-cream-soft text-[1.125rem] leading-[1.8]"
+            className="font-serif font-normal text-bg-primary text-[1.125rem] leading-[1.8]"
           >
             « Florent n'est pas seulement un nom au-dessus de la porte. C'est une certaine idée du bistro : celle où l'on s'attable sans cérémonie, où le vin se verse au pichet, et où la cuisine ne triche jamais avec ses produits. »
           </motion.div>
@@ -545,7 +547,7 @@ function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
-            className="font-sans font-light text-cream-soft/80 text-[1rem] leading-[1.8]"
+            className="font-sans font-light text-bg-primary/75 text-[1rem] leading-[1.8]"
           >
             « On travaille avec des fermiers qu'on appelle par leur prénom — la Ferme J.N Beauchemin pour les saucisses, Fromagerie Fuoco pour la bufarella, Les Cowboys du BBQ pour le brisket. Le reste, c'est de l'huile de coude et du temps. »
           </motion.div>
@@ -557,30 +559,19 @@ function About() {
 
 const dishes = [
   { name: "Trempette de poireaux rôtis", price: "16,95 $", desc: "Bacon fumé, servi avec pain plat gratiné.", image: "bread-tearing.png" },
-  { name: "Grilled cheese sur baguette", price: "5,95 $ / 11,95 $", desc: "Provolone, mozzarella, fromage jaune, beurre à l'ail.", image: "bread-tearing.png" },
+  { name: "Grilled cheese sur baguette", price: "5,95 $ / 11,95 $", desc: "Provolone, mozzarella, fromage jaune, beurre à l'ail.", image: "dish-sandwich.png" },
   { name: "Feuilleté jambon gruyère", price: "9,95 $ / 19,95 $", desc: "Pâte feuilletée, jambon, fromage gruyère, sauce blanche crémeuse avec pomme de terre, poireaux.", image: "about-hands.png" },
-  { name: "Bufarella potato", price: "17,95 $", desc: "Boule de fromage bufarella (Fromagerie Fuoco) accompagnée de hummus de patate douce, coulis de bleuets à l'érable, huile épicée, menthe et crumble au parmesan. Servi avec pain naan grillé.", image: "about-hands.png" },
-  { name: "Miche de porc", price: "23,95 $", desc: "Miche de pain artisanale, porc effiloché maison, fromage à la crème épicé aux cornichons, laitue iceberg, moutarde au miel. Servi avec salade de carottes crémeuse.", image: "bread-tearing.png" },
+  { name: "Bufarella potato", price: "17,95 $", desc: "Boule de fromage bufarella (Fromagerie Fuoco) accompagnée de hummus de patate douce, coulis de bleuets à l'érable, huile épicée, menthe et crumble au parmesan. Servi avec pain naan grillé.", image: "dish-tasting.png" },
+  { name: "Miche de porc", price: "23,95 $", desc: "Miche de pain artisanale, porc effiloché maison, fromage à la crème épicé aux cornichons, laitue iceberg, moutarde au miel. Servi avec salade de carottes crémeuse.", image: "dish-sandwich.png" },
   { name: "« Le Rhé-Actif »", price: "24,95 $", desc: "Pain ciabata, provolone, mortadelle, calabrese, capicollo, salade, tomates, oignons rouges, mayonnaise thaï. Servi avec salade de patates maison.", image: "dish-charcuterie.png" },
   { name: "Pizza « Vodka » 🌶🌶🌶", price: "25,95 $", desc: "Sauce rosée à la vodka, saucisses épicées (Ferme J.N Beauchemin), oignons croustillants, mozzarella, huile à l'ail, tomates confites au gras de canard.", image: "dish-pizza.png" },
   { name: "Assiette de charcuterie", price: "35,95 $", desc: "Calabrese, prosciutto, saucissons secs, olives méli-mélo, fromages du moment, pickle d'oignons rouges, petits cornichons. Servi avec pain et croutons.", image: "dish-charcuterie.png" },
-  { name: "« Philly T »", price: "25,95 $", desc: "Pain baguette, fromages (jaune, mozzarella, provolone), poivrons rouges, oignons blancs, brisket (Les Cowboys du BBQ), mayonnaise épicée. Servi avec salade de pâte maison et cup de sauce BBQ.", image: "dish-charcuterie.png" }
+  { name: "« Philly T »", price: "25,95 $", desc: "Pain baguette, fromages (jaune, mozzarella, provolone), poivrons rouges, oignons blancs, brisket (Les Cowboys du BBQ), mayonnaise épicée. Servi avec salade de pâte maison et cup de sauce BBQ.", image: "dish-tasting.png" }
 ];
 
 function Menu() {
-  const [hoveredImage, setHoveredImage] = useState<string | null>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const springX = useSpring(mouseX, { stiffness: 500, damping: 50 });
-  const springY = useSpring(mouseY, { stiffness: 500, damping: 50 });
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!menuRef.current) return;
-    const rect = menuRef.current.getBoundingClientRect();
-    mouseX.set(e.clientX - rect.left);
-    mouseY.set(e.clientY - rect.top);
-  };
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeDish = dishes[activeIndex];
 
   return (
     <>
@@ -615,80 +606,100 @@ function Menu() {
             </p>
           </div>
 
-          <div 
-            ref={menuRef}
-            className="relative"
-            onMouseMove={handleMouseMove}
-            onMouseLeave={() => setHoveredImage(null)}
-            data-cursor="hidden"
-          >
-            <div className="grid grid-cols-1 relative z-10">
-              {dishes.map((dish, i) => (
-                <motion.div 
-                  key={i} 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.6, ease: EASE, delay: i * 0.05 }}
-                  className="group grid grid-cols-[40px_1fr_auto] md:grid-cols-[60px_1fr_auto] gap-4 md:gap-8 py-8 border-b border-border transition-colors duration-300 hover:bg-bg-secondary/30 -mx-6 px-6 md:-mx-12 md:px-12"
-                  onMouseEnter={() => setHoveredImage(dish.image)}
-                >
-                  <div className="text-orange font-serif italic text-lg md:text-xl pt-1">
-                    {String(i + 1).padStart(2, '0')}
-                  </div>
+          {/* Two-column: list left, sticky photo right */}
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_400px] gap-8 lg:gap-16 items-start">
+            
+            {/* Left: dish list */}
+            <div className="grid grid-cols-1">
+              {dishes.map((dish, i) => {
+                const isActive = i === activeIndex;
+                return (
                   <motion.div 
-                    className="flex flex-col gap-1"
-                    whileHover={{ x: 16 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    key={i} 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.6, ease: EASE, delay: i * 0.05 }}
+                    className={`group grid grid-cols-[40px_1fr_auto] md:grid-cols-[60px_1fr_auto] gap-4 md:gap-8 py-8 border-b border-border cursor-default transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset ${isActive ? "bg-bg-secondary/40" : "hover:bg-bg-secondary/30"} px-3 md:px-6`}
+                    onMouseEnter={() => setActiveIndex(i)}
+                    onFocus={() => setActiveIndex(i)}
+                    role="button"
+                    tabIndex={0}
+                    aria-pressed={isActive}
+                    aria-label={`Aperçu du plat numéro ${i + 1} : ${dish.name}`}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setActiveIndex(i);
+                      }
+                    }}
                   >
-                    <h3 className="font-serif font-semibold text-[1.5rem] md:text-[1.75rem] text-cream">
-                      {dish.name}
-                    </h3>
-                    <p className="font-sans font-light italic text-cream-soft/70 max-w-[600px] leading-relaxed text-sm md:text-base">
-                      {dish.desc}
-                    </p>
+                    <div className={`font-serif italic text-lg md:text-xl pt-1 transition-colors ${isActive ? "text-orange" : "text-orange/70"}`}>
+                      {String(i + 1).padStart(2, '0')}
+                    </div>
+                    <motion.div 
+                      className="flex flex-col gap-1"
+                      animate={{ x: isActive ? 12 : 0 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                    >
+                      <h3 className="font-serif font-semibold text-[1.5rem] md:text-[1.75rem] text-cream leading-tight">
+                        {dish.name}
+                      </h3>
+                      <p className="font-sans font-light italic text-cream-soft/70 max-w-[600px] leading-relaxed text-sm md:text-base">
+                        {dish.desc}
+                      </p>
+                    </motion.div>
+                    <div className="font-serif font-semibold text-[1.25rem] md:text-[1.5rem] text-orange whitespace-nowrap pt-1">
+                      {dish.price}
+                    </div>
                   </motion.div>
-                  <motion.div 
-                    className="font-serif font-semibold text-[1.25rem] md:text-[1.5rem] text-orange whitespace-nowrap pt-1"
-                    whileHover={{ scale: 1.1, originX: 1 }}
-                  >
-                    {dish.price}
-                  </motion.div>
-                </motion.div>
-              ))}
+                );
+              })}
             </div>
 
-            {/* Floating Image Cursor */}
-            <motion.div
-              className="pointer-events-none absolute z-0 w-[300px] aspect-[4/3] hidden lg:block overflow-hidden"
-              style={{
-                x: springX,
-                y: springY,
-                translateX: "-50%",
-                translateY: "-50%"
-              }}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ 
-                opacity: hoveredImage ? 1 : 0, 
-                scale: hoveredImage ? 1 : 0.8 
-              }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-            >
-              <AnimatePresence mode="wait">
-                {hoveredImage && (
+            {/* Right: sticky photo collage that cross-fades on dish focus */}
+            <div className="lg:sticky lg:top-32 w-full">
+              <div className="relative w-full aspect-[4/5] overflow-hidden bg-bg-secondary ring-1 ring-cream/10">
+                <AnimatePresence mode="sync">
                   <motion.img
-                    key={hoveredImage}
-                    src={`/images/${hoveredImage}`}
-                    alt=""
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="w-full h-full object-cover"
+                    key={activeDish.image}
+                    src={`/images/${activeDish.image}`}
+                    alt={activeDish.name}
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 1 }}
+                    transition={{ duration: 0.6, ease: EASE }}
+                    className="absolute inset-0 w-full h-full object-cover"
                   />
-                )}
-              </AnimatePresence>
-            </motion.div>
+                </AnimatePresence>
+                {/* Bottom gradient + caption overlay */}
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-bg-primary/90 via-bg-primary/40 to-transparent p-6 pt-16 z-10">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeIndex}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.35, ease: EASE }}
+                      className="flex items-end justify-between gap-4"
+                    >
+                      <div>
+                        <div className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-orange mb-1">
+                          ◦ {String(activeIndex + 1).padStart(2, '0')} — Aperçu
+                        </div>
+                        <div className="font-display text-cream text-[1.75rem] leading-none">
+                          {activeDish.name.replace(/«\s*|\s*»/g, "")}
+                        </div>
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center justify-between text-[0.7rem] font-medium tracking-[0.2em] uppercase text-cream-soft/50">
+                <span>— Glissez sur un plat</span>
+                <span className="font-serif italic normal-case tracking-normal text-cream-soft/70">{String(activeIndex + 1).padStart(2, '0')} / {String(dishes.length).padStart(2, '0')}</span>
+              </div>
+            </div>
           </div>
 
           <div className="mt-16 text-center">
@@ -927,8 +938,8 @@ function Reservation() {
 
 function Contact() {
   return (
-    <section id="contact" className="bg-bg-primary py-32 px-6 md:px-12 relative overflow-hidden">
-      <SectionMarker number="05" />
+    <section id="contact" className="bg-cream-soft py-32 px-6 md:px-12 relative overflow-hidden">
+      <SectionMarker number="05" tone="light" />
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -937,10 +948,10 @@ function Contact() {
           transition={{ duration: 0.8, ease: EASE }}
           className="mb-16"
         >
-          <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-4">
+          <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-4">
             05 — Nous trouver
           </div>
-          <h2 className="font-display text-[clamp(4rem,10vw,9rem)] text-cream leading-none">
+          <h2 className="font-display text-[clamp(4rem,10vw,9rem)] text-bg-primary leading-none">
             Passez nous voir
           </h2>
         </motion.div>
@@ -954,40 +965,40 @@ function Contact() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: EASE, delay: 0.2 }}
           >
-            <div className="bg-bg-primary/90 lg:bg-transparent backdrop-blur-sm lg:backdrop-blur-none p-6 lg:p-0">
-              <address className="font-serif text-[1.75rem] text-cream not-italic mb-12 leading-snug">
+            <div className="lg:bg-transparent p-6 lg:p-0">
+              <address className="font-serif text-[1.75rem] text-bg-primary not-italic mb-12 leading-snug">
                 <strong className="font-semibold block text-orange mb-2">Chez Florent</strong>
                 123 Rue du Marché<br />
                 Sorel-Tracy, Québec<br />
                 J3P 3X3
               </address>
 
-              <table className="w-full max-w-[400px] text-cream-soft font-sans mb-16 border-collapse text-lg">
+              <table className="w-full max-w-[400px] text-bg-primary/80 font-sans mb-16 border-collapse text-lg">
                 <tbody>
-                  <tr className="border-b border-border">
+                  <tr className="border-b border-bg-primary/15">
                     <td className="py-4 font-medium tracking-wider text-sm">MAR — JEU</td>
                     <td className="py-4 text-right">17h00 → 22h00</td>
                   </tr>
-                  <tr className="border-b border-border">
+                  <tr className="border-b border-bg-primary/15">
                     <td className="py-4 font-medium tracking-wider text-sm">VEN — SAM</td>
                     <td className="py-4 text-right">17h00 → 23h00</td>
                   </tr>
-                  <tr className="border-b border-border">
+                  <tr className="border-b border-bg-primary/15">
                     <td className="py-4 font-medium tracking-wider text-sm">DIM</td>
                     <td className="py-4 text-right">17h00 → 21h00</td>
                   </tr>
                 </tbody>
               </table>
 
-              <div className="font-sans text-cream-soft mb-12">
-                <div className="text-[0.75rem] uppercase tracking-[0.2em] mb-2 opacity-60">Appelez-nous</div>
-                <a href="tel:4501234567" className="font-serif font-light text-[clamp(2.5rem,5vw,4rem)] text-cream link-underline hover:text-orange transition-colors">
+              <div className="font-sans text-bg-primary/70 mb-12">
+                <div className="text-[0.75rem] uppercase tracking-[0.2em] mb-2 opacity-80">Appelez-nous</div>
+                <a href="tel:4501234567" className="font-serif font-light text-[clamp(2.5rem,5vw,4rem)] text-bg-primary link-underline hover:text-orange transition-colors">
                   (450) 123-4567
                 </a>
               </div>
             </div>
 
-            <div className="flex gap-8 text-[0.875rem] font-medium tracking-[0.2em] uppercase text-cream mt-8 lg:mt-0 p-6 lg:p-0">
+            <div className="flex gap-8 text-[0.875rem] font-medium tracking-[0.2em] uppercase text-bg-primary mt-8 lg:mt-0 p-6 lg:p-0">
               <a href="#" className="link-underline">Instagram</a>
               <span className="text-orange">·</span>
               <a href="#" className="link-underline">Facebook</a>
@@ -1002,14 +1013,14 @@ function Contact() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: EASE, delay: 0.4 }}
           >
-            <div className="bg-bg-tertiary aspect-[4/5] overflow-hidden group">
+            <div className="bg-bg-primary aspect-[4/5] overflow-hidden group ring-1 ring-bg-primary/15">
               <img 
                 src="/images/exterior-dusk.png" 
                 alt="Devanture de Chez Florent au crépuscule" 
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
               />
             </div>
-            <span className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft/60 mt-4 block text-right">
+            <span className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mt-4 block text-right">
               — Notre façade sur la rue du Marché
             </span>
           </motion.div>
@@ -1033,18 +1044,33 @@ function Footer() {
         </div>
       </div>
 
-      {/* Massive Wordmark */}
-      <div className="w-full bg-bg-primary pt-8 pb-4 relative flex justify-center items-end overflow-hidden">
-        <div className="w-full whitespace-nowrap text-center flex flex-col items-center relative">
-          <span 
-            className="font-display text-cream/95 leading-[0.8] block w-full px-2"
-            style={{ fontSize: "24vw" }}
+      {/* Massive Wordmark — SVG auto-fits viewport width, no overflow */}
+      <div className="w-full bg-bg-primary pt-8 pb-4 relative">
+        <svg
+          viewBox="0 0 1100 240"
+          preserveAspectRatio="xMidYMid meet"
+          className="block w-full h-auto"
+          aria-label="Chez Florent"
+          role="img"
+        >
+          <text
+            x="550"
+            y="195"
+            textAnchor="middle"
+            textLength="1060"
+            lengthAdjust="spacingAndGlyphs"
+            style={{
+              fontFamily: "'Caveat Brush', cursive",
+              fontSize: "260px",
+              fill: "rgb(244, 201, 160)",
+              fillOpacity: 0.95,
+            }}
           >
             CHEZ FLORENT
-          </span>
-          <div className="absolute right-4 bottom-4 md:right-8 md:bottom-8 font-sans text-xs tracking-widest text-cream/50">
-            ◦ MMXXVI
-          </div>
+          </text>
+        </svg>
+        <div className="absolute right-4 bottom-3 md:right-8 md:bottom-5 font-sans text-xs tracking-widest text-cream/50">
+          ◦ MMXXVI
         </div>
       </div>
     </footer>
