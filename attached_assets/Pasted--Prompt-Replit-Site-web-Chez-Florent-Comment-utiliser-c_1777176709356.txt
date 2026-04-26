@@ -1,0 +1,291 @@
+# Prompt Replit — Site web "Chez Florent"
+
+> **Comment utiliser ce prompt :** Copie-colle l'intégralité de ce document dans Replit Agent en une seule fois. L'agent a tout ce qu'il faut pour livrer le site complet d'un seul coup.
+
+---
+
+## 🎯 Contexte du projet
+
+Tu vas construire un site web vitrine **haut de gamme, digne d'une grande agence créative** pour un restaurant québécois nommé **Chez Florent**. C'est un bistro-bar chaleureux et accessible, avec un ton ludique et un vrai caractère artisanal — pensez ardoise du jour, produits du terroir, plats à partager avec personnalité (pizzas signatures, charcuteries, sandwichs créatifs).
+
+**Le site doit avoir l'air d'avoir été conçu par une agence de design primée** — pas un template restaurant générique. Référence-toi à des sites comme ceux qu'on retrouve sur Awwwards, SiteInspire ou The FWA dans la catégorie restaurant/hospitality. On vise l'éditorial, le sophistiqué, avec une touche de nonchalance.
+
+**Stack technique :**
+- HTML/CSS/JavaScript vanilla (pas de framework lourd — performance et simplicité)
+- Une seule page (one-page scroll) avec navigation ancrée (anchor links) vers chaque section
+- Site 100% statique, déployable tel quel
+- Responsive mobile-first, doit être impeccable sur mobile, tablette et desktop
+- Animations subtiles au scroll (Intersection Observer), pas de librairies externes lourdes
+
+**Sections à inclure (dans l'ordre) :**
+1. **Hero / Accueil** — impact visuel fort, le logo, une accroche éditoriale
+2. **À propos courte** — 2-3 phrases qui plantent l'identité (intégrée dans la home)
+3. **Menu / L'ardoise** — présentation soignée du menu (voir contenu plus bas)
+4. **Réservation** — formulaire élégant
+5. **Contact** — adresse, heures, téléphone, carte (placeholder), réseaux sociaux
+6. **Footer** — minimal et sobre
+
+---
+
+## 🎨 Brand Guide
+
+### Palette de couleurs
+
+Inspirée du logo (fond vert sapin très foncé, lettrage crème pêche, ombres orange brûlé) :
+
+```css
+--color-bg-primary: #0E1F1C;        /* Vert sapin profond — fond principal */
+--color-bg-secondary: #142826;      /* Vert sapin légèrement plus clair — sections alternées */
+--color-bg-tertiary: #1A332F;       /* Vert sapin élevé — cartes, encarts */
+--color-cream: #F4C9A0;             /* Crème pêche — typographie principale, logo */
+--color-cream-soft: #EBC097;        /* Crème adoucie — corps de texte */
+--color-orange: #D85A2C;            /* Orange brûlé — accents, CTA, ombres */
+--color-orange-dark: #B8451F;       /* Orange foncé — hover states */
+--color-border: rgba(244, 201, 160, 0.12);  /* Bordures subtiles crème */
+--color-border-strong: rgba(244, 201, 160, 0.25);
+```
+
+**Règle d'or des couleurs :**
+- Le **vert sapin** domine (70% de la surface)
+- Le **crème** est la couleur typographique principale (25%)
+- L'**orange brûlé** est utilisé avec parcimonie pour les accents (5% — CTAs, soulignements, prix, détails graphiques)
+- **Jamais** de blanc pur, **jamais** de noir pur
+
+### Typographie
+
+**Hiérarchie à 3 polices, toutes via Google Fonts :**
+
+```css
+/* H1 — Display, scriptée, comme le logo */
+font-family: 'Caveat Brush', cursive;  /* OU 'Pacifico' en fallback proche du logo */
+/* Utilisé UNIQUEMENT pour : logo wordmark, titres de sections principales (Menu, Réservation, Contact) */
+
+/* H2-H3 — Editorial serif */
+font-family: 'Fraunces', serif;
+font-weight: 300, 400, 600;
+/* Utilisé pour : sous-titres, noms de plats, titres secondaires */
+/* Privilégier les variations italiques pour les accents éditoriaux */
+
+/* Body — Sans-serif moderne */
+font-family: 'Inter', sans-serif;
+font-weight: 300, 400, 500;
+/* Utilisé pour : corps de texte, navigation, descriptions, prix, boutons */
+/* letter-spacing: -0.01em pour le corps, +0.15em uppercase pour les eyebrow labels */
+```
+
+**Échelle typographique (desktop) :**
+- H1 hero : `clamp(4rem, 10vw, 9rem)` — Caveat Brush
+- H2 section : `clamp(2.5rem, 6vw, 5rem)` — Caveat Brush ou Fraunces italic
+- H3 plat : `1.75rem` — Fraunces 400
+- Body : `1.0625rem` — Inter 400, line-height 1.7
+- Eyebrow label : `0.75rem` — Inter 500, uppercase, letter-spacing +0.2em
+- Prix : `1.25rem` — Fraunces 600
+
+### Identité visuelle & règles de design
+
+**Composition :**
+- **Beaucoup d'espace blanc** (enfin, "espace vert" ici). Padding généreux : sections à `padding: 8rem 0` minimum sur desktop
+- Layout **asymétrique** par moments (à la éditorial magazine), pas tout centré
+- **Grilles brisées** : un titre à gauche, une description décalée à droite avec offset
+- **Filets de séparation** très fins (`1px solid rgba(244,201,160,0.12)`) plutôt que des cards lourdes
+- **Numérotation** discrète des sections en haut (01 — L'ARDOISE, 02 — RÉSERVATION) en eyebrow style
+
+**Détails graphiques :**
+- Petits ornements typographiques en orange (asterisques, slashes, tirets longs em-dash)
+- Lignes verticales fines en accent
+- Effet de **soulignement orange** subtil sous certains mots-clés (effet logo)
+- **Pas d'icônes Material/Feather classiques** — privilégier le texte ou des SVG custom minimaux
+
+**Animations (subtiles, jamais flashy) :**
+- Fade-in + translateY(20px) au scroll via Intersection Observer
+- Hover sur liens : underline qui s'étire de gauche à droite (transition 400ms ease-out)
+- Hover sur boutons : background color shift + léger scale(1.02)
+- Pas de parallax lourd, pas de scroll-jacking
+
+**Coins & rayons :**
+- `border-radius: 0` sur les cards et sections (look éditorial, tranchant)
+- `border-radius: 2px` sur les boutons et inputs (à peine perceptible)
+- Photos en `border-radius: 0` aussi — on est sur du éditorial
+
+---
+
+## 📄 Contenu détaillé par section
+
+### 1. NAVIGATION (sticky en haut)
+
+- À gauche : le wordmark "Chez Florent" en Caveat Brush, taille modeste (28px)
+- Au centre/droite : liens de navigation `Menu` · `Réservation` · `Contact`
+- À droite : un petit CTA `Réserver` en bouton outline orange
+- Background : `transparent` au top, devient `#0E1F1C` avec backdrop-blur(12px) au scroll
+- Transition smooth sur le background change
+
+### 2. HERO
+
+**Layout :** Plein écran (100vh), composition asymétrique.
+
+**Contenu :**
+- En haut à gauche : eyebrow label `BISTRO — SOREL-TRACY` en orange uppercase
+- Au centre-gauche, titre massif :
+  > *Une cuisine qui*  
+  > *raconte des histoires.*
+  
+  (en Fraunces italic light, taille énorme, le mot "histoires" peut avoir un soulignement orange tracé à la main en SVG)
+- En dessous, sous-texte court (Inter 300, max-width 480px) :
+  > « Chez Florent, c'est l'ardoise qui change selon les humeurs du chef et les arrivages du marché. Des assiettes à partager, des produits d'ici, des soirées qui s'étirent. »
+- En bas-gauche : 2 CTAs côte à côte
+  - `Voir l'ardoise →` (bouton rempli orange, texte vert sapin)
+  - `Réserver une table` (bouton outline crème)
+- En bas-droite, petit indicateur scroll : `↓ DÉFILER` en eyebrow
+
+**Détails :**
+- Pas de photo en background — c'est la typographie qui porte le hero
+- Petite ligne verticale orange à gauche qui descend, comme une marque éditoriale
+- Le logo (que tu as) peut être placé discrètement dans un coin à 80px de hauteur
+
+### 3. À PROPOS (intégré, court)
+
+**Layout :** Section transition, fond `--color-bg-secondary`.
+
+**Contenu :**
+- Eyebrow : `02 — LA MAISON`
+- Titre court en Caveat Brush : `Chez nous,`
+- Paragraphe éditorial (max 2 colonnes, max-width 700px chacune) :
+  
+  Colonne 1 :
+  > « Florent n'est pas seulement un nom au-dessus de la porte. C'est une certaine idée du bistro : celle où l'on s'attable sans cérémonie, où le vin se verse au pichet, et où la cuisine ne triche jamais avec ses produits. »
+  
+  Colonne 2 :
+  > « On travaille avec des fermiers qu'on appelle par leur prénom — la Ferme J.N Beauchemin pour les saucisses, Fromagerie Fuoco pour la bufarella, Les Cowboys du BBQ pour le brisket. Le reste, c'est de l'huile de coude et du temps. »
+
+### 4. MENU / L'ARDOISE
+
+**Layout :** La pièce maîtresse du site. Layout éditorial type magazine.
+
+**En-tête de section :**
+- Eyebrow : `03 — L'ARDOISE`
+- Grand titre en Caveat Brush : `L'ardoise du moment`
+- Sous-texte Inter italic : `Notre carte évolue selon les saisons et l'humeur du chef. Voici ce qui s'y trouve aujourd'hui.`
+
+**Liste des plats** — chaque plat affiché ainsi :
+
+```
+[Nom du plat en Fraunces 600, taille 1.75rem]              [Prix en Fraunces 600 orange]
+[Description en Inter 300, italic, couleur cream-soft, max-width 520px]
+─── (filet séparateur très fin)
+```
+
+**Contenu exact des plats** (utilise ces textes verbatim) :
+
+1. **Trempette de poireaux rôtis** — `16,95 $`  
+   *Bacon fumé, servi avec pain plat gratiné.*
+
+2. **Grilled cheese sur baguette** — `5,95 $ / 11,95 $`  
+   *Provolone, mozzarella, fromage jaune, beurre à l'ail.*
+
+3. **Feuilleté jambon gruyère** — `9,95 $ / 19,95 $`  
+   *Pâte feuilletée, jambon, fromage gruyère, sauce blanche crémeuse avec pomme de terre, poireaux.*
+
+4. **Bufarella potato** — `17,95 $`  
+   *Boule de fromage bufarella (Fromagerie Fuoco) accompagnée de hummus de patate douce, coulis de bleuets à l'érable, huile épicée, menthe et crumble au parmesan. Servi avec pain naan grillé.*
+
+5. **Miche de porc** — `23,95 $`  
+   *Miche de pain artisanale, porc effiloché maison, fromage à la crème épicé aux cornichons, laitue iceberg, moutarde au miel. Servi avec salade de carottes crémeuse.*
+
+6. **« Le Rhé-Actif »** — `24,95 $`  
+   *Pain ciabata, provolone, mortadelle, calabrese, capicollo, salade, tomates, oignons rouges, mayonnaise thaï. Servi avec salade de patates maison.*
+
+7. **Pizza « Vodka » 🌶🌶🌶** — `25,95 $`  
+   *Sauce rosée à la vodka, saucisses épicées (Ferme J.N Beauchemin), oignons croustillants, mozzarella, huile à l'ail, tomates confites au gras de canard.*
+
+8. **Assiette de charcuterie** — `35,95 $`  
+   *Calabrese, prosciutto, saucissons secs, olives méli-mélo, fromages du moment, pickle d'oignons rouges, petits cornichons. Servi avec pain et croutons.*
+
+9. **« Philly T »** — `25,95 $`  
+   *Pain baguette, fromages (jaune, mozzarella, provolone), poivrons rouges, oignons blancs, brisket (Les Cowboys du BBQ), mayonnaise épicée. Servi avec salade de pâte maison et cup de sauce BBQ.*
+
+**Note importante** : ne mets pas tout dans des cards. Utilise une mise en page de **liste éditoriale** avec filets de séparation horizontaux fins entre chaque plat. Possibilité de regrouper en 2 colonnes desktop, 1 colonne mobile.
+
+**En bas du menu :** une note discrète en italic :
+> « *L'ardoise change. Suivez-nous sur les réseaux pour voir les ajouts du chef.* »
+
+### 5. RÉSERVATION
+
+**Layout :** Section sur fond `--color-bg-primary`, formulaire centré max-width 640px, mais avec un côté éditorial.
+
+**En-tête :**
+- Eyebrow : `04 — RÉSERVER`
+- Titre Caveat Brush : `Une table pour vous`
+- Sous-texte : `Pour les groupes de plus de 8 personnes, contactez-nous directement par téléphone.`
+
+**Formulaire :**
+- Inputs en style **underline only** (pas de border tout autour) — bordure du bas en `--color-border`, devient `--color-orange` au focus
+- Labels en eyebrow uppercase au-dessus des champs
+- Champs : Nom complet, Téléphone, Courriel, Date, Heure, Nombre de personnes (select), Message (optionnel, textarea)
+- Bouton submit : pleine largeur, `Confirmer la réservation` en Inter 500
+- **JavaScript** : validation côté client + un mock submit qui affiche un état de succès élégant (`Merci. Nous vous confirmons par téléphone d'ici 24h.`)
+
+### 6. CONTACT
+
+**Layout :** Grille 2 colonnes desktop (info à gauche, carte à droite), 1 colonne mobile.
+
+**Colonne info :**
+- Eyebrow : `05 — NOUS TROUVER`
+- Titre Caveat Brush : `Passez nous voir`
+- Bloc adresse en Fraunces :
+  > **Chez Florent**  
+  > [Adresse fictive — à remplacer]  
+  > Sorel-Tracy, Québec
+- Bloc heures (table sobre) :
+  ```
+  MAR — JEU      17h00 → 22h00
+  VEN — SAM      17h00 → 23h00
+  DIM            17h00 → 21h00
+  LUN            FERMÉ
+  ```
+- Bloc contact direct :
+  > Téléphone : (450) XXX-XXXX  
+  > Courriel : bonjour@chezflorent.ca
+- Réseaux sociaux : `Instagram · Facebook` en liens texte uppercase
+
+**Colonne carte :**
+- Placeholder de carte (un `<div>` avec background `--color-bg-tertiary`, ratio 4/5, et au centre une mention `[ Carte interactive ]` en eyebrow) — l'intégration Google Maps sera faite plus tard
+
+### 7. FOOTER
+
+**Layout :** Très minimal, fond `--color-bg-primary`, padding réduit.
+
+**Contenu :**
+- Logo wordmark "Chez Florent" centré (Caveat Brush)
+- En dessous, ligne de séparation fine
+- Trois colonnes au centre :
+  - © 2026 Chez Florent. Tous droits réservés.
+  - Mentions légales · Politique de confidentialité
+  - Site conçu avec ♥ à Sorel-Tracy
+
+---
+
+## ✅ Checklist de qualité
+
+Avant de me dire que c'est terminé, vérifie que :
+
+- [ ] Le site fonctionne en mode mobile (375px), tablette (768px) et desktop (1440px+)
+- [ ] La navigation sticky change bien d'état au scroll
+- [ ] Toutes les animations Intersection Observer se déclenchent au bon moment
+- [ ] Les Google Fonts sont bien chargées (preconnect dans le `<head>`)
+- [ ] Les CTAs ont des hover states visibles
+- [ ] Le formulaire de réservation a une validation et un état de succès
+- [ ] Les couleurs respectent strictement la palette (jamais de blanc pur, jamais de noir pur)
+- [ ] Aucune section n'utilise de "card" générique avec ombre — on reste éditorial
+- [ ] La typographie hiérarchique est claire et respecte le brand guide
+- [ ] Le code est commenté et organisé (un seul fichier `index.html`, un fichier `styles.css`, un fichier `script.js`)
+
+---
+
+## 🚀 Livrable final
+
+- `index.html` — markup propre et sémantique (header, main, sections, footer)
+- `styles.css` — toutes les variables CSS au top, organisé par section
+- `script.js` — Intersection Observer pour les fades, sticky nav, validation form, état de succès
+- Logo placeholder en SVG inline ou texte stylé en Caveat Brush (le logo réel sera intégré plus tard)
+
+**Tu peux y aller. Construis-moi un site dont une agence comme Pentagram ou Locomotive serait fière, mais à l'échelle d'un bistro de quartier.**
