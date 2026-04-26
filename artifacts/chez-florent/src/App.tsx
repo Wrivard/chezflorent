@@ -41,7 +41,19 @@ function Preloader({ onComplete }: { onComplete: () => void }) {
         }}
       />
 
-      {/* Decorative thin frame — corner brackets */}
+      {/* Centered logo — appears FIRST and holds alone for a moment */}
+      <div className="relative">
+        <motion.img
+          src="/logo.png"
+          alt="Chez Florent"
+          className="block w-[min(72vw,460px)] h-auto relative z-10"
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.55, delay: 0.05, ease: EASE_SMOOTH }}
+        />
+      </div>
+
+      {/* Decorative thin frame — corner brackets (after logo settles) */}
       {[
         "top-8 left-8 border-t border-l",
         "top-8 right-8 border-t border-r",
@@ -54,16 +66,16 @@ function Preloader({ onComplete }: { onComplete: () => void }) {
           className={`absolute w-10 h-10 md:w-14 md:h-14 border-cream-soft/35 ${pos}`}
           initial={{ opacity: 0, scale: 0.6 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, ease: EASE_SMOOTH, delay: 0.05 }}
+          transition={{ duration: 0.6, ease: EASE_SMOOTH, delay: 1.2 }}
         />
       ))}
 
-      {/* Top eyebrow */}
+      {/* Top eyebrow (after logo holds) */}
       <motion.div
         className="absolute top-14 md:top-20 left-1/2 -translate-x-1/2 flex items-center gap-3 md:gap-4 text-[0.65rem] md:text-[0.72rem] tracking-[0.42em] uppercase text-cream-soft/70 font-sans whitespace-nowrap"
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.15, ease: EASE_SMOOTH }}
+        transition={{ duration: 0.6, delay: 1.4, ease: EASE_SMOOTH }}
       >
         <span className="hidden sm:inline-block w-8 h-px bg-cream-soft/40" aria-hidden="true" />
         <span aria-hidden="true">✶</span>
@@ -72,24 +84,12 @@ function Preloader({ onComplete }: { onComplete: () => void }) {
         <span className="hidden sm:inline-block w-8 h-px bg-cream-soft/40" aria-hidden="true" />
       </motion.div>
 
-      {/* Centered logo with slow reveal */}
-      <div className="relative">
-        <motion.img
-          src="/logo.png"
-          alt="Chez Florent"
-          className="block w-[min(72vw,460px)] h-auto relative z-10"
-          initial={{ opacity: 0, scale: 0.88, y: 14 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 1.1, delay: 0.2, ease: EASE_SMOOTH }}
-        />
-      </div>
-
       {/* Editorial tagline in serif italic */}
       <motion.div
         className="mt-8 md:mt-10 font-serif italic text-cream/90 text-lg md:text-2xl text-center px-8 max-w-md leading-snug"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.85, ease: EASE_SMOOTH }}
+        transition={{ duration: 0.7, delay: 1.7, ease: EASE_SMOOTH }}
       >
         Cuisine généreuse, vins vivants.
       </motion.div>
@@ -99,7 +99,7 @@ function Preloader({ onComplete }: { onComplete: () => void }) {
         className="absolute bottom-12 md:bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-3 text-[0.62rem] md:text-[0.7rem] tracking-[0.32em] uppercase text-cream-soft/55 font-sans whitespace-nowrap"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 1.15, ease: EASE_SMOOTH }}
+        transition={{ duration: 0.6, delay: 2.1, ease: EASE_SMOOTH }}
       >
         <span>57 Rue du Roi</span>
         <span aria-hidden="true" className="text-orange/80">·</span>
