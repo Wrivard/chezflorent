@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500&display=swap');
 @import "tailwindcss";
 
 @theme inline {
@@ -70,6 +69,14 @@ body {
   transition: transform 400ms ease-out;
 }
 
-.link-underline:hover::after {
+.link-underline:hover::after,
+.link-underline:focus-visible::after {
   transform: scaleX(1);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
