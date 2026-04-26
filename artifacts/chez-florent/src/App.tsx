@@ -269,10 +269,14 @@ function Navbar({ activeSection }: { activeSection: string }) {
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
           <a
             href="#accueil"
-            className="flex items-center gap-3 text-cream hover:text-orange transition-colors"
+            aria-label="Chez Florent — Accueil"
+            className="flex items-center text-cream hover:opacity-80 transition-opacity"
           >
-            <img src="/logo.png" alt="Chez Florent logo" className="w-9 h-9 object-contain" />
-            <span className="font-display text-[28px] mt-1">Chez Florent</span>
+            <img
+              src="/logo.png"
+              alt="Chez Florent logo"
+              className={`object-contain transition-all duration-500 ${scrolled ? "h-10 md:h-12" : "h-14 md:h-16"}`}
+            />
           </a>
 
           <div className="hidden md:flex items-center gap-8 text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft">
@@ -421,16 +425,17 @@ function Hero() {
               qui raconte
             </motion.div>
             <motion.div variants={lineVariants} className="block ml-[12vw] md:ml-[24vw]">
-              des <span className="relative inline-block italic">
+              des <span className="relative inline-block italic pb-[0.18em]">
                 histoires.
                 <motion.svg 
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 1 }}
                   transition={{ duration: 1, delay: 1.5, ease: EASE_SMOOTH }}
-                  className="absolute -bottom-1 md:-bottom-3 left-0 w-full h-auto text-orange" 
+                  className="absolute left-0 -bottom-3 md:-bottom-5 w-full h-auto text-orange pointer-events-none" 
                   viewBox="0 0 200 15" 
                   fill="none" 
                   preserveAspectRatio="none"
+                  aria-hidden="true"
                 >
                   <path d="M2 10C50 -2 150 -2 198 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
                 </motion.svg>
@@ -494,12 +499,12 @@ function About() {
       <SectionMarker number="02" tone="light" />
       
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-        <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-12">
+        <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-6">
           02 — LA MAISON
         </div>
 
         {/* Massive Pull Quote — dark green text on cream */}
-        <h2 className="font-serif italic font-light text-bg-primary leading-[0.95] text-[clamp(4rem,11vw,10rem)] mb-24 max-w-6xl flex flex-wrap gap-x-[0.3em] gap-y-4">
+        <h2 className="font-serif italic font-light text-bg-primary leading-[0.95] text-[clamp(4rem,11vw,10rem)] mb-10 max-w-6xl flex flex-wrap gap-x-[0.3em] gap-y-4">
           {quoteWords.map((word, i) => (
             <motion.span
               key={i}
@@ -513,6 +518,16 @@ function About() {
             </motion.span>
           ))}
         </h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: EASE }}
+          className="font-sans italic text-bg-primary/70 max-w-2xl text-base md:text-lg mb-24"
+        >
+          Un bistro de quartier, une certaine idée du temps qui passe.
+        </motion.p>
 
         {/* Asymmetric Image Stack */}
         <div className="relative mb-32 min-h-[50vh] md:min-h-[80vh]">
@@ -715,7 +730,43 @@ function Menu() {
 
 function AmbianceStrip() {
   return (
-    <section className="bg-bg-primary pb-32 pt-16">
+    <section className="bg-bg-primary pb-24 pt-32 relative">
+      <SectionMarker number="—" />
+      <div className="max-w-7xl mx-auto px-6 md:px-12 mb-20 relative z-10">
+        <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-6">
+          ◦ Interlude — L'ambiance
+        </div>
+        <h2 className="font-serif font-light italic text-cream leading-[0.95] text-[clamp(2.5rem,6vw,5rem)] max-w-4xl">
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="block"
+          >
+            « On ne vient pas chez Florent pour manger vite.
+          </motion.span>
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: EASE, delay: 0.15 }}
+            className="block text-orange"
+          >
+            On vient pour rester. »
+          </motion.span>
+        </h2>
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: EASE, delay: 0.3 }}
+          className="font-sans italic text-cream-soft/70 max-w-2xl text-base md:text-lg mt-8"
+        >
+          Trois instants d'une soirée chez nous — de la salle au crépuscule.
+        </motion.p>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-3 w-full">
         {[
           { src: "wine-pour.png", alt: "Service du vin", caption: "◦ La salle" },
@@ -742,18 +793,6 @@ function AmbianceStrip() {
             </div>
           </motion.div>
         ))}
-      </div>
-
-      <div className="max-w-4xl mx-auto px-6 text-center mt-24">
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: EASE }}
-          className="font-serif italic text-[clamp(1.5rem,3vw,2rem)] text-cream-soft leading-tight"
-        >
-          « On ne vient pas chez Florent pour manger vite. On vient pour rester. »
-        </motion.p>
       </div>
     </section>
   );
@@ -813,9 +852,12 @@ function Reservation() {
             <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-6">
               04 — Une table pour vous
             </div>
-            <h2 className="font-serif font-light uppercase text-[clamp(4rem,12vw,14rem)] text-cream leading-[0.85] tracking-tighter mb-4">
+            <h2 className="font-serif font-light uppercase text-[clamp(4rem,12vw,14rem)] text-cream leading-[0.85] tracking-tighter mb-6">
               RÉSERVER
             </h2>
+            <p className="font-sans italic text-cream-soft/80 max-w-xl text-base md:text-lg mb-6">
+              On vous garde la meilleure table — confirmation par téléphone d'ici 24h.
+            </p>
             <div className="w-20 h-[1px] bg-orange mb-8"></div>
           </motion.div>
 
@@ -951,9 +993,12 @@ function Contact() {
           <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-4">
             05 — Nous trouver
           </div>
-          <h2 className="font-display text-[clamp(4rem,10vw,9rem)] text-bg-primary leading-none">
+          <h2 className="font-display text-[clamp(4rem,10vw,9rem)] text-bg-primary leading-none mb-6">
             Passez nous voir
           </h2>
+          <p className="font-sans italic text-bg-primary/70 max-w-xl text-base md:text-lg">
+            À deux pas du marché — la porte est ouverte du mardi au dimanche.
+          </p>
         </motion.div>
 
         <div className="flex flex-col lg:flex-row mt-16">
