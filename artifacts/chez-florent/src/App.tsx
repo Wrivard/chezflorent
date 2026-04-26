@@ -32,16 +32,14 @@ function Preloader({ onComplete }: { onComplete: () => void }) {
       exit={{ clipPath: "inset(0 0 100% 0)", transition: { duration: 0.6, ease: EASE } }}
     >
       <div className="text-center relative">
-        <h1 className="font-display text-cream text-[clamp(3.5rem,10vw,8rem)] leading-[0.95] overflow-hidden">
-          <motion.span
-            className="block"
-            initial={{ y: "100%" }}
-            animate={{ y: "0%" }}
-            transition={{ duration: 0.5, ease: EASE }}
-          >
-            Chez Florent
-          </motion.span>
-        </h1>
+        <motion.img
+          src="/logo.png"
+          alt="Chez Florent"
+          className="block w-[min(78vw,520px)] h-auto"
+          initial={{ opacity: 0, scale: 0.94, y: 12 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.55, ease: EASE }}
+        />
       </div>
 
       <div className="absolute bottom-0 left-0 w-full h-[1px] bg-border">
@@ -221,8 +219,8 @@ function Navbar({ activeSection }: { activeSection: string }) {
       <nav
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
           scrolled
-            ? "bg-bg-primary/90 backdrop-blur-md border-b border-border py-4"
-            : "bg-transparent border-b border-transparent py-6"
+            ? "bg-bg-primary/90 backdrop-blur-md border-b border-border py-2"
+            : "bg-transparent border-b border-transparent py-3"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
@@ -234,7 +232,7 @@ function Navbar({ activeSection }: { activeSection: string }) {
             <img
               src="/logo.png"
               alt="Chez Florent logo"
-              className={`object-contain transition-all duration-500 ${scrolled ? "h-12 md:h-14" : "h-16 md:h-20"}`}
+              className={`object-contain transition-all duration-500 ${scrolled ? "h-20 md:h-24" : "h-24 md:h-32"}`}
             />
           </a>
 
@@ -1789,15 +1787,15 @@ function Footer() {
       {/* Massive Wordmark — SVG auto-fits viewport width, no overflow */}
       <div className="w-full bg-bg-primary pt-8 pb-4 relative">
         <svg
-          viewBox="0 0 1100 240"
+          viewBox="0 0 1100 300"
           preserveAspectRatio="xMidYMid meet"
-          className="block w-full h-auto"
+          className="block w-full h-auto overflow-visible"
           aria-label="Chez Florent"
           role="img"
         >
           <text
             x="550"
-            y="180"
+            y="240"
             textAnchor="middle"
             textLength="1040"
             lengthAdjust="spacingAndGlyphs"
