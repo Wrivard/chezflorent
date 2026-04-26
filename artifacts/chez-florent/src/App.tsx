@@ -412,7 +412,7 @@ function Menu() {
                     {dish.desc}
                   </p>
                 </div>
-                <div className="font-serif font-semibold text-[1.5rem] text-cream whitespace-nowrap self-start md:self-center">
+                <div className="font-serif font-semibold text-[1.5rem] text-orange whitespace-nowrap self-start md:self-center">
                   {dish.price}
                 </div>
               </motion.div>
