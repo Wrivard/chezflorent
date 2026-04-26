@@ -55,6 +55,8 @@ function Navbar() {
           </a>
 
           <div className="hidden md:flex items-center gap-8 text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft">
+            <a href="#accueil" className="link-underline hover:text-cream transition-colors">Accueil</a>
+            <a href="#a-propos" className="link-underline hover:text-cream transition-colors">À propos</a>
             <a href="#menu" className="link-underline hover:text-cream transition-colors">Menu</a>
             <a href="#reservation" className="link-underline hover:text-cream transition-colors">Réservation</a>
             <a href="#contact" className="link-underline hover:text-cream transition-colors">Contact</a>
@@ -82,6 +84,8 @@ function Navbar() {
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-40 bg-bg-primary pt-24 px-6 pb-6 flex flex-col">
           <div className="flex flex-col gap-8 text-2xl font-serif text-cream">
+            <a href="#accueil" onClick={closeMenu}>Accueil</a>
+            <a href="#a-propos" onClick={closeMenu}>À propos</a>
             <a href="#menu" onClick={closeMenu}>L'ardoise</a>
             <a href="#reservation" onClick={closeMenu}>Réserver une table</a>
             <a href="#contact" onClick={closeMenu}>Nous trouver</a>
