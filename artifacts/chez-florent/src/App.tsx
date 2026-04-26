@@ -245,9 +245,57 @@ function useActiveSection() {
 // -----------------------------------------------------------------------------
 // COMPONENTS
 // -----------------------------------------------------------------------------
+
+// Live opening-status hook based on the actual schedule
+//   Mon: closed · Tue–Thu 17h–22h · Fri–Sat 17h–23h · Sun 17h–21h
+const SCHEDULE: Record<number, { open: number; close: number } | null> = {
+  0: { open: 17, close: 21 }, // Sunday
+  1: null,                    // Monday — closed
+  2: { open: 17, close: 22 }, // Tuesday
+  3: { open: 17, close: 22 }, // Wednesday
+  4: { open: 17, close: 22 }, // Thursday
+  5: { open: 17, close: 23 }, // Friday
+  6: { open: 17, close: 23 }, // Saturday
+};
+const DAY_NAMES_FR = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+
+function useOpenStatus(): { open: boolean; label: string } {
+  const [now, setNow] = useState<Date>(() => new Date());
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 60_000);
+    return () => clearInterval(id);
+  }, []);
+
+  const day = now.getDay();
+  const totalMinutes = now.getHours() * 60 + now.getMinutes();
+  const today = SCHEDULE[day];
+
+  if (today) {
+    if (totalMinutes >= today.open * 60 && totalMinutes < today.close * 60) {
+      return { open: true, label: `Ouvert · ferme à ${today.close}h` };
+    }
+    // Open day but before opening time
+    if (totalMinutes < today.open * 60) {
+      return { open: false, label: `Fermé · ouvre aujourd'hui ${today.open}h` };
+    }
+  }
+
+  // After closing time today, or closed all day — find next open day
+  for (let i = 1; i <= 7; i++) {
+    const nextDayIdx = (day + i) % 7;
+    const next = SCHEDULE[nextDayIdx];
+    if (next) {
+      const dayLabel = i === 1 ? "demain" : DAY_NAMES_FR[nextDayIdx];
+      return { open: false, label: `Fermé · ouvre ${dayLabel} ${next.open}h` };
+    }
+  }
+  return { open: false, label: "Fermé" };
+}
+
 function Navbar({ activeSection }: { activeSection: string }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const status = useOpenStatus();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
@@ -275,8 +323,23 @@ function Navbar({ activeSection }: { activeSection: string }) {
             <img
               src="/logo.png"
               alt="Chez Florent logo"
-              className={`object-contain transition-all duration-500 ${scrolled ? "h-10 md:h-12" : "h-14 md:h-16"}`}
+              className={`object-contain transition-all duration-500 ${scrolled ? "h-12 md:h-14" : "h-16 md:h-20"}`}
             />
+          </a>
+
+          {/* Live status badge — center */}
+          <a
+            href="#contact"
+            aria-label={`Statut du restaurant : ${status.label}`}
+            className="hidden lg:flex items-center gap-2.5 px-3.5 py-2 rounded-full border border-cream-soft/15 bg-bg-primary/40 backdrop-blur-sm text-[0.7rem] font-medium tracking-[0.18em] uppercase text-cream-soft/85 hover:text-cream hover:border-cream-soft/30 transition-colors group"
+          >
+            <span className="relative inline-flex w-1.5 h-1.5 shrink-0">
+              {status.open && (
+                <span className="absolute inset-0 rounded-full bg-orange opacity-60 animate-ping"></span>
+              )}
+              <span className={`relative inline-block w-1.5 h-1.5 rounded-full ${status.open ? 'bg-orange' : 'bg-cream-soft/40'}`}></span>
+            </span>
+            <span>{status.label}</span>
           </a>
 
           <div className="hidden md:flex items-center gap-8 text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft">
@@ -572,21 +635,59 @@ function About() {
   );
 }
 
-const dishes = [
-  { name: "Trempette de poireaux rôtis", price: "16,95 $", desc: "Bacon fumé, servi avec pain plat gratiné.", image: "bread-tearing.png" },
-  { name: "Grilled cheese sur baguette", price: "5,95 $ / 11,95 $", desc: "Provolone, mozzarella, fromage jaune, beurre à l'ail.", image: "dish-sandwich.png" },
-  { name: "Feuilleté jambon gruyère", price: "9,95 $ / 19,95 $", desc: "Pâte feuilletée, jambon, fromage gruyère, sauce blanche crémeuse avec pomme de terre, poireaux.", image: "about-hands.png" },
-  { name: "Bufarella potato", price: "17,95 $", desc: "Boule de fromage bufarella (Fromagerie Fuoco) accompagnée de hummus de patate douce, coulis de bleuets à l'érable, huile épicée, menthe et crumble au parmesan. Servi avec pain naan grillé.", image: "dish-tasting.png" },
-  { name: "Miche de porc", price: "23,95 $", desc: "Miche de pain artisanale, porc effiloché maison, fromage à la crème épicé aux cornichons, laitue iceberg, moutarde au miel. Servi avec salade de carottes crémeuse.", image: "dish-sandwich.png" },
-  { name: "« Le Rhé-Actif »", price: "24,95 $", desc: "Pain ciabata, provolone, mortadelle, calabrese, capicollo, salade, tomates, oignons rouges, mayonnaise thaï. Servi avec salade de patates maison.", image: "dish-charcuterie.png" },
-  { name: "Pizza « Vodka » 🌶🌶🌶", price: "25,95 $", desc: "Sauce rosée à la vodka, saucisses épicées (Ferme J.N Beauchemin), oignons croustillants, mozzarella, huile à l'ail, tomates confites au gras de canard.", image: "dish-pizza.png" },
-  { name: "Assiette de charcuterie", price: "35,95 $", desc: "Calabrese, prosciutto, saucissons secs, olives méli-mélo, fromages du moment, pickle d'oignons rouges, petits cornichons. Servi avec pain et croutons.", image: "dish-charcuterie.png" },
-  { name: "« Philly T »", price: "25,95 $", desc: "Pain baguette, fromages (jaune, mozzarella, provolone), poivrons rouges, oignons blancs, brisket (Les Cowboys du BBQ), mayonnaise épicée. Servi avec salade de pâte maison et cup de sauce BBQ.", image: "dish-tasting.png" }
+type Dish = { name: string; price: string; desc: string; image: string };
+type MenuCategory = { id: string; label: string; tagline: string; dishes: Dish[] };
+
+const menuCategories: MenuCategory[] = [
+  {
+    id: "partager",
+    label: "À partager",
+    tagline: "Pour ouvrir la soirée — un verre, une planche, le temps qui ralentit.",
+    dishes: [
+      { name: "Trempette de poireaux rôtis", price: "16,95 $", desc: "Bacon fumé, servi avec pain plat gratiné.", image: "bread-tearing.png" },
+      { name: "Bufarella potato", price: "17,95 $", desc: "Boule de fromage bufarella (Fromagerie Fuoco) accompagnée de hummus de patate douce, coulis de bleuets à l'érable, huile épicée, menthe et crumble au parmesan. Servi avec pain naan grillé.", image: "dish-tasting.png" },
+      { name: "Assiette de charcuterie", price: "35,95 $", desc: "Calabrese, prosciutto, saucissons secs, olives méli-mélo, fromages du moment, pickle d'oignons rouges, petits cornichons. Servi avec pain et croutons.", image: "dish-charcuterie.png" },
+    ],
+  },
+  {
+    id: "plats",
+    label: "Les plats",
+    tagline: "Le coeur de l'ardoise — sandwichs travaillés, plats roboratifs, à manger sans manières.",
+    dishes: [
+      { name: "Grilled cheese sur baguette", price: "5,95 $ / 11,95 $", desc: "Provolone, mozzarella, fromage jaune, beurre à l'ail.", image: "dish-sandwich.png" },
+      { name: "Feuilleté jambon gruyère", price: "9,95 $ / 19,95 $", desc: "Pâte feuilletée, jambon, fromage gruyère, sauce blanche crémeuse avec pomme de terre, poireaux.", image: "about-hands.png" },
+      { name: "Miche de porc", price: "23,95 $", desc: "Miche de pain artisanale, porc effiloché maison, fromage à la crème épicé aux cornichons, laitue iceberg, moutarde au miel. Servi avec salade de carottes crémeuse.", image: "dish-sandwich.png" },
+      { name: "« Le Rhé-Actif »", price: "24,95 $", desc: "Pain ciabata, provolone, mortadelle, calabrese, capicollo, salade, tomates, oignons rouges, mayonnaise thaï. Servi avec salade de patates maison.", image: "dish-charcuterie.png" },
+      { name: "Pizza « Vodka » 🌶🌶🌶", price: "25,95 $", desc: "Sauce rosée à la vodka, saucisses épicées (Ferme J.N Beauchemin), oignons croustillants, mozzarella, huile à l'ail, tomates confites au gras de canard.", image: "dish-pizza.png" },
+      { name: "« Philly T »", price: "25,95 $", desc: "Pain baguette, fromages (jaune, mozzarella, provolone), poivrons rouges, oignons blancs, brisket (Les Cowboys du BBQ), mayonnaise épicée. Servi avec salade de pâte maison et cup de sauce BBQ.", image: "dish-tasting.png" },
+    ],
+  },
+  {
+    id: "bar",
+    label: "Au bar",
+    tagline: "Cocktails maison, vins choisis, bières du coin — le bar reste ouvert tard.",
+    dishes: [
+      { name: "Sorel-Spritz", price: "14,00 $", desc: "Vin pétillant, Aperol, sirop maison aux canneberges du Lac St-Pierre, branche de romarin frais.", image: "wine-pour.png" },
+      { name: "Old Fashioned du Florent", price: "16,00 $", desc: "Rye canadien, sirop d'érable d'Yamaska, bitter aux noix grillées, zeste d'orange brûlé au chalumeau.", image: "ambiance-smoke.png" },
+      { name: "Negroni Sapin", price: "15,00 $", desc: "Gin local Québec Distillerie, Campari, vermouth maison infusé sapinette des bois — boisé, presque résineux.", image: "wine-pour.png" },
+      { name: "Vin de la maison", price: "9,00 $ / 38,00 $", desc: "Rouge ou blanc, sélection rotative du sommelier — au verre ou à la bouteille. Demandez la suggestion.", image: "wine-pour.png" },
+      { name: "Pinte Riverbend", price: "8,00 $", desc: "Blonde houblonnée brassée à Sorel par Riverbend Brewing Co. — locale, fraîche, désaltérante.", image: "exterior-dusk.png" },
+      { name: "Espresso & digestif", price: "5,00 $ / 9,00 $", desc: "Café espresso bien serré, accompagné d'un Amaro maison ou d'un cognac à l'ancienne. Pour finir en beauté.", image: "ambiance-smoke.png" },
+    ],
+  },
 ];
 
 function Menu() {
+  const [activeCategoryId, setActiveCategoryId] = useState<string>(menuCategories[0].id);
   const [activeIndex, setActiveIndex] = useState(0);
-  const activeDish = dishes[activeIndex];
+  const activeCategory = menuCategories.find((c) => c.id === activeCategoryId) ?? menuCategories[0];
+  const dishes = activeCategory.dishes;
+  const activeDish = dishes[Math.min(activeIndex, dishes.length - 1)];
+
+  const handleCategoryChange = (id: string) => {
+    setActiveCategoryId(id);
+    setActiveIndex(0);
+  };
 
   return (
     <>
@@ -607,7 +708,7 @@ function Menu() {
         <SectionMarker number="03" />
         <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
           
-          <div className="mb-24">
+          <div className="mb-16">
             <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-6">
               03 — Au menu ce soir
             </div>
@@ -616,60 +717,119 @@ function Menu() {
             <h2 className="ardoise-clip font-serif font-semibold uppercase text-[clamp(5rem,15vw,18rem)] leading-[0.85] tracking-tighter mb-8">
               L'ARDOISE
             </h2>
-            <p className="font-sans italic text-cream-soft/80 max-w-2xl text-lg">
-              Notre carte évolue selon les saisons et l'humeur du chef. Voici ce qui s'y trouve aujourd'hui.
-            </p>
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={activeCategory.id}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.35, ease: EASE }}
+                className="font-sans italic text-cream-soft/80 max-w-2xl text-lg"
+              >
+                {activeCategory.tagline}
+              </motion.p>
+            </AnimatePresence>
+          </div>
+
+          {/* Category tabs */}
+          <div
+            role="tablist"
+            aria-label="Catégories du menu"
+            className="flex gap-1 md:gap-3 mb-12 border-b border-border overflow-x-auto"
+          >
+            {menuCategories.map((c) => {
+              const isActive = c.id === activeCategoryId;
+              return (
+                <button
+                  key={c.id}
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`menu-panel-${c.id}`}
+                  id={`menu-tab-${c.id}`}
+                  onClick={() => handleCategoryChange(c.id)}
+                  className={`relative px-4 md:px-6 py-4 text-[0.85rem] font-medium tracking-[0.18em] uppercase transition-colors whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset ${
+                    isActive ? "text-cream" : "text-cream-soft/55 hover:text-cream-soft"
+                  }`}
+                >
+                  <span className="flex items-baseline gap-2">
+                    {c.label}
+                    <span className={`font-serif italic text-[0.7rem] tracking-normal normal-case transition-colors ${isActive ? 'text-orange' : 'text-cream-soft/40'}`}>
+                      {String(c.dishes.length).padStart(2, '0')}
+                    </span>
+                  </span>
+                  {isActive && (
+                    <motion.div
+                      layoutId="menu-tab-underline"
+                      className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-orange"
+                      transition={{ duration: 0.4, ease: EASE_SMOOTH }}
+                    />
+                  )}
+                </button>
+              );
+            })}
           </div>
 
           {/* Two-column: list left, sticky photo right */}
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_400px] gap-8 lg:gap-16 items-start">
             
             {/* Left: dish list */}
-            <div className="grid grid-cols-1">
-              {dishes.map((dish, i) => {
-                const isActive = i === activeIndex;
-                return (
-                  <motion.div 
-                    key={i} 
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.6, ease: EASE, delay: i * 0.05 }}
-                    className={`group grid grid-cols-[40px_1fr_auto] md:grid-cols-[60px_1fr_auto] gap-4 md:gap-8 py-8 border-b border-border cursor-default transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset ${isActive ? "bg-bg-secondary/40" : "hover:bg-bg-secondary/30"} px-3 md:px-6`}
-                    onMouseEnter={() => setActiveIndex(i)}
-                    onFocus={() => setActiveIndex(i)}
-                    role="button"
-                    tabIndex={0}
-                    aria-pressed={isActive}
-                    aria-label={`Aperçu du plat numéro ${i + 1} : ${dish.name}`}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        setActiveIndex(i);
-                      }
-                    }}
-                  >
-                    <div className={`font-serif italic text-lg md:text-xl pt-1 transition-colors ${isActive ? "text-orange" : "text-orange/70"}`}>
-                      {String(i + 1).padStart(2, '0')}
-                    </div>
-                    <motion.div 
-                      className="flex flex-col gap-1"
-                      animate={{ x: isActive ? 12 : 0 }}
-                      transition={{ duration: 0.3, ease: "easeOut" }}
-                    >
-                      <h3 className="font-serif font-semibold text-[1.5rem] md:text-[1.75rem] text-cream leading-tight">
-                        {dish.name}
-                      </h3>
-                      <p className="font-sans font-light italic text-cream-soft/70 max-w-[600px] leading-relaxed text-sm md:text-base">
-                        {dish.desc}
-                      </p>
-                    </motion.div>
-                    <div className="font-serif font-semibold text-[1.25rem] md:text-[1.5rem] text-orange whitespace-nowrap pt-1">
-                      {dish.price}
-                    </div>
-                  </motion.div>
-                );
-              })}
+            <div
+              role="tabpanel"
+              id={`menu-panel-${activeCategory.id}`}
+              aria-labelledby={`menu-tab-${activeCategory.id}`}
+              className="grid grid-cols-1"
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeCategory.id}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.4, ease: EASE }}
+                  className="grid grid-cols-1"
+                >
+                  {dishes.map((dish, i) => {
+                    const isActive = i === activeIndex;
+                    return (
+                      <div
+                        key={`${activeCategory.id}-${i}`}
+                        className={`group grid grid-cols-[40px_1fr_auto] md:grid-cols-[60px_1fr_auto] gap-4 md:gap-8 py-8 border-b border-border cursor-default transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset ${isActive ? "bg-bg-secondary/40" : "hover:bg-bg-secondary/30"} px-3 md:px-6`}
+                        onMouseEnter={() => setActiveIndex(i)}
+                        onFocus={() => setActiveIndex(i)}
+                        role="button"
+                        tabIndex={0}
+                        aria-pressed={isActive}
+                        aria-label={`Aperçu de ${dish.name}`}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            setActiveIndex(i);
+                          }
+                        }}
+                      >
+                        <div className={`font-serif italic text-lg md:text-xl pt-1 transition-colors ${isActive ? "text-orange" : "text-orange/70"}`}>
+                          {String(i + 1).padStart(2, '0')}
+                        </div>
+                        <motion.div 
+                          className="flex flex-col gap-1"
+                          animate={{ x: isActive ? 12 : 0 }}
+                          transition={{ duration: 0.3, ease: "easeOut" }}
+                        >
+                          <h3 className="font-serif font-semibold text-[1.5rem] md:text-[1.75rem] text-cream leading-tight">
+                            {dish.name}
+                          </h3>
+                          <p className="font-sans font-light italic text-cream-soft/70 max-w-[600px] leading-relaxed text-sm md:text-base">
+                            {dish.desc}
+                          </p>
+                        </motion.div>
+                        <div className="font-serif font-semibold text-[1.25rem] md:text-[1.5rem] text-orange whitespace-nowrap pt-1">
+                          {dish.price}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </motion.div>
+              </AnimatePresence>
             </div>
 
             {/* Right: sticky photo collage that cross-fades on dish focus */}
