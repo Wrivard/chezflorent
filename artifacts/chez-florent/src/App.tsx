@@ -32,7 +32,7 @@ function Preloader({ onComplete }: { onComplete: () => void }) {
       exit={{ clipPath: "inset(0 0 100% 0)", transition: { duration: 0.6, ease: EASE } }}
     >
       <div className="text-center relative">
-        <h1 className="font-display italic font-bold text-cream text-[clamp(3.5rem,10vw,8rem)] leading-none overflow-hidden tracking-tight">
+        <h1 className="font-display text-cream text-[clamp(3.5rem,10vw,8rem)] leading-[0.95] overflow-hidden">
           <motion.span
             className="block"
             initial={{ y: "100%" }}
@@ -316,7 +316,7 @@ function SectionMarker({ number, tone = "dark" }: { number: string; tone?: "dark
   const colorClass = tone === "light" ? "text-bg-primary/15" : "text-cream/10";
   const blendClass = tone === "light" ? "mix-blend-multiply" : "mix-blend-difference";
   return (
-    <div className={`absolute top-16 right-6 md:right-12 font-display text-[clamp(4rem,10vw,8rem)] ${colorClass} leading-none ${blendClass} pointer-events-none select-none z-0`}>
+    <div className={`absolute top-16 right-6 md:right-12 font-display text-[clamp(4rem,10vw,8rem)] ${colorClass} leading-[0.9] ${blendClass} pointer-events-none select-none z-0`}>
       {number}
     </div>
   );
@@ -648,7 +648,7 @@ function Menu() {
             </div>
             
             {/* Image-through-text reveal (with @supports fallback in CSS) */}
-            <h2 className="ardoise-clip font-display text-[clamp(5rem,14vw,14rem)] leading-[0.85] tracking-tight mb-8 max-w-full">
+            <h2 className="ardoise-clip font-display text-[clamp(5rem,14vw,14rem)] leading-[0.95] mb-8 max-w-full">
               L'ardoise
             </h2>
             <AnimatePresence mode="wait">
@@ -924,7 +924,7 @@ function Agenda() {
           <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-6">
             04 — La programmation
           </div>
-          <h2 className="font-display text-cream leading-[0.85] tracking-tight text-[clamp(4rem,11vw,10rem)]">
+          <h2 className="font-display text-cream leading-[0.95] text-[clamp(4rem,11vw,10rem)]">
             L'agenda
           </h2>
           <p className="font-sans italic text-cream-soft/80 max-w-2xl text-lg mt-6">
@@ -1210,7 +1210,7 @@ function Reservation() {
             <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-6">
               05 — Une table pour vous
             </div>
-            <h2 className="font-display text-[clamp(5rem,16vw,16rem)] text-cream leading-[0.82] tracking-tight mb-8">
+            <h2 className="font-display text-[clamp(5rem,16vw,16rem)] text-cream leading-[0.95] mb-8">
               Réserver
             </h2>
             <div className="flex items-baseline gap-4">
@@ -1236,7 +1236,7 @@ function Reservation() {
                 <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
                   <span aria-hidden="true">✶ </span>{status === "group-pending" ? "Demande reçue" : "Confirmé"}
                 </div>
-                <h3 className="font-display italic font-bold text-[clamp(4rem,10vw,8rem)] text-cream mb-8 leading-none tracking-tight">
+                <h3 className="font-display text-[clamp(4rem,10vw,8rem)] text-cream mb-8 leading-[0.95]">
                   Merci
                 </h3>
                 <p className="font-serif italic text-cream-soft text-xl mb-4 max-w-md mx-auto">
@@ -1300,7 +1300,7 @@ function Reservation() {
                       <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85 mb-2 group-hover:text-orange transition-colors">
                         Appelez-nous
                       </div>
-                      <div className="font-display italic font-bold text-cream text-3xl md:text-4xl group-hover:text-orange transition-colors leading-none tracking-tight">
+                      <div className="font-display text-cream text-3xl md:text-4xl group-hover:text-orange transition-colors leading-[0.95]">
                         450&nbsp;743-1448
                       </div>
                     </a>
@@ -1515,7 +1515,7 @@ function Contact() {
           <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-4">
             06 — Nous trouver
           </div>
-          <h2 className="font-display text-[clamp(4rem,10vw,9rem)] text-bg-primary leading-none mb-6">
+          <h2 className="font-display text-[clamp(4rem,10vw,9rem)] text-bg-primary leading-[0.95] mb-6">
             Passez nous voir
           </h2>
           <p className="font-sans italic text-bg-primary/70 max-w-xl text-base md:text-lg">
@@ -1566,7 +1566,7 @@ function Contact() {
                 <a
                   href="tel:+14507431448"
                   aria-label="Appeler Chez Florent au 450 743-1448"
-                  className="font-display italic font-bold text-[clamp(2.5rem,5vw,4rem)] tracking-tight text-bg-primary link-underline hover:text-orange transition-colors"
+                  className="font-display text-[clamp(2.5rem,5vw,4rem)] text-bg-primary link-underline hover:text-orange transition-colors"
                 >
                   450 743-1448
                 </a>
@@ -1678,7 +1678,7 @@ function LegalModal({ which, onClose }: { which: LegalKey; onClose: () => void }
           className="absolute top-4 right-5 text-cream-soft hover:text-cream text-2xl leading-none"
         >×</button>
         <div className="text-[0.7rem] tracking-[0.22em] uppercase text-orange mb-4">Information</div>
-        <h3 id="legal-title" className="font-display italic font-bold text-cream text-3xl md:text-4xl tracking-tight mb-6">
+        <h3 id="legal-title" className="font-display text-cream text-3xl md:text-4xl mb-6">
           {copy.title}
         </h3>
         <div className="space-y-4 font-sans text-cream-soft text-sm leading-relaxed">
@@ -1708,7 +1708,7 @@ function Footer() {
           </div>
           <div>
             <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85 mb-4">Contact</div>
-            <a href="tel:+14507431448" className="block font-display italic font-bold text-cream text-xl tracking-tight hover:text-orange transition-colors">450 743-1448</a>
+            <a href="tel:+14507431448" className="block font-display text-cream text-2xl hover:text-orange transition-colors">450 743-1448</a>
             <div className="font-sans text-sm text-cream-soft/85 mt-2">Mar–Dim · dès 17h</div>
           </div>
           <nav aria-label="Navigation rapide">
@@ -1760,18 +1760,17 @@ function Footer() {
         >
           <text
             x="550"
-            y="195"
+            y="180"
             textAnchor="middle"
-            textLength="1060"
+            textLength="1040"
             lengthAdjust="spacingAndGlyphs"
-            fontStyle="italic"
-            fontWeight="700"
+            fontWeight="400"
             style={{
-              fontFamily: "'Caveat Brush', cursive",
-              fontSize: "240px",
+              fontFamily: "'Pacifico', cursive",
+              fontSize: "200px",
               fill: "rgb(244, 201, 160)",
               fillOpacity: 0.95,
-              letterSpacing: "-6px",
+              letterSpacing: "0",
             }}
           >
             Chez Florent
