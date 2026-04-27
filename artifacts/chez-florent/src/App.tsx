@@ -422,7 +422,7 @@ function Hero() {
         <div 
           className="absolute inset-0 bg-cover bg-center animate-kenburns origin-center"
           style={{
-            backgroundImage: "url('/images/hero-interior.png')",
+            backgroundImage: "url('/images/interior-bar.jpg')",
             filter: "saturate(1.1) contrast(1.1)"
           }}
         />
@@ -596,14 +596,14 @@ function About() {
             style={{ y: ySlow }}
             className="w-[80%] md:w-[50%] aspect-[4/3] overflow-hidden relative z-10 ring-1 ring-bg-primary/10"
           >
-            <img src="/images/about-hands.png" alt="Mains de chef" className="w-full h-full object-cover" />
+            <img src="/images/tap-pour.jpg" alt="Service au comptoir Chez Florent" className="w-full h-full object-cover" />
           </motion.div>
           
           <motion.div 
             style={{ y: yFast }}
             className="absolute top-[18%] right-0 w-[50%] md:w-[30%] aspect-[3/4] overflow-hidden z-20 mt-20 ring-1 ring-bg-primary/10"
           >
-            <img src="/images/wine-glass-macro.png" alt="Verre de vin" className="w-full h-full object-cover" />
+            <img src="/images/florent-glass.jpg" alt="Verre signature Chez Florent" className="w-full h-full object-cover" />
           </motion.div>
 
           <motion.div
@@ -613,7 +613,7 @@ function About() {
             transition={{ duration: 0.9, ease: EASE, delay: 0.15 }}
             className="absolute bottom-0 left-[8%] md:left-[26%] w-[58%] md:w-[38%] aspect-[5/4] overflow-hidden z-[15] ring-1 ring-bg-primary/10"
           >
-            <img src="/images/exterior-dusk.png" alt="La devanture au crépuscule" className="w-full h-full object-cover" />
+            <img src="/images/facade-pizza.jpg" alt="La devanture, 57 rue du Roi" className="w-full h-full object-cover" />
           </motion.div>
         </div>
 
@@ -668,9 +668,9 @@ const menuCategories: MenuCategory[] = [
     label: "À partager",
     tagline: "Pour ouvrir la soirée — un verre, une planche, le temps qui ralentit.",
     dishes: [
-      { name: "Trempette de poireaux rôtis", price: "16,95 $", desc: "Bacon fumé, servi avec pain plat gratiné.", image: "bread-tearing.png" },
-      { name: "Bufarella potato", price: "17,95 $", desc: "Boule de fromage bufarella (Fromagerie Fuoco) accompagnée de hummus de patate douce, coulis de bleuets à l'érable, huile épicée, menthe et crumble au parmesan. Servi avec pain naan grillé.", image: "dish-tasting.png" },
-      { name: "Assiette de charcuterie", price: "35,95 $", desc: "Calabrese, prosciutto, saucissons secs, olives méli-mélo, fromages du moment, pickle d'oignons rouges, petits cornichons. Servi avec pain et croutons.", image: "dish-charcuterie.png" },
+      { name: "Trempette de poireaux rôtis", price: "16,95 $", desc: "Bacon fumé, servi avec pain plat gratiné.", image: "naan-dip.jpg" },
+      { name: "Bufarella potato", price: "17,95 $", desc: "Boule de fromage bufarella (Fromagerie Fuoco) accompagnée de hummus de patate douce, coulis de bleuets à l'érable, huile épicée, menthe et crumble au parmesan. Servi avec pain naan grillé.", image: "bufarella-mint.jpg" },
+      { name: "Assiette de charcuterie", price: "35,95 $", desc: "Calabrese, prosciutto, saucissons secs, olives méli-mélo, fromages du moment, pickle d'oignons rouges, petits cornichons. Servi avec pain et croutons.", image: "sandwich-mac.jpg" },
     ],
   },
   {
@@ -678,12 +678,12 @@ const menuCategories: MenuCategory[] = [
     label: "Les plats",
     tagline: "Le coeur de l'ardoise — sandwichs travaillés, plats roboratifs, à manger sans manières.",
     dishes: [
-      { name: "Grilled cheese sur baguette", price: "5,95 $ / 11,95 $", desc: "Provolone, mozzarella, fromage jaune, beurre à l'ail.", image: "dish-sandwich.png" },
-      { name: "Feuilleté jambon gruyère", price: "9,95 $ / 19,95 $", desc: "Pâte feuilletée, jambon, fromage gruyère, sauce blanche crémeuse avec pomme de terre, poireaux.", image: "about-hands.png" },
-      { name: "Miche de porc", price: "23,95 $", desc: "Miche de pain artisanale, porc effiloché maison, fromage à la crème épicé aux cornichons, laitue iceberg, moutarde au miel. Servi avec salade de carottes crémeuse.", image: "dish-sandwich.png" },
-      { name: "« Le Rhé-Actif »", price: "24,95 $", desc: "Pain ciabata, provolone, mortadelle, calabrese, capicollo, salade, tomates, oignons rouges, mayonnaise thaï. Servi avec salade de patates maison.", image: "dish-charcuterie.png" },
-      { name: "Pizza « Vodka » 🌶🌶🌶", price: "25,95 $", desc: "Sauce rosée à la vodka, saucisses épicées (Ferme J.N Beauchemin), oignons croustillants, mozzarella, huile à l'ail, tomates confites au gras de canard.", image: "dish-pizza.png" },
-      { name: "« Philly T »", price: "25,95 $", desc: "Pain baguette, fromages (jaune, mozzarella, provolone), poivrons rouges, oignons blancs, brisket (Les Cowboys du BBQ), mayonnaise épicée. Servi avec salade de pâte maison et cup de sauce BBQ.", image: "dish-tasting.png" },
+      { name: "Grilled cheese sur baguette", price: "5,95 $ / 11,95 $", desc: "Provolone, mozzarella, fromage jaune, beurre à l'ail.", image: "tower-sandwich.jpg" },
+      { name: "Feuilleté jambon gruyère", price: "9,95 $ / 19,95 $", desc: "Pâte feuilletée, jambon, fromage gruyère, sauce blanche crémeuse avec pomme de terre, poireaux.", image: "feuillete-ham.jpg" },
+      { name: "Miche de porc", price: "23,95 $", desc: "Miche de pain artisanale, porc effiloché maison, fromage à la crème épicé aux cornichons, laitue iceberg, moutarde au miel. Servi avec salade de carottes crémeuse.", image: "miche-porc.jpg" },
+      { name: "« Le Rhé-Actif »", price: "24,95 $", desc: "Pain ciabata, provolone, mortadelle, calabrese, capicollo, salade, tomates, oignons rouges, mayonnaise thaï. Servi avec salade de patates maison.", image: "sandwich-mac.jpg" },
+      { name: "Pizza « Vodka » 🌶🌶🌶", price: "25,95 $", desc: "Sauce rosée à la vodka, saucisses épicées (Ferme J.N Beauchemin), oignons croustillants, mozzarella, huile à l'ail, tomates confites au gras de canard.", image: "pizza-oven.jpg" },
+      { name: "« Philly T »", price: "25,95 $", desc: "Pain baguette, fromages (jaune, mozzarella, provolone), poivrons rouges, oignons blancs, brisket (Les Cowboys du BBQ), mayonnaise épicée. Servi avec salade de pâte maison et cup de sauce BBQ.", image: "tower-sandwich.jpg" },
     ],
   },
   {
@@ -691,12 +691,12 @@ const menuCategories: MenuCategory[] = [
     label: "Au bar",
     tagline: "Cocktails maison, vins choisis, bières du coin — le bar reste ouvert tard.",
     dishes: [
-      { name: "Sorel-Spritz", price: "14,00 $", desc: "Vin pétillant, Aperol, sirop maison aux canneberges du Lac St-Pierre, branche de romarin frais.", image: "wine-pour.png" },
-      { name: "Old Fashioned du Florent", price: "16,00 $", desc: "Rye canadien, sirop d'érable d'Yamaska, bitter aux noix grillées, zeste d'orange brûlé au chalumeau.", image: "ambiance-smoke.png" },
-      { name: "Negroni Sapin", price: "15,00 $", desc: "Gin local Québec Distillerie, Campari, vermouth maison infusé sapinette des bois — boisé, presque résineux.", image: "wine-pour.png" },
-      { name: "Vin de la maison", price: "9,00 $ / 38,00 $", desc: "Rouge ou blanc, sélection rotative du sommelier — au verre ou à la bouteille. Demandez la suggestion.", image: "wine-pour.png" },
-      { name: "Pinte Riverbend", price: "8,00 $", desc: "Blonde houblonnée brassée à Sorel par Riverbend Brewing Co. — locale, fraîche, désaltérante.", image: "exterior-dusk.png" },
-      { name: "Espresso & digestif", price: "5,00 $ / 9,00 $", desc: "Café espresso bien serré, accompagné d'un Amaro maison ou d'un cognac à l'ancienne. Pour finir en beauté.", image: "ambiance-smoke.png" },
+      { name: "Sorel-Spritz", price: "14,00 $", desc: "Vin pétillant, Aperol, sirop maison aux canneberges du Lac St-Pierre, branche de romarin frais.", image: "tap-pour.jpg" },
+      { name: "Old Fashioned du Florent", price: "16,00 $", desc: "Rye canadien, sirop d'érable d'Yamaska, bitter aux noix grillées, zeste d'orange brûlé au chalumeau.", image: "florent-glass.jpg" },
+      { name: "Negroni Sapin", price: "15,00 $", desc: "Gin local Québec Distillerie, Campari, vermouth maison infusé sapinette des bois — boisé, presque résineux.", image: "florent-glass.jpg" },
+      { name: "Vin de la maison", price: "9,00 $ / 38,00 $", desc: "Rouge ou blanc, sélection rotative du sommelier — au verre ou à la bouteille. Demandez la suggestion.", image: "tap-pour.jpg" },
+      { name: "Pinte Riverbend", price: "8,00 $", desc: "Blonde houblonnée brassée à Sorel par Riverbend Brewing Co. — locale, fraîche, désaltérante.", image: "florent-glass.jpg" },
+      { name: "Espresso & digestif", price: "5,00 $ / 9,00 $", desc: "Café espresso bien serré, accompagné d'un Amaro maison ou d'un cognac à l'ancienne. Pour finir en beauté.", image: "interior-bar.jpg" },
     ],
   },
 ];
@@ -928,7 +928,7 @@ const PATRON_VOICES: PatronVoice[] = [
     context: "Sorel-Tracy · Habituée du jeudi",
     source: "Google",
     date: "Mars 2026",
-    image: "wine-pour.png",
+    image: "tap-pour.jpg",
   },
   {
     quote: "Sans réservation un mardi, Florent nous a placés au comptoir avec un pichet de gamay et une planche. Trois heures plus tard, on parlait encore avec la table d'à côté.",
@@ -936,7 +936,7 @@ const PATRON_VOICES: PatronVoice[] = [
     context: "Trois-Rivières · Premier passage",
     source: "Tripadvisor",
     date: "Janvier 2026",
-    image: "ambiance-smoke.png",
+    image: "interior-bar.jpg",
   },
   {
     quote: "La pizza Vodka. Trois fois par mois. Pas la peine d'en dire plus.",
@@ -944,7 +944,7 @@ const PATRON_VOICES: PatronVoice[] = [
     context: "Saint-Hyacinthe · 14 visites",
     source: "Instagram",
     date: "Avril 2026",
-    image: "dish-pizza.png",
+    image: "pizza-oven.jpg",
   },
 ];
 
@@ -992,8 +992,8 @@ function Testimonials() {
           <div className="md:col-span-7 relative">
             <div className="aspect-[5/4] overflow-hidden ring-1 ring-cream/10">
               <img
-                src="/images/exterior-dusk.png"
-                alt="Devanture de Chez Florent au crépuscule"
+                src="/images/interior-bar.jpg"
+                alt="Salle à manger de Chez Florent"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -1827,8 +1827,8 @@ function Contact() {
           >
             <div className="bg-bg-primary aspect-[4/5] overflow-hidden group ring-1 ring-bg-primary/15">
               <img 
-                src="/images/exterior-dusk.png" 
-                alt="Devanture de Chez Florent au crépuscule, rue du Roi à Sorel-Tracy" 
+                src="/images/facade-pizza.jpg" 
+                alt="Devanture de Chez Florent, 57 rue du Roi à Sorel-Tracy" 
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
               />
             </div>

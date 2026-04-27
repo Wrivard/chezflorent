@@ -142,7 +142,7 @@ button:focus-visible {
   .ardoise-clip {
     background-image:
       linear-gradient(rgba(244, 201, 160, 0.78), rgba(244, 201, 160, 0.78)),
-      url('/images/dish-tasting.png');
+      url('/images/bufarella-mint.jpg');
     background-size: cover;
     background-position: center;
     background-clip: text;
