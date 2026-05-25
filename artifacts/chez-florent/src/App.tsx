@@ -591,17 +591,17 @@ function About() {
         </motion.p>
 
         {/* Asymmetric Image Stack — clean stack on mobile, editorial triptych on md+ */}
-        <div className="relative mb-24 md:mb-32 md:min-h-[90vh] flex flex-col gap-6 md:block md:gap-0">
+        <div className="relative mb-24 md:mb-32 md:min-h-[125vh] lg:min-h-[100vh] flex flex-col gap-6 md:block md:gap-0">
           <motion.div 
             style={{ y: ySlow }}
-            className="w-[88%] md:w-[50%] aspect-[4/3] overflow-hidden relative md:z-10 ring-1 ring-bg-primary/10"
+            className="w-[88%] md:w-[48%] lg:w-[50%] aspect-[4/3] overflow-hidden relative md:z-10 ring-1 ring-bg-primary/10"
           >
             <img src="/images/tap-pour.jpg" alt="Service au comptoir Chez Florent" className="w-full h-full object-cover" />
           </motion.div>
           
           <motion.div 
             style={{ y: yFast }}
-            className="w-[68%] md:w-[30%] aspect-[3/4] overflow-hidden relative md:absolute md:top-[18%] md:right-0 md:z-20 self-end md:self-auto md:mt-20 ring-1 ring-bg-primary/10"
+            className="w-[68%] md:w-[34%] lg:w-[30%] aspect-[3/4] overflow-hidden relative md:absolute md:top-[8%] lg:top-[18%] md:right-0 md:z-20 self-end md:self-auto md:mt-0 ring-1 ring-bg-primary/10"
           >
             <img src="/images/florent-glass.jpg" alt="Verre signature Chez Florent" className="w-full h-full object-cover" />
           </motion.div>
@@ -611,7 +611,7 @@ function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.15 }}
-            className="w-[78%] md:w-[38%] aspect-[5/4] overflow-hidden relative md:absolute md:bottom-0 md:left-[26%] md:z-[15] ml-[8%] md:ml-0 ring-1 ring-bg-primary/10"
+            className="w-[78%] md:w-[42%] lg:w-[38%] aspect-[5/4] overflow-hidden relative md:absolute md:bottom-0 md:left-[34%] lg:left-[26%] md:z-[15] ml-[8%] md:ml-0 ring-1 ring-bg-primary/10"
           >
             <img src="/images/facade-pizza.jpg" alt="La devanture, 57 rue du Roi" className="w-full h-full object-cover" />
           </motion.div>
