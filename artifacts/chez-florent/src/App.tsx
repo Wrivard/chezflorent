@@ -462,7 +462,7 @@ function Hero() {
           </div>
 
           {/* Broken Type Headline */}
-          <h1 className="font-serif font-light text-cream leading-[1.02] pb-[0.05em] text-[clamp(4.5rem,11vw,11rem)] mb-16 w-full">
+          <h1 className="font-serif font-light text-cream leading-[1.08] pb-[0.18em] text-[clamp(4.5rem,11vw,11rem)] mb-16 w-full">
             <motion.div variants={lineVariants} className="block italic">
               Une cuisine
             </motion.div>
@@ -470,7 +470,7 @@ function Hero() {
               qui raconte
             </motion.div>
             <motion.div variants={lineVariants} className="block ml-[10vw] md:ml-[20vw] pr-[0.4em]">
-              des <span className="relative inline-block italic pb-[0.18em] pr-[0.15em]">
+              des <span className="relative inline-block italic pb-[0.28em] pr-[0.15em]">
                 histoires.
                 <motion.svg 
                   initial={{ pathLength: 0, opacity: 0 }}
@@ -565,7 +565,7 @@ function About() {
         </div>
 
         {/* Massive Pull Quote — dark green text on cream */}
-        <h2 className="font-serif italic font-light text-bg-primary leading-[1] pb-[0.12em] text-[clamp(4rem,11vw,10rem)] mb-10 max-w-6xl flex flex-wrap gap-x-[0.3em] gap-y-4">
+        <h2 className="font-serif italic font-light text-bg-primary leading-[1.1] pb-[0.22em] text-[clamp(4rem,11vw,10rem)] mb-10 max-w-6xl flex flex-wrap gap-x-[0.3em] gap-y-4">
           {quoteWords.map((word, i) => (
             <motion.span
               key={i}
@@ -738,7 +738,7 @@ function Menu() {
             </div>
             
             {/* Image-through-text reveal (with @supports fallback in CSS) */}
-            <h2 className="ardoise-clip font-display text-[clamp(5rem,13vw,13rem)] leading-[1.05] pb-[0.14em] mb-8 max-w-full">
+            <h2 className="ardoise-clip font-display text-[clamp(4.5rem,12vw,12rem)] leading-[1.2] pb-[0.3em] pl-[0.08em] mb-8 max-w-full overflow-visible">
               L'ardoise
             </h2>
             <AnimatePresence mode="wait">
@@ -958,7 +958,7 @@ function Testimonials() {
         <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-6">
           <span aria-hidden="true">◦ </span>Interlude — Voix de la salle
         </div>
-        <h2 className="font-display text-cream leading-[1.02] pb-[0.12em] text-[clamp(4rem,11vw,9.5rem)] mb-8">
+        <h2 className="font-display text-cream leading-[1.18] pb-[0.28em] pl-[0.06em] text-[clamp(3.5rem,10vw,9rem)] mb-8">
           <motion.span
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1118,7 +1118,7 @@ function Agenda() {
           <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-6">
             04 — La programmation
           </div>
-          <h2 className="font-display text-bg-primary leading-[1.02] pb-[0.12em] text-[clamp(4rem,11vw,10rem)]">
+          <h2 className="font-display text-bg-primary leading-[1.18] pb-[0.28em] pl-[0.08em] text-[clamp(3.75rem,10vw,9.5rem)]">
             L'agenda
           </h2>
           <p className="font-sans italic text-bg-primary/65 max-w-2xl text-lg mt-6">
@@ -1407,7 +1407,7 @@ function Reservation() {
             <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
               <span aria-hidden="true">✶ </span>05 — Une table pour vous
             </div>
-            <h2 className="font-display text-[clamp(5rem,14vw,14rem)] text-cream leading-[1.02] pb-[0.12em] mb-8">
+            <h2 className="font-display text-[clamp(4.5rem,12vw,13rem)] text-cream leading-[1.18] pb-[0.28em] mb-8">
               Réserver
             </h2>
             <div className="flex items-baseline gap-4">
@@ -1455,7 +1455,7 @@ function Reservation() {
                 <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
                   <span aria-hidden="true">✶ </span>{status === "group-pending" ? "Demande reçue" : "Confirmé"}
                 </div>
-                <h3 className="font-display text-[clamp(4rem,10vw,8rem)] text-cream mb-8 leading-[1.02] pb-[0.1em]">
+                <h3 className="font-display text-[clamp(3.5rem,9vw,7rem)] text-cream mb-8 leading-[1.18] pb-[0.25em]">
                   Merci
                 </h3>
                 <p className="font-serif italic text-cream-soft text-xl mb-4 max-w-md mx-auto">
@@ -1740,7 +1740,7 @@ function Contact() {
           <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-4">
             06 — Nous trouver
           </div>
-          <h2 className="font-display text-[clamp(4rem,10vw,9rem)] text-bg-primary leading-[1.02] pb-[0.12em] mb-6">
+          <h2 className="font-display text-[clamp(3.5rem,9vw,8rem)] text-bg-primary leading-[1.18] pb-[0.28em] mb-6">
             Passez nous voir
           </h2>
           <p className="font-sans italic text-bg-primary/70 max-w-xl text-base md:text-lg">
