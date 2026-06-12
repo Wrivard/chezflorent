@@ -495,7 +495,7 @@ function Hero() {
                 « L'ardoise change selon les humeurs du chef et les arrivages du marché. »
               </p>
               <p className="font-sans text-[0.95rem] leading-[1.6] text-cream/80 mb-4">
-                Bistro de quartier, 30 places, du mardi au dimanche dès 17h.
+                Bistro du quartier, 75 places assises, 7 jours sur 7.
               </p>
               <div className="hidden md:inline-flex items-center gap-2 text-[0.7rem] font-medium tracking-[0.2em] uppercase text-cream-soft">
                 <span className="relative inline-flex w-1.5 h-1.5" aria-hidden="true">
