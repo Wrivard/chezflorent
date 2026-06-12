@@ -450,7 +450,7 @@ function Hero() {
           {/* Eyebrows */}
           <div className="flex justify-between items-start mb-16">
             <motion.div variants={fadeVariants} className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft">
-              <span aria-hidden="true" className="text-cream-soft/45 mr-3">✶</span>BISTRO — SOREL-TRACY / DEPUIS 2018
+              <span aria-hidden="true" className="text-cream-soft/45 mr-3">✶</span>BISTRO — SOREL-TRACY / DEPUIS 2026
             </motion.div>
             
             <motion.div variants={fadeVariants} className="hidden md:flex flex-col gap-2 text-[0.65rem] font-medium tracking-[0.3em] uppercase text-cream-soft text-right">
@@ -537,7 +537,7 @@ function Hero() {
               <span aria-hidden="true" className="text-cream-soft/45 text-sm">✶</span>
               <span className="font-serif italic text-2xl text-cream px-6">TABLE ARTISANALE</span>
               <span aria-hidden="true" className="text-cream-soft/45 text-sm">✶</span>
-              <span className="font-serif italic text-2xl text-cream px-6">DEPUIS 2018</span>
+              <span className="font-serif italic text-2xl text-cream px-6">DEPUIS 2026</span>
               <span aria-hidden="true" className="text-cream-soft/45 text-sm">✶</span>
             </div>
           ))}
