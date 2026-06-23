@@ -164,7 +164,7 @@ function EventsCalendar({
           const isToday = iso === t;
 
           const base =
-            "min-h-[58px] md:min-h-[116px] rounded-[4px] p-1.5 md:p-2.5 text-left transition-all duration-300 flex flex-col";
+            "min-h-[58px] md:min-h-[150px] rounded-[4px] p-1.5 md:p-2.5 text-left transition-all duration-300 flex flex-col";
 
           if (!hasEvents) {
             return (
@@ -207,22 +207,37 @@ function EventsCalendar({
                 {day}
               </span>
 
-              {/* Desktop: event title chips */}
-              <div className="hidden md:flex flex-col gap-1 mt-1.5 overflow-hidden">
+              {/* Desktop: event detail chips */}
+              <div className="hidden md:flex flex-col gap-1.5 mt-2 overflow-hidden">
                 {dayEvents.slice(0, 2).map((e) => (
-                  <span
+                  <div
                     key={e.id}
-                    className={`block truncate text-[0.66rem] font-semibold leading-snug px-2 py-0.5 rounded-[3px] ${
+                    className={`rounded-[4px] px-2 py-1.5 ${
                       e.soldOut
-                        ? "bg-bg-primary/10 text-bg-primary/55 line-through"
-                        : "bg-orange text-bg-primary"
+                        ? "bg-bg-primary/[0.06] border border-bg-primary/20"
+                        : "bg-orange"
                     }`}
                   >
-                    {e.title}
-                  </span>
+                    <span
+                      className={`block text-[0.72rem] font-semibold leading-snug line-clamp-2 ${
+                        e.soldOut ? "text-bg-primary/55 line-through" : "text-bg-primary"
+                      }`}
+                    >
+                      {e.title}
+                    </span>
+                    {e.soldOut ? (
+                      <span className="inline-block mt-1 text-[0.55rem] font-bold tracking-[0.16em] uppercase bg-bg-primary text-cream px-1.5 py-0.5 rounded-[2px]">
+                        Complet
+                      </span>
+                    ) : (
+                      <span className="block mt-0.5 text-[0.58rem] font-medium tracking-[0.12em] uppercase text-bg-primary/70 truncate">
+                        {e.tag}
+                      </span>
+                    )}
+                  </div>
                 ))}
                 {dayEvents.length > 2 && (
-                  <span className="text-[0.62rem] font-semibold tracking-wide text-orange-dark pl-1">
+                  <span className="text-[0.62rem] font-semibold tracking-wide text-orange-dark pl-0.5">
                     +{dayEvents.length - 2} autre{dayEvents.length - 2 > 1 ? "s" : ""}
                   </span>
                 )}
@@ -285,7 +300,7 @@ function UpcomingList({
       <div className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-6">
         À venir
       </div>
-      <div className="border-t border-bg-primary/15">
+      <div className="grid sm:grid-cols-2 gap-x-12 border-t border-bg-primary/15">
         {list.map((event, i) => (
           <motion.button
             key={event.id}
@@ -314,13 +329,15 @@ function UpcomingList({
               </span>
             </div>
             <div className="flex items-center">
-              <span
-                className={`text-[0.65rem] font-medium tracking-[0.18em] uppercase whitespace-nowrap ${
-                  event.soldOut ? "text-bg-primary/55" : "text-orange"
-                }`}
-              >
-                {event.soldOut ? "Complet" : event.tag}
-              </span>
+              {event.soldOut ? (
+                <span className="text-[0.62rem] font-bold tracking-[0.16em] uppercase whitespace-nowrap bg-bg-primary text-cream px-2.5 py-1 rounded-[2px]">
+                  Complet
+                </span>
+              ) : (
+                <span className="text-[0.65rem] font-medium tracking-[0.18em] uppercase whitespace-nowrap text-orange">
+                  {event.tag}
+                </span>
+              )}
             </div>
           </motion.button>
         ))}
@@ -503,9 +520,11 @@ export default function EventsPage() {
           {/* Calendar + list (light section, echoes the homepage Agenda) */}
           <section className="bg-cream-soft pt-20 md:pt-24 pb-28 md:pb-32 px-6 md:px-12 relative">
             <SectionMarker number="04" tone="light" />
-            <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-14 lg:gap-16">
+            <div className="max-w-7xl mx-auto relative z-10">
               <EventsCalendar events={events} onSelectDate={setSelectedDate} />
-              <UpcomingList events={events} onSelectDate={setSelectedDate} />
+              <div className="mt-20 md:mt-28">
+                <UpcomingList events={events} onSelectDate={setSelectedDate} />
+              </div>
             </div>
           </section>
         </main>
