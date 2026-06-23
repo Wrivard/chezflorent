@@ -310,3 +310,39 @@ export function SectionPreview({
     </div>
   );
 }
+
+export function ConfirmModal({
+  open,
+  title = "Confirmer la suppression",
+  message,
+  confirmLabel = "Supprimer",
+  onConfirm,
+  onClose,
+}: {
+  open: boolean;
+  title?: string;
+  message: string;
+  confirmLabel?: string;
+  onConfirm: () => void;
+  onClose: () => void;
+}) {
+  return (
+    <Modal open={open} onClose={onClose} title={title}>
+      <p className="text-sm text-cream-soft/80">{message}</p>
+      <div className="mt-6 flex items-center gap-3">
+        <Button
+          variant="danger"
+          onClick={() => {
+            onConfirm();
+            onClose();
+          }}
+        >
+          {confirmLabel}
+        </Button>
+        <Button variant="ghost" onClick={onClose}>
+          Annuler
+        </Button>
+      </div>
+    </Modal>
+  );
+}

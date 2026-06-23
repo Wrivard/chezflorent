@@ -16,6 +16,7 @@ import {
   ErrorText,
   Field,
   IconButton,
+  ConfirmModal,
   Modal,
   SectionHeading,
   SectionPreview,
@@ -163,6 +164,14 @@ export default function EventsEditor() {
   const { data: events, isLoading, isError, error } = useListEvents();
   const [cursor, setCursor] = useState<Date>(() => new Date());
   const [modal, setModal] = useState<ModalState>({ mode: "closed" });
+  const [dlg, setDlg] = useState<{
+    open: boolean;
+    message: string;
+    onConfirm: () => void;
+  }>({ open: false, message: "", onConfirm: () => {} });
+  function openDlg(message: string, onConfirm: () => void) {
+    setDlg({ open: true, message, onConfirm });
+  }
 
   const invalidate = () =>
     queryClient.invalidateQueries({ queryKey: getListEventsQueryKey() });
@@ -364,6 +373,13 @@ export default function EventsEditor() {
         description="Voici à quoi ressemble votre programmation sur la page publique."
       />
 
+      <ConfirmModal
+        open={dlg.open}
+        message={dlg.message}
+        onConfirm={dlg.onConfirm}
+        onClose={() => setDlg((d) => ({ ...d, open: false }))}
+      />
+
       <Modal
         open={modal.mode === "create"}
         onClose={() => setModal({ mode: "closed" })}
@@ -398,10 +414,12 @@ export default function EventsEditor() {
               update.mutate({ id: modal.event.id, data: draft })
             }
             onCancel={() => setModal({ mode: "closed" })}
-            onDelete={() => {
-              if (confirm(`Supprimer « ${modal.event.title} » ?`))
-                remove.mutate({ id: modal.event.id });
-            }}
+            onDelete={() =>
+              openDlg(
+                `Supprimer « ${modal.event.title} » ?`,
+                () => remove.mutate({ id: modal.event.id }),
+              )
+            }
             pending={update.isPending || remove.isPending}
             error={update.error ?? remove.error}
           />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   useListHours,
@@ -17,37 +17,31 @@ import {
 } from "./ui";
 import { DAY_NAMES } from "./lib";
 
-function HoursRow({ hours }: { hours: Hours }) {
-  const queryClient = useQueryClient();
-  const [closed, setClosed] = useState(hours.closed);
-  const [openHour, setOpenHour] = useState<string>(
-    hours.openHour != null ? String(hours.openHour) : "",
-  );
-  const [closeHour, setCloseHour] = useState<string>(
-    hours.closeHour != null ? String(hours.closeHour) : "",
-  );
+type DayDraft = { closed: boolean; openHour: string; closeHour: string };
 
-  const update = useUpdateHours({
-    mutation: {
-      onSuccess: () =>
-        queryClient.invalidateQueries({ queryKey: getListHoursQueryKey() }),
-    },
-  });
-
+function HoursRow({
+  dayOfWeek,
+  draft,
+  onChange,
+}: {
+  dayOfWeek: number;
+  draft: DayDraft;
+  onChange: (patch: Partial<DayDraft>) => void;
+}) {
   return (
     <Card>
-      <div className="flex flex-wrap items-end gap-4">
+      <div className="flex flex-wrap items-center gap-4">
         <div className="w-28">
           <span className="block font-serif text-lg text-cream">
-            {DAY_NAMES[hours.dayOfWeek]}
+            {DAY_NAMES[dayOfWeek]}
           </span>
         </div>
         <Checkbox
           label="Fermé"
-          checked={closed}
-          onChange={(e) => setClosed(e.target.checked)}
+          checked={draft.closed}
+          onChange={(e) => onChange({ closed: e.target.checked })}
         />
-        {!closed && (
+        {!draft.closed && (
           <>
             <Field label="Ouverture (h)">
               <TextInput
@@ -55,8 +49,8 @@ function HoursRow({ hours }: { hours: Hours }) {
                 min={0}
                 max={23}
                 className="w-24"
-                value={openHour}
-                onChange={(e) => setOpenHour(e.target.value)}
+                value={draft.openHour}
+                onChange={(e) => onChange({ openHour: e.target.value })}
               />
             </Field>
             <Field label="Fermeture (h)">
@@ -65,36 +59,83 @@ function HoursRow({ hours }: { hours: Hours }) {
                 min={0}
                 max={23}
                 className="w-24"
-                value={closeHour}
-                onChange={(e) => setCloseHour(e.target.value)}
+                value={draft.closeHour}
+                onChange={(e) => onChange({ closeHour: e.target.value })}
               />
             </Field>
           </>
         )}
-        <Button
-          onClick={() =>
-            update.mutate({
-              dayOfWeek: hours.dayOfWeek,
-              data: {
-                closed,
-                openHour: closed || openHour === "" ? null : Number(openHour),
-                closeHour:
-                  closed || closeHour === "" ? null : Number(closeHour),
-              },
-            })
-          }
-          disabled={update.isPending}
-        >
-          {update.isPending ? "…" : "Enregistrer"}
-        </Button>
       </div>
-      <ErrorText error={update.error} />
     </Card>
   );
 }
 
 export default function HoursEditor() {
+  const queryClient = useQueryClient();
   const { data: hours, isLoading, isError, error } = useListHours();
+  const [drafts, setDrafts] = useState<Map<number, DayDraft>>(new Map());
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<unknown>(null);
+  const [saved, setSaved] = useState(false);
+  const initializedRef = useRef(false);
+
+  const update = useUpdateHours();
+
+  useEffect(() => {
+    if (!hours || initializedRef.current) return;
+    initializedRef.current = true;
+    const m = new Map<number, DayDraft>();
+    hours.forEach((h: Hours) =>
+      m.set(h.dayOfWeek, {
+        closed: h.closed,
+        openHour: h.openHour != null ? String(h.openHour) : "",
+        closeHour: h.closeHour != null ? String(h.closeHour) : "",
+      }),
+    );
+    setDrafts(m);
+  }, [hours]);
+
+  function setDay(dayOfWeek: number, patch: Partial<DayDraft>) {
+    setDrafts((prev) => {
+      const next = new Map(prev);
+      const cur = next.get(dayOfWeek) ?? {
+        closed: false,
+        openHour: "",
+        closeHour: "",
+      };
+      next.set(dayOfWeek, { ...cur, ...patch });
+      return next;
+    });
+    setSaved(false);
+  }
+
+  async function saveAll() {
+    setSaving(true);
+    setSaveError(null);
+    setSaved(false);
+    try {
+      await Promise.all(
+        [...drafts.entries()].map(([dayOfWeek, d]) =>
+          update.mutateAsync({
+            dayOfWeek,
+            data: {
+              closed: d.closed,
+              openHour:
+                d.closed || d.openHour === "" ? null : Number(d.openHour),
+              closeHour:
+                d.closed || d.closeHour === "" ? null : Number(d.closeHour),
+            },
+          }),
+        ),
+      );
+      queryClient.invalidateQueries({ queryKey: getListHoursQueryKey() });
+      setSaved(true);
+    } catch (err) {
+      setSaveError(err);
+    } finally {
+      setSaving(false);
+    }
+  }
 
   if (isLoading) return <p className="text-cream-soft/60">Chargement…</p>;
   if (isError) return <ErrorText error={error} />;
@@ -107,9 +148,27 @@ export default function HoursEditor() {
         Indiquez l'heure d'ouverture et de fermeture sur 24h (ex. 17 et 22).
         L'horaire affiché sur le site est regroupé automatiquement.
       </p>
-      {list.map((row) => (
-        <HoursRow key={row.dayOfWeek} hours={row} />
-      ))}
+      {list.map((row) => {
+        const draft = drafts.get(row.dayOfWeek);
+        if (!draft) return null;
+        return (
+          <HoursRow
+            key={row.dayOfWeek}
+            dayOfWeek={row.dayOfWeek}
+            draft={draft}
+            onChange={(patch) => setDay(row.dayOfWeek, patch)}
+          />
+        );
+      })}
+      <div className="flex items-center gap-4 pt-2">
+        <Button onClick={saveAll} disabled={saving || drafts.size === 0}>
+          {saving ? "Enregistrement…" : "Enregistrer les horaires"}
+        </Button>
+        {saved && !saving && (
+          <span className="text-sm text-orange">✓ Enregistré</span>
+        )}
+      </div>
+      <ErrorText error={saveError} />
 
       <SectionPreview
         section="horaires"

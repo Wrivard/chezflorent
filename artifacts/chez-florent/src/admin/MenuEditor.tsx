@@ -15,6 +15,7 @@ import {
   Badge,
   Button,
   Card,
+  ConfirmModal,
   ErrorText,
   Field,
   IconButton,
@@ -30,6 +31,18 @@ function useMenuInvalidate() {
   const queryClient = useQueryClient();
   return () =>
     queryClient.invalidateQueries({ queryKey: getGetMenuQueryKey() });
+}
+
+function formatPrice(raw: string): string {
+  const cleaned = raw.trim().replace(/\s*\$\s*$/, "").replace(",", ".");
+  if (!cleaned) return "";
+  const n = parseFloat(cleaned);
+  if (isNaN(n)) return raw.trim();
+  const cents = Math.round(n * 100);
+  const integer = Math.floor(cents / 100);
+  const decimal = cents % 100;
+  if (decimal === 0) return `${integer} $`;
+  return `${integer},${String(decimal).padStart(2, "0")} $`;
 }
 
 interface ItemDraft {
@@ -85,6 +98,9 @@ function ItemForm({
           <TextInput
             value={draft.price}
             onChange={(e) => setDraft({ ...draft, price: e.target.value })}
+            onBlur={(e) =>
+              setDraft({ ...draft, price: formatPrice(e.target.value) })
+            }
           />
         </Field>
         <div className="sm:col-span-2">
@@ -161,6 +177,14 @@ function CategorySection({ category }: { category: MenuCategory }) {
   const invalidate = useMenuInvalidate();
   const [editCat, setEditCat] = useState(false);
   const [itemModal, setItemModal] = useState<ItemModalState>({ mode: "closed" });
+  const [dlg, setDlg] = useState<{
+    open: boolean;
+    message: string;
+    onConfirm: () => void;
+  }>({ open: false, message: "", onConfirm: () => {} });
+  function openDlg(message: string, onConfirm: () => void) {
+    setDlg({ open: true, message, onConfirm });
+  }
 
   const [label, setLabel] = useState(category.label);
   const [slug, setSlug] = useState(category.slug);
@@ -207,14 +231,12 @@ function CategorySection({ category }: { category: MenuCategory }) {
           <IconButton
             label="Supprimer la catégorie"
             className="border-red-400/30 text-red-300 hover:border-red-400/60"
-            onClick={() => {
-              if (
-                confirm(
-                  `Supprimer la catégorie « ${category.label} » et tous ses plats ?`,
-                )
+            onClick={() =>
+              openDlg(
+                `Supprimer la catégorie « ${category.label} » et tous ses plats ?`,
+                () => removeCat.mutate({ id: category.id }),
               )
-                removeCat.mutate({ id: category.id });
-            }}
+            }
           >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M3 6h18M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
@@ -313,10 +335,12 @@ function CategorySection({ category }: { category: MenuCategory }) {
                     <IconButton
                       label="Supprimer le plat"
                       className="border-red-400/30 text-red-300 hover:border-red-400/60"
-                      onClick={() => {
-                        if (confirm(`Supprimer « ${item.name} » ?`))
-                          removeItem.mutate({ id: item.id });
-                      }}
+                      onClick={() =>
+                        openDlg(
+                          `Supprimer « ${item.name} » ?`,
+                          () => removeItem.mutate({ id: item.id }),
+                        )
+                      }
                     >
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M3 6h18M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
@@ -344,6 +368,13 @@ function CategorySection({ category }: { category: MenuCategory }) {
           + Ajouter un plat à « {category.label} »
         </Button>
       </div>
+
+      <ConfirmModal
+        open={dlg.open}
+        message={dlg.message}
+        onConfirm={dlg.onConfirm}
+        onClose={() => setDlg((d) => ({ ...d, open: false }))}
+      />
 
       <Modal
         open={itemModal.mode === "create"}
@@ -397,10 +428,12 @@ function CategorySection({ category }: { category: MenuCategory }) {
               })
             }
             onCancel={() => setItemModal({ mode: "closed" })}
-            onDelete={() => {
-              if (confirm(`Supprimer « ${itemModal.item.name} » ?`))
-                removeItem.mutate({ id: itemModal.item.id });
-            }}
+            onDelete={() =>
+              openDlg(
+                `Supprimer « ${itemModal.item.name} » ?`,
+                () => removeItem.mutate({ id: itemModal.item.id }),
+              )
+            }
             pending={updateItem.isPending || removeItem.isPending}
             error={updateItem.error ?? removeItem.error}
           />
