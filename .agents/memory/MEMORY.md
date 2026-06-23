@@ -1,1 +1,2 @@
 - [Vercel deploy of pnpm-monorepo scaffold](vercel-deploy.md) — catch-all `api/[...path].ts` wraps the Express app; SPA fallback rewrite must exclude `/api`; vite.config must not hard-require PORT/BASE_PATH at build.
+- [Testing setup (Vitest + Supertest)](testing-setup.md) — api-server integration tests hit the real Express app + real DB; devDeps go in the sub-package, tests in `test/`, silence pino, clean up + `pool.end()`.
