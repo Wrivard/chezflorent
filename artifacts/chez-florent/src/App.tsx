@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { motion, useScroll, useTransform, useSpring, useReducedMotion, AnimatePresence, useMotionValue } from "framer-motion";
 import Lenis from 'lenis';
 
@@ -1274,34 +1274,20 @@ function useTodaysHours() {
 type EventPrefill = { id: string; title: string; date: string; display: string };
 
 function Reservation() {
-  const [status, setStatus] = useState<"idle" | "success" | "group-pending">("idle");
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [selectedDate, setSelectedDate] = useState<string>("");
-  const [guestsValue, setGuestsValue] = useState<string>("");
   const [prefill, setPrefill] = useState<EventPrefill | null>(null);
-  const [noteValue, setNoteValue] = useState<string>("");
   const liveStatus = useOpenStatus();
   const todaysHours = useTodaysHours();
 
-  // Today, formatted as YYYY-MM-DD in local time (for date input min).
-  const todayIso = useMemo(() => {
-    const d = new Date();
-    const off = d.getTimezoneOffset();
-    return new Date(d.getTime() - off * 60_000).toISOString().slice(0, 10);
-  }, []);
-
   // Read event prefill from sessionStorage on mount + when Agenda fires custom event.
+  // With the TableAgent widget we can't auto-fill its fields, so we surface the event
+  // as a reminder for the guest to mention it in their reservation note.
   useEffect(() => {
     const read = () => {
       try {
         const raw = sessionStorage.getItem(PREFILL_KEY);
         if (!raw) return;
         const data = JSON.parse(raw) as EventPrefill;
-        if (data && data.title && data.date) {
-          setPrefill(data);
-          setSelectedDate(data.date);
-          setNoteValue(`Réservation pour : ${data.title} — ${data.display}`);
-        }
+        if (data && data.title && data.date) setPrefill(data);
       } catch {}
     };
     read();
@@ -1312,70 +1298,6 @@ function Reservation() {
   const clearPrefill = () => {
     try { sessionStorage.removeItem(PREFILL_KEY); } catch {}
     setPrefill(null);
-    setNoteValue("");
-  };
-
-  // Compute service-hours window for the selected date (used to bound the time field).
-  const dateWindow = useMemo(() => {
-    if (!selectedDate) return null;
-    const [y, m, d] = selectedDate.split("-").map(Number);
-    const dt = new Date(y, (m ?? 1) - 1, d ?? 1);
-    const day = dt.getDay();
-    const w = SCHEDULE[day];
-    if (!w) return { closed: true, open: "", close: "", dayLabel: DAY_NAMES_FR[day] };
-    return {
-      closed: false,
-      open: `${String(w.open).padStart(2, "0")}:00`,
-      close: `${String(w.close).padStart(2, "0")}:00`,
-      dayLabel: DAY_NAMES_FR[day],
-    };
-  }, [selectedDate]);
-
-  const isMondayClosed = !!(dateWindow && dateWindow.closed);
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    const newErrors: Record<string, string> = {};
-
-    const name = String(fd.get("name") || "").trim();
-    const phone = String(fd.get("phone") || "").trim();
-    const date = String(fd.get("date") || "");
-    const time = String(fd.get("time") || "");
-    const guests = String(fd.get("guests") || "");
-
-    if (name.length < 2) newErrors.name = "Indiquez votre nom (au moins 2 lettres).";
-    // Loose Canadian phone validation: 10 digits anywhere in the string.
-    const digits = phone.replace(/\D/g, "");
-    if (!phone) newErrors.phone = "Un numéro pour vous rappeler, s'il vous plaît.";
-    else if (digits.length < 10) newErrors.phone = "Numéro à 10 chiffres requis (ex. 450 743-1448).";
-
-    if (!date) newErrors.date = "Choisissez une date.";
-    else if (date < todayIso) newErrors.date = "La date doit être aujourd'hui ou plus tard.";
-    else {
-      const [y, m, d] = date.split("-").map(Number);
-      const day = new Date(y, (m ?? 1) - 1, d ?? 1).getDay();
-      if (!SCHEDULE[day]) newErrors.date = "Nous sommes fermés le lundi — choisissez un autre jour.";
-    }
-
-    if (!time) newErrors.time = "Choisissez une heure.";
-    else if (dateWindow && !dateWindow.closed) {
-      if (time < dateWindow.open || time > dateWindow.close) {
-        newErrors.time = `Service de ${dateWindow.open.replace(":00","h")} à ${dateWindow.close.replace(":00","h")} ce ${dateWindow.dayLabel}.`;
-      }
-    }
-
-    if (!guests) newErrors.guests = "Combien serez-vous ?";
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
-    setErrors({});
-    // Groups of 9+ get a different success state — we'll call them.
-    setStatus(guests === "9+" ? "group-pending" : "success");
-    clearPrefill();
   };
 
   return (
@@ -1413,12 +1335,12 @@ function Reservation() {
             <div className="flex items-baseline gap-4">
               <div className="h-[1px] w-12 bg-orange shrink-0 translate-y-[-0.4em]"></div>
               <p className="font-serif italic text-cream-soft/90 text-lg md:text-2xl max-w-2xl leading-snug">
-                Le téléphone reste le plus chaleureux — le formulaire fait très bien aussi.
+                Le téléphone reste le plus chaleureux — la réservation en ligne fait très bien aussi.
               </p>
             </div>
           </motion.div>
 
-          {/* 3-Step path — what happens after you submit */}
+          {/* 3-Step path — what happens with the online widget */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1427,8 +1349,8 @@ function Reservation() {
             className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 border-y border-border py-10 md:py-12 mb-16 md:mb-20"
           >
             {[
-              { n: "01", title: "Choisissez", body: "Date, heure, nombre de couverts. Le formulaire connaît nos heures de service." },
-              { n: "02", title: "On vous rappelle", body: "Confirmation par téléphone sous 24 h — toujours par une vraie voix." },
+              { n: "01", title: "Choisissez", body: "Date, heure, nombre de couverts — les disponibilités sont en temps réel." },
+              { n: "02", title: "Confirmation immédiate", body: "Votre table est confirmée sur-le-champ, avec un courriel de confirmation." },
               { n: "03", title: "À ce soir", body: "Une table près du four — sauf si vous nous demandez le coin tranquille." },
             ].map((s, i) => (
               <div key={s.n} className="flex flex-col gap-2 relative md:pl-6">
@@ -1440,285 +1362,128 @@ function Reservation() {
             ))}
           </motion.div>
 
-          <AnimatePresence mode="wait">
-            {status !== "idle" ? (
-              <motion.div
-                key="success"
-                role="status"
-                aria-live="polite"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5, ease: EASE }}
-                className="text-center py-24 bg-bg-primary border border-border p-8 md:p-16 max-w-3xl mx-auto"
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+            {/* LEFT — Info / live status / phone — sticky on desktop */}
+            <aside className="lg:col-span-5 lg:sticky lg:top-32 self-start space-y-8">
+              {/* Phone CTA — the signature moment, oversized Pacifico */}
+              <a
+                href="tel:+14507431448"
+                className="block group relative border border-border bg-bg-secondary/50 backdrop-blur-sm p-7 md:p-9 hover:border-orange/50 transition-colors overflow-hidden"
+                aria-label="Appeler Chez Florent au 450 743-1448"
               >
-                <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
-                  <span aria-hidden="true">✶ </span>{status === "group-pending" ? "Demande reçue" : "Confirmé"}
+                <div aria-hidden="true" className="absolute left-0 top-0 bottom-0 w-[3px] bg-orange" />
+                <div className="text-[0.7rem] tracking-[0.22em] uppercase text-orange mb-3">
+                  <span aria-hidden="true">✶ </span>Le plus chaleureux
                 </div>
-                <h3 className="font-display text-[clamp(3.5rem,9vw,7rem)] text-cream mb-8 leading-[1.18] pb-[0.25em]">
-                  Merci
-                </h3>
-                <p className="font-serif italic text-cream-soft text-xl mb-4 max-w-md mx-auto">
-                  {status === "group-pending"
-                    ? "Pour les groupes de 9 et plus, on préfère en parler de vive voix. On vous rappelle d'ici 24 heures."
-                    : "On vous appelle d'ici 24 heures pour confirmer votre table."}
-                </p>
-                <p className="font-sans text-sm text-cream-soft/85 mb-12">
-                  Une question urgente ?{" "}
-                  <a href="tel:+14507431448" className="text-cream underline underline-offset-4 hover:text-orange transition-colors">
-                    450 743-1448
-                  </a>
-                </p>
-                <button
-                  onClick={() => setStatus("idle")}
-                  className="text-[0.875rem] text-cream link-underline uppercase tracking-widest font-medium"
-                >
-                  Faire une nouvelle réservation
-                </button>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="form-grid"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5, ease: EASE }}
-                className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16"
-              >
-                {/* LEFT — Info / live status / phone — sticky on desktop */}
-                <aside className="lg:col-span-5 lg:sticky lg:top-32 self-start space-y-8">
-                  {/* Phone CTA — the signature moment, oversized Pacifico */}
-                  <a
-                    href="tel:+14507431448"
-                    className="block group relative border border-border bg-bg-secondary/50 backdrop-blur-sm p-7 md:p-9 hover:border-orange/50 transition-colors overflow-hidden"
-                    aria-label="Appeler Chez Florent au 450 743-1448"
+                <div className="font-display text-cream text-[clamp(2.25rem,4.6vw,3rem)] group-hover:text-orange transition-colors leading-[0.95] mb-3 whitespace-nowrap">
+                  450&nbsp;743&#8209;1448
+                </div>
+                <div className="text-[0.75rem] tracking-[0.18em] uppercase text-cream-soft/85 group-hover:text-cream transition-colors">
+                  Touchez pour appeler <span aria-hidden="true">↘</span>
+                </div>
+              </a>
+
+              {/* Live status panel */}
+              <div className="border border-border bg-bg-secondary/30 backdrop-blur-sm p-7 md:p-8">
+                <div className="flex items-center justify-between mb-5">
+                  <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85">
+                    <span aria-hidden="true">◦ </span>En ce moment
+                  </div>
+                  <span className="relative inline-flex w-2 h-2 shrink-0">
+                    {liveStatus.open && (
+                      <span className="absolute inset-0 rounded-full bg-orange opacity-60 animate-ping"></span>
+                    )}
+                    <span className={`relative inline-block w-2 h-2 rounded-full ${liveStatus.open ? 'bg-orange' : 'bg-cream-soft/40'}`}></span>
+                  </span>
+                </div>
+                <div className="font-serif italic text-cream text-2xl md:text-3xl leading-none mb-6">
+                  {liveStatus.label}
+                </div>
+                <div className="flex items-baseline justify-between gap-4 pt-5 border-t border-border">
+                  <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85">
+                    Aujourd'hui
+                  </div>
+                  <div className="font-serif text-cream text-lg md:text-xl">
+                    {todaysHours}
+                  </div>
+                </div>
+              </div>
+
+              {/* Editorial promise — three lines with bullets */}
+              <ul className="space-y-3 pl-1">
+                {[
+                  "Disponibilités et confirmation en temps réel",
+                  "Courriel de confirmation automatique",
+                  "Groupes de 9 et plus : appelez-nous directement",
+                ].map((line, i) => (
+                  <li key={i} className="flex items-start gap-3 font-sans text-[0.95rem] text-cream-soft/85">
+                    <span aria-hidden="true" className="text-cream-soft/45 leading-none pt-[0.35rem]">✶</span>
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
+            </aside>
+
+            {/* RIGHT — branded panel wrapping the live TableAgent widget */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.7, ease: EASE }}
+              className="lg:col-span-7 bg-bg-primary border border-border relative"
+            >
+              {/* Panel header bar — in our brand */}
+              <div className="flex items-center justify-between gap-4 px-6 md:px-8 py-5 border-b border-border">
+                <div className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-orange">
+                  <span aria-hidden="true">✶ </span>Réservation en ligne
+                </div>
+                <div aria-hidden="true" className="text-[0.65rem] font-medium tracking-[0.25em] uppercase text-cream-soft/75">
+                  ◦ Temps réel
+                </div>
+              </div>
+
+              {/* Event reminder (from Agenda) — informational, since the widget can't be pre-filled */}
+              {prefill && (
+                <div className="flex flex-wrap items-center justify-between gap-3 bg-orange/10 border-b border-orange/40 px-6 md:px-8 py-4">
+                  <div className="font-sans text-sm text-cream">
+                    <span className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-orange mr-2">Événement</span>
+                    Pour <span className="font-serif italic">{prefill.title}</span> — {prefill.display}.{" "}
+                    <span className="text-cream-soft">Mentionnez-le dans la note de réservation.</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={clearPrefill}
+                    className="text-[0.7rem] tracking-[0.18em] uppercase text-cream-soft hover:text-cream underline underline-offset-4"
                   >
-                    <div aria-hidden="true" className="absolute left-0 top-0 bottom-0 w-[3px] bg-orange" />
-                    <div className="text-[0.7rem] tracking-[0.22em] uppercase text-orange mb-3">
-                      <span aria-hidden="true">✶ </span>Le plus chaleureux
-                    </div>
-                    <div className="font-display text-cream text-[clamp(2.25rem,4.6vw,3rem)] group-hover:text-orange transition-colors leading-[0.95] mb-3 whitespace-nowrap">
-                      450&nbsp;743&#8209;1448
-                    </div>
-                    <div className="text-[0.75rem] tracking-[0.18em] uppercase text-cream-soft/85 group-hover:text-cream transition-colors">
-                      Touchez pour appeler <span aria-hidden="true">↘</span>
-                    </div>
+                    Retirer
+                  </button>
+                </div>
+              )}
+
+              {/* The real TableAgent booking widget — light surface on a cream backing
+                  so it reads as an intentional inset card inside our dark panel. */}
+              <div className="bg-cream-soft p-3 md:p-4">
+                <iframe
+                  title="Réserver une table chez Florent"
+                  src="https://tableagent.com/iframe/chez-florent/"
+                  sandbox="allow-forms allow-modals allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
+                  className="w-full min-w-[300px] min-h-[760px] border-0 block bg-cream-soft"
+                  style={{ minHeight: 760 }}
+                />
+              </div>
+
+              {/* Footnote — fallback to phone */}
+              <div className="px-6 md:px-8 py-5 border-t border-border">
+                <p className="font-serif italic text-cream-soft/85 text-sm">
+                  Un souci avec le formulaire ?{" "}
+                  <a href="tel:+14507431448" className="text-cream underline underline-offset-4 hover:text-orange transition-colors not-italic">
+                    Appelez-nous au 450 743-1448
                   </a>
-
-                  {/* Live status panel */}
-                  <div className="border border-border bg-bg-secondary/30 backdrop-blur-sm p-7 md:p-8">
-                    <div className="flex items-center justify-between mb-5">
-                      <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85">
-                        <span aria-hidden="true">◦ </span>En ce moment
-                      </div>
-                      <span className="relative inline-flex w-2 h-2 shrink-0">
-                        {liveStatus.open && (
-                          <span className="absolute inset-0 rounded-full bg-orange opacity-60 animate-ping"></span>
-                        )}
-                        <span className={`relative inline-block w-2 h-2 rounded-full ${liveStatus.open ? 'bg-orange' : 'bg-cream-soft/40'}`}></span>
-                      </span>
-                    </div>
-                    <div className="font-serif italic text-cream text-2xl md:text-3xl leading-none mb-6">
-                      {liveStatus.label}
-                    </div>
-                    <div className="flex items-baseline justify-between gap-4 pt-5 border-t border-border">
-                      <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85">
-                        Aujourd'hui
-                      </div>
-                      <div className="font-serif text-cream text-lg md:text-xl">
-                        {todaysHours}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Editorial promise — three lines with bullets */}
-                  <ul className="space-y-3 pl-1">
-                    {[
-                      "Confirmation par téléphone sous 24h",
-                      "Annulation libre jusqu'à 4h avant",
-                      "Groupes de 9 et plus : on vous rappelle",
-                    ].map((line, i) => (
-                      <li key={i} className="flex items-start gap-3 font-sans text-[0.95rem] text-cream-soft/85">
-                        <span aria-hidden="true" className="text-cream-soft/45 leading-none pt-[0.35rem]">✶</span>
-                        <span>{line}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </aside>
-
-                {/* RIGHT — the form, premium dark panel */}
-                <motion.form
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.7, ease: EASE }}
-                  onSubmit={handleSubmit}
-                  aria-labelledby="reservation-heading"
-                  className="lg:col-span-7 flex flex-col gap-10 bg-bg-primary p-8 md:p-12 border border-border relative"
-                  noValidate
-                >
-                  {/* Decorative corner notation */}
-                  <div aria-hidden="true" className="absolute top-6 right-6 text-[0.65rem] font-medium tracking-[0.25em] uppercase text-cream-soft/75">
-                    ◦ Formulaire
-                  </div>
-
-                  {prefill && (
-                    <div className="flex flex-wrap items-center justify-between gap-3 bg-orange/10 border border-orange/40 px-4 py-3 -mt-2">
-                      <div className="font-sans text-sm text-cream">
-                        <span className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-orange mr-2">Événement</span>
-                        Réservation pour : <span className="font-serif italic">{prefill.title}</span> — {prefill.display}
-                      </div>
-                      <button
-                        type="button"
-                        onClick={clearPrefill}
-                        className="text-[0.7rem] tracking-[0.18em] uppercase text-cream-soft hover:text-cream underline underline-offset-4"
-                      >
-                        Retirer
-                      </button>
-                    </div>
-                  )}
-
-                  <div id="reservation-heading" className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-orange">
-                    Vos coordonnées
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div className="flex flex-col relative group">
-                      <label htmlFor="res-name" className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-cream-soft mb-2 transition-colors group-focus-within:text-orange">
-                        Nom complet
-                      </label>
-                      <input
-                        id="res-name"
-                        type="text"
-                        name="name"
-                        autoComplete="name"
-                        aria-invalid={!!errors.name}
-                        aria-describedby={errors.name ? "err-name" : undefined}
-                        className="bg-transparent border-b border-border text-cream py-3 focus:outline-none focus:border-orange transition-colors rounded-none text-xl font-serif"
-                      />
-                      {errors.name && <span id="err-name" className="text-orange text-xs mt-2 absolute -bottom-6">{errors.name}</span>}
-                    </div>
-                    <div className="flex flex-col relative group">
-                      <label htmlFor="res-phone" className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-cream-soft mb-2 transition-colors group-focus-within:text-orange">
-                        Téléphone
-                      </label>
-                      <input
-                        id="res-phone"
-                        type="tel"
-                        name="phone"
-                        autoComplete="tel"
-                        inputMode="tel"
-                        aria-invalid={!!errors.phone}
-                        aria-describedby={errors.phone ? "err-phone" : undefined}
-                        className="bg-transparent border-b border-border text-cream py-3 focus:outline-none focus:border-orange transition-colors rounded-none text-xl font-serif"
-                      />
-                      {errors.phone && <span id="err-phone" className="text-orange text-xs mt-2 absolute -bottom-6">{errors.phone}</span>}
-                    </div>
-                  </div>
-
-                  <div className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-orange mt-2">
-                    Votre table
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                    <div className="flex flex-col relative group">
-                      <label htmlFor="res-date" className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-cream-soft mb-2 transition-colors group-focus-within:text-orange">
-                        Date
-                      </label>
-                      <input
-                        id="res-date"
-                        type="date"
-                        name="date"
-                        min={todayIso}
-                        value={selectedDate}
-                        onChange={(e) => setSelectedDate(e.target.value)}
-                        aria-invalid={!!errors.date}
-                        aria-describedby={errors.date ? "err-date" : isMondayClosed ? "hint-date" : undefined}
-                        className="bg-transparent border-b border-border text-cream py-3 focus:outline-none focus:border-orange transition-colors rounded-none [color-scheme:dark] text-xl font-serif"
-                      />
-                      {errors.date
-                        ? <span id="err-date" className="text-orange text-xs mt-2 absolute -bottom-6">{errors.date}</span>
-                        : isMondayClosed && <span id="hint-date" className="text-orange/90 text-xs mt-2 absolute -bottom-6">Fermé le lundi.</span>}
-                    </div>
-                    <div className="flex flex-col relative group">
-                      <label htmlFor="res-time" className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-cream-soft mb-2 transition-colors group-focus-within:text-orange">
-                        Heure
-                      </label>
-                      <input
-                        id="res-time"
-                        type="time"
-                        name="time"
-                        min={dateWindow && !dateWindow.closed ? dateWindow.open : undefined}
-                        max={dateWindow && !dateWindow.closed ? dateWindow.close : undefined}
-                        step={900}
-                        disabled={isMondayClosed}
-                        aria-invalid={!!errors.time}
-                        aria-describedby={errors.time ? "err-time" : dateWindow && !dateWindow.closed ? "hint-time" : undefined}
-                        className="bg-transparent border-b border-border text-cream py-3 focus:outline-none focus:border-orange transition-colors rounded-none [color-scheme:dark] text-xl font-serif disabled:opacity-50"
-                      />
-                      {errors.time
-                        ? <span id="err-time" className="text-orange text-xs mt-2 absolute -bottom-6">{errors.time}</span>
-                        : dateWindow && !dateWindow.closed && (
-                          <span id="hint-time" className="text-cream-soft/85 text-xs mt-2 absolute -bottom-6">
-                            Service {dateWindow.open.replace(":00","h")} – {dateWindow.close.replace(":00","h")}
-                          </span>
-                        )}
-                    </div>
-                    <div className="flex flex-col relative group">
-                      <label htmlFor="res-guests" className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-cream-soft mb-2 transition-colors group-focus-within:text-orange">
-                        Personnes
-                      </label>
-                      <select
-                        id="res-guests"
-                        name="guests"
-                        value={guestsValue}
-                        onChange={(e) => setGuestsValue(e.target.value)}
-                        aria-invalid={!!errors.guests}
-                        aria-describedby={errors.guests ? "err-guests" : guestsValue === "9+" ? "hint-guests" : undefined}
-                        className="bg-transparent border-b border-border text-cream py-3 focus:outline-none focus:border-orange transition-colors rounded-none appearance-none text-xl font-serif"
-                      >
-                        <option value="" className="bg-bg-primary text-base font-sans">Sélectionner</option>
-                        {[1, 2, 3, 4, 5, 6, 7, 8].map(n => <option key={n} value={n} className="bg-bg-primary text-base font-sans">{n}</option>)}
-                        <option value="9+" className="bg-bg-primary text-base font-sans">9 et plus</option>
-                      </select>
-                      {errors.guests
-                        ? <span id="err-guests" className="text-orange text-xs mt-2 absolute -bottom-6">{errors.guests}</span>
-                        : guestsValue === "9+" && <span id="hint-guests" className="text-orange/90 text-xs mt-2 absolute -bottom-6">On vous rappelle pour les groupes.</span>}
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col relative group">
-                    <label htmlFor="res-note" className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-cream-soft mb-2 transition-colors group-focus-within:text-orange">
-                      Une note pour la maison <span className="text-cream-soft/75 normal-case tracking-normal">(facultatif)</span>
-                    </label>
-                    <textarea
-                      id="res-note"
-                      name="note"
-                      rows={2}
-                      value={noteValue}
-                      onChange={(e) => setNoteValue(e.target.value)}
-                      placeholder="Anniversaire, allergie, table en coin…"
-                      className="bg-transparent border-b border-border text-cream py-3 focus:outline-none focus:border-orange transition-colors rounded-none text-base font-serif italic resize-none placeholder:text-cream-soft/60"
-                    />
-                  </div>
-
-                  {/* Submit row — big arrow CTA, full-width on mobile */}
-                  <div className="flex flex-col gap-6 mt-6 pt-8 border-t border-border md:flex-row md:items-center md:justify-between">
-                    <p className="font-serif italic text-cream-soft/85 text-sm max-w-sm">
-                      En envoyant, vous acceptez qu'on vous rappelle pour confirmer.
-                    </p>
-                    <MagneticButton
-                      type="submit"
-                      className="group inline-flex items-center justify-center gap-4 w-full md:w-auto px-10 md:px-14 py-6 bg-orange text-bg-primary font-medium tracking-[0.15em] uppercase text-sm md:text-base transition-colors hover:bg-orange-dark focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange whitespace-nowrap"
-                    >
-                      <span>Confirmer la réservation</span>
-                      <span className="text-lg leading-none transition-transform duration-300 group-hover:translate-x-1">↘</span>
-                    </MagneticButton>
-                  </div>
-                </motion.form>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                  .
+                </p>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
     </>
