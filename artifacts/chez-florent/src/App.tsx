@@ -1277,18 +1277,6 @@ function Agenda() {
         <div className="border-t border-bg-primary/15">
           {agendaEvents.map((event, i) => {
             const isActive = i === activeIdx;
-            const handleClick = () => {
-              if (event.soldOut) return;
-              try {
-                sessionStorage.setItem(PREFILL_KEY, JSON.stringify({
-                  id: event.id,
-                  title: event.title,
-                  date: event.isoDate,
-                  display: `${event.date.day} ${event.date.month}`,
-                }));
-                window.dispatchEvent(new CustomEvent("chez-florent:event-prefill"));
-              } catch {}
-            };
             const sharedProps = {
               initial: { opacity: 0, y: 20 },
               whileInView: { opacity: 1, y: 0 },
@@ -1298,7 +1286,7 @@ function Agenda() {
               onFocus: () => setActiveIdx(i),
               "aria-label": event.soldOut
                 ? `${event.date.day} ${event.date.month} · ${event.title} — complet`
-                : `${event.date.day} ${event.date.month} · ${event.title} — réserver`,
+                : `${event.date.day} ${event.date.month} · ${event.title} — réserver par téléphone`,
               className: `group grid grid-cols-[64px_1fr_auto] md:grid-cols-[120px_1fr_auto] gap-4 md:gap-12 py-8 md:py-10 border-b border-bg-primary/15 transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset ${event.soldOut ? 'opacity-60 cursor-not-allowed' : isActive ? 'bg-bg-primary/[0.06]' : 'hover:bg-bg-primary/[0.04]'} px-3 md:px-6`,
             } as const;
             const inner = (
@@ -1331,7 +1319,7 @@ function Agenda() {
                     {event.soldOut ? (
                       <span className="text-bg-primary/70">— Complet</span>
                     ) : (
-                      <span className="text-bg-primary/75 group-hover:text-bg-primary transition-colors">Réserver →</span>
+                      <span className="text-bg-primary/75 group-hover:text-bg-primary transition-colors">Réserver par tél. →</span>
                     )}
                   </span>
                 </div>
@@ -1347,8 +1335,7 @@ function Agenda() {
             return (
               <motion.a
                 key={event.id}
-                href="#reservation"
-                onClick={handleClick}
+                href="tel:+14507431448"
                 {...sharedProps}
               >
                 {inner}
@@ -1365,8 +1352,13 @@ function Agenda() {
             Voir le calendrier complet
             <span aria-hidden="true">→</span>
           </a>
-          <p className="font-sans italic text-bg-primary/65 text-sm text-center">
-            « La programmation peut changer — un coup de fil et c'est confirmé. »
+          <p className="font-sans text-bg-primary/75 text-sm text-center max-w-md">
+            <span className="font-semibold text-bg-primary">Réservation des soirées par téléphone uniquement.</span>{" "}
+            Appelez-nous au{" "}
+            <a href="tel:+14507431448" className="text-orange font-semibold underline underline-offset-2 hover:text-orange-dark whitespace-nowrap">
+              450 743-1448
+            </a>
+            .
           </p>
         </div>
       </div>

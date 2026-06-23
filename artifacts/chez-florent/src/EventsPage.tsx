@@ -9,9 +9,11 @@ import {
   useAgendaEventsData,
   EASE,
   EASE_SMOOTH,
-  PREFILL_KEY,
   type AgendaEvent,
 } from "./App";
+
+const RESTO_PHONE = "450 743-1448";
+const RESTO_PHONE_HREF = "tel:+14507431448";
 
 const MONTHS_FULL_FR = [
   "janvier", "février", "mars", "avril", "mai", "juin",
@@ -38,22 +40,6 @@ function fullDateLabel(iso: string): string {
 function todayIso(): string {
   const now = new Date();
   return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
-}
-
-function navigateToReservation(event: AgendaEvent): void {
-  try {
-    sessionStorage.setItem(
-      PREFILL_KEY,
-      JSON.stringify({
-        id: event.id,
-        title: event.title,
-        date: event.isoDate,
-        display: `${event.date.day} ${event.date.month}`,
-      }),
-    );
-  } catch {}
-  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-  window.location.href = `${base}/#reservation`;
 }
 
 // -----------------------------------------------------------------------------
@@ -443,17 +429,34 @@ function DayModal({
                   Soirée complète
                 </div>
               ) : (
-                <button
-                  type="button"
-                  onClick={() => navigateToReservation(event)}
+                <a
+                  href={RESTO_PHONE_HREF}
+                  aria-label={`Appeler Chez Florent au ${RESTO_PHONE} pour réserver`}
                   className="inline-flex items-center gap-3 px-6 py-3 bg-orange text-bg-primary text-[0.72rem] font-medium tracking-[0.2em] uppercase rounded-[2px] hover:bg-orange-dark transition-colors"
                 >
-                  Réserver pour cette soirée
-                  <span aria-hidden="true">→</span>
-                </button>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
+                  </svg>
+                  Réserver par téléphone
+                </a>
               )}
             </article>
           ))}
+
+          {/* Phone-only reservation notice */}
+          <div className="flex items-start gap-3 rounded-[3px] border border-orange/40 bg-orange/[0.08] px-4 py-4">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-orange shrink-0 mt-0.5" aria-hidden="true">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+            <p className="font-sans text-cream-soft/90 text-[0.85rem] leading-relaxed">
+              <span className="font-semibold text-cream">Réservation par téléphone uniquement.</span>{" "}
+              Les places pour nos soirées ne se réservent pas en ligne — appelez-nous au{" "}
+              <a href={RESTO_PHONE_HREF} className="text-orange font-semibold underline underline-offset-2 hover:text-orange-dark whitespace-nowrap">
+                {RESTO_PHONE}
+              </a>
+              .
+            </p>
+          </div>
         </div>
       </motion.div>
     </motion.div>
