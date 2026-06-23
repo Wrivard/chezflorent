@@ -278,18 +278,22 @@ function useOpenStatus(): { open: boolean; label: string } {
 export function Navbar({
   activeSection,
   onEventsPage = false,
+  onMenuPage = false,
 }: {
   activeSection: string;
   onEventsPage?: boolean;
+  onMenuPage?: boolean;
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const status = useOpenStatus();
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  const onSubPage = onEventsPage || onMenuPage;
   const sectionHref = (id: string) =>
-    onEventsPage ? `${base}/#${id}` : `#${id}`;
-  const homeHref = onEventsPage ? `${base}/` : "#accueil";
+    onSubPage ? `${base}/#${id}` : `#${id}`;
+  const homeHref = onSubPage ? `${base}/` : "#accueil";
   const eventsHref = `${base}/evenements`;
+  const menuHref = `${base}/menu`;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
@@ -341,7 +345,7 @@ export function Navbar({
 
             <div className="hidden md:flex items-center gap-7 lg:gap-8 text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft">
               <a href={sectionHref("a-propos")} className={`link-underline hover:text-cream transition-colors ${activeSection === "a-propos" ? "active text-cream" : ""}`}>À propos</a>
-              <a href={sectionHref("menu")} className={`link-underline hover:text-cream transition-colors ${activeSection === "menu" ? "active text-cream" : ""}`}>Menu</a>
+              <a href={menuHref} className={`link-underline hover:text-cream transition-colors ${onMenuPage ? "active text-cream" : ""}`}>Menu</a>
               <a href={eventsHref} className={`link-underline hover:text-cream transition-colors ${onEventsPage ? "active text-cream" : ""}`}>Agenda</a>
               <a href={sectionHref("reservation")} className={`link-underline hover:text-cream transition-colors ${activeSection === "reservation" ? "active text-cream" : ""}`}>Réservation</a>
               <a href={sectionHref("contact")} className={`link-underline hover:text-cream transition-colors ${activeSection === "contact" ? "active text-cream" : ""}`}>Contact</a>
@@ -386,7 +390,7 @@ export function Navbar({
             <div className="flex flex-col gap-8 text-3xl font-serif text-cream">
               <a href={homeHref} onClick={closeMenu} className="hover:text-orange transition-colors">Accueil</a>
               <a href={sectionHref("a-propos")} onClick={closeMenu} className="hover:text-orange transition-colors">À propos</a>
-              <a href={sectionHref("menu")} onClick={closeMenu} className="hover:text-orange transition-colors">L'ardoise</a>
+              <a href={menuHref} onClick={closeMenu} className="hover:text-orange transition-colors">L'ardoise</a>
               <a href={eventsHref} onClick={closeMenu} className="hover:text-orange transition-colors">Agenda</a>
               <a href={sectionHref("reservation")} onClick={closeMenu} className="hover:text-orange transition-colors">Réserver une table</a>
               <a href={sectionHref("contact")} onClick={closeMenu} className="hover:text-orange transition-colors">Nous trouver</a>
@@ -679,8 +683,8 @@ function About() {
   );
 }
 
-type Dish = { name: string; price: string; desc: string; image: string };
-type MenuCategory = { id: string; label: string; tagline: string; dishes: Dish[] };
+export type Dish = { name: string; price: string; desc: string; image: string };
+export type MenuCategory = { id: string; label: string; tagline: string; dishes: Dish[] };
 
 const menuCategories: MenuCategory[] = [
   {
@@ -1142,13 +1146,13 @@ const DAY_FULL_FR = [
 
 // Resolve an image reference. Stored values may be full paths ("/images/x.jpg",
 // "/api/uploads/...", "https://...") or bare filenames from the legacy constants.
-function imgSrc(image: string): string {
+export function imgSrc(image: string): string {
   if (!image) return "";
   if (image.startsWith("/") || image.startsWith("http")) return image;
   return `/images/${image}`;
 }
 
-function useMenuCategoriesData(): MenuCategory[] {
+export function useMenuCategoriesData(): MenuCategory[] {
   const { data } = useGetMenu();
   if (!data || data.length === 0) return menuCategories;
   return data.map((c) => ({
