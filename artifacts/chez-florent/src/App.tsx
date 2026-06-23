@@ -1974,6 +1974,7 @@ export default function App() {
   }, []);
 
   // Lenis Smooth Scroll
+  const lenisRef = useRef<Lenis | null>(null);
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion || showPreloader || previewMode) return;
@@ -1983,6 +1984,7 @@ export default function App() {
       smoothWheel: true, 
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) 
     });
+    lenisRef.current = lenis;
 
     let rafId = 0;
     function raf(time: number) {
@@ -2008,9 +2010,34 @@ export default function App() {
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
+      lenisRef.current = null;
       document.removeEventListener('click', handleClick);
     };
   }, [showPreloader]);
+
+  // When arriving from a sub-page link (e.g. /#reservation), the homepage may
+  // still be running its intro/preloader, so the browser's native hash jump is
+  // lost. Once the preloader is done, scroll to the targeted section ourselves.
+  useEffect(() => {
+    if (showPreloader || previewMode) return;
+    const hash = window.location.hash;
+    if (!hash || hash === "#") return;
+    let el: Element | null = null;
+    try {
+      el = document.querySelector(hash);
+    } catch {
+      return;
+    }
+    if (!el) return;
+    const rafId = requestAnimationFrame(() => {
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(el as HTMLElement, { offset: -80 });
+      } else {
+        (el as HTMLElement).scrollIntoView({ behavior: "smooth" });
+      }
+    });
+    return () => cancelAnimationFrame(rafId);
+  }, [showPreloader, previewMode]);
 
   // Preview mode: render ONLY the targeted section, with no navbar, hero or
   // footer, so the admin preview shows that single section in isolation and the
