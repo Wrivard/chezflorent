@@ -7,6 +7,7 @@ import {
   SectionMarker,
   usePhotos,
   useHoursItems,
+  imgSrc,
   EASE,
 } from "./App";
 
@@ -32,15 +33,31 @@ export default function ContactPage() {
         <main>
           {/* Hero / header */}
           <section className="relative bg-bg-primary pt-40 md:pt-52 pb-16 md:pb-20 px-6 md:px-12 overflow-hidden">
-            <SectionMarker number="06" />
+            {/* Background photo */}
+            <img
+              src={imgSrc("exterior-dusk.png")}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
+            />
+            {/* Accent overlay — dark base + orange tint to guarantee text contrast */}
             <div
               aria-hidden="true"
-              className="absolute top-0 right-0 w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] -translate-y-1/3 translate-x-1/4 pointer-events-none rounded-full"
+              className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  "radial-gradient(circle, rgba(216, 90, 44, 0.10) 0%, transparent 60%)",
+                  "linear-gradient(180deg, rgba(14,31,28,0.82) 0%, rgba(14,31,28,0.72) 45%, rgba(14,31,28,0.94) 100%)",
               }}
             />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 pointer-events-none mix-blend-multiply"
+              style={{
+                background:
+                  "radial-gradient(120% 90% at 80% 0%, rgba(216,90,44,0.28) 0%, transparent 55%)",
+              }}
+            />
+            <SectionMarker number="06" />
             <div className="max-w-7xl mx-auto relative z-10">
               <motion.div
                 initial={{ opacity: 0, y: 24 }}
