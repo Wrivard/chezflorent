@@ -279,21 +279,27 @@ export function Navbar({
   activeSection,
   onEventsPage = false,
   onMenuPage = false,
+  onAboutPage = false,
+  onContactPage = false,
 }: {
   activeSection: string;
   onEventsPage?: boolean;
   onMenuPage?: boolean;
+  onAboutPage?: boolean;
+  onContactPage?: boolean;
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const status = useOpenStatus();
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-  const onSubPage = onEventsPage || onMenuPage;
+  const onSubPage = onEventsPage || onMenuPage || onAboutPage || onContactPage;
   const sectionHref = (id: string) =>
     onSubPage ? `${base}/#${id}` : `#${id}`;
   const homeHref = onSubPage ? `${base}/` : "#accueil";
   const eventsHref = `${base}/evenements`;
   const menuHref = `${base}/menu`;
+  const aboutHref = `${base}/a-propos`;
+  const contactHref = `${base}/contact`;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
@@ -344,11 +350,11 @@ export function Navbar({
             </a>
 
             <div className="hidden md:flex items-center gap-7 lg:gap-8 text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft">
-              <a href={sectionHref("a-propos")} className={`link-underline hover:text-cream transition-colors ${activeSection === "a-propos" ? "active text-cream" : ""}`}>À propos</a>
+              <a href={homeHref} className={`link-underline hover:text-cream transition-colors ${!onSubPage && activeSection === "accueil" ? "active text-cream" : ""}`}>Accueil</a>
+              <a href={aboutHref} className={`link-underline hover:text-cream transition-colors ${onAboutPage ? "active text-cream" : ""}`}>À propos</a>
               <a href={menuHref} className={`link-underline hover:text-cream transition-colors ${onMenuPage ? "active text-cream" : ""}`}>Menu</a>
               <a href={eventsHref} className={`link-underline hover:text-cream transition-colors ${onEventsPage ? "active text-cream" : ""}`}>Agenda</a>
-              <a href={sectionHref("reservation")} className={`link-underline hover:text-cream transition-colors ${activeSection === "reservation" ? "active text-cream" : ""}`}>Réservation</a>
-              <a href={sectionHref("contact")} className={`link-underline hover:text-cream transition-colors ${activeSection === "contact" ? "active text-cream" : ""}`}>Contact</a>
+              <a href={contactHref} className={`link-underline hover:text-cream transition-colors ${onContactPage ? "active text-cream" : ""}`}>Contact</a>
               <a
                 href={sectionHref("reservation")}
                 className="px-5 py-2 border border-orange text-orange hover:bg-orange hover:text-bg-primary transition-all duration-300 rounded-[2px]"
@@ -389,11 +395,11 @@ export function Navbar({
             </div>
             <div className="flex flex-col gap-8 text-3xl font-serif text-cream">
               <a href={homeHref} onClick={closeMenu} className="hover:text-orange transition-colors">Accueil</a>
-              <a href={sectionHref("a-propos")} onClick={closeMenu} className="hover:text-orange transition-colors">À propos</a>
+              <a href={aboutHref} onClick={closeMenu} className="hover:text-orange transition-colors">À propos</a>
               <a href={menuHref} onClick={closeMenu} className="hover:text-orange transition-colors">L'ardoise</a>
               <a href={eventsHref} onClick={closeMenu} className="hover:text-orange transition-colors">Agenda</a>
+              <a href={contactHref} onClick={closeMenu} className="hover:text-orange transition-colors">Nous trouver</a>
               <a href={sectionHref("reservation")} onClick={closeMenu} className="hover:text-orange transition-colors">Réserver une table</a>
-              <a href={sectionHref("contact")} onClick={closeMenu} className="hover:text-orange transition-colors">Nous trouver</a>
             </div>
           </motion.div>
         )}
@@ -1205,7 +1211,7 @@ function useScheduleData(): ScheduleMap {
 }
 
 // Builds the marquee strings by grouping consecutive days that share hours.
-function useHoursItems(): string[] {
+export function useHoursItems(): string[] {
   const schedule = useScheduleData();
   const order = [2, 3, 4, 5, 6, 0, 1]; // Tue → Sun, then Mon
   const groups: { days: number[]; band: { open: number; close: number } | null }[] = [];
@@ -1246,7 +1252,7 @@ const PHOTO_FALLBACK: PhotoMap = {
   facade: { url: "/images/facade-pizza.jpg", alt: "Devanture de Chez Florent, 57 rue du Roi à Sorel-Tracy" },
 };
 
-function usePhotos(): PhotoMap {
+export function usePhotos(): PhotoMap {
   const { data } = useListPhotos();
   const out: PhotoMap = { ...PHOTO_FALLBACK };
   if (data) {
@@ -1826,6 +1832,7 @@ function LegalModal({ which, onClose }: { which: LegalKey; onClose: () => void }
 export function Footer() {
   const [legal, setLegal] = useState<LegalKey | null>(null);
   const year = new Date().getFullYear();
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
   return (
     <footer className="bg-bg-primary pt-20 relative z-10 overflow-hidden flex flex-col">
@@ -1848,10 +1855,11 @@ export function Footer() {
           <nav aria-label="Navigation rapide">
             <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85 mb-4">Visiter</div>
             <ul className="space-y-2 font-sans text-cream text-sm">
-              <li><a href="#menu" className="hover:text-orange transition-colors">Menu</a></li>
-              <li><a href="#agenda" className="hover:text-orange transition-colors">Agenda</a></li>
-              <li><a href="#reservation" className="hover:text-orange transition-colors">Réservation</a></li>
-              <li><a href="#contact" className="hover:text-orange transition-colors">Nous trouver</a></li>
+              <li><a href={`${base}/`} className="hover:text-orange transition-colors">Accueil</a></li>
+              <li><a href={`${base}/a-propos`} className="hover:text-orange transition-colors">À propos</a></li>
+              <li><a href={`${base}/menu`} className="hover:text-orange transition-colors">Menu</a></li>
+              <li><a href={`${base}/evenements`} className="hover:text-orange transition-colors">Agenda</a></li>
+              <li><a href={`${base}/contact`} className="hover:text-orange transition-colors">Nous trouver</a></li>
             </ul>
           </nav>
           <div>
