@@ -290,6 +290,15 @@ export default function MenuPage() {
                   Notre carte complète — à partager, les plats du chef et le bar.
                   L'ardoise évolue selon les arrivages et les humeurs de la cuisine.
                 </p>
+                <a
+                  href="https://irp.cdn-website.com/d33e0c61/files/uploaded/ardoise+mai.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 mt-8 px-5 py-2.5 border border-orange text-orange text-[0.75rem] font-medium tracking-[0.2em] uppercase hover:bg-orange hover:text-bg-primary transition-all duration-300 rounded-[2px]"
+                >
+                  Voir la carte en PDF
+                  <span aria-hidden="true">↗</span>
+                </a>
               </motion.div>
             </div>
           </section>
