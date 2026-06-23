@@ -145,7 +145,7 @@ function EventsCalendar({
         {WEEKDAYS_SHORT_FR.map((d) => (
           <div
             key={d}
-            className="text-center text-[0.6rem] md:text-[0.7rem] font-medium tracking-[0.18em] uppercase text-bg-primary/55 py-1"
+            className="text-center text-[0.6rem] md:text-[0.7rem] font-semibold tracking-[0.18em] uppercase text-bg-primary/70 py-1"
           >
             {d}
           </div>
@@ -164,19 +164,21 @@ function EventsCalendar({
           const isToday = iso === t;
 
           const base =
-            "min-h-[58px] md:min-h-[112px] rounded-[3px] p-1.5 md:p-2.5 text-left transition-colors duration-300 flex flex-col";
+            "min-h-[58px] md:min-h-[116px] rounded-[4px] p-1.5 md:p-2.5 text-left transition-all duration-300 flex flex-col";
 
           if (!hasEvents) {
             return (
               <div
                 key={iso}
-                className={`${base} border border-bg-primary/10 ${
-                  isToday ? "ring-1 ring-orange/60" : ""
+                className={`${base} border ${
+                  isToday
+                    ? "border-orange/70 bg-orange/5"
+                    : "border-bg-primary/10"
                 }`}
               >
                 <span
-                  className={`font-serif text-[0.8rem] md:text-base ${
-                    isToday ? "text-orange font-semibold" : "text-bg-primary/40"
+                  className={`font-serif text-[0.85rem] md:text-base ${
+                    isToday ? "text-orange font-bold" : "text-bg-primary/60"
                   }`}
                 >
                   {day}
@@ -193,12 +195,12 @@ function EventsCalendar({
               aria-label={`${dayEvents.length} événement${
                 dayEvents.length > 1 ? "s" : ""
               } le ${fullDateLabel(iso)}`}
-              className={`${base} border bg-bg-primary/[0.05] hover:bg-bg-primary/[0.1] cursor-pointer group ${
-                isToday ? "border-orange" : "border-bg-primary/20"
+              className={`${base} border bg-white/70 hover:bg-white shadow-sm hover:shadow-md cursor-pointer group ${
+                isToday ? "border-orange ring-1 ring-orange ring-inset" : "border-bg-primary/15"
               }`}
             >
               <span
-                className={`font-serif font-semibold text-[0.8rem] md:text-base ${
+                className={`font-serif font-bold text-[0.85rem] md:text-base ${
                   isToday ? "text-orange" : "text-bg-primary"
                 }`}
               >
@@ -210,17 +212,17 @@ function EventsCalendar({
                 {dayEvents.slice(0, 2).map((e) => (
                   <span
                     key={e.id}
-                    className={`block truncate text-[0.62rem] leading-tight px-1.5 py-0.5 rounded-[2px] border-l-2 ${
+                    className={`block truncate text-[0.66rem] font-semibold leading-snug px-2 py-0.5 rounded-[3px] ${
                       e.soldOut
-                        ? "border-bg-primary/30 bg-bg-primary/5 text-bg-primary/50 line-through"
-                        : "border-orange bg-orange/15 text-orange-dark"
+                        ? "bg-bg-primary/10 text-bg-primary/55 line-through"
+                        : "bg-orange text-bg-primary"
                     }`}
                   >
                     {e.title}
                   </span>
                 ))}
                 {dayEvents.length > 2 && (
-                  <span className="text-[0.6rem] font-medium tracking-wide text-bg-primary/55 pl-1">
+                  <span className="text-[0.62rem] font-semibold tracking-wide text-orange-dark pl-1">
                     +{dayEvents.length - 2} autre{dayEvents.length - 2 > 1 ? "s" : ""}
                   </span>
                 )}
@@ -231,13 +233,13 @@ function EventsCalendar({
                 {dayEvents.slice(0, 3).map((e) => (
                   <span
                     key={e.id}
-                    className={`w-1.5 h-1.5 rounded-full ${
+                    className={`w-2 h-2 rounded-full ${
                       e.soldOut ? "bg-bg-primary/30" : "bg-orange"
                     }`}
                   />
                 ))}
                 {dayEvents.length > 3 && (
-                  <span className="text-[0.55rem] text-bg-primary/55">
+                  <span className="text-[0.55rem] font-semibold text-orange-dark">
                     +{dayEvents.length - 3}
                   </span>
                 )}
@@ -247,12 +249,15 @@ function EventsCalendar({
         })}
       </div>
 
-      <div className="flex items-center gap-5 mt-6 text-[0.7rem] text-bg-primary/55">
+      <div className="flex items-center gap-5 mt-6 text-[0.72rem] font-medium text-bg-primary/70">
         <span className="inline-flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-orange" /> Événement
+          <span className="w-3 h-3 rounded-[3px] bg-orange" /> Événement
         </span>
         <span className="inline-flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-bg-primary/30" /> Complet
+          <span className="w-3 h-3 rounded-[3px] bg-bg-primary/25" /> Complet
+        </span>
+        <span className="hidden sm:inline text-bg-primary/45 italic font-sans">
+          Cliquez sur une date pour les détails
         </span>
       </div>
     </div>
