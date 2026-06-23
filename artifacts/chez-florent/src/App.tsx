@@ -692,6 +692,11 @@ function About() {
 export type Dish = { name: string; price: string; desc: string; image: string };
 export type MenuCategory = { id: string; label: string; tagline: string; dishes: Dish[] };
 
+// Categories that belong to the food menu. Everything else (the imported
+// Untappd drinks) is treated as the bar/boissons menu. Used to show food-only
+// on the homepage and to split the two sections on the menu page.
+export const FOOD_SLUGS = ["partager", "plats"];
+
 const menuCategories: MenuCategory[] = [
   {
     id: "partager",
@@ -732,10 +737,12 @@ const menuCategories: MenuCategory[] = [
 ];
 
 function Menu() {
-  const categories = useMenuCategoriesData();
-  const [activeCategoryId, setActiveCategoryId] = useState<string>(categories[0].id);
+  const allCategories = useMenuCategoriesData();
+  const categories = allCategories.filter((c) => FOOD_SLUGS.includes(c.id));
+  const [activeCategoryId, setActiveCategoryId] = useState<string>(categories[0]?.id ?? "");
   const [activeIndex, setActiveIndex] = useState(0);
   const activeCategory = categories.find((c) => c.id === activeCategoryId) ?? categories[0];
+  if (!activeCategory) return null;
   const dishes = activeCategory.dishes;
   const activeDish = dishes[Math.min(activeIndex, dishes.length - 1)];
 
@@ -890,18 +897,24 @@ function Menu() {
             {/* Right: sticky photo collage that cross-fades on dish focus */}
             <div className="lg:sticky lg:top-32 w-full">
               <div className="relative w-full aspect-[4/5] overflow-hidden bg-bg-secondary ring-1 ring-cream/10">
-                <AnimatePresence mode="sync">
-                  <motion.img
-                    key={activeDish.image}
-                    src={imgSrc(activeDish.image)}
-                    alt={activeDish.name}
-                    initial={{ opacity: 0, scale: 1.05 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 1 }}
-                    transition={{ duration: 0.6, ease: EASE }}
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                </AnimatePresence>
+                {activeDish?.image ? (
+                  <AnimatePresence mode="sync">
+                    <motion.img
+                      key={activeDish.image}
+                      src={imgSrc(activeDish.image)}
+                      alt={activeDish.name}
+                      initial={{ opacity: 0, scale: 1.05 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 1 }}
+                      transition={{ duration: 0.6, ease: EASE }}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  </AnimatePresence>
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center text-cream-soft/40 font-serif italic">
+                    Chez Florent
+                  </div>
+                )}
                 {/* Bottom gradient + caption overlay */}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-bg-primary/90 via-bg-primary/40 to-transparent p-6 pt-16 z-10">
                   <AnimatePresence mode="wait">

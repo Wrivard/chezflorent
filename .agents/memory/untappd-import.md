@@ -20,3 +20,9 @@ description: How Chez Florent pulls its drinks menu from Untappd into the CMS, a
 - Running the importer OVERWRITES any CMS edits to drink categories. Only run it for an intentional re-pull. Bidirectional sync (push) is a deferred future step — the write token would be stored as a secret only when building that.
 
 **How to apply:** if drinks render wrong or stale, re-run `pnpm --filter @workspace/api-server run import:untappd`; the frontend MenuPage is fully data-driven so no code change is needed for menu content.
+
+## Food vs drinks display split (frontend)
+- The same `FOOD_SLUGS` allowlist (mirrors the importer's `PROTECTED_SLUGS`) drives the UI split: homepage `Menu` shows FOOD only; MenuPage shows two labeled sections — "La cuisine" (food, with the sticky cross-fade photo panel) and "Le bar" (drinks, photo-less `showPhoto={false}`, two-column item grid).
+- Imported drinks have empty taglines and no images, so the board renders the tagline block only when truthy and falls back to a "Chez Florent" placeholder where a photo would be.
+- **Gotcha:** the menu page mounts TWO `MenuBoard` instances. Their Framer Motion active-tab underline MUST use a per-board `layoutId` (parametrized by `boardId`, e.g. `menu-page-tab-underline-${boardId}`). A shared layoutId makes the underline animate/jump between the two boards.
+- `MenuBoard` and the homepage `Menu` index `categories[0]`; both are guarded (`categories[0]?.id ?? ""` + early `return null` when no category) so an empty filter result can't crash.

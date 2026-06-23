@@ -10,6 +10,7 @@ import {
   imgSrc,
   EASE,
   EASE_SMOOTH,
+  FOOD_SLUGS,
   type MenuCategory,
 } from "./App";
 
@@ -39,10 +40,114 @@ function SuppliersMarquee() {
 // -----------------------------------------------------------------------------
 // MENU BOARD — tabs + dish list + sticky photo (mirrors the homepage L'ardoise)
 // -----------------------------------------------------------------------------
-function MenuBoard({ categories }: { categories: MenuCategory[] }) {
-  const [activeCategoryId, setActiveCategoryId] = useState<string>(categories[0].id);
+function BoardHeading({ kicker, title }: { kicker: string; title: string }) {
+  return (
+    <div className="mb-10 md:mb-12">
+      <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-3">
+        <span aria-hidden="true">✶ </span>
+        {kicker}
+      </div>
+      <h2 className="font-display text-cream text-[clamp(2.75rem,7vw,5rem)] leading-[1.1]">
+        {title}
+      </h2>
+    </div>
+  );
+}
+
+function DishList({
+  activeCategory,
+  dishes,
+  activeIndex,
+  setActiveIndex,
+  twoCol,
+}: {
+  activeCategory: MenuCategory;
+  dishes: MenuCategory["dishes"];
+  activeIndex: number;
+  setActiveIndex: (i: number) => void;
+  twoCol: boolean;
+}) {
+  return (
+    <div
+      role="tabpanel"
+      id={`menu-panel-${activeCategory.id}`}
+      aria-labelledby={`menu-tab-${activeCategory.id}`}
+      className="grid grid-cols-1"
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeCategory.id}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.4, ease: EASE }}
+          className={`grid grid-cols-1 ${twoCol ? "md:grid-cols-2 md:gap-x-10 lg:gap-x-16" : ""}`}
+        >
+          {dishes.map((dish, i) => {
+            const isActive = i === activeIndex;
+            return (
+              <div
+                key={`${activeCategory.id}-${i}`}
+                className={`group grid grid-cols-[40px_1fr_auto] md:grid-cols-[60px_1fr_auto] gap-4 md:gap-8 py-8 border-b border-border cursor-default transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset ${
+                  isActive ? "bg-bg-secondary/40" : "hover:bg-bg-secondary/30"
+                } px-3 md:px-6`}
+                onMouseEnter={() => setActiveIndex(i)}
+                onFocus={() => setActiveIndex(i)}
+                role="button"
+                tabIndex={0}
+                aria-pressed={isActive}
+                aria-label={`Aperçu de ${dish.name}`}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setActiveIndex(i);
+                  }
+                }}
+              >
+                <div
+                  className={`font-serif italic text-lg md:text-xl pt-1 transition-colors ${
+                    isActive ? "text-orange" : "text-orange/70"
+                  }`}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </div>
+                <motion.div
+                  className="flex flex-col gap-1"
+                  animate={{ x: isActive ? 12 : 0 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                >
+                  <h3 className="font-serif font-semibold text-[1.5rem] md:text-[1.75rem] text-cream leading-tight">
+                    {dish.name}
+                  </h3>
+                  <p className="font-sans font-light italic text-cream-soft/85 max-w-[600px] leading-relaxed text-sm md:text-base">
+                    {dish.desc}
+                  </p>
+                </motion.div>
+                <div className="font-serif font-semibold text-[1.25rem] md:text-[1.5rem] text-orange whitespace-nowrap pt-1">
+                  {dish.price}
+                </div>
+              </div>
+            );
+          })}
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function MenuBoard({
+  categories,
+  showPhoto = true,
+  boardId = "menu",
+}: {
+  categories: MenuCategory[];
+  showPhoto?: boolean;
+  boardId?: string;
+}) {
+  const [activeCategoryId, setActiveCategoryId] = useState<string>(categories[0]?.id ?? "");
   const [activeIndex, setActiveIndex] = useState(0);
   const activeCategory = categories.find((c) => c.id === activeCategoryId) ?? categories[0];
+  if (!activeCategory) return null;
   const dishes = activeCategory.dishes;
   const activeDish = dishes[Math.min(activeIndex, dishes.length - 1)];
 
@@ -53,18 +158,20 @@ function MenuBoard({ categories }: { categories: MenuCategory[] }) {
 
   return (
     <>
-      <AnimatePresence mode="wait">
-        <motion.p
-          key={activeCategory.id}
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -6 }}
-          transition={{ duration: 0.35, ease: EASE }}
-          className="font-sans italic text-cream-soft/80 max-w-2xl text-lg mb-12"
-        >
-          {activeCategory.tagline}
-        </motion.p>
-      </AnimatePresence>
+      {activeCategory.tagline ? (
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={activeCategory.id}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.35, ease: EASE }}
+            className="font-sans italic text-cream-soft/80 max-w-2xl text-lg mb-12"
+          >
+            {activeCategory.tagline}
+          </motion.p>
+        </AnimatePresence>
+      ) : null}
 
       {/* Category tabs */}
       <div
@@ -98,7 +205,7 @@ function MenuBoard({ categories }: { categories: MenuCategory[] }) {
               </span>
               {isActive && (
                 <motion.div
-                  layoutId="menu-page-tab-underline"
+                  layoutId={`menu-page-tab-underline-${boardId}`}
                   className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-orange"
                   transition={{ duration: 0.4, ease: EASE_SMOOTH }}
                 />
@@ -108,126 +215,79 @@ function MenuBoard({ categories }: { categories: MenuCategory[] }) {
         })}
       </div>
 
-      {/* Two-column: list left, sticky photo right */}
-      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_400px] gap-8 lg:gap-16 items-start">
-        {/* Left: dish list */}
-        <div
-          role="tabpanel"
-          id={`menu-panel-${activeCategory.id}`}
-          aria-labelledby={`menu-tab-${activeCategory.id}`}
-          className="grid grid-cols-1"
-        >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeCategory.id}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.4, ease: EASE }}
-              className="grid grid-cols-1"
-            >
-              {dishes.map((dish, i) => {
-                const isActive = i === activeIndex;
-                return (
-                  <div
-                    key={`${activeCategory.id}-${i}`}
-                    className={`group grid grid-cols-[40px_1fr_auto] md:grid-cols-[60px_1fr_auto] gap-4 md:gap-8 py-8 border-b border-border cursor-default transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset ${
-                      isActive ? "bg-bg-secondary/40" : "hover:bg-bg-secondary/30"
-                    } px-3 md:px-6`}
-                    onMouseEnter={() => setActiveIndex(i)}
-                    onFocus={() => setActiveIndex(i)}
-                    role="button"
-                    tabIndex={0}
-                    aria-pressed={isActive}
-                    aria-label={`Aperçu de ${dish.name}`}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        setActiveIndex(i);
-                      }
-                    }}
-                  >
-                    <div
-                      className={`font-serif italic text-lg md:text-xl pt-1 transition-colors ${
-                        isActive ? "text-orange" : "text-orange/70"
-                      }`}
-                    >
-                      {String(i + 1).padStart(2, "0")}
-                    </div>
-                    <motion.div
-                      className="flex flex-col gap-1"
-                      animate={{ x: isActive ? 12 : 0 }}
-                      transition={{ duration: 0.3, ease: "easeOut" }}
-                    >
-                      <h3 className="font-serif font-semibold text-[1.5rem] md:text-[1.75rem] text-cream leading-tight">
-                        {dish.name}
-                      </h3>
-                      <p className="font-sans font-light italic text-cream-soft/85 max-w-[600px] leading-relaxed text-sm md:text-base">
-                        {dish.desc}
-                      </p>
-                    </motion.div>
-                    <div className="font-serif font-semibold text-[1.25rem] md:text-[1.5rem] text-orange whitespace-nowrap pt-1">
-                      {dish.price}
-                    </div>
-                  </div>
-                );
-              })}
-            </motion.div>
-          </AnimatePresence>
-        </div>
+      {showPhoto ? (
+        /* Two-column: list left, sticky photo right */
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_400px] gap-8 lg:gap-16 items-start">
+          <DishList
+            activeCategory={activeCategory}
+            dishes={dishes}
+            activeIndex={activeIndex}
+            setActiveIndex={setActiveIndex}
+            twoCol={false}
+          />
 
-        {/* Right: sticky photo that cross-fades on dish focus */}
-        <div className="lg:sticky lg:top-32 w-full">
-          <div className="relative w-full aspect-[4/5] overflow-hidden bg-bg-secondary ring-1 ring-cream/10">
-            {activeDish?.image ? (
-              <AnimatePresence mode="sync">
-                <motion.img
-                  key={activeDish.image}
-                  src={imgSrc(activeDish.image)}
-                  alt={activeDish.name}
-                  initial={{ opacity: 0, scale: 1.05 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 1 }}
-                  transition={{ duration: 0.6, ease: EASE }}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-              </AnimatePresence>
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center text-cream-soft/40 font-serif italic">
-                Chez Florent
+          {/* Right: sticky photo that cross-fades on dish focus */}
+          <div className="lg:sticky lg:top-32 w-full">
+            <div className="relative w-full aspect-[4/5] overflow-hidden bg-bg-secondary ring-1 ring-cream/10">
+              {activeDish?.image ? (
+                <AnimatePresence mode="sync">
+                  <motion.img
+                    key={activeDish.image}
+                    src={imgSrc(activeDish.image)}
+                    alt={activeDish.name}
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 1 }}
+                    transition={{ duration: 0.6, ease: EASE }}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                </AnimatePresence>
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center text-cream-soft/40 font-serif italic">
+                  Chez Florent
+                </div>
+              )}
+              {/* Bottom gradient + caption overlay */}
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-bg-primary/90 via-bg-primary/40 to-transparent p-6 pt-16 z-10">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeIndex}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.35, ease: EASE }}
+                    className="flex items-end justify-between gap-4"
+                  >
+                    <div>
+                      <div className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-orange mb-1">
+                        ◦ {String(activeIndex + 1).padStart(2, "0")} — Aperçu
+                      </div>
+                      <div className="font-display text-cream text-[1.75rem] leading-none">
+                        {activeDish?.name.replace(/«\s*|\s*»/g, "")}
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
               </div>
-            )}
-            {/* Bottom gradient + caption overlay */}
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-bg-primary/90 via-bg-primary/40 to-transparent p-6 pt-16 z-10">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeIndex}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.35, ease: EASE }}
-                  className="flex items-end justify-between gap-4"
-                >
-                  <div>
-                    <div className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-orange mb-1">
-                      ◦ {String(activeIndex + 1).padStart(2, "0")} — Aperçu
-                    </div>
-                    <div className="font-display text-cream text-[1.75rem] leading-none">
-                      {activeDish?.name.replace(/«\s*|\s*»/g, "")}
-                    </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+            </div>
+            <div className="mt-4 flex items-center justify-between text-[0.7rem] font-medium tracking-[0.2em] uppercase text-cream-soft/75">
+              <span>— Glissez sur un plat</span>
+              <span className="font-serif italic normal-case tracking-normal text-cream-soft/85">
+                {String(activeIndex + 1).padStart(2, "0")} / {String(dishes.length).padStart(2, "0")}
+              </span>
             </div>
           </div>
-          <div className="mt-4 flex items-center justify-between text-[0.7rem] font-medium tracking-[0.2em] uppercase text-cream-soft/75">
-            <span>— Glissez sur un plat</span>
-            <span className="font-serif italic normal-case tracking-normal text-cream-soft/85">
-              {String(activeIndex + 1).padStart(2, "0")} / {String(dishes.length).padStart(2, "0")}
-            </span>
-          </div>
         </div>
-      </div>
+      ) : (
+        /* Photo-less: full-width, two columns of items on larger screens */
+        <DishList
+          activeCategory={activeCategory}
+          dishes={dishes}
+          activeIndex={activeIndex}
+          setActiveIndex={setActiveIndex}
+          twoCol={true}
+        />
+      )}
     </>
   );
 }
@@ -236,7 +296,9 @@ function MenuBoard({ categories }: { categories: MenuCategory[] }) {
 // PAGE
 // -----------------------------------------------------------------------------
 export default function MenuPage() {
-  const categories = useMenuCategoriesData();
+  const allCategories = useMenuCategoriesData();
+  const food = allCategories.filter((c) => FOOD_SLUGS.includes(c.id));
+  const drinks = allCategories.filter((c) => !FOOD_SLUGS.includes(c.id));
 
   return (
     <div className="min-h-[100dvh] w-full bg-bg-primary text-cream selection:bg-orange selection:text-bg-primary relative">
@@ -306,16 +368,31 @@ export default function MenuPage() {
           {/* Suppliers marquee */}
           <SuppliersMarquee />
 
-          {/* Menu board */}
+          {/* Menu board — food + drinks as two separate sections */}
           <section className="bg-bg-primary pt-16 md:pt-20 pb-28 md:pb-32 px-6 md:px-12 relative">
-            <div className="max-w-7xl mx-auto relative z-10">
-              <MenuBoard categories={categories} />
+            <div className="max-w-7xl mx-auto relative z-10 flex flex-col gap-24 md:gap-32">
+              {food.length > 0 && (
+                <div>
+                  <BoardHeading kicker="À partager & les plats" title="La cuisine" />
+                  <MenuBoard categories={food} boardId="food" />
+                </div>
+              )}
 
-              <div className="mt-16 text-center">
-                <p className="font-sans italic text-cream-soft/85 text-sm">
-                  « L'ardoise change. Suivez-nous sur les réseaux pour voir les ajouts du chef. »
-                </p>
-              </div>
+              {drinks.length > 0 && (
+                <div>
+                  <BoardHeading
+                    kicker="Vins, bières, cocktails & boissons"
+                    title="Le bar"
+                  />
+                  <MenuBoard categories={drinks} showPhoto={false} boardId="bar" />
+                </div>
+              )}
+            </div>
+
+            <div className="max-w-7xl mx-auto mt-16 text-center relative z-10">
+              <p className="font-sans italic text-cream-soft/85 text-sm">
+                « L'ardoise change. Suivez-nous sur les réseaux pour voir les ajouts du chef. »
+              </p>
             </div>
           </section>
         </main>
