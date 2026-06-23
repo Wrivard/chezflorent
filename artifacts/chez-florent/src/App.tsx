@@ -8,8 +8,8 @@ import {
   useListPhotos,
 } from "@workspace/api-client-react";
 
-const EASE: [number, number, number, number] = [0.65, 0, 0.35, 1];
-const EASE_SMOOTH: [number, number, number, number] = [0.22, 1, 0.36, 1];
+export const EASE: [number, number, number, number] = [0.65, 0, 0.35, 1];
+export const EASE_SMOOTH: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 // -----------------------------------------------------------------------------
 // 1) PRELOADER
@@ -130,7 +130,7 @@ function Preloader({ onComplete }: { onComplete: () => void }) {
 // -----------------------------------------------------------------------------
 // PROGRESS BAR
 // -----------------------------------------------------------------------------
-function ScrollProgress() {
+export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
   return (
     <motion.div
@@ -275,10 +275,21 @@ function useOpenStatus(): { open: boolean; label: string } {
   return { open: false, label: "Fermé" };
 }
 
-function Navbar({ activeSection }: { activeSection: string }) {
+export function Navbar({
+  activeSection,
+  onEventsPage = false,
+}: {
+  activeSection: string;
+  onEventsPage?: boolean;
+}) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const status = useOpenStatus();
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  const sectionHref = (id: string) =>
+    onEventsPage ? `${base}/#${id}` : `#${id}`;
+  const homeHref = onEventsPage ? `${base}/` : "#accueil";
+  const eventsHref = `${base}/evenements`;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
@@ -299,7 +310,7 @@ function Navbar({ activeSection }: { activeSection: string }) {
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
           <a
-            href="#accueil"
+            href={homeHref}
             aria-label="Chez Florent — Accueil"
             className="flex items-center text-cream hover:opacity-80 transition-opacity shrink-0"
           >
@@ -314,7 +325,7 @@ function Navbar({ activeSection }: { activeSection: string }) {
           <div className="flex items-center gap-5 md:gap-10">
             {/* Live status badge — visible on all sizes */}
             <a
-              href="#contact"
+              href={sectionHref("contact")}
               aria-label={`Statut du restaurant : ${status.label}`}
               className="flex items-center gap-2.5 px-3 md:px-3.5 py-1.5 md:py-2 rounded-full border border-cream-soft/25 bg-bg-primary/40 backdrop-blur-sm text-[0.65rem] md:text-[0.7rem] font-medium tracking-[0.18em] uppercase text-cream hover:text-cream hover:border-cream-soft/40 transition-colors group shrink-0"
             >
@@ -329,13 +340,13 @@ function Navbar({ activeSection }: { activeSection: string }) {
             </a>
 
             <div className="hidden md:flex items-center gap-7 lg:gap-8 text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft">
-              <a href="#a-propos" className={`link-underline hover:text-cream transition-colors ${activeSection === "a-propos" ? "active text-cream" : ""}`}>À propos</a>
-              <a href="#menu" className={`link-underline hover:text-cream transition-colors ${activeSection === "menu" ? "active text-cream" : ""}`}>Menu</a>
-              <a href="#agenda" className={`link-underline hover:text-cream transition-colors ${activeSection === "agenda" ? "active text-cream" : ""}`}>Agenda</a>
-              <a href="#reservation" className={`link-underline hover:text-cream transition-colors ${activeSection === "reservation" ? "active text-cream" : ""}`}>Réservation</a>
-              <a href="#contact" className={`link-underline hover:text-cream transition-colors ${activeSection === "contact" ? "active text-cream" : ""}`}>Contact</a>
+              <a href={sectionHref("a-propos")} className={`link-underline hover:text-cream transition-colors ${activeSection === "a-propos" ? "active text-cream" : ""}`}>À propos</a>
+              <a href={sectionHref("menu")} className={`link-underline hover:text-cream transition-colors ${activeSection === "menu" ? "active text-cream" : ""}`}>Menu</a>
+              <a href={eventsHref} className={`link-underline hover:text-cream transition-colors ${onEventsPage ? "active text-cream" : ""}`}>Agenda</a>
+              <a href={sectionHref("reservation")} className={`link-underline hover:text-cream transition-colors ${activeSection === "reservation" ? "active text-cream" : ""}`}>Réservation</a>
+              <a href={sectionHref("contact")} className={`link-underline hover:text-cream transition-colors ${activeSection === "contact" ? "active text-cream" : ""}`}>Contact</a>
               <a
-                href="#reservation"
+                href={sectionHref("reservation")}
                 className="px-5 py-2 border border-orange text-orange hover:bg-orange hover:text-bg-primary transition-all duration-300 rounded-[2px]"
               >
                 Réserver
@@ -373,12 +384,12 @@ function Navbar({ activeSection }: { activeSection: string }) {
               </button>
             </div>
             <div className="flex flex-col gap-8 text-3xl font-serif text-cream">
-              <a href="#accueil" onClick={closeMenu} className="hover:text-orange transition-colors">Accueil</a>
-              <a href="#a-propos" onClick={closeMenu} className="hover:text-orange transition-colors">À propos</a>
-              <a href="#menu" onClick={closeMenu} className="hover:text-orange transition-colors">L'ardoise</a>
-              <a href="#agenda" onClick={closeMenu} className="hover:text-orange transition-colors">Agenda</a>
-              <a href="#reservation" onClick={closeMenu} className="hover:text-orange transition-colors">Réserver une table</a>
-              <a href="#contact" onClick={closeMenu} className="hover:text-orange transition-colors">Nous trouver</a>
+              <a href={homeHref} onClick={closeMenu} className="hover:text-orange transition-colors">Accueil</a>
+              <a href={sectionHref("a-propos")} onClick={closeMenu} className="hover:text-orange transition-colors">À propos</a>
+              <a href={sectionHref("menu")} onClick={closeMenu} className="hover:text-orange transition-colors">L'ardoise</a>
+              <a href={eventsHref} onClick={closeMenu} className="hover:text-orange transition-colors">Agenda</a>
+              <a href={sectionHref("reservation")} onClick={closeMenu} className="hover:text-orange transition-colors">Réserver une table</a>
+              <a href={sectionHref("contact")} onClick={closeMenu} className="hover:text-orange transition-colors">Nous trouver</a>
             </div>
           </motion.div>
         )}
@@ -387,7 +398,7 @@ function Navbar({ activeSection }: { activeSection: string }) {
   );
 }
 
-function SectionMarker({ number, tone = "dark" }: { number: string; tone?: "dark" | "light" }) {
+export function SectionMarker({ number, tone = "dark" }: { number: string; tone?: "dark" | "light" }) {
   const colorClass = tone === "light" ? "text-bg-primary/15" : "text-cream/10";
   const blendClass = tone === "light" ? "mix-blend-multiply" : "mix-blend-difference";
   return (
@@ -1098,7 +1109,7 @@ function Testimonials() {
   );
 }
 
-type AgendaEvent = {
+export type AgendaEvent = {
   id: string;
   date: { day: string; month: string };
   isoDate: string;
@@ -1153,7 +1164,7 @@ function useMenuCategoriesData(): MenuCategory[] {
   }));
 }
 
-function useAgendaEventsData(): AgendaEvent[] {
+export function useAgendaEventsData(): AgendaEvent[] {
   const { data } = useListEvents();
   if (!data || data.length === 0) return agendaEvents;
   return data.map((e) => {
@@ -1241,7 +1252,7 @@ function usePhotos(): PhotoMap {
 }
 
 // Persists the selected event so the Reservation form can prefill the note field.
-const PREFILL_KEY = "chez-florent-event-prefill";
+export const PREFILL_KEY = "chez-florent-event-prefill";
 
 function Agenda() {
   const agendaEvents = useAgendaEventsData();
@@ -1346,8 +1357,15 @@ function Agenda() {
           })}
         </div>
 
-        <div className="mt-12 text-center">
-          <p className="font-sans italic text-bg-primary/65 text-sm">
+        <div className="mt-12 flex flex-col items-center gap-6">
+          <a
+            href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/evenements`}
+            className="inline-flex items-center gap-3 px-7 py-3 border border-bg-primary/30 text-bg-primary text-[0.75rem] font-medium tracking-[0.2em] uppercase rounded-[2px] hover:bg-bg-primary hover:text-cream transition-all duration-300"
+          >
+            Voir le calendrier complet
+            <span aria-hidden="true">→</span>
+          </a>
+          <p className="font-sans italic text-bg-primary/65 text-sm text-center">
             « La programmation peut changer — un coup de fil et c'est confirmé. »
           </p>
         </div>
@@ -1809,7 +1827,7 @@ function LegalModal({ which, onClose }: { which: LegalKey; onClose: () => void }
   );
 }
 
-function Footer() {
+export function Footer() {
   const [legal, setLegal] = useState<LegalKey | null>(null);
   const year = new Date().getFullYear();
 
@@ -1908,7 +1926,7 @@ function Footer() {
   );
 }
 
-function FilmGrain() {
+export function FilmGrain() {
   return (
     <div className="film-grain">
       <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
