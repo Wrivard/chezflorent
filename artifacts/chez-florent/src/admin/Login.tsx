@@ -22,12 +22,27 @@ export default function Login() {
   });
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-stone-100 px-4">
-      <Card className="w-full max-w-sm">
-        <div className="mb-6 text-center">
-          <h1 className="font-serif text-2xl text-stone-900">Chez Florent</h1>
-          <p className="mt-1 text-sm text-stone-500">
-            Espace de gestion du contenu
+    <div className="relative flex min-h-screen items-center justify-center bg-bg-primary px-4">
+      <div
+        className="pointer-events-none absolute inset-0"
+        aria-hidden="true"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 35%, rgba(216,90,44,0.14), transparent 60%)",
+        }}
+      />
+      <Card className="relative w-full max-w-sm border-border-strong">
+        <div className="mb-6 flex flex-col items-center text-center">
+          <img
+            src="/logo.png"
+            alt="Chez Florent"
+            className="mb-3 h-20 w-auto object-contain"
+          />
+          <p className="text-[0.7rem] font-medium uppercase tracking-[0.22em] text-orange">
+            <span aria-hidden="true">✶ </span>Espace de gestion
+          </p>
+          <p className="mt-1 text-sm text-cream-soft/55">
+            Connectez-vous pour gérer le contenu du site
           </p>
         </div>
         <form

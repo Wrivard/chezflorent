@@ -958,7 +958,10 @@ const PATRON_VOICES: PatronVoice[] = [
   },
 ];
 
+const VOICE_SLOTS = ["voice1", "voice2", "voice3"] as const;
+
 function Testimonials() {
+  const photos = usePhotos();
   return (
     <section id="voix" className="bg-bg-primary pt-32 pb-32 relative overflow-hidden">
       <SectionMarker number="—" />
@@ -1002,8 +1005,8 @@ function Testimonials() {
           <div className="md:col-span-7 relative">
             <div className="aspect-[5/4] overflow-hidden ring-1 ring-cream/10">
               <img
-                src="/images/interior-bar.jpg"
-                alt="Salle à manger de Chez Florent"
+                src={photos.press.url}
+                alt={photos.press.alt}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -1051,8 +1054,8 @@ function Testimonials() {
               {/* Photo with rating overlay */}
               <div className="relative aspect-[4/5] overflow-hidden ring-1 ring-cream/10 mb-6">
                 <img
-                  src={`/images/${v.image}`}
-                  alt=""
+                  src={photos[VOICE_SLOTS[i]].url}
+                  alt={photos[VOICE_SLOTS[i]].alt}
                   className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
                 />
                 <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-bg-primary/85 backdrop-blur-sm px-3 py-1.5">
@@ -1221,6 +1224,11 @@ const PHOTO_FALLBACK: PhotoMap = {
   about1: { url: "/images/tap-pour.jpg", alt: "Service au comptoir Chez Florent" },
   about2: { url: "/images/florent-glass.jpg", alt: "Verre signature Chez Florent" },
   about3: { url: "/images/facade-pizza.jpg", alt: "La devanture, 57 rue du Roi" },
+  press: { url: "/images/interior-bar.jpg", alt: "Salle à manger de Chez Florent" },
+  voice1: { url: "/images/tap-pour.jpg", alt: "" },
+  voice2: { url: "/images/interior-bar.jpg", alt: "" },
+  voice3: { url: "/images/pizza-oven.jpg", alt: "" },
+  facade: { url: "/images/facade-pizza.jpg", alt: "Devanture de Chez Florent, 57 rue du Roi à Sorel-Tracy" },
 };
 
 function usePhotos(): PhotoMap {
@@ -1612,6 +1620,7 @@ function Reservation() {
 }
 
 function Contact() {
+  const photos = usePhotos();
   return (
     <section id="contact" className="bg-cream-soft py-32 px-6 md:px-12 relative overflow-hidden">
       <SectionMarker number="06" tone="light" />
@@ -1713,8 +1722,8 @@ function Contact() {
           >
             <div className="bg-bg-primary aspect-[4/5] overflow-hidden group ring-1 ring-bg-primary/15">
               <img 
-                src="/images/facade-pizza.jpg" 
-                alt="Devanture de Chez Florent, 57 rue du Roi à Sorel-Tracy" 
+                src={photos.facade.url} 
+                alt={photos.facade.alt} 
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
               />
             </div>

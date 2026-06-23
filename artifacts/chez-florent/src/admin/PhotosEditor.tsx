@@ -6,20 +6,30 @@ import {
   getListPhotosQueryKey,
 } from "@workspace/api-client-react";
 import type { SitePhoto } from "@workspace/api-client-react";
-import { Button, Card, ErrorText, Field, TextInput } from "./ui";
-import { PHOTO_LABELS, uploadImage } from "./lib";
+import { Button, Card, ErrorText, Field, SectionHeading, TextInput } from "./ui";
+import { PHOTO_GROUPS, type PhotoSlotDef, uploadImage } from "./lib";
 
-function PhotoRow({ photo }: { photo: SitePhoto }) {
+function PhotoCard({
+  def,
+  photo,
+}: {
+  def: PhotoSlotDef;
+  photo: SitePhoto | undefined;
+}) {
   const queryClient = useQueryClient();
-  const [url, setUrl] = useState(photo.url);
-  const [alt, setAlt] = useState(photo.alt);
+  const [url, setUrl] = useState(photo?.url ?? "");
+  const [alt, setAlt] = useState(photo?.alt ?? "");
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<unknown>(null);
+  const [saved, setSaved] = useState(false);
 
   const update = useUpdatePhoto({
     mutation: {
-      onSuccess: () =>
-        queryClient.invalidateQueries({ queryKey: getListPhotosQueryKey() }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: getListPhotosQueryKey() });
+        setSaved(true);
+        setTimeout(() => setSaved(false), 2000);
+      },
     },
   });
 
@@ -36,53 +46,55 @@ function PhotoRow({ photo }: { photo: SitePhoto }) {
     }
   }
 
+  const missing = !photo;
+
   return (
-    <Card>
-      <div className="grid gap-4 sm:grid-cols-[180px_1fr]">
-        <div>
-          <div className="aspect-[4/3] overflow-hidden rounded-md border border-stone-200 bg-stone-100">
-            {url ? (
-              <img
-                src={url}
-                alt={alt}
-                className="h-full w-full object-cover"
-              />
-            ) : null}
+    <Card className="flex flex-col">
+      <div
+        className="mb-3 w-full overflow-hidden rounded-lg border border-border bg-bg-tertiary"
+        style={{ aspectRatio: def.ratio }}
+      >
+        {url ? (
+          <img src={url} alt={alt} className="h-full w-full object-cover" />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-xs text-cream-soft/40">
+            Aucune image
           </div>
+        )}
+      </div>
+      <h4 className="font-serif text-base text-cream">{def.label}</h4>
+      <div className="mt-3 space-y-3">
+        <Field label="Texte alternatif" hint="Décrit l'image (accessibilité)">
+          <TextInput value={alt} onChange={(e) => setAlt(e.target.value)} />
+        </Field>
+        <div className="flex flex-wrap items-center gap-2">
+          <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-border-strong px-3 py-2 text-sm font-medium text-cream-soft transition-colors hover:text-cream hover:border-cream-soft/40">
+            {uploading ? "Téléversement…" : "Choisir une image"}
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              disabled={uploading}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) onFile(file);
+                e.target.value = "";
+              }}
+            />
+          </label>
+          <Button
+            onClick={() => update.mutate({ slot: def.slot, data: { url, alt } })}
+            disabled={update.isPending || uploading || !url || missing}
+          >
+            {update.isPending ? "…" : saved ? "Enregistré ✓" : "Enregistrer"}
+          </Button>
         </div>
-        <div className="space-y-3">
-          <h3 className="font-serif text-lg text-stone-900">
-            {PHOTO_LABELS[photo.slot] ?? photo.slot}
-          </h3>
-          <Field label="Texte alternatif" hint="Décrit l'image (accessibilité)">
-            <TextInput value={alt} onChange={(e) => setAlt(e.target.value)} />
-          </Field>
-          <div className="flex flex-wrap items-center gap-3">
-            <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-100">
-              {uploading ? "Téléversement…" : "Choisir une image"}
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                disabled={uploading}
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) onFile(file);
-                  e.target.value = "";
-                }}
-              />
-            </label>
-            <Button
-              onClick={() =>
-                update.mutate({ slot: photo.slot, data: { url, alt } })
-              }
-              disabled={update.isPending || uploading || !url}
-            >
-              {update.isPending ? "Enregistrement…" : "Enregistrer"}
-            </Button>
-          </div>
-          <ErrorText error={uploadError ?? update.error} />
-        </div>
+        {missing && (
+          <p className="text-xs text-amber-300/80">
+            Cet emplacement n'est pas encore initialisé dans la base de données.
+          </p>
+        )}
+        <ErrorText error={uploadError ?? update.error} />
       </div>
     </Card>
   );
@@ -91,14 +103,37 @@ function PhotoRow({ photo }: { photo: SitePhoto }) {
 export default function PhotosEditor() {
   const { data: photos, isLoading, isError, error } = useListPhotos();
 
-  if (isLoading) return <p className="text-stone-500">Chargement…</p>;
+  if (isLoading) return <p className="text-cream-soft/60">Chargement…</p>;
   if (isError) return <ErrorText error={error} />;
 
+  const bySlot = new Map((photos ?? []).map((p) => [p.slot, p]));
+
   return (
-    <div className="space-y-4">
-      {(photos ?? []).map((photo) => (
-        <PhotoRow key={photo.slot} photo={photo} />
-      ))}
+    <div>
+      <SectionHeading
+        eyebrow="Galerie"
+        title="Photos du site"
+        description="Toutes les photos du site, regroupées par section. Changez n'importe laquelle en téléversant une nouvelle image."
+      />
+      <div className="space-y-10">
+        {PHOTO_GROUPS.map((group) => (
+          <section key={group.title}>
+            <div className="mb-4">
+              <h3 className="font-serif text-lg text-cream">{group.title}</h3>
+              <p className="text-sm text-cream-soft/55">{group.description}</p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {group.slots.map((def) => (
+                <PhotoCard
+                  key={def.slot}
+                  def={def}
+                  photo={bySlot.get(def.slot)}
+                />
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
     </div>
   );
 }

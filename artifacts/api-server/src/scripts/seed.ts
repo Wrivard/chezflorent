@@ -270,9 +270,7 @@ async function seedMenu(): Promise<void> {
 }
 
 async function seedPhotos(): Promise<void> {
-  const existing = await db.select().from(sitePhotosTable);
-  if (existing.length > 0) return;
-  await db.insert(sitePhotosTable).values([
+  const defaults = [
     {
       slot: "hero",
       url: "/images/interior-bar.jpg",
@@ -293,8 +291,38 @@ async function seedPhotos(): Promise<void> {
       url: "/images/facade-pizza.jpg",
       alt: "La devanture, 57 rue du Roi",
     },
-  ]);
-  logger.info("Site photos seeded");
+    {
+      slot: "press",
+      url: "/images/interior-bar.jpg",
+      alt: "Salle à manger de Chez Florent",
+    },
+    {
+      slot: "voice1",
+      url: "/images/tap-pour.jpg",
+      alt: "Service au comptoir Chez Florent",
+    },
+    {
+      slot: "voice2",
+      url: "/images/interior-bar.jpg",
+      alt: "Salle à manger de Chez Florent",
+    },
+    {
+      slot: "voice3",
+      url: "/images/pizza-oven.jpg",
+      alt: "Le four à pizza de Chez Florent",
+    },
+    {
+      slot: "facade",
+      url: "/images/facade-pizza.jpg",
+      alt: "Devanture de Chez Florent, 57 rue du Roi à Sorel-Tracy",
+    },
+  ];
+  const existing = await db.select().from(sitePhotosTable);
+  const existingSlots = new Set(existing.map((p) => p.slot));
+  const missing = defaults.filter((d) => !existingSlots.has(d.slot));
+  if (missing.length === 0) return;
+  await db.insert(sitePhotosTable).values(missing);
+  logger.info(`Site photos seeded (${missing.length} added)`);
 }
 
 async function main(): Promise<void> {

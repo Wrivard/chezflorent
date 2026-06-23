@@ -26,10 +26,10 @@ export default function AccountEditor() {
 
   return (
     <Card className="max-w-md">
-      <h2 className="font-serif text-lg text-stone-900">
+      <h2 className="font-serif text-xl text-cream">
         Changer le mot de passe
       </h2>
-      <p className="mt-1 text-sm text-stone-500">
+      <p className="mt-1 text-sm text-cream-soft/60">
         Mettez à jour le mot de passe de votre compte administrateur.
       </p>
       <form
