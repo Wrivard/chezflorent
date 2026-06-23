@@ -1361,7 +1361,7 @@ function HoursBand() {
   const hoursItems = useHoursItems();
 
   return (
-    <div className="bg-bg-primary text-cream border-y border-border overflow-hidden py-6 md:py-8 relative">
+    <div id="horaires" className="bg-bg-primary text-cream border-y border-border overflow-hidden py-6 md:py-8 relative">
       <div className="flex whitespace-nowrap animate-marquee-slow w-max font-serif italic font-light text-cream text-[clamp(2rem,5.5vw,4.5rem)] leading-none">
         {[...Array(4)].map((_, repeat) => (
           <div key={repeat} className="flex items-center">
@@ -1927,15 +1927,39 @@ function FilmGrain() {
 
 export default function App() {
   const activeSection = useActiveSection();
-  const [showPreloader, setShowPreloader] = useState(true);
+  // Preview mode: the admin embeds the public site in an iframe with
+  // `?preview=<sectionId>` to show a live preview of a section. In this mode we
+  // skip the intro animation and jump straight to the requested section.
+  const previewSection =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("preview")
+      : null;
+  const previewMode = previewSection !== null;
+  const [showPreloader, setShowPreloader] = useState(!previewMode);
 
   // Intro logic
   useEffect(() => {
+    if (previewMode) return;
     const played = sessionStorage.getItem('chez-florent-intro-played');
     if (played) {
       setShowPreloader(false);
     }
-  }, []);
+  }, [previewMode]);
+
+  // In preview mode, scroll to the requested section once it is laid out.
+  useEffect(() => {
+    if (!previewSection) return;
+    const scrollToSection = () => {
+      const el = document.getElementById(previewSection);
+      if (el) el.scrollIntoView({ behavior: "auto", block: "start" });
+    };
+    const t1 = setTimeout(scrollToSection, 120);
+    const t2 = setTimeout(scrollToSection, 700);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [previewSection]);
 
   const handlePreloaderComplete = useCallback(() => {
     setShowPreloader(false);
@@ -1945,7 +1969,7 @@ export default function App() {
   // Lenis Smooth Scroll
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion || showPreloader) return;
+    if (prefersReducedMotion || showPreloader || previewMode) return;
 
     const lenis = new Lenis({ 
       duration: 1.2, 

@@ -6,7 +6,15 @@ import {
   getListHoursQueryKey,
 } from "@workspace/api-client-react";
 import type { Hours } from "@workspace/api-client-react";
-import { Button, Card, Checkbox, ErrorText, Field, TextInput } from "./ui";
+import {
+  Button,
+  Card,
+  Checkbox,
+  ErrorText,
+  Field,
+  SectionPreview,
+  TextInput,
+} from "./ui";
 import { DAY_NAMES } from "./lib";
 
 function HoursRow({ hours }: { hours: Hours }) {
@@ -30,7 +38,7 @@ function HoursRow({ hours }: { hours: Hours }) {
     <Card>
       <div className="flex flex-wrap items-end gap-4">
         <div className="w-28">
-          <span className="block font-serif text-lg text-stone-900">
+          <span className="block font-serif text-lg text-cream">
             {DAY_NAMES[hours.dayOfWeek]}
           </span>
         </div>
@@ -88,20 +96,27 @@ function HoursRow({ hours }: { hours: Hours }) {
 export default function HoursEditor() {
   const { data: hours, isLoading, isError, error } = useListHours();
 
-  if (isLoading) return <p className="text-stone-500">Chargement…</p>;
+  if (isLoading) return <p className="text-cream-soft/60">Chargement…</p>;
   if (isError) return <ErrorText error={error} />;
 
   const list = [...(hours ?? [])].sort((a, b) => a.dayOfWeek - b.dayOfWeek);
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-stone-500">
+      <p className="text-sm text-cream-soft/60">
         Indiquez l'heure d'ouverture et de fermeture sur 24h (ex. 17 et 22).
         L'horaire affiché sur le site est regroupé automatiquement.
       </p>
       {list.map((row) => (
         <HoursRow key={row.dayOfWeek} hours={row} />
       ))}
+
+      <SectionPreview
+        section="horaires"
+        title="Le bandeau « Horaires » du site"
+        description="Voici le bandeau d'ouverture tel qu'il défile sur la page publique."
+        height={420}
+      />
     </div>
   );
 }

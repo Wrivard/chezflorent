@@ -20,6 +20,7 @@ import {
   IconButton,
   Modal,
   SectionHeading,
+  SectionPreview,
   TextInput,
   Textarea,
 } from "./ui";
@@ -499,6 +500,12 @@ export default function MenuEditor() {
           <CategorySection key={category.id} category={category} />
         ))}
       </div>
+
+      <SectionPreview
+        section="menu"
+        title="La section « Menu » du site"
+        description="Voici à quoi ressemble votre ardoise sur la page publique."
+      />
     </div>
   );
 }

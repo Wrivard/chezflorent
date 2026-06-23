@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 export function cn(
   ...parts: Array<string | false | null | undefined>
@@ -245,6 +245,54 @@ export function Modal({
         </div>
         {children}
       </div>
+    </div>
+  );
+}
+
+export function SectionPreview({
+  section,
+  title = "Aperçu sur le site",
+  description,
+  height = 620,
+}: {
+  section?: string;
+  title?: string;
+  description?: string;
+  height?: number;
+}) {
+  const [nonce, setNonce] = useState(0);
+  const base = import.meta.env.BASE_URL;
+  const src = `${base}?preview=${section ?? "1"}`;
+  return (
+    <div className="mt-12 border-t border-border pt-8">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <div className="mb-1 text-[0.7rem] font-medium uppercase tracking-[0.22em] text-orange">
+            <span aria-hidden="true">✶ </span>Aperçu en direct
+          </div>
+          <h3 className="font-serif text-lg text-cream">{title}</h3>
+          {description && (
+            <p className="mt-0.5 text-sm text-cream-soft/55">{description}</p>
+          )}
+        </div>
+        <Button variant="subtle" onClick={() => setNonce((n) => n + 1)}>
+          ↻ Rafraîchir l'aperçu
+        </Button>
+      </div>
+      <div className="overflow-hidden rounded-xl border border-border-strong bg-bg-primary">
+        <iframe
+          key={nonce}
+          src={src}
+          title={title}
+          loading="lazy"
+          className="w-full border-0"
+          style={{ height }}
+        />
+      </div>
+      <p className="mt-2 text-xs text-cream-soft/40">
+        Cet aperçu reflète les données enregistrées. Après une modification,
+        cliquez sur « Rafraîchir l'aperçu ».
+      </p>
     </div>
   );
 }

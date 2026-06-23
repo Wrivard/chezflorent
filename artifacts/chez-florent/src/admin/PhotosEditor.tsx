@@ -6,7 +6,15 @@ import {
   getListPhotosQueryKey,
 } from "@workspace/api-client-react";
 import type { SitePhoto } from "@workspace/api-client-react";
-import { Button, Card, ErrorText, Field, SectionHeading, TextInput } from "./ui";
+import {
+  Button,
+  Card,
+  ErrorText,
+  Field,
+  SectionHeading,
+  SectionPreview,
+  TextInput,
+} from "./ui";
 import { PHOTO_GROUPS, type PhotoSlotDef, uploadImage } from "./lib";
 
 function PhotoCard({
@@ -134,6 +142,12 @@ export default function PhotosEditor() {
           </section>
         ))}
       </div>
+
+      <SectionPreview
+        title="Vos photos sur le site"
+        description="Faites défiler l'aperçu pour voir vos photos dans chaque section de la page publique."
+        height={680}
+      />
     </div>
   );
 }

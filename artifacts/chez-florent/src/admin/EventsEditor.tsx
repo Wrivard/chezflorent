@@ -18,6 +18,7 @@ import {
   IconButton,
   Modal,
   SectionHeading,
+  SectionPreview,
   TextInput,
   Textarea,
 } from "./ui";
@@ -356,6 +357,12 @@ export default function EventsEditor() {
           );
         })}
       </div>
+
+      <SectionPreview
+        section="agenda"
+        title="La section « Agenda » du site"
+        description="Voici à quoi ressemble votre programmation sur la page publique."
+      />
 
       <Modal
         open={modal.mode === "create"}
