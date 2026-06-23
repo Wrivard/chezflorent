@@ -195,66 +195,62 @@ function EventsCalendar({
               aria-label={`${dayEvents.length} événement${
                 dayEvents.length > 1 ? "s" : ""
               } le ${fullDateLabel(iso)}`}
-              className={`${base} border bg-white/70 hover:bg-white shadow-sm hover:shadow-md cursor-pointer group ${
-                isToday ? "border-orange ring-1 ring-orange ring-inset" : "border-bg-primary/15"
+              className={`${base} bg-bg-primary cursor-pointer group shadow-[0_6px_22px_-12px_rgba(14,31,28,0.6)] hover:shadow-[0_12px_30px_-12px_rgba(14,31,28,0.7)] hover:-translate-y-0.5 ${
+                isToday ? "ring-2 ring-orange ring-offset-2 ring-offset-cream-soft" : ""
               }`}
             >
               <span
                 className={`font-serif font-bold text-[0.85rem] md:text-base ${
-                  isToday ? "text-orange" : "text-bg-primary"
+                  isToday ? "text-orange" : "text-cream"
                 }`}
               >
                 {day}
               </span>
 
-              {/* Desktop: event detail chips */}
-              <div className="hidden md:flex flex-col gap-1.5 mt-2 overflow-hidden">
-                {dayEvents.slice(0, 2).map((e) => (
+              {/* Desktop: event details */}
+              <div className="hidden md:flex flex-col mt-2 overflow-hidden">
+                {dayEvents.slice(0, 2).map((e, idx) => (
                   <div
                     key={e.id}
-                    className={`rounded-[4px] px-2 py-1.5 ${
-                      e.soldOut
-                        ? "bg-bg-primary/[0.06] border border-bg-primary/20"
-                        : "bg-orange"
-                    }`}
+                    className={idx > 0 ? "mt-2 pt-2 border-t border-cream/10" : ""}
                   >
                     <span
                       className={`block text-[0.72rem] font-semibold leading-snug line-clamp-2 ${
-                        e.soldOut ? "text-bg-primary/55 line-through" : "text-bg-primary"
+                        e.soldOut ? "text-cream-soft/45 line-through" : "text-cream"
                       }`}
                     >
                       {e.title}
                     </span>
                     {e.soldOut ? (
-                      <span className="inline-block mt-1 text-[0.55rem] font-bold tracking-[0.16em] uppercase bg-bg-primary text-cream px-1.5 py-0.5 rounded-[2px]">
+                      <span className="inline-block mt-1.5 text-[0.5rem] font-bold tracking-[0.18em] uppercase text-cream-soft/80 border border-cream-soft/35 px-1.5 py-0.5 rounded-[2px]">
                         Complet
                       </span>
                     ) : (
-                      <span className="block mt-0.5 text-[0.58rem] font-medium tracking-[0.12em] uppercase text-bg-primary/70 truncate">
+                      <span className="block mt-1 text-[0.56rem] font-semibold tracking-[0.16em] uppercase text-orange truncate">
                         {e.tag}
                       </span>
                     )}
                   </div>
                 ))}
                 {dayEvents.length > 2 && (
-                  <span className="text-[0.62rem] font-semibold tracking-wide text-orange-dark pl-0.5">
+                  <span className="mt-2 text-[0.62rem] font-semibold tracking-wide text-cream-soft/60">
                     +{dayEvents.length - 2} autre{dayEvents.length - 2 > 1 ? "s" : ""}
                   </span>
                 )}
               </div>
 
               {/* Mobile: dots */}
-              <div className="md:hidden flex flex-wrap items-center gap-1 mt-auto">
+              <div className="md:hidden flex flex-wrap items-center gap-1 mt-auto pt-1">
                 {dayEvents.slice(0, 3).map((e) => (
                   <span
                     key={e.id}
                     className={`w-2 h-2 rounded-full ${
-                      e.soldOut ? "bg-bg-primary/30" : "bg-orange"
+                      e.soldOut ? "bg-cream-soft/40" : "bg-orange"
                     }`}
                   />
                 ))}
                 {dayEvents.length > 3 && (
-                  <span className="text-[0.55rem] font-semibold text-orange-dark">
+                  <span className="text-[0.55rem] font-semibold text-cream-soft/70">
                     +{dayEvents.length - 3}
                   </span>
                 )}
@@ -264,12 +260,18 @@ function EventsCalendar({
         })}
       </div>
 
-      <div className="flex items-center gap-5 mt-6 text-[0.72rem] font-medium text-bg-primary/70">
-        <span className="inline-flex items-center gap-2">
-          <span className="w-3 h-3 rounded-[3px] bg-orange" /> Événement
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-7 text-[0.72rem] font-medium text-bg-primary/70">
+        <span className="inline-flex items-center gap-2.5">
+          <span className="w-4 h-4 rounded-[3px] bg-bg-primary inline-flex items-center justify-center">
+            <span className="w-1.5 h-1.5 rounded-full bg-orange" />
+          </span>
+          Soirée à venir
         </span>
-        <span className="inline-flex items-center gap-2">
-          <span className="w-3 h-3 rounded-[3px] bg-bg-primary/25" /> Complet
+        <span className="inline-flex items-center gap-2.5">
+          <span className="text-[0.5rem] font-bold tracking-[0.18em] uppercase text-cream-soft/80 bg-bg-primary border border-cream-soft/35 px-1.5 py-0.5 rounded-[2px]">
+            Complet
+          </span>
+          Soirée complète
         </span>
         <span className="hidden sm:inline text-bg-primary/45 italic font-sans">
           Cliquez sur une date pour les détails
