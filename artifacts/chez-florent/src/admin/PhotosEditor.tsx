@@ -143,11 +143,22 @@ export default function PhotosEditor() {
         ))}
       </div>
 
-      <SectionPreview
-        title="Vos photos sur le site"
-        description="Faites défiler l'aperçu pour voir vos photos dans chaque section de la page publique."
-        height={680}
-      />
+      <div className="mt-12 border-t border-border pt-8">
+        <div className="mb-1 text-[0.7rem] font-medium uppercase tracking-[0.22em] text-orange">
+          <span aria-hidden="true">✶ </span>Aperçu en direct
+        </div>
+        <h3 className="font-serif text-lg text-cream">Vos photos sur le site</h3>
+        <p className="mt-0.5 mb-6 text-sm text-cream-soft/55">
+          Chaque section contenant des photos est affichée isolément, telle
+          qu'elle apparaît sur la page publique.
+        </p>
+        <div className="space-y-8">
+          <SectionPreview compact section="hero" title="En-tête" height={460} />
+          <SectionPreview compact section="a-propos" title="À propos" />
+          <SectionPreview compact section="voix" title="Les voix" />
+          <SectionPreview compact section="contact" title="Contact" />
+        </div>
+      </div>
     </div>
   );
 }

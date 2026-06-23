@@ -1946,21 +1946,6 @@ export default function App() {
     }
   }, [previewMode]);
 
-  // In preview mode, scroll to the requested section once it is laid out.
-  useEffect(() => {
-    if (!previewSection) return;
-    const scrollToSection = () => {
-      const el = document.getElementById(previewSection);
-      if (el) el.scrollIntoView({ behavior: "auto", block: "start" });
-    };
-    const t1 = setTimeout(scrollToSection, 120);
-    const t2 = setTimeout(scrollToSection, 700);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
-  }, [previewSection]);
-
   const handlePreloaderComplete = useCallback(() => {
     setShowPreloader(false);
     sessionStorage.setItem('chez-florent-intro-played', '1');
@@ -2004,6 +1989,41 @@ export default function App() {
       document.removeEventListener('click', handleClick);
     };
   }, [showPreloader]);
+
+  // Preview mode: render ONLY the targeted section, with no navbar, hero or
+  // footer, so the admin preview shows that single section in isolation and the
+  // client cannot navigate the rest of the site.
+  if (previewMode) {
+    return (
+      <div className="min-h-[100dvh] w-full bg-bg-primary text-cream selection:bg-orange selection:text-bg-primary relative">
+        <FilmGrain />
+        <div className="overflow-x-hidden">
+          {previewSection === "hero" && <Hero />}
+          {previewSection === "a-propos" && <About />}
+          {previewSection === "menu" && <Menu />}
+          {previewSection === "voix" && <Testimonials />}
+          {previewSection === "agenda" && <Agenda />}
+          {previewSection === "reservation" && <Reservation />}
+          {previewSection === "contact" && <Contact />}
+          {previewSection === "horaires" && <HoursBand />}
+          {![
+            "hero",
+            "a-propos",
+            "menu",
+            "voix",
+            "agenda",
+            "reservation",
+            "contact",
+            "horaires",
+          ].includes(previewSection ?? "") && (
+            <div className="flex min-h-[100dvh] items-center justify-center px-6 text-center font-serif text-lg text-cream-soft/60">
+              Section inconnue.
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[100dvh] w-full bg-bg-primary text-cream selection:bg-orange selection:text-bg-primary relative">

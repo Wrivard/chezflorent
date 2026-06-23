@@ -254,23 +254,35 @@ export function SectionPreview({
   title = "Aperçu sur le site",
   description,
   height = 620,
+  compact = false,
 }: {
   section?: string;
   title?: string;
   description?: string;
   height?: number;
+  compact?: boolean;
 }) {
   const [nonce, setNonce] = useState(0);
   const base = import.meta.env.BASE_URL;
   const src = `${base}?preview=${section ?? "1"}`;
   return (
-    <div className="mt-12 border-t border-border pt-8">
+    <div className={compact ? "" : "mt-12 border-t border-border pt-8"}>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <div className="mb-1 text-[0.7rem] font-medium uppercase tracking-[0.22em] text-orange">
-            <span aria-hidden="true">✶ </span>Aperçu en direct
-          </div>
-          <h3 className="font-serif text-lg text-cream">{title}</h3>
+          {!compact && (
+            <div className="mb-1 text-[0.7rem] font-medium uppercase tracking-[0.22em] text-orange">
+              <span aria-hidden="true">✶ </span>Aperçu en direct
+            </div>
+          )}
+          <h3
+            className={
+              compact
+                ? "font-serif text-base text-cream"
+                : "font-serif text-lg text-cream"
+            }
+          >
+            {title}
+          </h3>
           {description && (
             <p className="mt-0.5 text-sm text-cream-soft/55">{description}</p>
           )}
@@ -289,10 +301,12 @@ export function SectionPreview({
           style={{ height }}
         />
       </div>
-      <p className="mt-2 text-xs text-cream-soft/40">
-        Cet aperçu reflète les données enregistrées. Après une modification,
-        cliquez sur « Rafraîchir l'aperçu ».
-      </p>
+      {!compact && (
+        <p className="mt-2 text-xs text-cream-soft/40">
+          Cet aperçu reflète les données enregistrées. Après une modification,
+          cliquez sur « Rafraîchir l'aperçu ».
+        </p>
+      )}
     </div>
   );
 }

@@ -115,7 +115,7 @@ export default function HoursEditor() {
         section="horaires"
         title="Le bandeau « Horaires » du site"
         description="Voici le bandeau d'ouverture tel qu'il défile sur la page publique."
-        height={420}
+        height={220}
       />
     </div>
   );
