@@ -1,6 +1,12 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { motion, useScroll, useTransform, useSpring, useReducedMotion, AnimatePresence, useMotionValue } from "framer-motion";
 import Lenis from 'lenis';
+import {
+  useGetMenu,
+  useListEvents,
+  useListHours,
+  useListPhotos,
+} from "@workspace/api-client-react";
 
 const EASE: [number, number, number, number] = [0.65, 0, 0.35, 1];
 const EASE_SMOOTH: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -242,9 +248,10 @@ function useOpenStatus(): { open: boolean; label: string } {
     return () => clearInterval(id);
   }, []);
 
+  const schedule = useScheduleData();
   const day = now.getDay();
   const totalMinutes = now.getHours() * 60 + now.getMinutes();
-  const today = SCHEDULE[day];
+  const today = schedule[day];
 
   if (today) {
     if (totalMinutes >= today.open * 60 && totalMinutes < today.close * 60) {
@@ -259,7 +266,7 @@ function useOpenStatus(): { open: boolean; label: string } {
   // After closing time today, or closed all day — find next open day
   for (let i = 1; i <= 7; i++) {
     const nextDayIdx = (day + i) % 7;
-    const next = SCHEDULE[nextDayIdx];
+    const next = schedule[nextDayIdx];
     if (next) {
       const dayLabel = i === 1 ? "demain" : DAY_NAMES_FR[nextDayIdx];
       return { open: false, label: `Fermé · ouvre ${dayLabel} ${next.open}h` };
@@ -393,6 +400,7 @@ function SectionMarker({ number, tone = "dark" }: { number: string; tone?: "dark
 function Hero() {
   const prefersReducedMotion = useReducedMotion();
   const status = useOpenStatus();
+  const photos = usePhotos();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -422,7 +430,7 @@ function Hero() {
         <div 
           className="absolute inset-0 bg-cover bg-center animate-kenburns origin-center"
           style={{
-            backgroundImage: "url('/images/interior-bar.jpg')",
+            backgroundImage: `url('${photos.hero.url}')`,
             filter: "saturate(1.1) contrast(1.1)"
           }}
         />
@@ -550,6 +558,7 @@ function Hero() {
 function About() {
   const { scrollYProgress } = useScroll();
   const prefersReducedMotion = useReducedMotion();
+  const photos = usePhotos();
   const ySlow = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : 200]);
   const yFast = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : -150]);
 
@@ -596,14 +605,14 @@ function About() {
             style={{ y: ySlow }}
             className="w-[88%] md:w-[48%] lg:w-[50%] aspect-[4/3] overflow-hidden relative md:z-10 ring-1 ring-bg-primary/10"
           >
-            <img src="/images/tap-pour.jpg" alt="Service au comptoir Chez Florent" className="w-full h-full object-cover" />
+            <img src={photos.about1.url} alt={photos.about1.alt} className="w-full h-full object-cover" />
           </motion.div>
           
           <motion.div 
             style={{ y: yFast }}
             className="w-[68%] md:w-[34%] lg:w-[30%] aspect-[3/4] overflow-hidden relative md:absolute md:top-[8%] lg:top-[18%] md:right-0 md:z-20 self-end md:self-auto md:mt-0 ring-1 ring-bg-primary/10"
           >
-            <img src="/images/florent-glass.jpg" alt="Verre signature Chez Florent" className="w-full h-full object-cover" />
+            <img src={photos.about2.url} alt={photos.about2.alt} className="w-full h-full object-cover" />
           </motion.div>
 
           <motion.div
@@ -613,7 +622,7 @@ function About() {
             transition={{ duration: 0.9, ease: EASE, delay: 0.15 }}
             className="w-[78%] md:w-[42%] lg:w-[38%] aspect-[5/4] overflow-hidden relative md:absolute md:bottom-0 md:left-[34%] lg:left-[26%] md:z-[15] ml-[8%] md:ml-0 ring-1 ring-bg-primary/10"
           >
-            <img src="/images/facade-pizza.jpg" alt="La devanture, 57 rue du Roi" className="w-full h-full object-cover" />
+            <img src={photos.about3.url} alt={photos.about3.alt} className="w-full h-full object-cover" />
           </motion.div>
         </div>
 
@@ -702,9 +711,10 @@ const menuCategories: MenuCategory[] = [
 ];
 
 function Menu() {
-  const [activeCategoryId, setActiveCategoryId] = useState<string>(menuCategories[0].id);
+  const categories = useMenuCategoriesData();
+  const [activeCategoryId, setActiveCategoryId] = useState<string>(categories[0].id);
   const [activeIndex, setActiveIndex] = useState(0);
-  const activeCategory = menuCategories.find((c) => c.id === activeCategoryId) ?? menuCategories[0];
+  const activeCategory = categories.find((c) => c.id === activeCategoryId) ?? categories[0];
   const dishes = activeCategory.dishes;
   const activeDish = dishes[Math.min(activeIndex, dishes.length - 1)];
 
@@ -761,7 +771,7 @@ function Menu() {
             aria-label="Catégories du menu"
             className="flex gap-1 md:gap-3 mb-12 border-b border-border overflow-x-auto no-scrollbar"
           >
-            {menuCategories.map((c) => {
+            {categories.map((c) => {
               const isActive = c.id === activeCategoryId;
               return (
                 <button
@@ -862,7 +872,7 @@ function Menu() {
                 <AnimatePresence mode="sync">
                   <motion.img
                     key={activeDish.image}
-                    src={`/images/${activeDish.image}`}
+                    src={imgSrc(activeDish.image)}
                     alt={activeDish.name}
                     initial={{ opacity: 0, scale: 1.05 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -1104,10 +1114,129 @@ const agendaEvents: AgendaEvent[] = [
   { id: "fete-musique", date: { day: "21", month: "JUIN" }, isoDate: "2026-06-21", title: "Fête de la musique", desc: "Buffet québécois, DJ jusqu'à 1h. La devanture devient une terrasse-piste.", tag: "Toute la soirée" },
 ];
 
+// -----------------------------------------------------------------------------
+// CMS DATA HOOKS — read from the API, fall back to the constants above so the
+// public site always renders even if the API is unreachable.
+// -----------------------------------------------------------------------------
+const MONTHS_FR = [
+  "JANV", "FÉVR", "MARS", "AVR", "MAI", "JUIN",
+  "JUIL", "AOÛT", "SEPT", "OCT", "NOV", "DÉC",
+];
+const DAY_FULL_FR = [
+  "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi",
+];
+
+// Resolve an image reference. Stored values may be full paths ("/images/x.jpg",
+// "/api/uploads/...", "https://...") or bare filenames from the legacy constants.
+function imgSrc(image: string): string {
+  if (!image) return "";
+  if (image.startsWith("/") || image.startsWith("http")) return image;
+  return `/images/${image}`;
+}
+
+function useMenuCategoriesData(): MenuCategory[] {
+  const { data } = useGetMenu();
+  if (!data || data.length === 0) return menuCategories;
+  return data.map((c) => ({
+    id: c.slug,
+    label: c.label,
+    tagline: c.tagline,
+    dishes: c.items.map((it) => ({
+      name: it.name,
+      price: it.price,
+      desc: it.description,
+      image: it.image ?? "",
+    })),
+  }));
+}
+
+function useAgendaEventsData(): AgendaEvent[] {
+  const { data } = useListEvents();
+  if (!data || data.length === 0) return agendaEvents;
+  return data.map((e) => {
+    const parts = e.isoDate.split("-");
+    const monthIdx = (Number(parts[1]) || 1) - 1;
+    return {
+      id: String(e.id),
+      date: { day: parts[2] ?? "", month: MONTHS_FR[monthIdx] ?? "" },
+      isoDate: e.isoDate,
+      title: e.title,
+      desc: e.description,
+      tag: e.tag,
+      soldOut: e.soldOut,
+    };
+  });
+}
+
+type ScheduleMap = Record<number, { open: number; close: number } | null>;
+
+function useScheduleData(): ScheduleMap {
+  const { data } = useListHours();
+  if (!data || data.length === 0) return SCHEDULE;
+  const out: ScheduleMap = {};
+  for (const row of data) {
+    out[row.dayOfWeek] =
+      row.closed || row.openHour == null || row.closeHour == null
+        ? null
+        : { open: row.openHour, close: row.closeHour };
+  }
+  for (let i = 0; i < 7; i++) {
+    if (!(i in out)) out[i] = SCHEDULE[i] ?? null;
+  }
+  return out;
+}
+
+// Builds the marquee strings by grouping consecutive days that share hours.
+function useHoursItems(): string[] {
+  const schedule = useScheduleData();
+  const order = [2, 3, 4, 5, 6, 0, 1]; // Tue → Sun, then Mon
+  const groups: { days: number[]; band: { open: number; close: number } | null }[] = [];
+  for (const day of order) {
+    const band = schedule[day] ?? null;
+    const last = groups[groups.length - 1];
+    const same =
+      last &&
+      ((last.band === null && band === null) ||
+        (!!last.band &&
+          !!band &&
+          last.band.open === band.open &&
+          last.band.close === band.close));
+    if (same) last.days.push(day);
+    else groups.push({ days: [day], band });
+  }
+  return groups.map((g) => {
+    const first = DAY_FULL_FR[g.days[0]];
+    const lastD = DAY_FULL_FR[g.days[g.days.length - 1]];
+    const span = g.days.length === 1 ? first : `${first} au ${lastD}`;
+    if (!g.band) {
+      return g.days.length === 1 ? `Fermé le ${first}` : `Fermé ${first} au ${lastD}`;
+    }
+    return `${span}  ·  ${g.band.open}h – ${g.band.close}h`;
+  });
+}
+
+type PhotoMap = Record<string, { url: string; alt: string }>;
+const PHOTO_FALLBACK: PhotoMap = {
+  hero: { url: "/images/interior-bar.jpg", alt: "Salle à manger de Chez Florent" },
+  about1: { url: "/images/tap-pour.jpg", alt: "Service au comptoir Chez Florent" },
+  about2: { url: "/images/florent-glass.jpg", alt: "Verre signature Chez Florent" },
+  about3: { url: "/images/facade-pizza.jpg", alt: "La devanture, 57 rue du Roi" },
+};
+
+function usePhotos(): PhotoMap {
+  const { data } = useListPhotos();
+  const out: PhotoMap = { ...PHOTO_FALLBACK };
+  if (data) {
+    for (const p of data) out[p.slot] = { url: p.url, alt: p.alt };
+  }
+  return out;
+}
+
 // Persists the selected event so the Reservation form can prefill the note field.
 const PREFILL_KEY = "chez-florent-event-prefill";
 
 function Agenda() {
+  const agendaEvents = useAgendaEventsData();
   const [activeIdx, setActiveIdx] = useState(0);
 
   return (
@@ -1221,12 +1350,7 @@ function Agenda() {
 
 function HoursBand() {
   const status = useOpenStatus();
-  const hoursItems = [
-    "Mardi au Jeudi  ·  17h – 22h",
-    "Vendredi  ·  Samedi  ·  17h – 23h",
-    "Dimanche  ·  17h – 21h",
-    "Fermé le Lundi",
-  ];
+  const hoursItems = useHoursItems();
 
   return (
     <div className="bg-bg-primary text-cream border-y border-border overflow-hidden py-6 md:py-8 relative">
@@ -1263,12 +1387,9 @@ function HoursBand() {
 
 // Returns the human-readable hours string for today (e.g. "17h – 22h" or "Fermé").
 function useTodaysHours() {
-  const [hours, setHours] = useState("");
-  useEffect(() => {
-    const today = SCHEDULE[new Date().getDay()];
-    setHours(today ? `${today.open}h – ${today.close}h` : "Fermé aujourd'hui");
-  }, []);
-  return hours;
+  const schedule = useScheduleData();
+  const today = schedule[new Date().getDay()];
+  return today ? `${today.open}h – ${today.close}h` : "Fermé aujourd'hui";
 }
 
 type EventPrefill = { id: string; title: string; date: string; display: string };

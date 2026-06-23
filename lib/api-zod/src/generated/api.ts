@@ -14,3 +14,257 @@ import * as zod from "zod";
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
+
+/**
+ * @summary Log in as an admin
+ */
+
+export const LoginBody = zod.object({
+  email: zod.string().min(1),
+  password: zod.string().min(1),
+});
+
+export const LoginResponse = zod.object({
+  id: zod.number(),
+  email: zod.string(),
+});
+
+/**
+ * @summary Get the currently authenticated admin
+ */
+export const GetCurrentAdminResponse = zod.object({
+  id: zod.number(),
+  email: zod.string(),
+});
+
+/**
+ * @summary List agenda events
+ */
+export const ListEventsResponseItem = zod.object({
+  id: zod.number(),
+  isoDate: zod.string(),
+  title: zod.string(),
+  description: zod.string(),
+  tag: zod.string(),
+  soldOut: zod.boolean(),
+  sortOrder: zod.number(),
+});
+export const ListEventsResponse = zod.array(ListEventsResponseItem);
+
+/**
+ * @summary Create an event
+ */
+
+export const CreateEventBody = zod.object({
+  isoDate: zod.string().min(1),
+  title: zod.string().min(1),
+  description: zod.string().optional(),
+  tag: zod.string().optional(),
+  soldOut: zod.boolean().optional(),
+  sortOrder: zod.number().optional(),
+});
+
+/**
+ * @summary Update an event
+ */
+export const UpdateEventParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateEventBody = zod.object({
+  isoDate: zod.string().min(1).optional(),
+  title: zod.string().min(1).optional(),
+  description: zod.string().optional(),
+  tag: zod.string().optional(),
+  soldOut: zod.boolean().optional(),
+  sortOrder: zod.number().optional(),
+});
+
+export const UpdateEventResponse = zod.object({
+  id: zod.number(),
+  isoDate: zod.string(),
+  title: zod.string(),
+  description: zod.string(),
+  tag: zod.string(),
+  soldOut: zod.boolean(),
+  sortOrder: zod.number(),
+});
+
+/**
+ * @summary Delete an event
+ */
+export const DeleteEventParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary Get the full menu (categories with items)
+ */
+export const GetMenuResponseItem = zod.object({
+  id: zod.number(),
+  slug: zod.string(),
+  label: zod.string(),
+  tagline: zod.string(),
+  sortOrder: zod.number(),
+  items: zod.array(
+    zod.object({
+      id: zod.number(),
+      categoryId: zod.number(),
+      name: zod.string(),
+      price: zod.string(),
+      description: zod.string(),
+      image: zod.string().nullish(),
+      sortOrder: zod.number(),
+    }),
+  ),
+});
+export const GetMenuResponse = zod.array(GetMenuResponseItem);
+
+/**
+ * @summary Create a menu category
+ */
+
+export const CreateMenuCategoryBody = zod.object({
+  slug: zod.string().min(1),
+  label: zod.string().min(1),
+  tagline: zod.string().optional(),
+  sortOrder: zod.number().optional(),
+});
+
+/**
+ * @summary Update a menu category
+ */
+export const UpdateMenuCategoryParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateMenuCategoryBody = zod.object({
+  slug: zod.string().min(1).optional(),
+  label: zod.string().min(1).optional(),
+  tagline: zod.string().optional(),
+  sortOrder: zod.number().optional(),
+});
+
+export const UpdateMenuCategoryResponse = zod.object({
+  id: zod.number(),
+  slug: zod.string(),
+  label: zod.string(),
+  tagline: zod.string(),
+  sortOrder: zod.number(),
+});
+
+/**
+ * @summary Delete a menu category
+ */
+export const DeleteMenuCategoryParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary Create a menu item
+ */
+
+export const CreateMenuItemBody = zod.object({
+  categoryId: zod.number(),
+  name: zod.string().min(1),
+  price: zod.string().optional(),
+  description: zod.string().optional(),
+  image: zod.string().nullish(),
+  sortOrder: zod.number().optional(),
+});
+
+/**
+ * @summary Update a menu item
+ */
+export const UpdateMenuItemParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateMenuItemBody = zod.object({
+  categoryId: zod.number().optional(),
+  name: zod.string().min(1).optional(),
+  price: zod.string().optional(),
+  description: zod.string().optional(),
+  image: zod.string().nullish(),
+  sortOrder: zod.number().optional(),
+});
+
+export const UpdateMenuItemResponse = zod.object({
+  id: zod.number(),
+  categoryId: zod.number(),
+  name: zod.string(),
+  price: zod.string(),
+  description: zod.string(),
+  image: zod.string().nullish(),
+  sortOrder: zod.number(),
+});
+
+/**
+ * @summary Delete a menu item
+ */
+export const DeleteMenuItemParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List opening hours for each day of the week
+ */
+export const ListHoursResponseItem = zod.object({
+  id: zod.number(),
+  dayOfWeek: zod.number(),
+  closed: zod.boolean(),
+  openHour: zod.number().nullish(),
+  closeHour: zod.number().nullish(),
+});
+export const ListHoursResponse = zod.array(ListHoursResponseItem);
+
+/**
+ * @summary Update opening hours for a day of the week (0=Sunday..6=Saturday)
+ */
+export const UpdateHoursParams = zod.object({
+  dayOfWeek: zod.coerce.number(),
+});
+
+export const UpdateHoursBody = zod.object({
+  closed: zod.boolean(),
+  openHour: zod.number().nullish(),
+  closeHour: zod.number().nullish(),
+});
+
+export const UpdateHoursResponse = zod.object({
+  id: zod.number(),
+  dayOfWeek: zod.number(),
+  closed: zod.boolean(),
+  openHour: zod.number().nullish(),
+  closeHour: zod.number().nullish(),
+});
+
+/**
+ * @summary List site photos
+ */
+export const ListPhotosResponseItem = zod.object({
+  id: zod.number(),
+  slot: zod.string(),
+  url: zod.string(),
+  alt: zod.string(),
+});
+export const ListPhotosResponse = zod.array(ListPhotosResponseItem);
+
+/**
+ * @summary Update a site photo by slot
+ */
+export const UpdatePhotoParams = zod.object({
+  slot: zod.coerce.string(),
+});
+
+export const UpdatePhotoBody = zod.object({
+  url: zod.string().min(1),
+  alt: zod.string().optional(),
+});
+
+export const UpdatePhotoResponse = zod.object({
+  id: zod.number(),
+  slot: zod.string(),
+  url: zod.string(),
+  alt: zod.string(),
+});

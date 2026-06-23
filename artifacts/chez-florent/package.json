@@ -24,5 +24,9 @@
     "react-dom": "catalog:",
     "tailwindcss": "catalog:",
     "vite": "catalog:"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "catalog:",
+    "@workspace/api-client-react": "workspace:*"
   }
 }

@@ -8,3 +8,150 @@
 export interface HealthStatus {
   status: string;
 }
+
+export interface Error {
+  error: string;
+}
+
+export interface AdminLogin {
+  /** @minLength 1 */
+  email: string;
+  /** @minLength 1 */
+  password: string;
+}
+
+export interface AdminUser {
+  id: number;
+  email: string;
+}
+
+export interface Event {
+  id: number;
+  isoDate: string;
+  title: string;
+  description: string;
+  tag: string;
+  soldOut: boolean;
+  sortOrder: number;
+}
+
+export interface EventInput {
+  /** @minLength 1 */
+  isoDate: string;
+  /** @minLength 1 */
+  title: string;
+  description?: string;
+  tag?: string;
+  soldOut?: boolean;
+  sortOrder?: number;
+}
+
+export interface EventUpdate {
+  /** @minLength 1 */
+  isoDate?: string;
+  /** @minLength 1 */
+  title?: string;
+  description?: string;
+  tag?: string;
+  soldOut?: boolean;
+  sortOrder?: number;
+}
+
+export interface MenuItem {
+  id: number;
+  categoryId: number;
+  name: string;
+  price: string;
+  description: string;
+  /** @nullable */
+  image?: string | null;
+  sortOrder: number;
+}
+
+export interface MenuItemInput {
+  categoryId: number;
+  /** @minLength 1 */
+  name: string;
+  price?: string;
+  description?: string;
+  /** @nullable */
+  image?: string | null;
+  sortOrder?: number;
+}
+
+export interface MenuItemUpdate {
+  categoryId?: number;
+  /** @minLength 1 */
+  name?: string;
+  price?: string;
+  description?: string;
+  /** @nullable */
+  image?: string | null;
+  sortOrder?: number;
+}
+
+export interface MenuCategoryBase {
+  id: number;
+  slug: string;
+  label: string;
+  tagline: string;
+  sortOrder: number;
+}
+
+export interface MenuCategory {
+  id: number;
+  slug: string;
+  label: string;
+  tagline: string;
+  sortOrder: number;
+  items: MenuItem[];
+}
+
+export interface MenuCategoryInput {
+  /** @minLength 1 */
+  slug: string;
+  /** @minLength 1 */
+  label: string;
+  tagline?: string;
+  sortOrder?: number;
+}
+
+export interface MenuCategoryUpdate {
+  /** @minLength 1 */
+  slug?: string;
+  /** @minLength 1 */
+  label?: string;
+  tagline?: string;
+  sortOrder?: number;
+}
+
+export interface Hours {
+  id: number;
+  dayOfWeek: number;
+  closed: boolean;
+  /** @nullable */
+  openHour?: number | null;
+  /** @nullable */
+  closeHour?: number | null;
+}
+
+export interface HoursUpdate {
+  closed: boolean;
+  /** @nullable */
+  openHour?: number | null;
+  /** @nullable */
+  closeHour?: number | null;
+}
+
+export interface SitePhoto {
+  id: number;
+  slot: string;
+  url: string;
+  alt: string;
+}
+
+export interface SitePhotoUpdate {
+  /** @minLength 1 */
+  url: string;
+  alt?: string;
+}

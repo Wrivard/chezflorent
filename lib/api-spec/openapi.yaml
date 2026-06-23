@@ -10,6 +10,16 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Admin authentication
+  - name: events
+    description: Agenda events
+  - name: menu
+    description: Menu categories and items
+  - name: hours
+    description: Opening hours
+  - name: photos
+    description: Site photos
 paths:
   /healthz:
     get:
@@ -24,6 +34,396 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Log in as an admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminLogin"
+      responses:
+        "200":
+          description: Logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUser"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Log out
+      responses:
+        "204":
+          description: Logged out
+  /auth/me:
+    get:
+      operationId: getCurrentAdmin
+      tags: [auth]
+      summary: Get the currently authenticated admin
+      responses:
+        "200":
+          description: Current admin
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUser"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /events:
+    get:
+      operationId: listEvents
+      tags: [events]
+      summary: List agenda events
+      responses:
+        "200":
+          description: List of events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Event"
+    post:
+      operationId: createEvent
+      tags: [events]
+      summary: Create an event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /events/{id}:
+    patch:
+      operationId: updateEvent
+      tags: [events]
+      summary: Update an event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteEvent
+      tags: [events]
+      summary: Delete an event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /menu:
+    get:
+      operationId: getMenu
+      tags: [menu]
+      summary: Get the full menu (categories with items)
+      responses:
+        "200":
+          description: Menu
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MenuCategory"
+  /menu/categories:
+    post:
+      operationId: createMenuCategory
+      tags: [menu]
+      summary: Create a menu category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MenuCategoryInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MenuCategoryBase"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /menu/categories/{id}:
+    patch:
+      operationId: updateMenuCategory
+      tags: [menu]
+      summary: Update a menu category
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MenuCategoryUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MenuCategoryBase"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteMenuCategory
+      tags: [menu]
+      summary: Delete a menu category
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /menu/items:
+    post:
+      operationId: createMenuItem
+      tags: [menu]
+      summary: Create a menu item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MenuItemInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MenuItem"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /menu/items/{id}:
+    patch:
+      operationId: updateMenuItem
+      tags: [menu]
+      summary: Update a menu item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MenuItemUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MenuItem"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteMenuItem
+      tags: [menu]
+      summary: Delete a menu item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /hours:
+    get:
+      operationId: listHours
+      tags: [hours]
+      summary: List opening hours for each day of the week
+      responses:
+        "200":
+          description: Hours
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Hours"
+  /hours/{dayOfWeek}:
+    patch:
+      operationId: updateHours
+      tags: [hours]
+      summary: Update opening hours for a day of the week (0=Sunday..6=Saturday)
+      parameters:
+        - name: dayOfWeek
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HoursUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Hours"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /photos:
+    get:
+      operationId: listPhotos
+      tags: [photos]
+      summary: List site photos
+      responses:
+        "200":
+          description: Photos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SitePhoto"
+  /photos/{slot}:
+    patch:
+      operationId: updatePhoto
+      tags: [photos]
+      summary: Update a site photo by slot
+      parameters:
+        - name: slot
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SitePhotoUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SitePhoto"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
   schemas:
     HealthStatus:
@@ -33,4 +433,241 @@ components:
           type: string
       required:
         - status
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
 
+    AdminLogin:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          minLength: 1
+        password:
+          type: string
+          minLength: 1
+    AdminUser:
+      type: object
+      required: [id, email]
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+
+    Event:
+      type: object
+      required: [id, isoDate, title, description, tag, soldOut, sortOrder]
+      properties:
+        id:
+          type: integer
+        isoDate:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        tag:
+          type: string
+        soldOut:
+          type: boolean
+        sortOrder:
+          type: integer
+    EventInput:
+      type: object
+      required: [isoDate, title]
+      properties:
+        isoDate:
+          type: string
+          minLength: 1
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        tag:
+          type: string
+        soldOut:
+          type: boolean
+        sortOrder:
+          type: integer
+    EventUpdate:
+      type: object
+      properties:
+        isoDate:
+          type: string
+          minLength: 1
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        tag:
+          type: string
+        soldOut:
+          type: boolean
+        sortOrder:
+          type: integer
+
+    MenuItem:
+      type: object
+      required: [id, categoryId, name, price, description, sortOrder]
+      properties:
+        id:
+          type: integer
+        categoryId:
+          type: integer
+        name:
+          type: string
+        price:
+          type: string
+        description:
+          type: string
+        image:
+          type: ["string", "null"]
+        sortOrder:
+          type: integer
+    MenuItemInput:
+      type: object
+      required: [categoryId, name]
+      properties:
+        categoryId:
+          type: integer
+        name:
+          type: string
+          minLength: 1
+        price:
+          type: string
+        description:
+          type: string
+        image:
+          type: ["string", "null"]
+        sortOrder:
+          type: integer
+    MenuItemUpdate:
+      type: object
+      properties:
+        categoryId:
+          type: integer
+        name:
+          type: string
+          minLength: 1
+        price:
+          type: string
+        description:
+          type: string
+        image:
+          type: ["string", "null"]
+        sortOrder:
+          type: integer
+    MenuCategoryBase:
+      type: object
+      required: [id, slug, label, tagline, sortOrder]
+      properties:
+        id:
+          type: integer
+        slug:
+          type: string
+        label:
+          type: string
+        tagline:
+          type: string
+        sortOrder:
+          type: integer
+    MenuCategory:
+      type: object
+      required: [id, slug, label, tagline, sortOrder, items]
+      properties:
+        id:
+          type: integer
+        slug:
+          type: string
+        label:
+          type: string
+        tagline:
+          type: string
+        sortOrder:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/MenuItem"
+    MenuCategoryInput:
+      type: object
+      required: [slug, label]
+      properties:
+        slug:
+          type: string
+          minLength: 1
+        label:
+          type: string
+          minLength: 1
+        tagline:
+          type: string
+        sortOrder:
+          type: integer
+    MenuCategoryUpdate:
+      type: object
+      properties:
+        slug:
+          type: string
+          minLength: 1
+        label:
+          type: string
+          minLength: 1
+        tagline:
+          type: string
+        sortOrder:
+          type: integer
+
+    Hours:
+      type: object
+      required: [id, dayOfWeek, closed]
+      properties:
+        id:
+          type: integer
+        dayOfWeek:
+          type: integer
+        closed:
+          type: boolean
+        openHour:
+          type: ["integer", "null"]
+        closeHour:
+          type: ["integer", "null"]
+    HoursUpdate:
+      type: object
+      required: [closed]
+      properties:
+        closed:
+          type: boolean
+        openHour:
+          type: ["integer", "null"]
+        closeHour:
+          type: ["integer", "null"]
+
+    SitePhoto:
+      type: object
+      required: [id, slot, url, alt]
+      properties:
+        id:
+          type: integer
+        slot:
+          type: string
+        url:
+          type: string
+        alt:
+          type: string
+    SitePhotoUpdate:
+      type: object
+      required: [url]
+      properties:
+        url:
+          type: string
+          minLength: 1
+        alt:
+          type: string
