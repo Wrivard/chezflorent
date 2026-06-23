@@ -25,6 +25,13 @@ export interface AdminUser {
   email: string;
 }
 
+export interface ChangePassword {
+  /** @minLength 1 */
+  currentPassword: string;
+  /** @minLength 8 */
+  newPassword: string;
+}
+
 export interface Event {
   id: number;
   isoDate: string;

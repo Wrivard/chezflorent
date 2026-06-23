@@ -10,6 +10,7 @@ import EventsEditor from "./EventsEditor";
 import MenuEditor from "./MenuEditor";
 import HoursEditor from "./HoursEditor";
 import PhotosEditor from "./PhotosEditor";
+import AccountEditor from "./AccountEditor";
 import { Button, cn } from "./ui";
 
 const TABS = [
@@ -17,6 +18,7 @@ const TABS = [
   { id: "menu", label: "Menu" },
   { id: "horaires", label: "Horaires" },
   { id: "photos", label: "Photos" },
+  { id: "compte", label: "Compte" },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"];
@@ -97,6 +99,7 @@ export default function AdminApp() {
         {tab === "menu" && <MenuEditor />}
         {tab === "horaires" && <HoursEditor />}
         {tab === "photos" && <PhotosEditor />}
+        {tab === "compte" && <AccountEditor />}
       </main>
     </div>
   );

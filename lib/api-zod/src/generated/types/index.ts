@@ -8,6 +8,7 @@
 
 export * from "./adminLogin";
 export * from "./adminUser";
+export * from "./changePassword";
 export * from "./error";
 export * from "./event";
 export * from "./eventInput";

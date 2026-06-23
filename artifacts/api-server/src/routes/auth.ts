@@ -1,12 +1,19 @@
 import { Router, type IRouter } from "express";
 import { eq } from "drizzle-orm";
 import { db, adminUsersTable } from "@workspace/db";
-import { LoginBody, LoginResponse, GetCurrentAdminResponse } from "@workspace/api-zod";
+import {
+  LoginBody,
+  LoginResponse,
+  GetCurrentAdminResponse,
+  ChangePasswordBody,
+} from "@workspace/api-zod";
 import {
   SESSION_COOKIE,
   sessionCookieOptions,
   verifyPassword,
+  hashPassword,
 } from "../lib/auth";
+import { requireAuth } from "../middlewares/requireAuth";
 
 const router: IRouter = Router();
 
@@ -58,5 +65,44 @@ router.get("/auth/me", async (req, res): Promise<void> => {
 
   res.json(GetCurrentAdminResponse.parse({ id: user.id, email: user.email }));
 });
+
+router.post(
+  "/auth/change-password",
+  requireAuth,
+  async (req, res): Promise<void> => {
+    const parsed = ChangePasswordBody.safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: parsed.error.message });
+      return;
+    }
+
+    const adminId = (req as { adminId?: number }).adminId;
+    const [user] = await db
+      .select()
+      .from(adminUsersTable)
+      .where(eq(adminUsersTable.id, adminId ?? -1));
+
+    if (!user) {
+      res.status(401).json({ error: "Not authenticated" });
+      return;
+    }
+
+    if (!verifyPassword(parsed.data.currentPassword, user.passwordHash)) {
+      req.log.warn(
+        { adminId: user.id },
+        "Failed admin password change (wrong current password)",
+      );
+      res.status(401).json({ error: "Mot de passe actuel invalide." });
+      return;
+    }
+
+    await db
+      .update(adminUsersTable)
+      .set({ passwordHash: hashPassword(parsed.data.newPassword) })
+      .where(eq(adminUsersTable.id, user.id));
+
+    res.sendStatus(204);
+  },
+);
 
 export default router;

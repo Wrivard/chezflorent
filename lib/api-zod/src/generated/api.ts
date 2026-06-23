@@ -38,6 +38,17 @@ export const GetCurrentAdminResponse = zod.object({
 });
 
 /**
+ * @summary Change the authenticated admin's password
+ */
+
+export const changePasswordBodyNewPasswordMin = 8;
+
+export const ChangePasswordBody = zod.object({
+  currentPassword: zod.string().min(1),
+  newPassword: zod.string().min(changePasswordBodyNewPasswordMin),
+});
+
+/**
  * @summary List agenda events
  */
 export const ListEventsResponseItem = zod.object({
