@@ -1,21 +1,35 @@
 import type { Request, Response, NextFunction } from "express";
-import { SESSION_COOKIE } from "../lib/auth";
+import { eq } from "drizzle-orm";
+import { db, adminUsersTable } from "@workspace/db";
+import { SESSION_COOKIE, parseSession } from "../lib/auth";
 
 export interface AuthedRequest extends Request {
   adminId?: number;
 }
 
-export function requireAuth(
+export async function requireAuth(
   req: AuthedRequest,
   res: Response,
   next: NextFunction,
-): void {
-  const raw = req.signedCookies?.[SESSION_COOKIE];
-  const id = typeof raw === "string" ? parseInt(raw, 10) : NaN;
-  if (!raw || Number.isNaN(id)) {
+): Promise<void> {
+  const session = parseSession(req.signedCookies?.[SESSION_COOKIE]);
+  if (!session) {
     res.status(401).json({ error: "Not authenticated" });
     return;
   }
-  req.adminId = id;
+
+  const [user] = await db
+    .select()
+    .from(adminUsersTable)
+    .where(eq(adminUsersTable.id, session.id));
+
+  // Reject sessions whose embedded version no longer matches the stored one;
+  // this is what logs out other devices after a credential rotation.
+  if (!user || user.sessionVersion !== session.version) {
+    res.status(401).json({ error: "Not authenticated" });
+    return;
+  }
+
+  req.adminId = user.id;
   next();
 }

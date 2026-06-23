@@ -12,6 +12,8 @@ import {
   sessionCookieOptions,
   verifyPassword,
   hashPassword,
+  encodeSession,
+  parseSession,
 } from "../lib/auth";
 import { requireAuth } from "../middlewares/requireAuth";
 
@@ -36,7 +38,11 @@ router.post("/auth/login", async (req, res): Promise<void> => {
     return;
   }
 
-  res.cookie(SESSION_COOKIE, String(user.id), sessionCookieOptions());
+  res.cookie(
+    SESSION_COOKIE,
+    encodeSession({ id: user.id, version: user.sessionVersion }),
+    sessionCookieOptions(),
+  );
   res.json(LoginResponse.parse({ id: user.id, email: user.email }));
 });
 
@@ -46,9 +52,8 @@ router.post("/auth/logout", (_req, res): void => {
 });
 
 router.get("/auth/me", async (req, res): Promise<void> => {
-  const raw = req.signedCookies?.[SESSION_COOKIE];
-  const id = typeof raw === "string" ? parseInt(raw, 10) : NaN;
-  if (!raw || Number.isNaN(id)) {
+  const session = parseSession(req.signedCookies?.[SESSION_COOKIE]);
+  if (!session) {
     res.status(401).json({ error: "Not authenticated" });
     return;
   }
@@ -56,9 +61,9 @@ router.get("/auth/me", async (req, res): Promise<void> => {
   const [user] = await db
     .select()
     .from(adminUsersTable)
-    .where(eq(adminUsersTable.id, id));
+    .where(eq(adminUsersTable.id, session.id));
 
-  if (!user) {
+  if (!user || user.sessionVersion !== session.version) {
     res.status(401).json({ error: "Not authenticated" });
     return;
   }
@@ -96,10 +101,24 @@ router.post(
       return;
     }
 
+    // Bump the session version so every existing cookie (issued with the old
+    // version) is rejected on its next request — logging out other devices.
+    const nextVersion = user.sessionVersion + 1;
     await db
       .update(adminUsersTable)
-      .set({ passwordHash: hashPassword(parsed.data.newPassword) })
+      .set({
+        passwordHash: hashPassword(parsed.data.newPassword),
+        sessionVersion: nextVersion,
+      })
       .where(eq(adminUsersTable.id, user.id));
+
+    // Keep the current device logged in by re-issuing a cookie carrying the
+    // new version.
+    res.cookie(
+      SESSION_COOKIE,
+      encodeSession({ id: user.id, version: nextVersion }),
+      sessionCookieOptions(),
+    );
 
     res.sendStatus(204);
   },

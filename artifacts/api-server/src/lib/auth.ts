@@ -7,6 +7,29 @@ import type { CookieOptions } from "express";
 
 export const SESSION_COOKIE = "cf_session";
 
+export interface SessionPayload {
+  id: number;
+  version: number;
+}
+
+/**
+ * Encode a session cookie value. The value embeds the admin id together with
+ * the `sessionVersion` it was issued for, so that rotating credentials (which
+ * bumps the version) invalidates cookies handed out before the change.
+ */
+export function encodeSession(payload: SessionPayload): string {
+  return `${payload.id}.${payload.version}`;
+}
+
+export function parseSession(raw: unknown): SessionPayload | null {
+  if (typeof raw !== "string") return null;
+  const [idPart, versionPart] = raw.split(".");
+  const id = Number.parseInt(idPart ?? "", 10);
+  const version = Number.parseInt(versionPart ?? "", 10);
+  if (Number.isNaN(id) || Number.isNaN(version)) return null;
+  return { id, version };
+}
+
 /**
  * Hash a password using Node's built-in scrypt (no native dependency, works
  * on Replit and Vercel serverless alike). Output format: `salt:hash` (hex).
