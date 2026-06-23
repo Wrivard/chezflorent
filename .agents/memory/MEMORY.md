@@ -1,0 +1,1 @@
+- [Vercel deploy of pnpm-monorepo scaffold](vercel-deploy.md) — catch-all `api/[...path].ts` wraps the Express app; SPA fallback rewrite must exclude `/api`; vite.config must not hard-require PORT/BASE_PATH at build.

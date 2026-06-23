@@ -33,9 +33,17 @@ export function verifyPassword(password: string, stored: string): boolean {
  * local environment working without extra setup.
  */
 export function getSessionSecret(): string {
-  return (
-    process.env.SESSION_SECRET ?? "dev-insecure-chez-florent-session-secret"
-  );
+  const secret = process.env.SESSION_SECRET;
+  if (secret) return secret;
+  // The insecure constant is only acceptable for local development. In
+  // production a missing secret would let anyone forge a signed session
+  // cookie, so we fail fast instead.
+  if (process.env.NODE_ENV === "production") {
+    throw new Error(
+      "SESSION_SECRET environment variable is required in production.",
+    );
+  }
+  return "dev-insecure-chez-florent-session-secret";
 }
 
 export function sessionCookieOptions(): CookieOptions {

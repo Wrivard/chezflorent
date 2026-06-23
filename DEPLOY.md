@@ -9,9 +9,9 @@ This project is a pnpm monorepo:
 In production everything runs on **Vercel's free Hobby plan**:
 
 - The website is served as static files.
-- The API runs as a single **Vercel Serverless Function** (`api/index.ts`),
-  which wraps the Express app. `vercel.json` rewrites every `/api/*` request to
-  it.
+- The API runs as a single **Vercel Serverless Function**
+  (`api/[...path].ts`), which wraps the Express app. The catch-all filename
+  makes Vercel route every `/api/*` request to it automatically.
 - The database is **Neon Postgres** (free tier).
 - Photo uploads are stored in **Vercel Blob** (free tier).
 

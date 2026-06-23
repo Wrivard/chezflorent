@@ -5,12 +5,11 @@
   "buildCommand": "pnpm --filter @workspace/chez-florent build",
   "outputDirectory": "artifacts/chez-florent/dist/public",
   "functions": {
-    "api/index.ts": {
+    "api/[...path].ts": {
       "maxDuration": 10
     }
   },
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/index" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }
