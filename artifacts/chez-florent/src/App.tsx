@@ -292,9 +292,12 @@ export function Navbar({
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [bistroOpen, setBistroOpen] = useState(false);
+  const bistroRef = useRef<HTMLDivElement>(null);
   const status = useOpenStatus();
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   const onSubPage = onEventsPage || onMenuPage || onAboutPage || onContactPage || onGroupsPage;
+  const bistroActive = onAboutPage || onEventsPage || onGroupsPage;
   const sectionHref = (id: string) =>
     onSubPage ? `${base}/#${id}` : `#${id}`;
   const homeHref = onSubPage ? `${base}/` : "#accueil";
@@ -309,6 +312,24 @@ export function Navbar({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (!bistroOpen) return;
+    const handlePointer = (e: MouseEvent) => {
+      if (bistroRef.current && !bistroRef.current.contains(e.target as Node)) {
+        setBistroOpen(false);
+      }
+    };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setBistroOpen(false);
+    };
+    document.addEventListener("mousedown", handlePointer);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handlePointer);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [bistroOpen]);
 
   const closeMenu = () => setMobileMenuOpen(false);
 
@@ -354,10 +375,55 @@ export function Navbar({
 
             <div className="hidden md:flex items-center gap-7 lg:gap-8 text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft">
               <a href={homeHref} className={`link-underline hover:text-cream transition-colors ${!onSubPage && activeSection === "accueil" ? "active text-cream" : ""}`}>Accueil</a>
-              <a href={aboutHref} className={`link-underline hover:text-cream transition-colors ${onAboutPage ? "active text-cream" : ""}`}>À propos</a>
               <a href={menuHref} className={`link-underline hover:text-cream transition-colors ${onMenuPage ? "active text-cream" : ""}`}>Menu</a>
-              <a href={eventsHref} className={`link-underline hover:text-cream transition-colors ${onEventsPage ? "active text-cream" : ""}`}>Agenda</a>
-              <a href={groupsHref} className={`link-underline hover:text-cream transition-colors ${onGroupsPage ? "active text-cream" : ""}`}>Groupes</a>
+
+              {/* Le bistro — dropdown grouping secondary pages */}
+              <div
+                ref={bistroRef}
+                className="relative"
+                onMouseEnter={() => setBistroOpen(true)}
+                onMouseLeave={() => setBistroOpen(false)}
+              >
+                <button
+                  type="button"
+                  onClick={() => setBistroOpen((v) => !v)}
+                  aria-expanded={bistroOpen}
+                  aria-haspopup="true"
+                  className={`link-underline inline-flex items-center gap-1.5 uppercase tracking-[0.2em] hover:text-cream transition-colors ${bistroActive ? "active text-cream" : ""}`}
+                >
+                  Le bistro
+                  <svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    aria-hidden="true"
+                    className={`transition-transform duration-300 ${bistroOpen ? "rotate-180" : ""}`}
+                  >
+                    <path d="M2.5 4.5L6 8l3.5-3.5" />
+                  </svg>
+                </button>
+                <AnimatePresence>
+                  {bistroOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 8 }}
+                      transition={{ duration: 0.2, ease: EASE_SMOOTH }}
+                      className="absolute right-0 top-full pt-4 min-w-[200px]"
+                    >
+                      <div className="flex flex-col bg-bg-primary/95 backdrop-blur-md border border-border rounded-[2px] overflow-hidden shadow-2xl">
+                        <a href={aboutHref} className={`px-5 py-3.5 hover:bg-cream/5 hover:text-cream transition-colors border-b border-border/60 ${onAboutPage ? "text-cream bg-cream/5" : ""}`}>À propos</a>
+                        <a href={eventsHref} className={`px-5 py-3.5 hover:bg-cream/5 hover:text-cream transition-colors border-b border-border/60 ${onEventsPage ? "text-cream bg-cream/5" : ""}`}>Agenda</a>
+                        <a href={groupsHref} className={`px-5 py-3.5 hover:bg-cream/5 hover:text-cream transition-colors ${onGroupsPage ? "text-cream bg-cream/5" : ""}`}>Groupes</a>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
               <a href={contactHref} className={`link-underline hover:text-cream transition-colors ${onContactPage ? "active text-cream" : ""}`}>Contact</a>
               <a
                 href={sectionHref("reservation")}
