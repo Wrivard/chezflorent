@@ -1460,7 +1460,7 @@ function Agenda() {
   );
 }
 
-export function HoursBand() {
+function HoursBand() {
   const status = useOpenStatus();
   const hoursItems = useHoursItems();
 
