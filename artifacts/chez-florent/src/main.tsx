@@ -6,6 +6,7 @@ import EventsPage from "./EventsPage";
 import MenuPage from "./MenuPage";
 import AboutPage from "./AboutPage";
 import ContactPage from "./ContactPage";
+import GroupReservationPage from "./GroupReservationPage";
 import { queryClient } from "./lib/queryClient";
 import "./index.css";
 
@@ -15,12 +16,14 @@ const eventsPath = `${base}/evenements`;
 const menuPath = `${base}/menu`;
 const aboutPath = `${base}/a-propos`;
 const contactPath = `${base}/contact`;
+const groupsPath = `${base}/groupes`;
 const current = window.location.pathname.replace(/\/$/, "");
 const isAdmin = current === adminPath || current.startsWith(`${adminPath}/`);
 const isEvents = current === eventsPath || current.startsWith(`${eventsPath}/`);
 const isMenu = current === menuPath || current.startsWith(`${menuPath}/`);
 const isAbout = current === aboutPath || current.startsWith(`${aboutPath}/`);
 const isContact = current === contactPath || current.startsWith(`${contactPath}/`);
+const isGroups = current === groupsPath || current.startsWith(`${groupsPath}/`);
 
 function Root() {
   if (isAdmin) return <AdminApp />;
@@ -28,6 +31,7 @@ function Root() {
   if (isMenu) return <MenuPage />;
   if (isAbout) return <AboutPage />;
   if (isContact) return <ContactPage />;
+  if (isGroups) return <GroupReservationPage />;
   return <App />;
 }
 

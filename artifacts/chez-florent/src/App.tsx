@@ -281,18 +281,20 @@ export function Navbar({
   onMenuPage = false,
   onAboutPage = false,
   onContactPage = false,
+  onGroupsPage = false,
 }: {
   activeSection: string;
   onEventsPage?: boolean;
   onMenuPage?: boolean;
   onAboutPage?: boolean;
   onContactPage?: boolean;
+  onGroupsPage?: boolean;
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const status = useOpenStatus();
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-  const onSubPage = onEventsPage || onMenuPage || onAboutPage || onContactPage;
+  const onSubPage = onEventsPage || onMenuPage || onAboutPage || onContactPage || onGroupsPage;
   const sectionHref = (id: string) =>
     onSubPage ? `${base}/#${id}` : `#${id}`;
   const homeHref = onSubPage ? `${base}/` : "#accueil";
@@ -300,6 +302,7 @@ export function Navbar({
   const menuHref = `${base}/menu`;
   const aboutHref = `${base}/a-propos`;
   const contactHref = `${base}/contact`;
+  const groupsHref = `${base}/groupes`;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
@@ -354,6 +357,7 @@ export function Navbar({
               <a href={aboutHref} className={`link-underline hover:text-cream transition-colors ${onAboutPage ? "active text-cream" : ""}`}>À propos</a>
               <a href={menuHref} className={`link-underline hover:text-cream transition-colors ${onMenuPage ? "active text-cream" : ""}`}>Menu</a>
               <a href={eventsHref} className={`link-underline hover:text-cream transition-colors ${onEventsPage ? "active text-cream" : ""}`}>Agenda</a>
+              <a href={groupsHref} className={`link-underline hover:text-cream transition-colors ${onGroupsPage ? "active text-cream" : ""}`}>Groupes</a>
               <a href={contactHref} className={`link-underline hover:text-cream transition-colors ${onContactPage ? "active text-cream" : ""}`}>Contact</a>
               <a
                 href={sectionHref("reservation")}
@@ -398,6 +402,7 @@ export function Navbar({
               <a href={aboutHref} onClick={closeMenu} className="hover:text-orange transition-colors">À propos</a>
               <a href={menuHref} onClick={closeMenu} className="hover:text-orange transition-colors">L'ardoise</a>
               <a href={eventsHref} onClick={closeMenu} className="hover:text-orange transition-colors">Agenda</a>
+              <a href={groupsHref} onClick={closeMenu} className="hover:text-orange transition-colors">Groupes & privatisation</a>
               <a href={contactHref} onClick={closeMenu} className="hover:text-orange transition-colors">Nous trouver</a>
               <a href={sectionHref("reservation")} onClick={closeMenu} className="hover:text-orange transition-colors">Réserver une table</a>
             </div>
@@ -1872,6 +1877,7 @@ export function Footer() {
               <li><a href={`${base}/a-propos`} className="hover:text-orange transition-colors">À propos</a></li>
               <li><a href={`${base}/menu`} className="hover:text-orange transition-colors">Menu</a></li>
               <li><a href={`${base}/evenements`} className="hover:text-orange transition-colors">Agenda</a></li>
+              <li><a href={`${base}/groupes`} className="hover:text-orange transition-colors">Groupes & privatisation</a></li>
               <li><a href={`${base}/contact`} className="hover:text-orange transition-colors">Nous trouver</a></li>
             </ul>
           </nav>
