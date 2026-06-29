@@ -5,6 +5,7 @@ import eventsRouter from "./events";
 import menuRouter from "./menu";
 import hoursRouter from "./hours";
 import photosRouter from "./photos";
+import groupContentRouter from "./groupContent";
 import uploadRouter from "./upload";
 
 const router: IRouter = Router();
@@ -15,6 +16,7 @@ router.use(eventsRouter);
 router.use(menuRouter);
 router.use(hoursRouter);
 router.use(photosRouter);
+router.use(groupContentRouter);
 router.use(uploadRouter);
 
 export default router;

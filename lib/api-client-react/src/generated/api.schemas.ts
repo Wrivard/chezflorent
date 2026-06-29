@@ -162,3 +162,58 @@ export interface SitePhotoUpdate {
   url: string;
   alt?: string;
 }
+
+export interface GroupFormule {
+  name: string;
+  kind: string;
+  desc: string;
+  price: string;
+  unit: string;
+  image: string;
+}
+
+export interface GroupOccasion {
+  title: string;
+  desc: string;
+  image: string;
+  tag: string;
+}
+
+export interface GroupStep {
+  title: string;
+  body: string;
+}
+
+export interface GroupDetail {
+  label: string;
+  value: string;
+}
+
+export interface GroupTexts {
+  heroMarker: string;
+  heroTitle: string;
+  heroLede: string;
+  manifestoMarker: string;
+  manifestoTitle: string;
+  manifestoBody: string;
+  manifestoQuote: string;
+  signatureName: string;
+  signatureRole: string;
+  formulesMarker: string;
+  formulesTitle: string;
+  formulesLede: string;
+  occasionsMarker: string;
+  occasionsTitle: string;
+  stepsMarker: string;
+  stepsTitle: string;
+  essentialTitle: string;
+  essentialFootnote: string;
+}
+
+export interface GroupContent {
+  texts: GroupTexts;
+  formules: GroupFormule[];
+  occasions: GroupOccasion[];
+  steps: GroupStep[];
+  details: GroupDetail[];
+}

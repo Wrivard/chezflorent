@@ -1,5 +1,9 @@
 import { motion } from "framer-motion";
 import {
+  useGetGroupContent,
+  type GroupContent,
+} from "@workspace/api-client-react";
+import {
   Navbar,
   Footer,
   FilmGrain,
@@ -46,112 +50,111 @@ function RevealHeading({
   );
 }
 
-// The ways to gather — each presented as a cinematic editorial feature band
-// (large photography + big type), never a pricing card. Price is a quiet line.
-type Formule = {
-  name: string;
-  kind: string;
-  desc: string;
-  price: string;
-  unit: string;
-  image: string;
+// Defaults mirror the seeded CMS document (see api-server lib/groupContent.ts)
+// so the page renders correctly even before the document exists or if the API
+// is unavailable. Editable in the admin under the « Groupes » tab.
+const DEFAULT_GROUP_CONTENT: GroupContent = {
+  texts: {
+    heroMarker: "07 — Groupes & privatisation",
+    heroTitle: "Réunir vos gens",
+    heroLede:
+      "Un party de bureau, un anniversaire, un mariage intime ou une envie de privatiser le bistro au complet — on s'occupe de tout.",
+    manifestoMarker: "07 — Le mot de Florent",
+    manifestoTitle: "« Vos gens, notre maison. »",
+    manifestoBody:
+      "Que vous soyez une dizaine autour d'une grande tablée ou que vous preniez la place au complet, on prépare votre soirée comme si c'était la nôtre — le menu, le vin, le rythme du service. Vous n'avez qu'à réunir vos gens.",
+    manifestoQuote:
+      "« On ne reçoit pas un groupe comme une réservation de plus. On le reçoit comme on reçoit chez nous. »",
+    signatureName: "Florent",
+    signatureRole: "Propriétaire",
+    formulesMarker: "07 — Les formules",
+    formulesTitle: "L'art de recevoir",
+    formulesLede:
+      "Quatre façons de réunir vos gens — chacune s'ajuste au nombre, à l'occasion et au budget. Les tarifs sont à confirmer.",
+    occasionsMarker: "07 — Pour toutes les occasions",
+    occasionsTitle: "On célèbre quoi ?",
+    stepsMarker: "07 — Comment ça se passe",
+    stepsTitle: "Simple, comme à la maison",
+    essentialTitle: "L'essentiel",
+    essentialFootnote: "Valeurs à confirmer avec Florent.",
+  },
+  formules: [
+    {
+      name: "Le 5 à 7",
+      kind: "Apéro · format debout",
+      desc: "Planches à partager, bouchées chaudes et une consommation de bienvenue — pour trinquer entre collègues ou amis, sans cérémonie.",
+      price: "à p. de 00 $",
+      unit: "/ pers.",
+      image: "tap-pour.jpg",
+    },
+    {
+      name: "La grande tablée",
+      kind: "Repas attablé",
+      desc: "Entrée à partager, plat au choix, dessert maison. L'ardoise revisitée pour votre groupe, servie au cœur de la salle.",
+      price: "à p. de 00 $",
+      unit: "/ pers.",
+      image: "bread-tearing.png",
+    },
+    {
+      name: "Le cocktail dînatoire",
+      kind: "Réception debout",
+      desc: "Stations et bouchées qui circulent, bar ouvert. Pour un groupe qui aime se mêler, verre à la main.",
+      price: "à p. de 00 $",
+      unit: "/ pers.",
+      image: "dish-charcuterie.png",
+    },
+    {
+      name: "Le bistro, rien qu'à vous",
+      kind: "Privatisation complète",
+      desc: "On ferme les portes pour votre soirée : salle entière, bar et service dédiés, menu bâti de A à Z avec le chef.",
+      price: "Sur mesure",
+      unit: "",
+      image: "ambiance-smoke.png",
+    },
+  ],
+  occasions: [
+    {
+      title: "Fêtes & anniversaires",
+      desc: "Réunissez vos proches autour d'une grande tablée et d'un gâteau du chef.",
+      image: "interior-bar.jpg",
+      tag: "Entre proches",
+    },
+    {
+      title: "Événements corporatifs",
+      desc: "5 à 7, party de bureau, lancement — un cadre chaleureux loin des salles fades.",
+      image: "tap-pour.jpg",
+      tag: "Au bureau",
+    },
+    {
+      title: "Célébrations intimes",
+      desc: "Mariages, fiançailles, retrouvailles : la maison ferme ses portes, rien que pour vous.",
+      image: "florent-glass.jpg",
+      tag: "Grandes occasions",
+    },
+  ],
+  steps: [
+    {
+      title: "On se parle",
+      body: "Un appel ou un courriel : la date, le nombre de convives, l'occasion. On part de là.",
+    },
+    {
+      title: "On bâtit votre soirée",
+      body: "Le chef compose le menu et le déroulé à votre image, ajustés à votre budget.",
+    },
+    {
+      title: "On vous reçoit",
+      body: "Le jour venu, on s'occupe de tout. Vous n'avez qu'à profiter de vos gens.",
+    },
+  ],
+  details: [
+    { label: "Réservation de groupe", value: "dès 00 pers." },
+    { label: "Privatisation complète", value: "dès 00 pers." },
+    { label: "Durée typique", value: "00 h" },
+    { label: "Acompte", value: "00 $ · appliqué à la facture" },
+    { label: "Délai conseillé", value: "00 jours à l'avance" },
+    { label: "Menu", value: "bâti avec le chef" },
+  ],
 };
-
-const FORMULES: Formule[] = [
-  {
-    name: "Le 5 à 7",
-    kind: "Apéro · format debout",
-    desc: "Planches à partager, bouchées chaudes et une consommation de bienvenue — pour trinquer entre collègues ou amis, sans cérémonie.",
-    price: "à p. de 00 $",
-    unit: "/ pers.",
-    image: "tap-pour.jpg",
-  },
-  {
-    name: "La grande tablée",
-    kind: "Repas attablé",
-    desc: "Entrée à partager, plat au choix, dessert maison. L'ardoise revisitée pour votre groupe, servie au cœur de la salle.",
-    price: "à p. de 00 $",
-    unit: "/ pers.",
-    image: "bread-tearing.png",
-  },
-  {
-    name: "Le cocktail dînatoire",
-    kind: "Réception debout",
-    desc: "Stations et bouchées qui circulent, bar ouvert. Pour un groupe qui aime se mêler, verre à la main.",
-    price: "à p. de 00 $",
-    unit: "/ pers.",
-    image: "dish-charcuterie.png",
-  },
-  {
-    name: "Le bistro, rien qu'à vous",
-    kind: "Privatisation complète",
-    desc: "On ferme les portes pour votre soirée : salle entière, bar et service dédiés, menu bâti de A à Z avec le chef.",
-    price: "Sur mesure",
-    unit: "",
-    image: "ambiance-smoke.png",
-  },
-];
-
-type Occasion = {
-  title: string;
-  desc: string;
-  image: string;
-  tag: string;
-};
-
-const OCCASIONS: Occasion[] = [
-  {
-    title: "Fêtes & anniversaires",
-    desc: "Réunissez vos proches autour d'une grande tablée et d'un gâteau du chef.",
-    image: "interior-bar.jpg",
-    tag: "Entre proches",
-  },
-  {
-    title: "Événements corporatifs",
-    desc: "5 à 7, party de bureau, lancement — un cadre chaleureux loin des salles fades.",
-    image: "tap-pour.jpg",
-    tag: "Au bureau",
-  },
-  {
-    title: "Célébrations intimes",
-    desc: "Mariages, fiançailles, retrouvailles : la maison ferme ses portes, rien que pour vous.",
-    image: "florent-glass.jpg",
-    tag: "Grandes occasions",
-  },
-];
-
-// How it works — type-forward beats, no boxes.
-type Step = { n: string; title: string; body: string };
-
-const STEPS: Step[] = [
-  {
-    n: "01",
-    title: "On se parle",
-    body: "Un appel ou un courriel : la date, le nombre de convives, l'occasion. On part de là.",
-  },
-  {
-    n: "02",
-    title: "On bâtit votre soirée",
-    body: "Le chef compose le menu et le déroulé à votre image, ajustés à votre budget.",
-  },
-  {
-    n: "03",
-    title: "On vous reçoit",
-    body: "Le jour venu, on s'occupe de tout. Vous n'avez qu'à profiter de vos gens.",
-  },
-];
-
-// Practical info — presented as a reservation-slip card, not a stat band.
-type Detail = { label: string; value: string };
-
-const DETAILS: Detail[] = [
-  { label: "Réservation de groupe", value: "dès 00 pers." },
-  { label: "Privatisation complète", value: "dès 00 pers." },
-  { label: "Durée typique", value: "00 h" },
-  { label: "Acompte", value: "00 $ · appliqué à la facture" },
-  { label: "Délai conseillé", value: "00 jours à l'avance" },
-  { label: "Menu", value: "bâti avec le chef" },
-];
 
 type Faq = { q: string; a: string };
 
@@ -175,6 +178,10 @@ const FAQS: Faq[] = [
 ];
 
 export default function GroupReservationPage() {
+  const { data } = useGetGroupContent();
+  const content = data ?? DEFAULT_GROUP_CONTENT;
+  const t = content.texts;
+
   return (
     <div className="min-h-[100dvh] w-full bg-bg-primary text-cream selection:bg-orange selection:text-bg-primary relative">
       <ScrollProgress />
@@ -218,12 +225,13 @@ export default function GroupReservationPage() {
                 transition={{ duration: 0.8, ease: EASE }}
                 className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6"
               >
-                <span aria-hidden="true">✶ </span>07 — Groupes & privatisation
+                <span aria-hidden="true">✶ </span>
+                {t.heroMarker}
               </motion.div>
               <h1 className="font-display text-cream leading-[1.05] pb-[0.1em] text-[clamp(3.5rem,11vw,11rem)]">
-                {"Réunir vos gens".split(" ").map((word, i) => (
+                {t.heroTitle.split(" ").map((word, i) => (
                   <motion.span
-                    key={word}
+                    key={`${word}-${i}`}
                     initial={{ clipPath: "inset(100% 0 0 0)", y: 24 }}
                     animate={{ clipPath: "inset(0 0 0 0)", y: 0 }}
                     transition={{ duration: 0.85, ease: EASE, delay: 0.15 + i * 0.12 }}
@@ -241,8 +249,7 @@ export default function GroupReservationPage() {
               >
                 <div className="h-[1px] w-12 bg-orange shrink-0 translate-y-[-0.4em]" />
                 <p className="font-serif italic text-cream-soft/90 text-lg md:text-2xl leading-snug">
-                  Un party de bureau, un anniversaire, un mariage intime ou une
-                  envie de privatiser le bistro au complet — on s'occupe de tout.
+                  {t.heroLede}
                 </p>
               </motion.div>
               <motion.div
@@ -287,11 +294,12 @@ export default function GroupReservationPage() {
                 {/* Left — words */}
                 <div className="lg:col-span-7">
                   <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-8">
-                    <span aria-hidden="true">◦ </span>07 — Le mot de Florent
+                    <span aria-hidden="true">◦ </span>
+                    {t.manifestoMarker}
                   </div>
 
                   <h2 className="font-serif italic font-light text-bg-primary leading-[1.05] pb-[0.16em] text-[clamp(2.5rem,6vw,5.25rem)] mb-8 flex flex-wrap gap-x-[0.28em] gap-y-1">
-                    {"« Vos gens, notre maison. »".split(" ").map((word, i) => (
+                    {t.manifestoTitle.split(" ").map((word, i) => (
                       <motion.span
                         key={`${word}-${i}`}
                         initial={{ opacity: 0, y: 24 }}
@@ -312,10 +320,7 @@ export default function GroupReservationPage() {
                     transition={{ duration: 0.8, ease: EASE }}
                     className="font-sans font-light text-bg-primary/80 max-w-xl text-base md:text-lg leading-[1.8] mb-10"
                   >
-                    Que vous soyez une dizaine autour d'une grande tablée ou que
-                    vous preniez la place au complet, on prépare votre soirée comme
-                    si c'était la nôtre — le menu, le vin, le rythme du service.
-                    Vous n'avez qu'à réunir vos gens.
+                    {t.manifestoBody}
                   </motion.p>
 
                   {/* Signed note */}
@@ -327,17 +332,16 @@ export default function GroupReservationPage() {
                     className="m-0 border-t border-bg-primary/15 pt-8 max-w-xl"
                   >
                     <blockquote className="font-serif italic text-bg-primary text-[1.2rem] md:text-[1.5rem] leading-[1.6]">
-                      « On ne reçoit pas un groupe comme une réservation de plus.
-                      On le reçoit comme on reçoit chez nous. »
+                      {t.manifestoQuote}
                     </blockquote>
                     <figcaption className="mt-5 font-sans text-[0.75rem] tracking-[0.2em] uppercase text-bg-primary/65 flex items-center gap-3">
                       <span aria-hidden="true" className="inline-block w-8 h-px bg-orange/70" />
                       <span className="font-display normal-case tracking-normal text-orange text-2xl leading-none">
-                        Florent
+                        {t.signatureName}
                       </span>
                       <span aria-hidden="true" className="text-orange/70">·</span>
                       <span className="font-serif normal-case italic tracking-normal text-bg-primary/70">
-                        Propriétaire
+                        {t.signatureRole}
                       </span>
                     </figcaption>
                   </motion.figure>
@@ -398,26 +402,26 @@ export default function GroupReservationPage() {
             <div className="max-w-7xl mx-auto relative z-10">
               <div className="mb-16 md:mb-24 max-w-3xl">
                 <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-6">
-                  <span aria-hidden="true">✶ </span>07 — Les formules
+                  <span aria-hidden="true">✶ </span>
+                  {t.formulesMarker}
                 </div>
                 <h2 className="font-display text-cream leading-[1.05] pb-[0.1em] text-[clamp(3rem,8vw,7rem)]">
-                  L'art de recevoir
+                  {t.formulesTitle}
                 </h2>
                 <div className="flex items-baseline gap-4 mt-6">
                   <div className="h-[1px] w-12 bg-orange shrink-0 translate-y-[-0.4em]" />
                   <p className="font-serif italic text-cream-soft/80 text-lg md:text-xl">
-                    Quatre façons de réunir vos gens — chacune s'ajuste au
-                    nombre, à l'occasion et au budget. Les tarifs sont à confirmer.
+                    {t.formulesLede}
                   </p>
                 </div>
               </div>
 
               <div className="flex flex-col gap-20 md:gap-28 lg:gap-36">
-                {FORMULES.map((f, i) => {
+                {content.formules.map((f, i) => {
                   const reversed = i % 2 === 1;
                   return (
                     <div
-                      key={f.name}
+                      key={`formule-${i}`}
                       className="relative grid lg:grid-cols-2 gap-8 lg:gap-16 items-center"
                     >
                       {/* Photo */}
@@ -502,18 +506,18 @@ export default function GroupReservationPage() {
             <div className="max-w-7xl mx-auto relative z-10">
               <div className="mb-16 md:mb-20">
                 <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-6">
-                  07 — Pour toutes les occasions
+                  {t.occasionsMarker}
                 </div>
                 <RevealHeading
-                  text="On célèbre quoi ?"
+                  text={t.occasionsTitle}
                   className="font-display text-bg-primary leading-[1.05] pb-[0.1em] text-[clamp(3rem,8vw,7rem)] flex flex-wrap"
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 lg:gap-14">
-                {OCCASIONS.map((occ, i) => (
+                {content.occasions.map((occ, i) => (
                   <motion.article
-                    key={occ.title}
+                    key={`occasion-${i}`}
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-80px" }}
@@ -569,19 +573,20 @@ export default function GroupReservationPage() {
                 className="mb-14 md:mb-20 max-w-3xl"
               >
                 <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
-                  <span aria-hidden="true">✶ </span>07 — Comment ça se passe
+                  <span aria-hidden="true">✶ </span>
+                  {t.stepsMarker}
                 </div>
                 <h2 className="font-display text-cream text-[clamp(2.75rem,7vw,6rem)] leading-[1.05] pb-[0.08em]">
-                  Simple, comme à la maison
+                  {t.stepsTitle}
                 </h2>
               </motion.div>
 
               <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
                 {/* Process beats */}
                 <div className="lg:col-span-7">
-                  {STEPS.map((s, i) => (
+                  {content.steps.map((s, i) => (
                     <motion.div
-                      key={s.n}
+                      key={`step-${i}`}
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true, margin: "-60px" }}
@@ -591,7 +596,7 @@ export default function GroupReservationPage() {
                       }`}
                     >
                       <span className="font-display text-orange text-[clamp(2rem,4vw,3rem)] leading-[0.85] shrink-0 w-[1.6em]">
-                        {s.n}
+                        {String(i + 1).padStart(2, "0")}
                       </span>
                       <div>
                         <h3 className="font-serif italic text-cream text-2xl md:text-[1.9rem] leading-tight mb-2">
@@ -617,7 +622,8 @@ export default function GroupReservationPage() {
                     <div aria-hidden="true" className="absolute left-0 top-0 bottom-0 w-[3px] bg-orange" />
                     <div className="flex items-baseline justify-between mb-5">
                       <div className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-orange">
-                        <span aria-hidden="true">✶ </span>L'essentiel
+                        <span aria-hidden="true">✶ </span>
+                        {t.essentialTitle}
                       </div>
                       <div className="font-serif italic text-cream-soft/60 text-sm">
                         Chez Florent
@@ -628,11 +634,13 @@ export default function GroupReservationPage() {
                       className="border-t border-dashed border-cream-soft/25 mb-1"
                     />
                     <dl>
-                      {DETAILS.map((d, i) => (
+                      {content.details.map((d, i) => (
                         <div
-                          key={d.label}
+                          key={`detail-${i}`}
                           className={`flex items-baseline justify-between gap-5 py-4 ${
-                            i === DETAILS.length - 1 ? "" : "border-b border-border"
+                            i === content.details.length - 1
+                              ? ""
+                              : "border-b border-border"
                           }`}
                         >
                           <dt className="font-sans text-[0.8rem] tracking-[0.04em] text-cream-soft/75">
@@ -649,7 +657,7 @@ export default function GroupReservationPage() {
                       className="border-t border-dashed border-cream-soft/25 mt-1 mb-4"
                     />
                     <p className="font-serif italic text-cream-soft/50 text-sm">
-                      Valeurs à confirmer avec Florent.
+                      {t.essentialFootnote}
                     </p>
                   </div>
                 </motion.div>

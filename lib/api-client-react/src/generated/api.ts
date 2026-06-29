@@ -24,6 +24,7 @@ import type {
   Event,
   EventInput,
   EventUpdate,
+  GroupContent,
   HealthStatus,
   Hours,
   HoursUpdate,
@@ -1672,4 +1673,165 @@ export const useUpdatePhoto = <
   TContext
 > => {
   return useMutation(getUpdatePhotoMutationOptions(options));
+};
+
+/**
+ * @summary Get the Groups page content
+ */
+export const getGetGroupContentUrl = () => {
+  return `/api/group-content`;
+};
+
+export const getGroupContent = async (
+  options?: RequestInit,
+): Promise<GroupContent> => {
+  return customFetch<GroupContent>(getGetGroupContentUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetGroupContentQueryKey = () => {
+  return [`/api/group-content`] as const;
+};
+
+export const getGetGroupContentQueryOptions = <
+  TData = Awaited<ReturnType<typeof getGroupContent>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getGroupContent>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetGroupContentQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getGroupContent>>> = ({
+    signal,
+  }) => getGroupContent({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getGroupContent>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetGroupContentQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getGroupContent>>
+>;
+export type GetGroupContentQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get the Groups page content
+ */
+
+export function useGetGroupContent<
+  TData = Awaited<ReturnType<typeof getGroupContent>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getGroupContent>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetGroupContentQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Replace the Groups page content
+ */
+export const getUpdateGroupContentUrl = () => {
+  return `/api/group-content`;
+};
+
+export const updateGroupContent = async (
+  groupContent: GroupContent,
+  options?: RequestInit,
+): Promise<GroupContent> => {
+  return customFetch<GroupContent>(getUpdateGroupContentUrl(), {
+    ...options,
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(groupContent),
+  });
+};
+
+export const getUpdateGroupContentMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateGroupContent>>,
+    TError,
+    { data: BodyType<GroupContent> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateGroupContent>>,
+  TError,
+  { data: BodyType<GroupContent> },
+  TContext
+> => {
+  const mutationKey = ["updateGroupContent"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateGroupContent>>,
+    { data: BodyType<GroupContent> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return updateGroupContent(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpdateGroupContentMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateGroupContent>>
+>;
+export type UpdateGroupContentMutationBody = BodyType<GroupContent>;
+export type UpdateGroupContentMutationError = ErrorType<Error>;
+
+/**
+ * @summary Replace the Groups page content
+ */
+export const useUpdateGroupContent = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateGroupContent>>,
+    TError,
+    { data: BodyType<GroupContent> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof updateGroupContent>>,
+  TError,
+  { data: BodyType<GroupContent> },
+  TContext
+> => {
+  return useMutation(getUpdateGroupContentMutationOptions(options));
 };

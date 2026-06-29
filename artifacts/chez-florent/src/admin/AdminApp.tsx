@@ -10,12 +10,14 @@ import EventsEditor from "./EventsEditor";
 import MenuEditor from "./MenuEditor";
 import HoursEditor from "./HoursEditor";
 import PhotosEditor from "./PhotosEditor";
+import GroupContentEditor from "./GroupContentEditor";
 import AccountEditor from "./AccountEditor";
 import { Button, cn } from "./ui";
 
 const TABS = [
   { id: "agenda", label: "Agenda" },
   { id: "menu", label: "Menu" },
+  { id: "groupes", label: "Groupes" },
   { id: "horaires", label: "Horaires" },
   { id: "photos", label: "Photos" },
   { id: "compte", label: "Compte" },
@@ -104,6 +106,7 @@ export default function AdminApp() {
       <main className="mx-auto max-w-5xl px-4 py-8 md:px-6 md:py-10">
         {tab === "agenda" && <EventsEditor />}
         {tab === "menu" && <MenuEditor />}
+        {tab === "groupes" && <GroupContentEditor />}
         {tab === "horaires" && <HoursEditor />}
         {tab === "photos" && <PhotosEditor />}
         {tab === "compte" && <AccountEditor />}

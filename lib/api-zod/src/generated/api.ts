@@ -279,3 +279,168 @@ export const UpdatePhotoResponse = zod.object({
   url: zod.string(),
   alt: zod.string(),
 });
+
+/**
+ * @summary Get the Groups page content
+ */
+export const GetGroupContentResponse = zod.object({
+  texts: zod.object({
+    heroMarker: zod.string(),
+    heroTitle: zod.string(),
+    heroLede: zod.string(),
+    manifestoMarker: zod.string(),
+    manifestoTitle: zod.string(),
+    manifestoBody: zod.string(),
+    manifestoQuote: zod.string(),
+    signatureName: zod.string(),
+    signatureRole: zod.string(),
+    formulesMarker: zod.string(),
+    formulesTitle: zod.string(),
+    formulesLede: zod.string(),
+    occasionsMarker: zod.string(),
+    occasionsTitle: zod.string(),
+    stepsMarker: zod.string(),
+    stepsTitle: zod.string(),
+    essentialTitle: zod.string(),
+    essentialFootnote: zod.string(),
+  }),
+  formules: zod.array(
+    zod.object({
+      name: zod.string(),
+      kind: zod.string(),
+      desc: zod.string(),
+      price: zod.string(),
+      unit: zod.string(),
+      image: zod.string(),
+    }),
+  ),
+  occasions: zod.array(
+    zod.object({
+      title: zod.string(),
+      desc: zod.string(),
+      image: zod.string(),
+      tag: zod.string(),
+    }),
+  ),
+  steps: zod.array(
+    zod.object({
+      title: zod.string(),
+      body: zod.string(),
+    }),
+  ),
+  details: zod.array(
+    zod.object({
+      label: zod.string(),
+      value: zod.string(),
+    }),
+  ),
+});
+
+/**
+ * @summary Replace the Groups page content
+ */
+export const UpdateGroupContentBody = zod.object({
+  texts: zod.object({
+    heroMarker: zod.string(),
+    heroTitle: zod.string(),
+    heroLede: zod.string(),
+    manifestoMarker: zod.string(),
+    manifestoTitle: zod.string(),
+    manifestoBody: zod.string(),
+    manifestoQuote: zod.string(),
+    signatureName: zod.string(),
+    signatureRole: zod.string(),
+    formulesMarker: zod.string(),
+    formulesTitle: zod.string(),
+    formulesLede: zod.string(),
+    occasionsMarker: zod.string(),
+    occasionsTitle: zod.string(),
+    stepsMarker: zod.string(),
+    stepsTitle: zod.string(),
+    essentialTitle: zod.string(),
+    essentialFootnote: zod.string(),
+  }),
+  formules: zod.array(
+    zod.object({
+      name: zod.string(),
+      kind: zod.string(),
+      desc: zod.string(),
+      price: zod.string(),
+      unit: zod.string(),
+      image: zod.string(),
+    }),
+  ),
+  occasions: zod.array(
+    zod.object({
+      title: zod.string(),
+      desc: zod.string(),
+      image: zod.string(),
+      tag: zod.string(),
+    }),
+  ),
+  steps: zod.array(
+    zod.object({
+      title: zod.string(),
+      body: zod.string(),
+    }),
+  ),
+  details: zod.array(
+    zod.object({
+      label: zod.string(),
+      value: zod.string(),
+    }),
+  ),
+});
+
+export const UpdateGroupContentResponse = zod.object({
+  texts: zod.object({
+    heroMarker: zod.string(),
+    heroTitle: zod.string(),
+    heroLede: zod.string(),
+    manifestoMarker: zod.string(),
+    manifestoTitle: zod.string(),
+    manifestoBody: zod.string(),
+    manifestoQuote: zod.string(),
+    signatureName: zod.string(),
+    signatureRole: zod.string(),
+    formulesMarker: zod.string(),
+    formulesTitle: zod.string(),
+    formulesLede: zod.string(),
+    occasionsMarker: zod.string(),
+    occasionsTitle: zod.string(),
+    stepsMarker: zod.string(),
+    stepsTitle: zod.string(),
+    essentialTitle: zod.string(),
+    essentialFootnote: zod.string(),
+  }),
+  formules: zod.array(
+    zod.object({
+      name: zod.string(),
+      kind: zod.string(),
+      desc: zod.string(),
+      price: zod.string(),
+      unit: zod.string(),
+      image: zod.string(),
+    }),
+  ),
+  occasions: zod.array(
+    zod.object({
+      title: zod.string(),
+      desc: zod.string(),
+      image: zod.string(),
+      tag: zod.string(),
+    }),
+  ),
+  steps: zod.array(
+    zod.object({
+      title: zod.string(),
+      body: zod.string(),
+    }),
+  ),
+  details: zod.array(
+    zod.object({
+      label: zod.string(),
+      value: zod.string(),
+    }),
+  ),
+});

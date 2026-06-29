@@ -6,10 +6,12 @@ import {
   menuItemsTable,
   hoursTable,
   sitePhotosTable,
+  groupContentTable,
 } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { hashPassword } from "../lib/auth";
 import { logger } from "../lib/logger";
+import { DEFAULT_GROUP_CONTENT, GROUP_CONTENT_ID } from "../lib/groupContent";
 
 async function seedAdmin(): Promise<void> {
   const email = (process.env.ADMIN_EMAIL ?? "").trim().toLowerCase();
@@ -325,12 +327,25 @@ async function seedPhotos(): Promise<void> {
   logger.info(`Site photos seeded (${missing.length} added)`);
 }
 
+async function seedGroupContent(): Promise<void> {
+  const [existing] = await db
+    .select()
+    .from(groupContentTable)
+    .where(eq(groupContentTable.id, GROUP_CONTENT_ID));
+  if (existing) return;
+  await db
+    .insert(groupContentTable)
+    .values({ id: GROUP_CONTENT_ID, data: DEFAULT_GROUP_CONTENT });
+  logger.info("Group content seeded");
+}
+
 async function main(): Promise<void> {
   await seedAdmin();
   await seedHours();
   await seedEvents();
   await seedMenu();
   await seedPhotos();
+  await seedGroupContent();
   logger.info("Seed complete");
 }
 

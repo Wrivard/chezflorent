@@ -20,6 +20,8 @@ tags:
     description: Opening hours
   - name: photos
     description: Site photos
+  - name: group
+    description: Groups & privatisation page content
 paths:
   /healthz:
     get:
@@ -450,6 +452,48 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  /group-content:
+    get:
+      operationId: getGroupContent
+      tags: [group]
+      summary: Get the Groups page content
+      responses:
+        "200":
+          description: Group page content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupContent"
+    put:
+      operationId: updateGroupContent
+      tags: [group]
+      summary: Replace the Groups page content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GroupContent"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupContent"
+        "400":
+          description: Invalid content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
   schemas:
     HealthStatus:
@@ -707,3 +751,128 @@ components:
           minLength: 1
         alt:
           type: string
+
+    GroupFormule:
+      type: object
+      required: [name, kind, desc, price, unit, image]
+      properties:
+        name:
+          type: string
+        kind:
+          type: string
+        desc:
+          type: string
+        price:
+          type: string
+        unit:
+          type: string
+        image:
+          type: string
+    GroupOccasion:
+      type: object
+      required: [title, desc, image, tag]
+      properties:
+        title:
+          type: string
+        desc:
+          type: string
+        image:
+          type: string
+        tag:
+          type: string
+    GroupStep:
+      type: object
+      required: [title, body]
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+    GroupDetail:
+      type: object
+      required: [label, value]
+      properties:
+        label:
+          type: string
+        value:
+          type: string
+    GroupTexts:
+      type: object
+      required:
+        - heroMarker
+        - heroTitle
+        - heroLede
+        - manifestoMarker
+        - manifestoTitle
+        - manifestoBody
+        - manifestoQuote
+        - signatureName
+        - signatureRole
+        - formulesMarker
+        - formulesTitle
+        - formulesLede
+        - occasionsMarker
+        - occasionsTitle
+        - stepsMarker
+        - stepsTitle
+        - essentialTitle
+        - essentialFootnote
+      properties:
+        heroMarker:
+          type: string
+        heroTitle:
+          type: string
+        heroLede:
+          type: string
+        manifestoMarker:
+          type: string
+        manifestoTitle:
+          type: string
+        manifestoBody:
+          type: string
+        manifestoQuote:
+          type: string
+        signatureName:
+          type: string
+        signatureRole:
+          type: string
+        formulesMarker:
+          type: string
+        formulesTitle:
+          type: string
+        formulesLede:
+          type: string
+        occasionsMarker:
+          type: string
+        occasionsTitle:
+          type: string
+        stepsMarker:
+          type: string
+        stepsTitle:
+          type: string
+        essentialTitle:
+          type: string
+        essentialFootnote:
+          type: string
+    GroupContent:
+      type: object
+      required: [texts, formules, occasions, steps, details]
+      properties:
+        texts:
+          $ref: "#/components/schemas/GroupTexts"
+        formules:
+          type: array
+          items:
+            $ref: "#/components/schemas/GroupFormule"
+        occasions:
+          type: array
+          items:
+            $ref: "#/components/schemas/GroupOccasion"
+        steps:
+          type: array
+          items:
+            $ref: "#/components/schemas/GroupStep"
+        details:
+          type: array
+          items:
+            $ref: "#/components/schemas/GroupDetail"
