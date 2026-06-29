@@ -1369,7 +1369,7 @@ function Agenda() {
         </div>
 
         <div className="border-t border-bg-primary/15">
-          {agendaEvents.map((event, i) => {
+          {agendaEvents.slice(0, 6).map((event, i) => {
             const isActive = i === activeIdx;
             const sharedProps = {
               initial: { opacity: 0, y: 20 },
