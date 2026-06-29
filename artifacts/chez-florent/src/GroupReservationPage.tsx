@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Navbar,
   Footer,
@@ -47,8 +46,8 @@ function RevealHeading({
   );
 }
 
-// The ways to gather — presented as an editorial menu (L'ardoise pattern),
-// not a pricing table. Food and experience lead; price is a quiet line.
+// The ways to gather — each presented as a cinematic editorial feature band
+// (large photography + big type), never a pricing card. Price is a quiet line.
 type Formule = {
   name: string;
   kind: string;
@@ -121,17 +120,37 @@ const OCCASIONS: Occasion[] = [
   },
 ];
 
-// Practical info — a calm hairline definition list (Contact hours pattern),
-// not a stat band shouting "00".
+// How it works — type-forward beats, no boxes.
+type Step = { n: string; title: string; body: string };
+
+const STEPS: Step[] = [
+  {
+    n: "01",
+    title: "On se parle",
+    body: "Un appel ou un courriel : la date, le nombre de convives, l'occasion. On part de là.",
+  },
+  {
+    n: "02",
+    title: "On bâtit votre soirée",
+    body: "Le chef compose le menu et le déroulé à votre image, ajustés à votre budget.",
+  },
+  {
+    n: "03",
+    title: "On vous reçoit",
+    body: "Le jour venu, on s'occupe de tout. Vous n'avez qu'à profiter de vos gens.",
+  },
+];
+
+// Practical info — presented as a reservation-slip card, not a stat band.
 type Detail = { label: string; value: string };
 
 const DETAILS: Detail[] = [
-  { label: "Réservation de groupe", value: "à partir de 00 pers." },
-  { label: "Privatisation complète", value: "à partir de 00 pers." },
+  { label: "Réservation de groupe", value: "dès 00 pers." },
+  { label: "Privatisation complète", value: "dès 00 pers." },
   { label: "Durée typique", value: "00 h" },
-  { label: "Acompte à la réservation", value: "00 $ (appliqué à la facture)" },
+  { label: "Acompte", value: "00 $ · appliqué à la facture" },
   { label: "Délai conseillé", value: "00 jours à l'avance" },
-  { label: "Menu", value: "bâti avec le chef · allergies adaptées" },
+  { label: "Menu", value: "bâti avec le chef" },
 ];
 
 type Faq = { q: string; a: string };
@@ -156,9 +175,6 @@ const FAQS: Faq[] = [
 ];
 
 export default function GroupReservationPage() {
-  const [activeFormule, setActiveFormule] = useState(0);
-  const active = FORMULES[activeFormule];
-
   return (
     <div className="min-h-[100dvh] w-full bg-bg-primary text-cream selection:bg-orange selection:text-bg-primary relative">
       <ScrollProgress />
@@ -169,7 +185,7 @@ export default function GroupReservationPage() {
 
         <main>
           {/* ============================================================
-              HERO — cinematic photo bookend (opening). Kept from v1.
+              HERO — cinematic photo bookend (opening). Kept.
           ============================================================ */}
           <section className="relative bg-bg-primary pt-40 md:pt-56 pb-20 md:pb-28 px-6 md:px-12 overflow-hidden">
             <img
@@ -261,84 +277,110 @@ export default function GroupReservationPage() {
           </div>
 
           {/* ============================================================
-              L'INVITATION — owner's note. Replaces the boxy "two pathways".
-              First-person warmth: a neighbourhood bistro hosts personally.
+              LE MOT DE FLORENT — manifesto: massive clip-path pull-quote +
+              asymmetric photo triptych + signed note. (Redesigned.)
           ============================================================ */}
           <section className="bg-cream-soft pt-24 md:pt-36 pb-24 md:pb-36 px-6 md:px-12 relative overflow-hidden">
+            <SectionMarker number="07" tone="light" />
             <div className="max-w-7xl mx-auto relative z-10">
               <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+                {/* Left — words */}
                 <div className="lg:col-span-7">
                   <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-8">
-                    <span aria-hidden="true">◦ </span>Le mot de Florent
+                    <span aria-hidden="true">◦ </span>07 — Le mot de Florent
                   </div>
-                  <h2 className="font-serif italic font-light text-bg-primary leading-[1.18] pb-[0.12em] text-[clamp(2rem,4.5vw,3.6rem)] flex flex-wrap">
-                    {"Recevoir un groupe, c'est recevoir comme chez soi.".split(" ").map((word, i) => (
+
+                  <h2 className="font-serif italic font-light text-bg-primary leading-[1.05] pb-[0.16em] text-[clamp(2.5rem,6vw,5.25rem)] mb-8 flex flex-wrap gap-x-[0.28em] gap-y-1">
+                    {"« Vos gens, notre maison. »".split(" ").map((word, i) => (
                       <motion.span
                         key={`${word}-${i}`}
-                        initial={{ opacity: 0, y: 16 }}
+                        initial={{ opacity: 0, y: 24 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "-100px" }}
-                        transition={{ duration: 0.6, ease: EASE, delay: i * 0.06 }}
-                        className="inline-block mr-[0.28em]"
+                        viewport={{ once: true, margin: "-80px" }}
+                        transition={{ duration: 0.7, ease: EASE, delay: i * 0.07 }}
+                        className="inline-block"
                       >
                         {word}
                       </motion.span>
                     ))}
                   </h2>
-                  <motion.div
-                    initial={{ opacity: 0, y: 16 }}
+
+                  <motion.p
+                    initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-80px" }}
-                    transition={{ duration: 0.8, ease: EASE, delay: 0.2 }}
-                    className="mt-10 max-w-xl space-y-5 font-sans font-light text-bg-primary/80 text-base md:text-lg leading-[1.8]"
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.8, ease: EASE }}
+                    className="font-sans font-light text-bg-primary/80 max-w-xl text-base md:text-lg leading-[1.8] mb-10"
                   >
-                    <p>
-                      Que vous soyez dix autour d'une grande tablée ou que vous
-                      preniez la place au complet, on prépare votre soirée comme
-                      si c'était la nôtre — le menu, le vin, le rythme du service.
-                    </p>
-                    <p>
-                      On part de l'ardoise, on l'ajuste à votre occasion, et on
-                      s'occupe du reste. Vous n'avez qu'à réunir vos gens.
-                    </p>
-                  </motion.div>
-                  <div className="mt-10 flex items-center gap-4">
-                    <span
-                      aria-hidden="true"
-                      className="inline-block w-10 h-px bg-orange/70"
-                    />
-                    <span className="font-display text-orange text-[clamp(1.6rem,3vw,2.4rem)] leading-none">
-                      Florent
-                    </span>
-                    <span className="font-sans text-[0.72rem] tracking-[0.2em] uppercase text-bg-primary/55">
-                      Propriétaire
-                    </span>
-                  </div>
+                    Que vous soyez une dizaine autour d'une grande tablée ou que
+                    vous preniez la place au complet, on prépare votre soirée comme
+                    si c'était la nôtre — le menu, le vin, le rythme du service.
+                    Vous n'avez qu'à réunir vos gens.
+                  </motion.p>
+
+                  {/* Signed note */}
+                  <motion.figure
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
+                    className="m-0 border-t border-bg-primary/15 pt-8 max-w-xl"
+                  >
+                    <blockquote className="font-serif italic text-bg-primary text-[1.2rem] md:text-[1.5rem] leading-[1.6]">
+                      « On ne reçoit pas un groupe comme une réservation de plus.
+                      On le reçoit comme on reçoit chez nous. »
+                    </blockquote>
+                    <figcaption className="mt-5 font-sans text-[0.75rem] tracking-[0.2em] uppercase text-bg-primary/65 flex items-center gap-3">
+                      <span aria-hidden="true" className="inline-block w-8 h-px bg-orange/70" />
+                      <span className="font-display normal-case tracking-normal text-orange text-2xl leading-none">
+                        Florent
+                      </span>
+                      <span aria-hidden="true" className="text-orange/70">·</span>
+                      <span className="font-serif normal-case italic tracking-normal text-bg-primary/70">
+                        Propriétaire
+                      </span>
+                    </figcaption>
+                  </motion.figure>
                 </div>
 
-                <motion.div
-                  initial={{ opacity: 0, scale: 1.04 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ duration: 1, ease: EASE }}
-                  className="lg:col-span-5"
-                >
-                  <div className="aspect-[4/5] overflow-hidden ring-1 ring-bg-primary/15">
-                    <img
-                      src={imgSrc("about-hands.png")}
-                      alt="Service à table Chez Florent"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </motion.div>
+                {/* Right — overlapping image pair */}
+                <div className="lg:col-span-5">
+                  <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-80px" }}
+                    transition={{ duration: 0.9, ease: EASE }}
+                    className="relative md:pb-16 md:pl-16"
+                  >
+                    <div className="group aspect-[4/5] overflow-hidden ring-1 ring-bg-primary/10">
+                      <img
+                        src={imgSrc("about-hands.png")}
+                        alt="Service à table Chez Florent"
+                        className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                      />
+                    </div>
+                    <motion.div
+                      initial={{ opacity: 0, y: 24 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-80px" }}
+                      transition={{ duration: 0.9, ease: EASE, delay: 0.18 }}
+                      className="hidden md:block group absolute bottom-0 left-0 w-[52%] aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10 outline outline-[6px] outline-cream-soft"
+                    >
+                      <img
+                        src={imgSrc("florent-glass.jpg")}
+                        alt="Verre servi au bar"
+                        className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                      />
+                    </motion.div>
+                  </motion.div>
+                </div>
               </div>
             </div>
           </section>
 
           {/* ============================================================
-              RECEVOIR, QUATRE FAÇONS — editorial menu of formules.
-              Reuses the homepage L'ardoise list + cross-fading sticky photo.
-              Price is a quiet line, never a pricing card.
+              L'ART DE RECEVOIR — formules as cinematic, alternating feature
+              bands (large photo + big type + quiet price). (Redesigned.)
           ============================================================ */}
           <section
             id="recevoir"
@@ -354,141 +396,106 @@ export default function GroupReservationPage() {
               }}
             />
             <div className="max-w-7xl mx-auto relative z-10">
-              <div className="mb-14 md:mb-20 max-w-3xl">
+              <div className="mb-16 md:mb-24 max-w-3xl">
                 <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-6">
-                  07 — Quatre façons de recevoir
+                  <span aria-hidden="true">✶ </span>07 — Les formules
                 </div>
                 <h2 className="font-display text-cream leading-[1.05] pb-[0.1em] text-[clamp(3rem,8vw,7rem)]">
                   L'art de recevoir
                 </h2>
-                <p className="font-serif italic text-cream-soft/80 text-lg md:text-xl mt-6">
-                  Quatre points de départ — chacun s'ajuste au nombre de convives,
-                  à l'occasion et au budget. Les tarifs sont à confirmer.
-                </p>
+                <div className="flex items-baseline gap-4 mt-6">
+                  <div className="h-[1px] w-12 bg-orange shrink-0 translate-y-[-0.4em]" />
+                  <p className="font-serif italic text-cream-soft/80 text-lg md:text-xl">
+                    Quatre façons de réunir vos gens — chacune s'ajuste au
+                    nombre, à l'occasion et au budget. Les tarifs sont à confirmer.
+                  </p>
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_400px] gap-10 lg:gap-16 items-start">
-                {/* Left — the list */}
-                <div className="grid grid-cols-1">
-                  {FORMULES.map((f, i) => {
-                    const isActive = i === activeFormule;
-                    return (
-                      <div
-                        key={f.name}
-                        role="button"
-                        tabIndex={0}
-                        aria-pressed={isActive}
-                        aria-label={`Aperçu de ${f.name}`}
-                        onMouseEnter={() => setActiveFormule(i)}
-                        onClick={() => setActiveFormule(i)}
-                        onFocus={() => setActiveFormule(i)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" || e.key === " ") {
-                            e.preventDefault();
-                            setActiveFormule(i);
-                          }
-                        }}
-                        className={`group grid grid-cols-[36px_1fr_auto] md:grid-cols-[56px_1fr_auto] gap-4 md:gap-8 py-8 border-b border-border cursor-default transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset px-3 md:px-6 ${
-                          isActive ? "bg-bg-secondary/40" : "hover:bg-bg-secondary/30"
-                        } ${i === 0 ? "border-t border-border" : ""}`}
+              <div className="flex flex-col gap-20 md:gap-28 lg:gap-36">
+                {FORMULES.map((f, i) => {
+                  const reversed = i % 2 === 1;
+                  return (
+                    <div
+                      key={f.name}
+                      className="relative grid lg:grid-cols-2 gap-8 lg:gap-16 items-center"
+                    >
+                      {/* Photo */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 40 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-80px" }}
+                        transition={{ duration: 0.9, ease: EASE }}
+                        className={`group relative ${reversed ? "lg:order-2" : ""}`}
                       >
-                        <div
-                          className={`font-serif italic text-lg md:text-xl pt-1 transition-colors ${
-                            isActive ? "text-orange" : "text-orange/70"
-                          }`}
-                        >
-                          {String(i + 1).padStart(2, "0")}
+                        <div className="aspect-[4/3] overflow-hidden ring-1 ring-cream/10">
+                          <img
+                            src={imgSrc(f.image)}
+                            alt={f.name}
+                            className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                          />
                         </div>
-                        <motion.div
-                          className="flex flex-col gap-1.5"
-                          animate={{ x: isActive ? 12 : 0 }}
-                          transition={{ duration: 0.3, ease: "easeOut" }}
-                        >
-                          <div className="text-[0.68rem] font-medium tracking-[0.2em] uppercase text-cream-soft/70">
-                            {f.kind}
+                      </motion.div>
+
+                      {/* Text */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-80px" }}
+                        transition={{ duration: 0.8, ease: EASE, delay: 0.12 }}
+                        className={`relative ${
+                          reversed ? "lg:order-1 lg:pr-10" : "lg:pl-10"
+                        }`}
+                      >
+                        <div className="flex items-start gap-5">
+                          <span className="font-display text-orange/25 text-[clamp(3rem,6vw,5rem)] leading-[0.8] select-none">
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
+                          <div className="pt-1">
+                            <div className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-cream-soft/70 mb-3">
+                              {f.kind}
+                            </div>
+                            <h3 className="font-serif font-semibold text-cream text-[clamp(1.9rem,4vw,3rem)] leading-[1.05]">
+                              {f.name}
+                            </h3>
                           </div>
-                          <h3 className="font-serif font-semibold text-[1.5rem] md:text-[1.85rem] text-cream leading-tight">
-                            {f.name}
-                          </h3>
-                          <p className="font-sans font-light italic text-cream-soft/85 max-w-[560px] leading-relaxed text-sm md:text-base">
-                            {f.desc}
-                          </p>
-                        </motion.div>
-                        <div className="flex flex-col items-end pt-1 text-right">
-                          <span className="font-serif font-semibold text-[1.1rem] md:text-[1.4rem] text-orange whitespace-nowrap leading-tight">
+                        </div>
+                        <p className="font-sans font-light italic text-cream-soft/85 text-base md:text-lg leading-relaxed mt-6 max-w-md">
+                          {f.desc}
+                        </p>
+                        <div className="mt-7 inline-flex items-baseline gap-2 border-t border-border pt-5">
+                          <span className="font-serif font-semibold text-orange text-xl md:text-2xl">
                             {f.price}
                           </span>
                           {f.unit && (
-                            <span className="font-sans text-[0.72rem] text-cream-soft/65 mt-0.5">
+                            <span className="font-sans text-cream-soft/60 text-sm">
                               {f.unit}
                             </span>
                           )}
                         </div>
-                      </div>
-                    );
-                  })}
-
-                  <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-                    <a
-                      href={RESTO_PHONE_HREF}
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-orange text-bg-primary text-[0.72rem] font-medium tracking-[0.2em] uppercase hover:bg-orange/85 transition-all duration-300 rounded-[2px]"
-                    >
-                      Demander une proposition
-                      <span aria-hidden="true">→</span>
-                    </a>
-                    <p className="font-serif italic text-cream-soft/55 text-sm">
-                      Menu final bâti avec le chef. Taxes et service en sus.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Right — sticky cross-fading photo */}
-                <div className="hidden lg:block lg:sticky lg:top-32 w-full">
-                  <div className="relative w-full aspect-[4/5] overflow-hidden bg-bg-secondary ring-1 ring-cream/10">
-                    <AnimatePresence mode="sync">
-                      <motion.img
-                        key={active.image}
-                        src={imgSrc(active.image)}
-                        alt={active.name}
-                        initial={{ opacity: 0, scale: 1.05 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 1 }}
-                        transition={{ duration: 0.6, ease: EASE }}
-                        className="absolute inset-0 w-full h-full object-cover"
-                      />
-                    </AnimatePresence>
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-bg-primary/90 via-bg-primary/40 to-transparent p-6 pt-16 z-10">
-                      <AnimatePresence mode="wait">
-                        <motion.div
-                          key={activeFormule}
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -8 }}
-                          transition={{ duration: 0.35, ease: EASE }}
-                        >
-                          <div className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-orange mb-1">
-                            ◦ {String(activeFormule + 1).padStart(2, "0")} — {active.kind}
-                          </div>
-                          <div className="font-display text-cream text-[1.75rem] leading-none">
-                            {active.name}
-                          </div>
-                        </motion.div>
-                      </AnimatePresence>
+                      </motion.div>
                     </div>
-                  </div>
-                  <div className="mt-4 flex items-center justify-between text-[0.7rem] font-medium tracking-[0.2em] uppercase text-cream-soft/75">
-                    <span>— Survolez une formule</span>
-                    <span className="font-serif italic normal-case tracking-normal text-cream-soft/85">
-                      {String(activeFormule + 1).padStart(2, "0")} / {String(FORMULES.length).padStart(2, "0")}
-                    </span>
-                  </div>
-                </div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-20 md:mt-28 flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-border pt-10">
+                <a
+                  href={RESTO_PHONE_HREF}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-orange text-bg-primary text-[0.72rem] font-medium tracking-[0.2em] uppercase hover:bg-orange/85 transition-all duration-300 rounded-[2px]"
+                >
+                  Demander une proposition
+                  <span aria-hidden="true">→</span>
+                </a>
+                <p className="font-serif italic text-cream-soft/55 text-sm">
+                  Menu final bâti avec le chef. Taxes et service en sus.
+                </p>
               </div>
             </div>
           </section>
 
           {/* ============================================================
-              ON CÉLÈBRE QUOI — occasions. Kept from v1 (image-led grid).
+              ON CÉLÈBRE QUOI — occasions. Kept (image-led grid).
           ============================================================ */}
           <section className="bg-cream-soft pt-24 md:pt-32 pb-24 md:pb-32 px-6 md:px-12 relative">
             <SectionMarker number="07" tone="light" />
@@ -540,79 +547,118 @@ export default function GroupReservationPage() {
           </section>
 
           {/* ============================================================
-              COMMENT ÇA SE PASSE — warm prose + a calm hairline detail list.
-              Replaces the numbered step-cards and the "00 / 00" stat band.
+              COMMENT ÇA SE PASSE — type-forward process beats + an
+              "L'essentiel" reservation-slip card. (Redesigned.)
           ============================================================ */}
           <section className="bg-bg-primary pt-24 md:pt-32 pb-24 md:pb-32 px-6 md:px-12 relative overflow-hidden">
             <SectionMarker number="07" />
+            <div
+              aria-hidden="true"
+              className="absolute bottom-0 left-0 w-[55vw] h-[55vw] max-w-[640px] max-h-[640px] translate-y-1/3 -translate-x-1/4 pointer-events-none rounded-full"
+              style={{
+                background:
+                  "radial-gradient(circle, rgba(216, 90, 44, 0.08) 0%, transparent 60%)",
+              }}
+            />
             <div className="max-w-7xl mx-auto relative z-10">
-              <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
-                {/* Left — the how, in prose */}
-                <motion.div
-                  initial={{ opacity: 0, x: -24 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ duration: 0.8, ease: EASE }}
-                  className="lg:col-span-6"
-                >
-                  <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
-                    <span aria-hidden="true">✶ </span>Comment ça se passe
-                  </div>
-                  <h2 className="font-display text-cream text-[clamp(2.75rem,6.5vw,5.5rem)] leading-[1.05] pb-[0.08em] mb-8">
-                    Simple, comme à la maison
-                  </h2>
-                  <div className="space-y-6 font-sans font-light text-cream-soft/85 text-base md:text-lg leading-[1.8] max-w-xl">
-                    <p>
-                      <span className="font-serif italic text-cream">Un appel ou un courriel</span>{" "}
-                      pour nous dire la date, le nombre de convives et l'occasion.
-                    </p>
-                    <p>
-                      <span className="font-serif italic text-cream">On bâtit la formule</span>{" "}
-                      avec le chef — un menu et un déroulé à votre image, ajustés à votre budget.
-                    </p>
-                    <p>
-                      <span className="font-serif italic text-cream">On vous reçoit</span>{" "}
-                      le jour venu. On s'occupe de tout : vous n'avez qu'à profiter de vos gens.
-                    </p>
-                  </div>
-                </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8, ease: EASE }}
+                className="mb-14 md:mb-20 max-w-3xl"
+              >
+                <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
+                  <span aria-hidden="true">✶ </span>07 — Comment ça se passe
+                </div>
+                <h2 className="font-display text-cream text-[clamp(2.75rem,7vw,6rem)] leading-[1.05] pb-[0.08em]">
+                  Simple, comme à la maison
+                </h2>
+              </motion.div>
 
-                {/* Right — practical details as a hairline definition list */}
-                <motion.div
-                  initial={{ opacity: 0, x: 24 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ duration: 0.8, ease: EASE, delay: 0.15 }}
-                  className="lg:col-span-6 lg:pt-2"
-                >
-                  <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft/75 mb-8">
-                    <span aria-hidden="true">◦ </span>Détails pratiques
-                  </div>
-                  <dl className="border-t border-border">
-                    {DETAILS.map((d) => (
-                      <div
-                        key={d.label}
-                        className="flex items-baseline justify-between gap-6 py-5 border-b border-border"
-                      >
-                        <dt className="font-sans text-[0.8rem] md:text-[0.85rem] tracking-[0.06em] text-cream-soft/80">
-                          {d.label}
-                        </dt>
-                        <dd className="font-serif text-cream text-base md:text-lg text-right leading-snug">
-                          {d.value}
-                        </dd>
+              <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+                {/* Process beats */}
+                <div className="lg:col-span-7">
+                  {STEPS.map((s, i) => (
+                    <motion.div
+                      key={s.n}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, margin: "-60px" }}
+                      transition={{ duration: 0.7, ease: EASE, delay: i * 0.1 }}
+                      className={`flex gap-6 md:gap-8 py-7 md:py-9 border-b border-border ${
+                        i === 0 ? "border-t" : ""
+                      }`}
+                    >
+                      <span className="font-display text-orange text-[clamp(2rem,4vw,3rem)] leading-[0.85] shrink-0 w-[1.6em]">
+                        {s.n}
+                      </span>
+                      <div>
+                        <h3 className="font-serif italic text-cream text-2xl md:text-[1.9rem] leading-tight mb-2">
+                          {s.title}
+                        </h3>
+                        <p className="font-sans font-light text-cream-soft/80 text-base md:text-lg leading-relaxed max-w-md">
+                          {s.body}
+                        </p>
                       </div>
-                    ))}
-                  </dl>
-                  <p className="font-serif italic text-cream-soft/50 text-sm mt-6">
-                    Capacités et montants à confirmer avec Florent.
-                  </p>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* L'essentiel — reservation-slip card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.8, ease: EASE, delay: 0.15 }}
+                  className="lg:col-span-5 lg:sticky lg:top-32"
+                >
+                  <div className="relative border border-border bg-bg-secondary/40 backdrop-blur-sm p-7 md:p-8 overflow-hidden">
+                    <div aria-hidden="true" className="absolute left-0 top-0 bottom-0 w-[3px] bg-orange" />
+                    <div className="flex items-baseline justify-between mb-5">
+                      <div className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-orange">
+                        <span aria-hidden="true">✶ </span>L'essentiel
+                      </div>
+                      <div className="font-serif italic text-cream-soft/60 text-sm">
+                        Chez Florent
+                      </div>
+                    </div>
+                    <div
+                      aria-hidden="true"
+                      className="border-t border-dashed border-cream-soft/25 mb-1"
+                    />
+                    <dl>
+                      {DETAILS.map((d, i) => (
+                        <div
+                          key={d.label}
+                          className={`flex items-baseline justify-between gap-5 py-4 ${
+                            i === DETAILS.length - 1 ? "" : "border-b border-border"
+                          }`}
+                        >
+                          <dt className="font-sans text-[0.8rem] tracking-[0.04em] text-cream-soft/75">
+                            {d.label}
+                          </dt>
+                          <dd className="font-serif text-cream text-right leading-snug">
+                            {d.value}
+                          </dd>
+                        </div>
+                      ))}
+                    </dl>
+                    <div
+                      aria-hidden="true"
+                      className="border-t border-dashed border-cream-soft/25 mt-1 mb-4"
+                    />
+                    <p className="font-serif italic text-cream-soft/50 text-sm">
+                      Valeurs à confirmer avec Florent.
+                    </p>
+                  </div>
                 </motion.div>
               </div>
             </div>
           </section>
 
           {/* ============================================================
-              FAQ — kept from v1.
+              FAQ — kept.
           ============================================================ */}
           <section className="bg-cream-soft pt-24 md:pt-28 pb-24 md:pb-28 px-6 md:px-12 relative">
             <SectionMarker number="07" tone="light" />
@@ -648,8 +694,7 @@ export default function GroupReservationPage() {
           </section>
 
           {/* ============================================================
-              CLOSING INVITATION — cinematic photo bookend (closing).
-              Mirrors the hero; phone + email as elegant inline links.
+              CLOSING INVITATION — cinematic photo bookend (closing). Kept.
           ============================================================ */}
           <section className="relative bg-bg-primary px-6 md:px-12 py-32 md:py-44 overflow-hidden">
             <img
