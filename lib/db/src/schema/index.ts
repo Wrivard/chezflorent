@@ -5,3 +5,4 @@ export * from "./menuItems";
 export * from "./hours";
 export * from "./sitePhotos";
 export * from "./groupContent";
+export * from "./aboutContent";

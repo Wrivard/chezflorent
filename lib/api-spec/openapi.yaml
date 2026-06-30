@@ -493,6 +493,47 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /about-content:
+    get:
+      operationId: getAboutContent
+      tags: [about]
+      summary: Get the About page content
+      responses:
+        "200":
+          description: About page content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutContent"
+    put:
+      operationId: updateAboutContent
+      tags: [about]
+      summary: Replace the About page content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AboutContent"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutContent"
+        "400":
+          description: Invalid content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
 components:
   schemas:
@@ -876,3 +917,78 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/GroupDetail"
+    AboutVoice:
+      type: object
+      required: [quote, name, role]
+      properties:
+        quote:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+    AboutSupplier:
+      type: object
+      required: [name, note]
+      properties:
+        name:
+          type: string
+        note:
+          type: string
+    AboutImages:
+      type: object
+      required: [hero, story1, story2]
+      properties:
+        hero:
+          type: string
+        story1:
+          type: string
+        story2:
+          type: string
+    AboutTexts:
+      type: object
+      required:
+        - heroMarker
+        - heroTitle
+        - heroLede
+        - quote
+        - storyP1
+        - storyP2
+        - voicesMarker
+        - suppliersMarker
+        - closingNote
+      properties:
+        heroMarker:
+          type: string
+        heroTitle:
+          type: string
+        heroLede:
+          type: string
+        quote:
+          type: string
+        storyP1:
+          type: string
+        storyP2:
+          type: string
+        voicesMarker:
+          type: string
+        suppliersMarker:
+          type: string
+        closingNote:
+          type: string
+    AboutContent:
+      type: object
+      required: [texts, voices, suppliers, images]
+      properties:
+        texts:
+          $ref: "#/components/schemas/AboutTexts"
+        voices:
+          type: array
+          items:
+            $ref: "#/components/schemas/AboutVoice"
+        suppliers:
+          type: array
+          items:
+            $ref: "#/components/schemas/AboutSupplier"
+        images:
+          $ref: "#/components/schemas/AboutImages"

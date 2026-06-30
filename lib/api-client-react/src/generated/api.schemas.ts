@@ -217,3 +217,39 @@ export interface GroupContent {
   steps: GroupStep[];
   details: GroupDetail[];
 }
+
+export interface AboutVoice {
+  quote: string;
+  name: string;
+  role: string;
+}
+
+export interface AboutSupplier {
+  name: string;
+  note: string;
+}
+
+export interface AboutImages {
+  hero: string;
+  story1: string;
+  story2: string;
+}
+
+export interface AboutTexts {
+  heroMarker: string;
+  heroTitle: string;
+  heroLede: string;
+  quote: string;
+  storyP1: string;
+  storyP2: string;
+  voicesMarker: string;
+  suppliersMarker: string;
+  closingNote: string;
+}
+
+export interface AboutContent {
+  texts: AboutTexts;
+  voices: AboutVoice[];
+  suppliers: AboutSupplier[];
+  images: AboutImages;
+}

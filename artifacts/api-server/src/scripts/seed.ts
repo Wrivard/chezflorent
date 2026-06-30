@@ -7,11 +7,13 @@ import {
   hoursTable,
   sitePhotosTable,
   groupContentTable,
+  aboutContentTable,
 } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { hashPassword } from "../lib/auth";
 import { logger } from "../lib/logger";
 import { DEFAULT_GROUP_CONTENT, GROUP_CONTENT_ID } from "../lib/groupContent";
+import { DEFAULT_ABOUT_CONTENT, ABOUT_CONTENT_ID } from "../lib/aboutContent";
 
 async function seedAdmin(): Promise<void> {
   const email = (process.env.ADMIN_EMAIL ?? "").trim().toLowerCase();
@@ -345,6 +347,18 @@ async function seedGroupContent(): Promise<void> {
   logger.info("Group content seeded");
 }
 
+async function seedAboutContent(): Promise<void> {
+  const [existing] = await db
+    .select()
+    .from(aboutContentTable)
+    .where(eq(aboutContentTable.id, ABOUT_CONTENT_ID));
+  if (existing) return;
+  await db
+    .insert(aboutContentTable)
+    .values({ id: ABOUT_CONTENT_ID, data: DEFAULT_ABOUT_CONTENT });
+  logger.info("About content seeded");
+}
+
 async function main(): Promise<void> {
   await seedAdmin();
   await seedHours();
@@ -352,6 +366,7 @@ async function main(): Promise<void> {
   await seedMenu();
   await seedPhotos();
   await seedGroupContent();
+  await seedAboutContent();
   logger.info("Seed complete");
 }
 

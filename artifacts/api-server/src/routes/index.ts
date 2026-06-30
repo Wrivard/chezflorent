@@ -6,6 +6,7 @@ import menuRouter from "./menu";
 import hoursRouter from "./hours";
 import photosRouter from "./photos";
 import groupContentRouter from "./groupContent";
+import aboutContentRouter from "./aboutContent";
 import uploadRouter from "./upload";
 
 const router: IRouter = Router();
@@ -17,6 +18,7 @@ router.use(menuRouter);
 router.use(hoursRouter);
 router.use(photosRouter);
 router.use(groupContentRouter);
+router.use(aboutContentRouter);
 router.use(uploadRouter);
 
 export default router;

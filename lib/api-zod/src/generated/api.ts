@@ -444,3 +444,105 @@ export const UpdateGroupContentResponse = zod.object({
     }),
   ),
 });
+
+/**
+ * @summary Get the About page content
+ */
+export const GetAboutContentResponse = zod.object({
+  texts: zod.object({
+    heroMarker: zod.string(),
+    heroTitle: zod.string(),
+    heroLede: zod.string(),
+    quote: zod.string(),
+    storyP1: zod.string(),
+    storyP2: zod.string(),
+    voicesMarker: zod.string(),
+    suppliersMarker: zod.string(),
+    closingNote: zod.string(),
+  }),
+  voices: zod.array(
+    zod.object({
+      quote: zod.string(),
+      name: zod.string(),
+      role: zod.string(),
+    }),
+  ),
+  suppliers: zod.array(
+    zod.object({
+      name: zod.string(),
+      note: zod.string(),
+    }),
+  ),
+  images: zod.object({
+    hero: zod.string(),
+    story1: zod.string(),
+    story2: zod.string(),
+  }),
+});
+
+/**
+ * @summary Replace the About page content
+ */
+export const UpdateAboutContentBody = zod.object({
+  texts: zod.object({
+    heroMarker: zod.string(),
+    heroTitle: zod.string(),
+    heroLede: zod.string(),
+    quote: zod.string(),
+    storyP1: zod.string(),
+    storyP2: zod.string(),
+    voicesMarker: zod.string(),
+    suppliersMarker: zod.string(),
+    closingNote: zod.string(),
+  }),
+  voices: zod.array(
+    zod.object({
+      quote: zod.string(),
+      name: zod.string(),
+      role: zod.string(),
+    }),
+  ),
+  suppliers: zod.array(
+    zod.object({
+      name: zod.string(),
+      note: zod.string(),
+    }),
+  ),
+  images: zod.object({
+    hero: zod.string(),
+    story1: zod.string(),
+    story2: zod.string(),
+  }),
+});
+
+export const UpdateAboutContentResponse = zod.object({
+  texts: zod.object({
+    heroMarker: zod.string(),
+    heroTitle: zod.string(),
+    heroLede: zod.string(),
+    quote: zod.string(),
+    storyP1: zod.string(),
+    storyP2: zod.string(),
+    voicesMarker: zod.string(),
+    suppliersMarker: zod.string(),
+    closingNote: zod.string(),
+  }),
+  voices: zod.array(
+    zod.object({
+      quote: zod.string(),
+      name: zod.string(),
+      role: zod.string(),
+    }),
+  ),
+  suppliers: zod.array(
+    zod.object({
+      name: zod.string(),
+      note: zod.string(),
+    }),
+  ),
+  images: zod.object({
+    hero: zod.string(),
+    story1: zod.string(),
+    story2: zod.string(),
+  }),
+});

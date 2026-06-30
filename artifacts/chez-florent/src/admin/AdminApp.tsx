@@ -11,6 +11,7 @@ import MenuEditor from "./MenuEditor";
 import HoursEditor from "./HoursEditor";
 import PhotosEditor from "./PhotosEditor";
 import GroupContentEditor from "./GroupContentEditor";
+import AboutContentEditor from "./AboutContentEditor";
 import AccountEditor from "./AccountEditor";
 import { Button, cn } from "./ui";
 
@@ -18,6 +19,7 @@ const TABS = [
   { id: "agenda", label: "Agenda" },
   { id: "menu", label: "Menu" },
   { id: "groupes", label: "Groupes" },
+  { id: "apropos", label: "À propos" },
   { id: "horaires", label: "Horaires" },
   { id: "photos", label: "Photos" },
   { id: "compte", label: "Compte" },
@@ -107,6 +109,7 @@ export default function AdminApp() {
         {tab === "agenda" && <EventsEditor />}
         {tab === "menu" && <MenuEditor />}
         {tab === "groupes" && <GroupContentEditor />}
+        {tab === "apropos" && <AboutContentEditor />}
         {tab === "horaires" && <HoursEditor />}
         {tab === "photos" && <PhotosEditor />}
         {tab === "compte" && <AccountEditor />}

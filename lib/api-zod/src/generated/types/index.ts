@@ -6,6 +6,11 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from "./aboutContent";
+export * from "./aboutImages";
+export * from "./aboutSupplier";
+export * from "./aboutTexts";
+export * from "./aboutVoice";
 export * from "./adminLogin";
 export * from "./adminUser";
 export * from "./changePassword";

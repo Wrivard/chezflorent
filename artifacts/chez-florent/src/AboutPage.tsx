@@ -5,33 +5,85 @@ import {
   FilmGrain,
   ScrollProgress,
   SectionMarker,
-  usePhotos,
   imgSrc,
   EASE,
 } from "./App";
+import { useGetAboutContent } from "@workspace/api-client-react";
+import type { AboutContent } from "@workspace/api-client-react";
 
-const SUPPLIERS = [
-  {
-    name: "Ferme J.N Beauchemin",
-    note: "Saucisses & charcuteries, élevées à quelques minutes d'ici.",
+const DEFAULT_ABOUT_CONTENT: AboutContent = {
+  texts: {
+    heroMarker: "02 — La maison",
+    heroTitle: "La maison",
+    heroLede:
+      "Un bistro de quartier, une certaine idée du temps qui passe — et des gens qui le font vivre.",
+    quote: "« On vient ici pour rester. »",
+    storyP1:
+      "Chez Florent est né d'une envie simple : un endroit où l'on s'attable sans cérémonie, où le vin se verse au pichet, et où la cuisine ne triche jamais avec ses produits. Pas de chichi — juste de bons plats, partagés à la bonne température.",
+    storyP2:
+      "On travaille avec des fermiers et artisans qu'on appelle par leur prénom. L'ardoise change au gré des arrivages et des saisons — c'est ça, un bistro vivant : du temps, de l'huile de coude, et le plaisir de bien recevoir.",
+    voicesMarker: "Les voix de la maison",
+    suppliersMarker: "Nos producteurs",
+    closingNote:
+      "« On vient ici pour rester. » — Au plaisir de vous recevoir, 57 rue du Roi.",
   },
-  {
-    name: "Fromagerie Fuoco",
-    note: "La bufarella et les fromages du moment, frais chaque semaine.",
+  voices: [
+    {
+      quote:
+        "« Florent n'est pas seulement un nom au-dessus de la porte. C'est une certaine idée du bistro : celle où l'on s'attable sans cérémonie, où le vin se verse au pichet, et où la cuisine ne triche jamais avec ses produits. »",
+      name: "Florent Tremblay",
+      role: "Propriétaire",
+    },
+    {
+      quote:
+        "« On travaille avec des fermiers qu'on appelle par leur prénom — la Ferme J.N Beauchemin pour les saucisses, Fromagerie Fuoco pour la bufarella, Les Cowboys du BBQ pour le brisket. Le reste, c'est de l'huile de coude et du temps. »",
+      name: "Annie Vincent",
+      role: "Sommelière",
+    },
+  ],
+  suppliers: [
+    {
+      name: "Ferme J.N Beauchemin",
+      note: "Saucisses & charcuteries, élevées à quelques minutes d'ici.",
+    },
+    {
+      name: "Fromagerie Fuoco",
+      note: "La bufarella et les fromages du moment, frais chaque semaine.",
+    },
+    {
+      name: "Les Cowboys du BBQ",
+      note: "Brisket fumé lentement pour nos sandwichs signature.",
+    },
+    {
+      name: "Riverbend Brewing Co.",
+      note: "Bières brassées à Sorel — locales, fraîches, désaltérantes.",
+    },
+  ],
+  images: {
+    hero: "hero-interior.png",
+    story1: "tap-pour.jpg",
+    story2: "florent-glass.jpg",
   },
-  {
-    name: "Les Cowboys du BBQ",
-    note: "Brisket fumé lentement pour nos sandwichs signature.",
-  },
-  {
-    name: "Riverbend Brewing Co.",
-    note: "Bières brassées à Sorel — locales, fraîches, désaltérantes.",
-  },
-];
+};
 
 export default function AboutPage() {
-  const photos = usePhotos();
-  const quoteWords = "« On vient ici pour rester. »".split(" ");
+  const { data } = useGetAboutContent();
+  const content = data ?? DEFAULT_ABOUT_CONTENT;
+  const { texts, voices, suppliers, images } = content;
+  const quoteWords = texts.quote.split(" ");
+
+  const voiceStyles = [
+    {
+      blockquote:
+        "font-serif font-normal text-cream text-[1.125rem] leading-[1.8]",
+      delay: 0,
+    },
+    {
+      blockquote:
+        "font-sans font-light text-cream-soft/85 text-[1rem] leading-[1.8]",
+      delay: 0.1,
+    },
+  ];
 
   return (
     <div className="min-h-[100dvh] w-full bg-bg-primary text-cream selection:bg-orange selection:text-bg-primary relative">
@@ -46,7 +98,7 @@ export default function AboutPage() {
           <section className="relative bg-bg-primary pt-40 md:pt-52 pb-16 md:pb-20 px-6 md:px-12 overflow-hidden">
             {/* Background photo */}
             <img
-              src={imgSrc("hero-interior.png")}
+              src={imgSrc(images.hero)}
               alt=""
               aria-hidden="true"
               className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
@@ -76,14 +128,14 @@ export default function AboutPage() {
                 transition={{ duration: 0.8, ease: EASE }}
               >
                 <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
-                  <span aria-hidden="true">✶ </span>02 — La maison
+                  <span aria-hidden="true">✶ </span>
+                  {texts.heroMarker}
                 </div>
                 <h1 className="font-display text-cream leading-[1.18] pb-[0.28em] text-[clamp(3.5rem,11vw,11rem)]">
-                  La maison
+                  {texts.heroTitle}
                 </h1>
                 <p className="font-sans italic text-cream-soft/75 max-w-2xl text-lg mt-6">
-                  Un bistro de quartier, une certaine idée du temps qui passe —
-                  et des gens qui le font vivre.
+                  {texts.heroLede}
                 </p>
               </motion.div>
             </div>
@@ -117,10 +169,7 @@ export default function AboutPage() {
                   transition={{ duration: 0.8, ease: EASE }}
                   className="font-serif text-bg-primary text-[1.0625rem] md:text-[1.125rem] leading-[1.85]"
                 >
-                  Chez Florent est né d'une envie simple : un endroit où l'on
-                  s'attable sans cérémonie, où le vin se verse au pichet, et où la
-                  cuisine ne triche jamais avec ses produits. Pas de chichi —
-                  juste de bons plats, partagés à la bonne température.
+                  {texts.storyP1}
                 </motion.p>
                 <motion.p
                   initial={{ opacity: 0, y: 20 }}
@@ -129,10 +178,7 @@ export default function AboutPage() {
                   transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
                   className="font-sans font-light text-bg-primary/80 text-[1rem] leading-[1.85]"
                 >
-                  On travaille avec des fermiers et artisans qu'on appelle par
-                  leur prénom. L'ardoise change au gré des arrivages et des
-                  saisons — c'est ça, un bistro vivant : du temps, de l'huile de
-                  coude, et le plaisir de bien recevoir.
+                  {texts.storyP2}
                 </motion.p>
               </div>
 
@@ -146,8 +192,8 @@ export default function AboutPage() {
                   className="md:col-span-7 aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10"
                 >
                   <img
-                    src={photos.about1.url}
-                    alt={photos.about1.alt}
+                    src={imgSrc(images.story1)}
+                    alt=""
                     className="w-full h-full object-cover"
                   />
                 </motion.div>
@@ -159,8 +205,8 @@ export default function AboutPage() {
                   className="md:col-span-5 aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10"
                 >
                   <img
-                    src={photos.about2.url}
-                    alt={photos.about2.alt}
+                    src={imgSrc(images.story2)}
+                    alt=""
                     className="w-full h-full object-cover"
                   />
                 </motion.div>
@@ -172,53 +218,35 @@ export default function AboutPage() {
           <section className="bg-bg-primary pt-20 md:pt-24 pb-16 md:pb-20 px-6 md:px-12 relative">
             <div className="max-w-7xl mx-auto relative z-10">
               <div className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-orange mb-10">
-                <span aria-hidden="true">◦ </span>Les voix de la maison
+                <span aria-hidden="true">◦ </span>
+                {texts.voicesMarker}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 max-w-5xl">
-                <motion.figure
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.8, ease: EASE }}
-                  className="m-0"
-                >
-                  <blockquote className="font-serif font-normal text-cream text-[1.125rem] leading-[1.8]">
-                    « Florent n'est pas seulement un nom au-dessus de la porte.
-                    C'est une certaine idée du bistro : celle où l'on s'attable
-                    sans cérémonie, où le vin se verse au pichet, et où la cuisine
-                    ne triche jamais avec ses produits. »
-                  </blockquote>
-                  <figcaption className="mt-4 font-sans text-[0.75rem] tracking-[0.2em] uppercase text-cream-soft/75 flex items-center gap-3">
-                    <span aria-hidden="true" className="inline-block w-8 h-px bg-orange/70" />
-                    Florent Tremblay
-                    <span aria-hidden="true" className="text-orange/70">·</span>
-                    <span className="font-serif normal-case italic tracking-normal text-cream-soft/80">
-                      Propriétaire
-                    </span>
-                  </figcaption>
-                </motion.figure>
-                <motion.figure
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
-                  className="m-0"
-                >
-                  <blockquote className="font-sans font-light text-cream-soft/85 text-[1rem] leading-[1.8]">
-                    « On travaille avec des fermiers qu'on appelle par leur prénom
-                    — la Ferme J.N Beauchemin pour les saucisses, Fromagerie Fuoco
-                    pour la bufarella, Les Cowboys du BBQ pour le brisket. Le
-                    reste, c'est de l'huile de coude et du temps. »
-                  </blockquote>
-                  <figcaption className="mt-4 font-sans text-[0.75rem] tracking-[0.2em] uppercase text-cream-soft/75 flex items-center gap-3">
-                    <span aria-hidden="true" className="inline-block w-8 h-px bg-orange/70" />
-                    Annie Vincent
-                    <span aria-hidden="true" className="text-orange/70">·</span>
-                    <span className="font-serif normal-case italic tracking-normal text-cream-soft/80">
-                      Sommelière
-                    </span>
-                  </figcaption>
-                </motion.figure>
+                {voices.map((v, i) => {
+                  const style = voiceStyles[i] ?? voiceStyles[1];
+                  return (
+                    <motion.figure
+                      key={i}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-100px" }}
+                      transition={{ duration: 0.8, ease: EASE, delay: style.delay }}
+                      className="m-0"
+                    >
+                      <blockquote className={style.blockquote}>
+                        {v.quote}
+                      </blockquote>
+                      <figcaption className="mt-4 font-sans text-[0.75rem] tracking-[0.2em] uppercase text-cream-soft/75 flex items-center gap-3">
+                        <span aria-hidden="true" className="inline-block w-8 h-px bg-orange/70" />
+                        {v.name}
+                        <span aria-hidden="true" className="text-orange/70">·</span>
+                        <span className="font-serif normal-case italic tracking-normal text-cream-soft/80">
+                          {v.role}
+                        </span>
+                      </figcaption>
+                    </motion.figure>
+                  );
+                })}
               </div>
             </div>
           </section>
@@ -227,12 +255,13 @@ export default function AboutPage() {
           <section className="bg-bg-primary pt-12 md:pt-16 pb-24 md:pb-32 px-6 md:px-12 relative">
             <div className="max-w-7xl mx-auto relative z-10">
               <div className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-orange mb-10">
-                <span aria-hidden="true">◦ </span>Nos producteurs
+                <span aria-hidden="true">◦ </span>
+                {texts.suppliersMarker}
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 border-t border-border">
-                {SUPPLIERS.map((s, i) => (
+                {suppliers.map((s, i) => (
                   <motion.div
-                    key={s.name}
+                    key={i}
                     initial={{ opacity: 0, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-60px" }}
@@ -256,8 +285,7 @@ export default function AboutPage() {
 
               <div className="mt-16 text-center">
                 <p className="font-sans italic text-cream-soft/85 text-sm">
-                  « On vient ici pour rester. » — Au plaisir de vous recevoir,
-                  57 rue du Roi.
+                  {texts.closingNote}
                 </p>
               </div>
             </div>
