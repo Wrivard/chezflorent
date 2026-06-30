@@ -1878,80 +1878,7 @@ function Contact() {
   );
 }
 
-type LegalKey = "mentions" | "confidentialite";
-
-const LEGAL_COPY: Record<LegalKey, { title: string; body: string[] }> = {
-  mentions: {
-    title: "Mentions légales",
-    body: [
-      "Chez Florent — Bistro · 57 Rue du Roi, Sorel-Tracy (QC) J3P 4M6 · Téléphone : 450 743-1448.",
-      "Site édité à des fins de présentation. Les visuels et l'ardoise peuvent évoluer selon les arrivages et la saison.",
-      "Hébergement et conception : équipe Chez Florent, Sorel-Tracy. Tous droits réservés.",
-    ],
-  },
-  confidentialite: {
-    title: "Confidentialité",
-    body: [
-      "Le formulaire de réservation collecte uniquement les informations nécessaires pour confirmer votre table : nom, téléphone, date, heure, nombre de personnes et note facultative.",
-      "Aucune donnée n'est transmise à des tiers. Vos coordonnées servent uniquement à vous rappeler pour confirmer ou ajuster la réservation.",
-      "Pour toute demande de suppression, écrivez-nous ou appelez-nous au 450 743-1448.",
-    ],
-  },
-};
-
-function LegalModal({ which, onClose }: { which: LegalKey; onClose: () => void }) {
-  const copy = LEGAL_COPY[which];
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
-    window.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
-  }, [onClose]);
-  return (
-    <motion.div
-      key="legal-overlay"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.25, ease: EASE }}
-      className="fixed inset-0 z-[120] bg-bg-primary/80 backdrop-blur-md flex items-center justify-center p-6"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="legal-title"
-    >
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: 10, opacity: 0 }}
-        transition={{ duration: 0.3, ease: EASE }}
-        className="relative max-w-2xl w-full bg-bg-tertiary border border-border p-8 md:p-12"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Fermer"
-          className="absolute top-4 right-5 text-cream-soft hover:text-cream text-2xl leading-none"
-        >×</button>
-        <div className="text-[0.7rem] tracking-[0.22em] uppercase text-orange mb-4">Information</div>
-        <h3 id="legal-title" className="font-display text-cream text-3xl md:text-4xl mb-6">
-          {copy.title}
-        </h3>
-        <div className="space-y-4 font-sans text-cream-soft text-sm leading-relaxed">
-          {copy.body.map((p, i) => <p key={i}>{p}</p>)}
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
 export function Footer() {
-  const [legal, setLegal] = useState<LegalKey | null>(null);
   const year = new Date().getFullYear();
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   const daysLabel = useOpenDaysLabel();
@@ -2007,11 +1934,8 @@ export function Footer() {
       <div className="w-full px-6 md:px-12 border-t border-border">
         <div className="max-w-7xl mx-auto py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-[0.75rem] tracking-[0.1em] uppercase text-cream-soft/85">
           <div>© {year} Chez Florent</div>
-          <div className="flex gap-6">
-            <button type="button" onClick={() => setLegal("mentions")} className="hover:text-cream transition-colors">Mentions légales</button>
-            <button type="button" onClick={() => setLegal("confidentialite")} className="hover:text-cream transition-colors">Confidentialité</button>
-          </div>
           <div>Conçu avec <span aria-hidden="true">♥</span><span className="sr-only">amour</span> à Sorel-Tracy</div>
+          <a href={`${base}/confidentialite`} className="hover:text-cream transition-colors">Confidentialité</a>
         </div>
       </div>
 
@@ -2046,10 +1970,6 @@ export function Footer() {
           <span aria-hidden="true">◦ </span>MMXXVI
         </div>
       </div>
-
-      <AnimatePresence>
-        {legal && <LegalModal which={legal} onClose={() => setLegal(null)} />}
-      </AnimatePresence>
     </footer>
   );
 }
