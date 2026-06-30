@@ -275,14 +275,6 @@ export default function GroupReservationPage() {
             </div>
           </section>
 
-          {/* Placeholder notice — slim, honest */}
-          <div className="bg-orange/10 border-y border-orange/30 px-6 md:px-12">
-            <div className="max-w-7xl mx-auto py-3 text-center text-[0.72rem] md:text-[0.78rem] font-medium tracking-[0.12em] uppercase text-orange">
-              <span aria-hidden="true">✶ </span>
-              Page en préparation — tarifs et détails à confirmer avec Florent
-            </div>
-          </div>
-
           {/* ============================================================
               LE MOT DE FLORENT — manifesto: massive clip-path pull-quote +
               asymmetric photo triptych + signed note. (Redesigned.)
@@ -334,14 +326,17 @@ export default function GroupReservationPage() {
                     <blockquote className="font-serif italic text-bg-primary text-[1.2rem] md:text-[1.5rem] leading-[1.6]">
                       {t.manifestoQuote}
                     </blockquote>
-                    <figcaption className="mt-5 font-sans text-[0.75rem] tracking-[0.2em] uppercase text-bg-primary/65 flex items-center gap-3">
+                    <div className="mt-6 mb-2">
+                      <img
+                        src="/logo.png"
+                        alt="Chez Florent"
+                        className="h-14 w-auto opacity-80"
+                      />
+                    </div>
+                    <figcaption className="mt-3 font-sans text-[0.75rem] tracking-[0.2em] uppercase text-bg-primary/65 flex items-center gap-3">
                       <span aria-hidden="true" className="inline-block w-8 h-px bg-orange/70" />
                       <span className="font-display normal-case tracking-normal text-orange text-2xl leading-none">
                         {t.signatureName}
-                      </span>
-                      <span aria-hidden="true" className="text-orange/70">·</span>
-                      <span className="font-serif normal-case italic tracking-normal text-bg-primary/70">
-                        {t.signatureRole}
                       </span>
                     </figcaption>
                   </motion.figure>
