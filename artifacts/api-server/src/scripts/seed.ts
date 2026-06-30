@@ -40,18 +40,24 @@ async function seedAdmin(): Promise<void> {
 }
 
 async function seedHours(): Promise<void> {
-  const existing = await db.select().from(hoursTable);
-  if (existing.length > 0) return;
   const rows = [
-    { dayOfWeek: 0, closed: false, openHour: 17, closeHour: 21 }, // Sunday
-    { dayOfWeek: 1, closed: true, openHour: null, closeHour: null }, // Monday
-    { dayOfWeek: 2, closed: false, openHour: 17, closeHour: 22 },
-    { dayOfWeek: 3, closed: false, openHour: 17, closeHour: 22 },
-    { dayOfWeek: 4, closed: false, openHour: 17, closeHour: 22 },
-    { dayOfWeek: 5, closed: false, openHour: 17, closeHour: 23 },
-    { dayOfWeek: 6, closed: false, openHour: 17, closeHour: 23 },
+    { dayOfWeek: 0, closed: false, openHour: 17,   closeHour: 21 }, // Dimanche
+    { dayOfWeek: 1, closed: false, openHour: 11.5, closeHour: 21 }, // Lundi
+    { dayOfWeek: 2, closed: false, openHour: 11.5, closeHour: 21 }, // Mardi
+    { dayOfWeek: 3, closed: false, openHour: 11.5, closeHour: 21 }, // Mercredi
+    { dayOfWeek: 4, closed: false, openHour: 11.5, closeHour: 23 }, // Jeudi
+    { dayOfWeek: 5, closed: false, openHour: 11.5, closeHour: 23 }, // Vendredi
+    { dayOfWeek: 6, closed: false, openHour: 17,   closeHour: 23 }, // Samedi
   ];
-  await db.insert(hoursTable).values(rows);
+  for (const row of rows) {
+    await db
+      .insert(hoursTable)
+      .values(row)
+      .onConflictDoUpdate({
+        target: hoursTable.dayOfWeek,
+        set: { closed: row.closed, openHour: row.openHour, closeHour: row.closeHour },
+      });
+  }
   logger.info("Hours seeded");
 }
 

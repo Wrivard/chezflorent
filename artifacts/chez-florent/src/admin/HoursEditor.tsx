@@ -43,21 +43,23 @@ function HoursRow({
         />
         {!draft.closed && (
           <>
-            <Field label="Ouverture (h)">
+            <Field label="Ouverture (h)" hint="ex. 11.5 = 11h30">
               <TextInput
                 type="number"
                 min={0}
                 max={23}
+                step={0.5}
                 className="w-24"
                 value={draft.openHour}
                 onChange={(e) => onChange({ openHour: e.target.value })}
               />
             </Field>
-            <Field label="Fermeture (h)">
+            <Field label="Fermeture (h)" hint="ex. 23 = 23h00">
               <TextInput
                 type="number"
                 min={0}
-                max={23}
+                max={24}
+                step={0.5}
                 className="w-24"
                 value={draft.closeHour}
                 onChange={(e) => onChange({ closeHour: e.target.value })}
@@ -145,8 +147,7 @@ export default function HoursEditor() {
   return (
     <div className="space-y-4">
       <p className="text-sm text-cream-soft/60">
-        Indiquez l'heure d'ouverture et de fermeture sur 24h (ex. 17 et 22).
-        L'horaire affiché sur le site est regroupé automatiquement.
+        Indiquez l'heure d'ouverture et de fermeture sur 24h. Pour les demies-heures, utilisez 0.5 (ex. 11.5 = 11h30). L'horaire affiché sur le site est regroupé automatiquement.
       </p>
       {list.map((row) => {
         const draft = drafts.get(row.dayOfWeek);

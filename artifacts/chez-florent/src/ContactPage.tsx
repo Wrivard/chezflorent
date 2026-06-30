@@ -135,7 +135,7 @@ export default function ContactPage() {
                     </a>
                     <p className="font-sans italic text-bg-primary/65 mt-3 text-sm max-w-md">
                       Réservations et soirées par téléphone uniquement — on répond
-                      avec plaisir dès {openHour}h.
+                      avec plaisir dès {openHour}.
                     </p>
                   </div>
 

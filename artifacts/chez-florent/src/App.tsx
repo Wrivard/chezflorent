@@ -229,18 +229,25 @@ function useActiveSection() {
 // -----------------------------------------------------------------------------
 
 // Live opening-status hook based on the actual schedule
-//   Mon: closed · Tue–Thu 17h–22h · Fri–Sat 17h–23h · Sun 17h–21h
+//   Sun 17h–21h · Mon–Wed 11h30–21h · Thu–Fri 11h30–23h · Sat 17h–23h
 const SCHEDULE: Record<number, { open: number; close: number } | null> = {
-  0: { open: 17, close: 21 }, // Sunday
-  1: null,                    // Monday — closed
-  2: { open: 17, close: 22 }, // Tuesday
-  3: { open: 17, close: 22 }, // Wednesday
-  4: { open: 17, close: 22 }, // Thursday
-  5: { open: 17, close: 23 }, // Friday
-  6: { open: 17, close: 23 }, // Saturday
+  0: { open: 17,   close: 21 }, // Dimanche
+  1: { open: 11.5, close: 21 }, // Lundi
+  2: { open: 11.5, close: 21 }, // Mardi
+  3: { open: 11.5, close: 21 }, // Mercredi
+  4: { open: 11.5, close: 23 }, // Jeudi
+  5: { open: 11.5, close: 23 }, // Vendredi
+  6: { open: 17,   close: 23 }, // Samedi
 };
 const DAY_NAMES_FR = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
 const DAY_SHORT_FR = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
+
+// Converts a decimal hour to a display string: 11.5 → "11h30", 17 → "17h".
+function formatHour(h: number): string {
+  const hrs = Math.floor(h);
+  const mins = Math.round((h - hrs) * 60);
+  return mins > 0 ? `${hrs}h${String(mins).padStart(2, "0")}` : `${hrs}h`;
+}
 
 function useOpenStatus(): { open: boolean; label: string } {
   const [now, setNow] = useState<Date>(() => new Date());
@@ -256,11 +263,11 @@ function useOpenStatus(): { open: boolean; label: string } {
 
   if (today) {
     if (totalMinutes >= today.open * 60 && totalMinutes < today.close * 60) {
-      return { open: true, label: `Ouvert · ferme à ${today.close}h` };
+      return { open: true, label: `Ouvert · ferme à ${formatHour(today.close)}` };
     }
     // Open day but before opening time
     if (totalMinutes < today.open * 60) {
-      return { open: false, label: `Fermé · ouvre aujourd'hui ${today.open}h` };
+      return { open: false, label: `Fermé · ouvre aujourd'hui ${formatHour(today.open)}` };
     }
   }
 
@@ -270,7 +277,7 @@ function useOpenStatus(): { open: boolean; label: string } {
     const next = schedule[nextDayIdx];
     if (next) {
       const dayLabel = i === 1 ? "demain" : DAY_NAMES_FR[nextDayIdx];
-      return { open: false, label: `Fermé · ouvre ${dayLabel} ${next.open}h` };
+      return { open: false, label: `Fermé · ouvre ${dayLabel} ${formatHour(next.open)}` };
     }
   }
   return { open: false, label: "Fermé" };
@@ -1320,7 +1327,7 @@ export function useHoursItems(): string[] {
     if (!g.band) {
       return g.days.length === 1 ? `Fermé le ${first}` : `Fermé ${first} au ${lastD}`;
     }
-    return `${span}  ·  ${g.band.open}h – ${g.band.close}h`;
+    return `${span}  ·  ${formatHour(g.band.open)} – ${formatHour(g.band.close)}`;
   });
 }
 
@@ -1343,12 +1350,12 @@ export function useOpenDaysLabel(): { short: string; long: string } {
 }
 
 // Returns the earliest opening hour across all open days (e.g. 17).
-export function useEarliestOpenHour(): number | null {
+export function useEarliestOpenHour(): string | null {
   const schedule = useScheduleData();
   const hours = Object.values(schedule)
     .filter((s): s is { open: number; close: number } => s != null)
     .map((s) => s.open);
-  return hours.length > 0 ? Math.min(...hours) : null;
+  return hours.length > 0 ? formatHour(Math.min(...hours)) : null;
 }
 
 type PhotoMap = Record<string, { url: string; alt: string }>;
@@ -1525,11 +1532,11 @@ function HoursBand() {
   );
 }
 
-// Returns the human-readable hours string for today (e.g. "17h – 22h" or "Fermé").
+// Returns the human-readable hours string for today (e.g. "11h30 – 21h" or "Fermé aujourd'hui").
 function useTodaysHours() {
   const schedule = useScheduleData();
   const today = schedule[new Date().getDay()];
-  return today ? `${today.open}h – ${today.close}h` : "Fermé aujourd'hui";
+  return today ? `${formatHour(today.open)} – ${formatHour(today.close)}` : "Fermé aujourd'hui";
 }
 
 type EventPrefill = { id: string; title: string; date: string; display: string };
@@ -1966,7 +1973,7 @@ export function Footer() {
           <div>
             <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85 mb-4">Contact</div>
             <a href="tel:+14507431448" className="block font-display text-cream text-2xl hover:text-orange transition-colors">450 743-1448</a>
-            <div className="font-sans text-sm text-cream-soft/85 mt-2">{daysLabel.short} · dès {openHour}h</div>
+            <div className="font-sans text-sm text-cream-soft/85 mt-2">{daysLabel.short} · dès {openHour}</div>
           </div>
           <nav aria-label="Navigation rapide">
             <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85 mb-4">Visiter</div>

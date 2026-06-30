@@ -716,9 +716,9 @@ components:
         closed:
           type: boolean
         openHour:
-          type: ["integer", "null"]
+          type: ["number", "null"]
         closeHour:
-          type: ["integer", "null"]
+          type: ["number", "null"]
     HoursUpdate:
       type: object
       required: [closed]
@@ -726,9 +726,9 @@ components:
         closed:
           type: boolean
         openHour:
-          type: ["integer", "null"]
+          type: ["number", "null"]
         closeHour:
-          type: ["integer", "null"]
+          type: ["number", "null"]
 
     SitePhoto:
       type: object
