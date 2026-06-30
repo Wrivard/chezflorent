@@ -566,8 +566,8 @@ function Hero() {
             <motion.div variants={fadeVariants} className="hidden md:flex flex-col gap-2 text-[0.65rem] font-medium tracking-[0.3em] uppercase text-cream-soft text-right">
               <span>N° 01</span>
               <span>—</span>
-              <span>ARDOISE</span>
-              <span>DU SOIR</span>
+              <span>CUISINE</span>
+              <span>DU MARCHÉ</span>
             </motion.div>
           </div>
 
