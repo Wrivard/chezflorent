@@ -240,6 +240,7 @@ const SCHEDULE: Record<number, { open: number; close: number } | null> = {
   6: { open: 17, close: 23 }, // Saturday
 };
 const DAY_NAMES_FR = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+const DAY_SHORT_FR = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
 
 function useOpenStatus(): { open: boolean; label: string } {
   const [now, setNow] = useState<Date>(() => new Date());
@@ -1323,6 +1324,33 @@ export function useHoursItems(): string[] {
   });
 }
 
+// Returns the open-days range derived from the CMS schedule.
+// e.g. { short: "Mar–Dim", long: "mardi au dimanche" }
+export function useOpenDaysLabel(): { short: string; long: string } {
+  const schedule = useScheduleData();
+  const order = [2, 3, 4, 5, 6, 0, 1]; // Tue → Sun → Mon
+  const openDays = order.filter((d) => schedule[d] != null);
+  if (openDays.length === 0) return { short: "Sur réservation", long: "sur réservation" };
+  const first = openDays[0];
+  const last = openDays[openDays.length - 1];
+  if (first === last) {
+    return { short: DAY_SHORT_FR[first]!, long: DAY_NAMES_FR[first]! };
+  }
+  return {
+    short: `${DAY_SHORT_FR[first]}–${DAY_SHORT_FR[last]}`,
+    long: `${DAY_NAMES_FR[first]} au ${DAY_NAMES_FR[last]}`,
+  };
+}
+
+// Returns the earliest opening hour across all open days (e.g. 17).
+export function useEarliestOpenHour(): number | null {
+  const schedule = useScheduleData();
+  const hours = Object.values(schedule)
+    .filter((s): s is { open: number; close: number } => s != null)
+    .map((s) => s.open);
+  return hours.length > 0 ? Math.min(...hours) : null;
+}
+
 type PhotoMap = Record<string, { url: string; alt: string }>;
 const PHOTO_FALLBACK: PhotoMap = {
   hero: { url: "/images/interior-bar.jpg", alt: "Salle à manger de Chez Florent" },
@@ -1510,6 +1538,7 @@ function Reservation() {
   const [prefill, setPrefill] = useState<EventPrefill | null>(null);
   const liveStatus = useOpenStatus();
   const todaysHours = useTodaysHours();
+  const daysLabel = useOpenDaysLabel();
 
   // Read event prefill from sessionStorage on mount + when Agenda fires custom event.
   // With the TableAgent widget we can't auto-fill its fields, so we surface the event
@@ -1725,6 +1754,7 @@ function Reservation() {
 
 function Contact() {
   const photos = usePhotos();
+  const daysLabel = useOpenDaysLabel();
   return (
     <section id="contact" className="bg-cream-soft py-32 px-6 md:px-12 relative overflow-hidden">
       <SectionMarker number="06" tone="light" />
@@ -1743,7 +1773,7 @@ function Contact() {
             Passez nous voir
           </h2>
           <p className="font-sans italic text-bg-primary/70 max-w-xl text-base md:text-lg">
-            À deux pas du marché — la porte est ouverte du mardi au dimanche.
+            À deux pas du marché — la porte est ouverte du {daysLabel.long}.
           </p>
         </motion.div>
 
@@ -1917,6 +1947,8 @@ export function Footer() {
   const [legal, setLegal] = useState<LegalKey | null>(null);
   const year = new Date().getFullYear();
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  const daysLabel = useOpenDaysLabel();
+  const openHour = useEarliestOpenHour();
 
   return (
     <footer className="bg-bg-primary pt-20 relative z-10 overflow-hidden flex flex-col">
@@ -1934,7 +1966,7 @@ export function Footer() {
           <div>
             <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85 mb-4">Contact</div>
             <a href="tel:+14507431448" className="block font-display text-cream text-2xl hover:text-orange transition-colors">450 743-1448</a>
-            <div className="font-sans text-sm text-cream-soft/85 mt-2">Mar–Dim · dès 17h</div>
+            <div className="font-sans text-sm text-cream-soft/85 mt-2">{daysLabel.short} · dès {openHour}h</div>
           </div>
           <nav aria-label="Navigation rapide">
             <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85 mb-4">Visiter</div>

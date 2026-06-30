@@ -7,6 +7,8 @@ import {
   SectionMarker,
   usePhotos,
   useHoursItems,
+  useOpenDaysLabel,
+  useEarliestOpenHour,
   imgSrc,
   EASE,
 } from "./App";
@@ -21,6 +23,8 @@ const MAPS_LINK =
 export default function ContactPage() {
   const photos = usePhotos();
   const hoursItems = useHoursItems();
+  const daysLabel = useOpenDaysLabel();
+  const openHour = useEarliestOpenHour();
 
   return (
     <div className="min-h-[100dvh] w-full bg-bg-primary text-cream selection:bg-orange selection:text-bg-primary relative">
@@ -72,7 +76,7 @@ export default function ContactPage() {
                 </h1>
                 <p className="font-sans italic text-cream-soft/75 max-w-2xl text-lg mt-6">
                   À deux pas du marché, au cœur de Sorel-Tracy. La porte est
-                  ouverte du mardi au dimanche — appelez-nous pour réserver votre
+                  ouverte du {daysLabel.long} — appelez-nous pour réserver votre
                   table.
                 </p>
               </motion.div>
@@ -131,7 +135,7 @@ export default function ContactPage() {
                     </a>
                     <p className="font-sans italic text-bg-primary/65 mt-3 text-sm max-w-md">
                       Réservations et soirées par téléphone uniquement — on répond
-                      avec plaisir dès 17h.
+                      avec plaisir dès {openHour}h.
                     </p>
                   </div>
 
