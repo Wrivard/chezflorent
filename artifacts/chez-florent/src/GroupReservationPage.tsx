@@ -701,7 +701,7 @@ export default function GroupReservationPage() {
           ============================================================ */}
           <section className="relative bg-bg-primary px-6 md:px-12 py-32 md:py-44 overflow-hidden">
             <img
-              src={imgSrc("exterior-dusk.png")}
+              src={imgSrc("hero-interior.png")}
               alt=""
               aria-hidden="true"
               className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
