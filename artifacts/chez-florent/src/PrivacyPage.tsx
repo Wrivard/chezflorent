@@ -117,7 +117,7 @@ export default function PrivacyPage() {
       <FilmGrain />
 
       <div className="overflow-x-hidden">
-        <Navbar activeSection="" />
+        <Navbar activeSection="" onOtherPage />
 
         <main>
           {/* Hero / header */}

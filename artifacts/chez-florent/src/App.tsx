@@ -290,6 +290,7 @@ export function Navbar({
   onAboutPage = false,
   onContactPage = false,
   onGroupsPage = false,
+  onOtherPage = false,
 }: {
   activeSection: string;
   onEventsPage?: boolean;
@@ -297,6 +298,7 @@ export function Navbar({
   onAboutPage?: boolean;
   onContactPage?: boolean;
   onGroupsPage?: boolean;
+  onOtherPage?: boolean;
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -304,7 +306,7 @@ export function Navbar({
   const bistroRef = useRef<HTMLDivElement>(null);
   const status = useOpenStatus();
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-  const onSubPage = onEventsPage || onMenuPage || onAboutPage || onContactPage || onGroupsPage;
+  const onSubPage = onEventsPage || onMenuPage || onAboutPage || onContactPage || onGroupsPage || onOtherPage;
   const bistroActive = onAboutPage || onEventsPage || onGroupsPage;
   const sectionHref = (id: string) =>
     onSubPage ? `${base}/#${id}` : `#${id}`;

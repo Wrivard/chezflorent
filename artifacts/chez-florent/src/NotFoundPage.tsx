@@ -18,7 +18,7 @@ export default function NotFoundPage() {
       <FilmGrain />
 
       <div className="overflow-x-hidden">
-        <Navbar activeSection="" />
+        <Navbar activeSection="" onOtherPage />
 
         <main>
           <section className="relative bg-bg-primary pt-40 md:pt-52 pb-28 md:pb-36 px-6 md:px-12 overflow-hidden min-h-[80vh] flex items-center">
