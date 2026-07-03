@@ -2506,48 +2506,74 @@ const GALLERY: GalleryPhoto[] = [
 
 function Gallery() {
   return (
-    <section id="galerie" className="bg-bg-primary pt-4 pb-32 px-6 md:px-12 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto relative z-10">
+    <section
+      id="galerie"
+      className="bg-bg-primary pt-4 pb-32 relative overflow-hidden"
+    >
+      {/* Centred header */}
+      <div className="px-6 md:px-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: EASE }}
-          className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6"
+          className="max-w-3xl mx-auto text-center mb-12 md:mb-16 relative z-10"
         >
-          <div className="max-w-2xl">
-            <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
-              <span aria-hidden="true">◦ </span>En images
-            </div>
-            <h2 className="font-serif italic font-light text-cream leading-[1.1] pb-[0.14em] text-[clamp(1.75rem,7vw,6rem)]">
-              Un soir chez Florent.
-            </h2>
+          <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
+            <span aria-hidden="true">◦ </span>En images
           </div>
-          <p className="font-sans italic text-cream-soft/70 max-w-sm text-base md:text-lg">
-            La salle, le bar, les jeux et les verres partagés — quelques fragments de nos soirées.
+          <h2 className="font-serif italic font-light text-cream leading-[1.1] pb-[0.14em] text-[clamp(1.75rem,7vw,6rem)]">
+            Un soir chez Florent.
+          </h2>
+          <p className="font-sans italic text-cream-soft/70 max-w-xl mx-auto text-base md:text-lg mt-6">
+            La salle, le bar, les jeux et les verres partagés — quelques
+            fragments de nos soirées.
           </p>
         </motion.div>
-
-        <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
-          {GALLERY.map((p, i) => (
-            <motion.div
-              key={p.src}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, ease: EASE, delay: (i % 4) * 0.08 }}
-              className="mb-4 break-inside-avoid overflow-hidden ring-1 ring-cream/10 group"
-            >
-              <img
-                src={p.src}
-                alt={p.alt}
-                loading="lazy"
-                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-            </motion.div>
-          ))}
-        </div>
       </div>
+
+      {/* Full-bleed auto-scrolling slider */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.8, ease: EASE }}
+        className="relative w-full"
+      >
+        {/* Edge fades */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 md:w-32 bg-gradient-to-r from-bg-primary to-transparent"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 md:w-32 bg-gradient-to-l from-bg-primary to-transparent"
+        />
+
+        <div
+          role="group"
+          aria-label="Galerie d'ambiance Chez Florent"
+          className="flex w-max gap-3 md:gap-4 animate-marquee hover:[animation-play-state:paused]"
+        >
+          {[...GALLERY, ...GALLERY].map((p, i) => {
+            const isClone = i >= GALLERY.length;
+            return (
+              <div
+                key={`${p.src}-${i}`}
+                aria-hidden={isClone ? "true" : undefined}
+                className="group relative w-[220px] md:w-[300px] aspect-[3/4] shrink-0 overflow-hidden rounded-sm ring-1 ring-cream/10"
+              >
+                <img
+                  src={p.src}
+                  alt={isClone ? "" : p.alt}
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </div>
+            );
+          })}
+        </div>
+      </motion.div>
     </section>
   );
 }
