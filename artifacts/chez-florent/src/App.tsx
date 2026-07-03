@@ -1884,33 +1884,33 @@ function TodayEventPopup() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 40, scale: 0.96 }}
           transition={{ duration: 0.5, ease: EASE }}
-          className="fixed bottom-5 left-5 right-5 sm:right-auto z-[90] w-auto sm:w-[min(92vw,380px)] bg-bg-primary text-cream ring-1 ring-cream/15 shadow-2xl p-6"
+          className="fixed bottom-4 left-4 sm:bottom-5 sm:left-5 z-[90] w-[min(76vw,290px)] sm:w-[min(92vw,380px)] bg-bg-primary text-cream ring-1 ring-cream/15 shadow-2xl p-4 sm:p-6"
         >
           <button
             type="button"
             onClick={dismiss}
             aria-label="Fermer"
-            className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center text-cream-soft/70 hover:text-cream text-xl leading-none transition-colors"
+            className="absolute top-2 right-2 sm:top-3 sm:right-3 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-cream-soft/70 hover:text-cream text-lg sm:text-xl leading-none transition-colors"
           >
             ×
           </button>
-          <div className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-orange mb-3">
+          <div className="text-[0.6rem] sm:text-[0.7rem] font-medium tracking-[0.2em] sm:tracking-[0.22em] uppercase text-orange mb-2 sm:mb-3">
             <span aria-hidden="true">✶ </span>Ce soir · encore des places
           </div>
-          <h3 className="font-serif font-semibold text-cream text-[1.35rem] leading-tight mb-2 pr-6">
+          <h3 className="font-serif font-semibold text-cream text-[1.05rem] sm:text-[1.35rem] leading-tight mb-1.5 sm:mb-2 pr-6">
             {event.title}
           </h3>
-          <p className="font-sans font-light text-cream-soft/85 text-[0.9rem] leading-[1.65] mb-5">
+          <p className="font-sans font-light text-cream-soft/85 text-[0.78rem] sm:text-[0.9rem] leading-[1.55] sm:leading-[1.65] mb-4 sm:mb-5 line-clamp-3 sm:line-clamp-none">
             {event.desc}
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
             <a
               href="tel:+14507431448"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-orange text-bg-primary text-[0.72rem] font-medium tracking-[0.18em] uppercase rounded-[2px] hover:brightness-105 transition"
+              className="inline-flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 bg-orange text-bg-primary text-[0.65rem] sm:text-[0.72rem] font-medium tracking-[0.16em] sm:tracking-[0.18em] uppercase rounded-[2px] hover:brightness-105 transition"
             >
               Réserver par tél.
             </a>
-            <span className="text-[0.7rem] font-medium tracking-[0.18em] uppercase text-cream-soft/70">
+            <span className="text-[0.62rem] sm:text-[0.7rem] font-medium tracking-[0.16em] sm:tracking-[0.18em] uppercase text-cream-soft/70">
               {event.tag}
             </span>
           </div>
