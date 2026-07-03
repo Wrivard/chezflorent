@@ -68,7 +68,7 @@ async function seedEvents(): Promise<void> {
   if (existing.length > 0) return;
   const rows = [
     {
-      isoDate: "2026-04-30",
+      isoDate: "2026-07-16",
       title: "Soirée Cocktails du Sapinage",
       description:
         "Cinq cocktails signature au sapin baumier, à découvrir au 5 à 7. Bouchées chaudes incluses.",
@@ -76,7 +76,7 @@ async function seedEvents(): Promise<void> {
       soldOut: false,
     },
     {
-      isoDate: "2026-05-09",
+      isoDate: "2026-07-25",
       title: "Trio Jazz Manouche",
       description:
         "Trois instrumentistes du Sud-Ouest, en visite pour une soirée. Entrée libre, bon vin recommandé.",
@@ -84,15 +84,7 @@ async function seedEvents(): Promise<void> {
       soldOut: false,
     },
     {
-      isoDate: "2026-05-17",
-      title: "Brunch — Fête des mères",
-      description:
-        "Menu 4 services, mimosas maison, places limitées. Réservation fortement suggérée.",
-      tag: "Menu spécial · 38 $",
-      soldOut: true,
-    },
-    {
-      isoDate: "2026-05-23",
+      isoDate: "2026-08-08",
       title: "Huîtres & bulles",
       description:
         "Trois variétés de la Côte-Nord, accord avec champagnes et pétillants québécois.",
@@ -100,7 +92,15 @@ async function seedEvents(): Promise<void> {
       soldOut: false,
     },
     {
-      isoDate: "2026-06-06",
+      isoDate: "2026-08-15",
+      title: "Brunch gourmand — 4 services",
+      description:
+        "Menu 4 services, mimosas maison, places limitées. Réservation fortement suggérée.",
+      tag: "Menu spécial · 38 $",
+      soldOut: true,
+    },
+    {
+      isoDate: "2026-08-22",
       title: "Open Mic — Poésie & guitare",
       description:
         "Soirée micro ouvert, ambiance feutrée. Inscrivez-vous sur place.",
@@ -108,8 +108,8 @@ async function seedEvents(): Promise<void> {
       soldOut: false,
     },
     {
-      isoDate: "2026-06-21",
-      title: "Fête de la musique",
+      isoDate: "2026-09-05",
+      title: "Buffet & DJ — Fin d'été",
       description:
         "Buffet québécois, DJ jusqu'à 1h. La devanture devient une terrasse-piste.",
       tag: "Toute la soirée",

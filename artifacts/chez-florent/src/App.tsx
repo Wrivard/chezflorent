@@ -1158,12 +1158,12 @@ export type AgendaEvent = {
 };
 
 const agendaEvents: AgendaEvent[] = [
-  { id: "sapinage",   date: { day: "30", month: "AVR" },  isoDate: "2026-04-30", title: "Soirée Cocktails du Sapinage", desc: "Cinq cocktails signature au sapin baumier, à découvrir au 5 à 7. Bouchées chaudes incluses.", tag: "5 à 7 · 17h–19h" },
-  { id: "jazz",       date: { day: "09", month: "MAI" },  isoDate: "2026-05-09", title: "Trio Jazz Manouche", desc: "Trois instrumentistes du Sud-Ouest, en visite pour une soirée. Entrée libre, bon vin recommandé.", tag: "Live · 20h" },
-  { id: "fete-meres", date: { day: "17", month: "MAI" },  isoDate: "2026-05-17", title: "Brunch — Fête des mères", desc: "Menu 4 services, mimosas maison, places limitées. Réservation fortement suggérée.", tag: "Menu spécial · 38 $", soldOut: true },
-  { id: "huitres",    date: { day: "23", month: "MAI" },  isoDate: "2026-05-23", title: "Huîtres & bulles", desc: "Trois variétés de la Côte-Nord, accord avec champagnes et pétillants québécois.", tag: "Soirée · 19h" },
-  { id: "open-mic",   date: { day: "06", month: "JUIN" }, isoDate: "2026-06-06", title: "Open Mic — Poésie & guitare", desc: "Soirée micro ouvert, ambiance feutrée. Inscrivez-vous sur place.", tag: "Acoustique · 20h" },
-  { id: "fete-musique", date: { day: "21", month: "JUIN" }, isoDate: "2026-06-21", title: "Fête de la musique", desc: "Buffet québécois, DJ jusqu'à 1h. La devanture devient une terrasse-piste.", tag: "Toute la soirée" },
+  { id: "sapinage",   date: { day: "16", month: "JUIL" }, isoDate: "2026-07-16", title: "Soirée Cocktails du Sapinage", desc: "Cinq cocktails signature au sapin baumier, à découvrir au 5 à 7. Bouchées chaudes incluses.", tag: "5 à 7 · 17h–19h" },
+  { id: "jazz",       date: { day: "25", month: "JUIL" }, isoDate: "2026-07-25", title: "Trio Jazz Manouche", desc: "Trois instrumentistes du Sud-Ouest, en visite pour une soirée. Entrée libre, bon vin recommandé.", tag: "Live · 20h" },
+  { id: "huitres",    date: { day: "08", month: "AOÛT" }, isoDate: "2026-08-08", title: "Huîtres & bulles", desc: "Trois variétés de la Côte-Nord, accord avec champagnes et pétillants québécois.", tag: "Soirée · 19h" },
+  { id: "brunch",     date: { day: "15", month: "AOÛT" }, isoDate: "2026-08-15", title: "Brunch gourmand — 4 services", desc: "Menu 4 services, mimosas maison, places limitées. Réservation fortement suggérée.", tag: "Menu spécial · 38 $", soldOut: true },
+  { id: "open-mic",   date: { day: "22", month: "AOÛT" }, isoDate: "2026-08-22", title: "Open Mic — Poésie & guitare", desc: "Soirée micro ouvert, ambiance feutrée. Inscrivez-vous sur place.", tag: "Acoustique · 20h" },
+  { id: "fin-ete",    date: { day: "05", month: "SEPT" }, isoDate: "2026-09-05", title: "Buffet & DJ — Fin d'été", desc: "Buffet québécois, DJ jusqu'à 1h. La devanture devient une terrasse-piste.", tag: "Toute la soirée" },
 ];
 
 // -----------------------------------------------------------------------------
@@ -1204,20 +1204,29 @@ export function useMenuCategoriesData(): MenuCategory[] {
 
 export function useAgendaEventsData(): AgendaEvent[] {
   const { data } = useListEvents();
-  if (!data || data.length === 0) return agendaEvents;
-  return data.map((e) => {
-    const parts = e.isoDate.split("-");
-    const monthIdx = (Number(parts[1]) || 1) - 1;
-    return {
-      id: String(e.id),
-      date: { day: parts[2] ?? "", month: MONTHS_FR[monthIdx] ?? "" },
-      isoDate: e.isoDate,
-      title: e.title,
-      desc: e.description,
-      tag: e.tag,
-      soldOut: e.soldOut,
-    };
-  });
+  const base: AgendaEvent[] =
+    !data || data.length === 0
+      ? agendaEvents
+      : data.map((e) => {
+          const parts = e.isoDate.split("-");
+          const monthIdx = (Number(parts[1]) || 1) - 1;
+          return {
+            id: String(e.id),
+            date: { day: parts[2] ?? "", month: MONTHS_FR[monthIdx] ?? "" },
+            isoDate: e.isoDate,
+            title: e.title,
+            desc: e.description,
+            tag: e.tag,
+            soldOut: e.soldOut,
+          };
+        });
+
+  // Only show upcoming events (today included), soonest first.
+  const now = new Date();
+  const todayIso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  return base
+    .filter((e) => e.isoDate >= todayIso)
+    .sort((a, b) => a.isoDate.localeCompare(b.isoDate));
 }
 
 type ScheduleMap = Record<number, { open: number; close: number } | null>;
