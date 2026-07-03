@@ -21,12 +21,23 @@ const LOCATION_ID = 48727;
 const THEME_ID = 174441;
 const THEME_URL = `https://business.untappd.com/locations/${LOCATION_ID}/themes/${THEME_ID}/js`;
 
-// Food categories owned by the site (seed.ts), NOT by Untappd. They are never
-// touched by this importer. Every OTHER category is considered an imported
-// drink category and is replaced on each run — this keeps the import idempotent
-// even when Untappd renames sections (no orphans) and guarantees food survives
-// even if an Untappd section happened to slugify to one of these names.
-const PROTECTED_SLUGS = ["partager", "plats"];
+// Fixed printed-menu categories owned by the site (seed.ts / menuSeed.ts), NOT
+// by Untappd. They are never touched by this importer. Every OTHER category is
+// considered an imported Untappd drink and is replaced on each run — this keeps
+// the import idempotent even when Untappd renames sections (no orphans) and
+// guarantees the fixed menu survives even if an Untappd section happened to
+// slugify to one of these names. Keep this in sync with MENU_SLUGS in the
+// frontend (App.tsx) — those are the categories shown as the fixed menu tabs.
+const PROTECTED_SLUGS = [
+  "encas",
+  "salades",
+  "pizzas",
+  "hoagies",
+  "desserts",
+  "cafes-thes",
+  "alcools",
+  "extras",
+];
 
 // Sanity floors: the live menu is ~18 categories / ~168 items. If a markup
 // change breaks the parser we must abort BEFORE deleting anything, rather than

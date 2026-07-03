@@ -767,10 +767,23 @@ function About() {
 export type Dish = { name: string; price: string; desc: string; image: string };
 export type MenuCategory = { id: string; label: string; tagline: string; dishes: Dish[] };
 
-// Categories shown on the homepage tabs and in the Menu page's "La cuisine"
-// board (with photos). The remaining categories (desserts, cafés/thés, alcools,
-// extras) render in a photo-less board on the Menu page.
+// Categories shown on the homepage menu tabs (with photos). The Menu page shows
+// a broader set — see MENU_SLUGS.
 export const FOOD_SLUGS = ["encas", "salades", "pizzas", "hoagies"];
+
+// All fixed printed-menu categories (kitchen + desserts/cafés/alcools/extras).
+// They render as ONE unified tab bar on the Menu page. Any category NOT in this
+// list is an imported Untappd drink and renders in the separate "Le bar" board.
+export const MENU_SLUGS = [
+  "encas",
+  "salades",
+  "pizzas",
+  "hoagies",
+  "desserts",
+  "cafes-thes",
+  "alcools",
+  "extras",
+];
 
 // URL of the rotating "ardoise" (daily specials) PDF. Shown as a button on the
 // homepage menu section and the Menu page — distinct from the fixed menu.

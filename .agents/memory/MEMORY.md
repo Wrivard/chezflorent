@@ -2,4 +2,4 @@
 - [Testing setup (Vitest + Supertest)](testing-setup.md) — api-server integration tests hit the real Express app + real DB; devDeps go in the sub-package, tests in `test/`, silence pino, clean up + `pool.end()`.
 - [Seed scripts](seed-scripts.md) — seed.ts self-runs main()+process.exit on import; reuse seed data only via side-effect-free menuSeed.ts; keep App.tsx menu fallback in sync.
 - [Singleton-document CMS pages](singleton-cms-document.md) — bespoke one-off pages use one jsonb row + public GET/auth PUT; public page must mirror server DEFAULT_* by hand or it drifts.
-- [Untappd menu import](untappd-import.md) — OBSOLETE/DANGEROUS after fixed-menu migration: do NOT run `import:untappd`, its stale PROTECTED_SLUGS would wipe the real menu; still documents the FOOD_SLUGS UI split + per-board Framer layoutIds.
+- [Untappd menu import](untappd-import.md) — live beer/drinks pull coexists with the fixed printed menu; importer PROTECTED_SLUGS MUST mirror frontend MENU_SLUGS or a run wipes the real menu; MenuPage = unified "La cuisine" (MENU_SLUGS) + separate "Le bar" (imported); per-board Framer layoutIds.

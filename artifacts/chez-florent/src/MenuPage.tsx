@@ -10,7 +10,7 @@ import {
   imgSrc,
   EASE,
   EASE_SMOOTH,
-  FOOD_SLUGS,
+  MENU_SLUGS,
   ARDOISE_PDF_URL,
   type MenuCategory,
 } from "./App";
@@ -298,8 +298,8 @@ function MenuBoard({
 // -----------------------------------------------------------------------------
 export default function MenuPage() {
   const allCategories = useMenuCategoriesData();
-  const food = allCategories.filter((c) => FOOD_SLUGS.includes(c.id));
-  const drinks = allCategories.filter((c) => !FOOD_SLUGS.includes(c.id));
+  const menu = allCategories.filter((c) => MENU_SLUGS.includes(c.id));
+  const bar = allCategories.filter((c) => !MENU_SLUGS.includes(c.id));
 
   return (
     <div className="min-h-[100dvh] w-full bg-bg-primary text-cream selection:bg-orange selection:text-bg-primary relative">
@@ -370,26 +370,26 @@ export default function MenuPage() {
           {/* Suppliers marquee */}
           <SuppliersMarquee />
 
-          {/* Menu board — food + drinks as two separate sections */}
+          {/* Menu board — one unified fixed menu + a separate Untappd bar */}
           <section className="bg-bg-primary pt-16 md:pt-20 pb-28 md:pb-32 px-6 md:px-12 relative">
             <div className="max-w-7xl mx-auto relative z-10 flex flex-col gap-24 md:gap-32">
-              {food.length > 0 && (
+              {menu.length > 0 && (
                 <div>
                   <BoardHeading
-                    kicker="Encas, salades, pizzas & hoagies"
+                    kicker="Encas, salades, pizzas, hoagies, desserts, cafés & alcools"
                     title="La cuisine"
                   />
-                  <MenuBoard categories={food} boardId="food" />
+                  <MenuBoard categories={menu} boardId="menu" />
                 </div>
               )}
 
-              {drinks.length > 0 && (
+              {bar.length > 0 && (
                 <div>
                   <BoardHeading
-                    kicker="Desserts, cafés, alcools & extras"
-                    title="Pour finir"
+                    kicker="Bières & boissons — rafraîchi depuis Untappd"
+                    title="Le bar"
                   />
-                  <MenuBoard categories={drinks} showPhoto={false} boardId="bar" />
+                  <MenuBoard categories={bar} showPhoto={false} boardId="bar" />
                 </div>
               )}
             </div>
