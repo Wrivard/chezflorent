@@ -309,7 +309,7 @@ export function Navbar({
   const status = useOpenStatus();
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   const onSubPage = onEventsPage || onMenuPage || onAboutPage || onContactPage || onGroupsPage || onOtherPage;
-  const bistroActive = onAboutPage || onEventsPage || onGroupsPage;
+  const bistroActive = onAboutPage || onContactPage || onGroupsPage;
   const sectionHref = (id: string) =>
     onSubPage ? `${base}/#${id}` : `#${id}`;
   const homeHref = onSubPage ? `${base}/` : "#accueil";
@@ -428,7 +428,7 @@ export function Navbar({
                     >
                       <div className="flex flex-col bg-bg-primary/95 backdrop-blur-md border border-border rounded-[2px] overflow-hidden shadow-2xl">
                         <a href={aboutHref} className={`px-5 py-3.5 hover:bg-cream/5 hover:text-cream transition-colors border-b border-border/60 ${onAboutPage ? "text-cream bg-cream/5" : ""}`}>À propos</a>
-                        <a href={eventsHref} className={`px-5 py-3.5 hover:bg-cream/5 hover:text-cream transition-colors border-b border-border/60 ${onEventsPage ? "text-cream bg-cream/5" : ""}`}>Agenda</a>
+                        <a href={contactHref} className={`px-5 py-3.5 hover:bg-cream/5 hover:text-cream transition-colors border-b border-border/60 ${onContactPage ? "text-cream bg-cream/5" : ""}`}>Contact</a>
                         <a href={groupsHref} className={`px-5 py-3.5 hover:bg-cream/5 hover:text-cream transition-colors ${onGroupsPage ? "text-cream bg-cream/5" : ""}`}>Groupes</a>
                       </div>
                     </motion.div>
@@ -436,7 +436,7 @@ export function Navbar({
                 </AnimatePresence>
               </div>
 
-              <a href={contactHref} className={`link-underline hover:text-cream transition-colors ${onContactPage ? "active text-cream" : ""}`}>Contact</a>
+              <a href={eventsHref} className={`link-underline hover:text-cream transition-colors ${onEventsPage ? "active text-cream" : ""}`}>Agenda</a>
               <a
                 href={sectionHref("reservation")}
                 className="px-5 py-2 border border-orange text-orange hover:bg-orange hover:text-bg-primary transition-all duration-300 rounded-[2px]"
@@ -503,7 +503,6 @@ export function SectionMarker({ number, tone = "dark" }: { number: string; tone?
 
 function Hero() {
   const prefersReducedMotion = useReducedMotion();
-  const status = useOpenStatus();
   const photos = usePhotos();
 
   const containerVariants = {
@@ -609,13 +608,6 @@ function Hero() {
               <p className="font-sans text-[0.95rem] leading-[1.6] text-cream/80 mb-4">
                 Bistro du quartier, 75 places assises, 7 jours sur 7.
               </p>
-              <div className="hidden md:inline-flex items-center gap-2 text-[0.7rem] font-medium tracking-[0.2em] uppercase text-cream-soft">
-                <span className="relative inline-flex w-1.5 h-1.5" aria-hidden="true">
-                  {status.open && <span className="absolute inset-0 rounded-full bg-orange opacity-60 animate-ping"></span>}
-                  <span className={`relative inline-block w-1.5 h-1.5 rounded-full ${status.open ? 'bg-orange' : 'bg-cream-soft/60'}`}></span>
-                </span>
-                {status.label} <span className="text-cream-soft/70">— en ce moment</span>
-              </div>
             </motion.div>
 
             <motion.div variants={fadeVariants} className="flex flex-col sm:flex-row gap-3 order-1 md:order-2 shrink-0">
@@ -740,13 +732,13 @@ function About() {
             className="m-0"
           >
             <blockquote className="font-serif font-normal text-bg-primary text-[1.125rem] leading-[1.8]">
-              « Florent n'est pas seulement un nom au-dessus de la porte. C'est une certaine idée du bistro : celle où l'on s'attable sans cérémonie, où le vin se verse au pichet, et où la cuisine ne triche jamais avec ses produits. »
+              « Super belle ambiance, le personnel très accueillant, très beaux choix de vin, spiritueux et bières québécoises. Les propriétaires sont présents et très sympathiques. »
             </blockquote>
             <figcaption className="mt-4 font-sans text-[0.75rem] tracking-[0.2em] uppercase text-bg-primary/65 flex items-center gap-3">
               <span aria-hidden="true" className="inline-block w-8 h-px bg-orange/70" />
-              Florent Tremblay
+              Charles Frenette
               <span aria-hidden="true" className="text-orange/70">·</span>
-              <span className="font-serif normal-case italic tracking-normal text-bg-primary/70">Propriétaire</span>
+              <span className="font-serif normal-case italic tracking-normal text-bg-primary/70">Avis Google</span>
             </figcaption>
           </motion.figure>
           <motion.figure
@@ -757,13 +749,13 @@ function About() {
             className="m-0"
           >
             <blockquote className="font-sans font-light text-bg-primary/80 text-[1rem] leading-[1.8]">
-              « On travaille avec des fermiers qu'on appelle par leur prénom — la Ferme J.N Beauchemin pour les saucisses, Fromagerie Fuoco pour la bufarella, Les Cowboys du BBQ pour le brisket. Le reste, c'est de l'huile de coude et du temps. »
+              « Un très bel endroit où l'on sent, dès l'entrée, un accueil chaleureux. Une belle diversité de bières qu'on dirait fraîchement brassées du matin, un petit verre de vin québécois servi avec le sourire, et voilà. Un fabuleux petit joyau sorelois. »
             </blockquote>
             <figcaption className="mt-4 font-sans text-[0.75rem] tracking-[0.2em] uppercase text-bg-primary/65 flex items-center gap-3">
               <span aria-hidden="true" className="inline-block w-8 h-px bg-orange/70" />
-              Annie Vincent
+              Paul Larochelle
               <span aria-hidden="true" className="text-orange/70">·</span>
-              <span className="font-serif normal-case italic tracking-normal text-bg-primary/70">Sommelière</span>
+              <span className="font-serif normal-case italic tracking-normal text-bg-primary/70">Avis Google</span>
             </figcaption>
           </motion.figure>
         </div>
@@ -786,9 +778,11 @@ const menuCategories: MenuCategory[] = [
     label: "À partager",
     tagline: "Pour ouvrir la soirée — un verre, une planche, le temps qui ralentit.",
     dishes: [
-      { name: "Trempette de poireaux rôtis", price: "16,95 $", desc: "Bacon fumé, servi avec pain plat gratiné.", image: "naan-dip.jpg" },
-      { name: "Bufarella potato", price: "17,95 $", desc: "Boule de fromage bufarella (Fromagerie Fuoco) accompagnée de hummus de patate douce, coulis de bleuets à l'érable, huile épicée, menthe et crumble au parmesan. Servi avec pain naan grillé.", image: "bufarella-mint.jpg" },
-      { name: "Assiette de charcuterie", price: "35,95 $", desc: "Calabrese, prosciutto, saucissons secs, olives méli-mélo, fromages du moment, pickle d'oignons rouges, petits cornichons. Servi avec pain et croutons.", image: "sandwich-mac.jpg" },
+      { name: "Trempette de poireaux bacon", price: "16,95 $", desc: "Servi avec pain plat gratiné.", image: "naan-dip.jpg" },
+      { name: "Focaccia", price: "19,95 $", desc: "Focaccia maison, miel, huile épicée, huile d'olive (Esporao), mélange de fromages ricotta et chèvre, prosciutto, tomates, glaze balsamique, poivre moulu, basilic frais.", image: "bread-tearing.png" },
+      { name: "Bufarella ananananas", price: "17,95 $", desc: "Boule de fromage bufarella (Fromagerie Fuoco) accompagnée d'une compote d'ananas, mayonnaise chili épicée maison, crumble d'amandes, de sucre et de coconut, zeste de lime. Servi avec pains naan grillés.", image: "bufarella-mint.jpg" },
+      { name: "« Messieurs patates »", price: "9,95 $", desc: "Bouchées de pommes de terre frits, parmesan, huile de truffe, beurre à l'ail confit maison, poivre moulu, sirop d'érable. Servi avec sauce marinara.", image: "dish-tasting.png" },
+      { name: "Assiette de charcuterie", price: "35,95 $", desc: "Calabrese, prosciutto, saucissons secs, olives méli-mélo, fromages du moment, pickle d'oignons rouges, petits cornichons. Servi avec pain et croutons.", image: "dish-charcuterie.png" },
     ],
   },
   {
@@ -797,11 +791,9 @@ const menuCategories: MenuCategory[] = [
     tagline: "Le coeur de l'ardoise — sandwichs travaillés, plats roboratifs, à manger sans manières.",
     dishes: [
       { name: "Grilled cheese sur baguette", price: "5,95 $ / 11,95 $", desc: "Provolone, mozzarella, fromage jaune, beurre à l'ail.", image: "tower-sandwich.jpg" },
-      { name: "Feuilleté jambon gruyère", price: "9,95 $ / 19,95 $", desc: "Pâte feuilletée, jambon, fromage gruyère, sauce blanche crémeuse avec pomme de terre, poireaux.", image: "feuillete-ham.jpg" },
-      { name: "Miche de porc", price: "23,95 $", desc: "Miche de pain artisanale, porc effiloché maison, fromage à la crème épicé aux cornichons, laitue iceberg, moutarde au miel. Servi avec salade de carottes crémeuse.", image: "miche-porc.jpg" },
-      { name: "« Le Rhé-Actif »", price: "24,95 $", desc: "Pain ciabata, provolone, mortadelle, calabrese, capicollo, salade, tomates, oignons rouges, mayonnaise thaï. Servi avec salade de patates maison.", image: "sandwich-mac.jpg" },
-      { name: "Pizza « Vodka » 🌶🌶🌶", price: "25,95 $", desc: "Sauce rosée à la vodka, saucisses épicées (Ferme J.N Beauchemin), oignons croustillants, mozzarella, huile à l'ail, tomates confites au gras de canard.", image: "pizza-oven.jpg" },
-      { name: "« Philly T »", price: "25,95 $", desc: "Pain baguette, fromages (jaune, mozzarella, provolone), poivrons rouges, oignons blancs, brisket (Les Cowboys du BBQ), mayonnaise épicée. Servi avec salade de pâte maison et cup de sauce BBQ.", image: "tower-sandwich.jpg" },
+      { name: "Le « Choux-Choux »", price: "21,95 $", desc: "Pain ciabatta, dinde fumée, salade de choux rouge crémeuse, gelée de betteraves jaunes, roquette.", image: "dish-sandwich.png" },
+      { name: "Pizza « Bimi »", price: "25,95 $", desc: "Sauce au fromage (Île-aux-Grues, cheddar vieilli 2 ans), broccolini, jambon (Charcuterie Porc Épique), coulis de moutarde et miel, huile d'olive.", image: "pizza-oven.jpg" },
+      { name: "« Philly T »", price: "25,95 $", desc: "Pain baguette, fromages (jaune, mozzarella, provolone), poivrons rouges, oignons blancs, brisket (Les Cowboys du BBQ), mayonnaise épicée. Servi avec salade de pâte maison et cup de sauce BBQ.", image: "sandwich-mac.jpg" },
     ],
   },
   {
@@ -2610,7 +2602,10 @@ export function Footer() {
       <div className="w-full px-6 md:px-12 border-t border-border">
         <div className="max-w-7xl mx-auto py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-[0.75rem] tracking-[0.1em] uppercase text-cream-soft/85">
           <div>© {year} Chez Florent</div>
-          <div>Conçu avec <span aria-hidden="true">♥</span><span className="sr-only">amour</span> à Sorel-Tracy</div>
+          <div className="flex items-center gap-2">
+            <span>Conçu avec <span aria-hidden="true">♥</span><span className="sr-only">amour</span> à Sorel-Tracy par</span>
+            <img src="/images/kua-logo.png" alt="küa" className="h-3.5 w-auto" />
+          </div>
           <a href={`${base}/confidentialite`} className="hover:text-cream transition-colors">Confidentialité</a>
         </div>
       </div>

@@ -333,12 +333,6 @@ export default function GroupReservationPage() {
                         className="h-14 w-auto opacity-80"
                       />
                     </div>
-                    <figcaption className="mt-3 font-sans text-[0.75rem] tracking-[0.2em] uppercase text-bg-primary/65 flex items-center gap-3">
-                      <span aria-hidden="true" className="inline-block w-8 h-px bg-orange/70" />
-                      <span className="font-display normal-case tracking-normal text-orange text-2xl leading-none">
-                        {t.signatureName}
-                      </span>
-                    </figcaption>
                   </motion.figure>
                 </div>
 

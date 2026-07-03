@@ -172,24 +172,38 @@ async function seedMenu(): Promise<void> {
         "Pour ouvrir la soirée — un verre, une planche, le temps qui ralentit.",
       items: [
         {
-          name: "Trempette de poireaux rôtis",
+          name: "Trempette de poireaux bacon",
           price: "16,95 $",
-          description: "Bacon fumé, servi avec pain plat gratiné.",
+          description: "Servi avec pain plat gratiné.",
           image: "/images/naan-dip.jpg",
         },
         {
-          name: "Bufarella potato",
+          name: "Focaccia",
+          price: "19,95 $",
+          description:
+            "Focaccia maison, miel, huile épicée, huile d'olive (Esporao), mélange de fromages ricotta et chèvre, prosciutto, tomates, glaze balsamique, poivre moulu, basilic frais.",
+          image: "/images/bread-tearing.png",
+        },
+        {
+          name: "Bufarella ananananas",
           price: "17,95 $",
           description:
-            "Boule de fromage bufarella (Fromagerie Fuoco) accompagnée de hummus de patate douce, coulis de bleuets à l'érable, huile épicée, menthe et crumble au parmesan. Servi avec pain naan grillé.",
+            "Boule de fromage bufarella (Fromagerie Fuoco) accompagnée d'une compote d'ananas, mayonnaise chili épicée maison, crumble d'amandes, de sucre et de coconut, zeste de lime. Servi avec pains naan grillés.",
           image: "/images/bufarella-mint.jpg",
+        },
+        {
+          name: "« Messieurs patates »",
+          price: "9,95 $",
+          description:
+            "Bouchées de pommes de terre frits, parmesan, huile de truffe, beurre à l'ail confit maison, poivre moulu, sirop d'érable. Servi avec sauce marinara.",
+          image: "/images/dish-tasting.png",
         },
         {
           name: "Assiette de charcuterie",
           price: "35,95 $",
           description:
             "Calabrese, prosciutto, saucissons secs, olives méli-mélo, fromages du moment, pickle d'oignons rouges, petits cornichons. Servi avec pain et croutons.",
-          image: "/images/sandwich-mac.jpg",
+          image: "/images/dish-charcuterie.png",
         },
       ],
     },
@@ -206,31 +220,17 @@ async function seedMenu(): Promise<void> {
           image: "/images/tower-sandwich.jpg",
         },
         {
-          name: "Feuilleté jambon gruyère",
-          price: "9,95 $ / 19,95 $",
+          name: "Le « Choux-Choux »",
+          price: "21,95 $",
           description:
-            "Pâte feuilletée, jambon, fromage gruyère, sauce blanche crémeuse avec pomme de terre, poireaux.",
-          image: "/images/feuillete-ham.jpg",
+            "Pain ciabatta, dinde fumée, salade de choux rouge crémeuse, gelée de betteraves jaunes, roquette.",
+          image: "/images/dish-sandwich.png",
         },
         {
-          name: "Miche de porc",
-          price: "23,95 $",
-          description:
-            "Miche de pain artisanale, porc effiloché maison, fromage à la crème épicé aux cornichons, laitue iceberg, moutarde au miel. Servi avec salade de carottes crémeuse.",
-          image: "/images/miche-porc.jpg",
-        },
-        {
-          name: "« Le Rhé-Actif »",
-          price: "24,95 $",
-          description:
-            "Pain ciabata, provolone, mortadelle, calabrese, capicollo, salade, tomates, oignons rouges, mayonnaise thaï. Servi avec salade de patates maison.",
-          image: "/images/sandwich-mac.jpg",
-        },
-        {
-          name: "Pizza « Vodka » 🌶🌶🌶",
+          name: "Pizza « Bimi »",
           price: "25,95 $",
           description:
-            "Sauce rosée à la vodka, saucisses épicées (Ferme J.N Beauchemin), oignons croustillants, mozzarella, huile à l'ail, tomates confites au gras de canard.",
+            "Sauce au fromage (Île-aux-Grues, cheddar vieilli 2 ans), broccolini, jambon (Charcuterie Porc Épique), coulis de moutarde et miel, huile d'olive.",
           image: "/images/pizza-oven.jpg",
         },
         {
@@ -238,7 +238,7 @@ async function seedMenu(): Promise<void> {
           price: "25,95 $",
           description:
             "Pain baguette, fromages (jaune, mozzarella, provolone), poivrons rouges, oignons blancs, brisket (Les Cowboys du BBQ), mayonnaise épicée. Servi avec salade de pâte maison et cup de sauce BBQ.",
-          image: "/images/tower-sandwich.jpg",
+          image: "/images/sandwich-mac.jpg",
         },
       ],
     },
