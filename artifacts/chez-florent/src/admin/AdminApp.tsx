@@ -13,6 +13,7 @@ import PhotosEditor from "./PhotosEditor";
 import GroupContentEditor from "./GroupContentEditor";
 import AboutContentEditor from "./AboutContentEditor";
 import AccountEditor from "./AccountEditor";
+import MessagesEditor from "./MessagesEditor";
 import { Button, cn } from "./ui";
 
 const TABS = [
@@ -22,6 +23,7 @@ const TABS = [
   { id: "apropos", label: "À propos" },
   { id: "horaires", label: "Horaires" },
   { id: "photos", label: "Photos" },
+  { id: "messages", label: "Messages" },
   { id: "compte", label: "Compte" },
 ] as const;
 
@@ -112,6 +114,7 @@ export default function AdminApp() {
         {tab === "apropos" && <AboutContentEditor />}
         {tab === "horaires" && <HoursEditor />}
         {tab === "photos" && <PhotosEditor />}
+        {tab === "messages" && <MessagesEditor />}
         {tab === "compte" && <AccountEditor />}
       </main>
     </div>

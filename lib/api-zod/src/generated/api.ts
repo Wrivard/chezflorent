@@ -109,6 +109,71 @@ export const DeleteEventParams = zod.object({
 });
 
 /**
+ * @summary List contact messages (admin)
+ */
+export const ListMessagesResponseItem = zod.object({
+  id: zod.number(),
+  kind: zod.string(),
+  name: zod.string(),
+  email: zod.string(),
+  phone: zod.string(),
+  company: zod.string(),
+  supplyType: zod.string(),
+  subject: zod.string(),
+  message: zod.string(),
+  handled: zod.boolean(),
+  createdAt: zod.string(),
+});
+export const ListMessagesResponse = zod.array(ListMessagesResponseItem);
+
+/**
+ * @summary Submit a contact message
+ */
+
+export const CreateMessageBody = zod.object({
+  kind: zod.enum(["question", "fournisseur"]),
+  name: zod.string().min(1),
+  email: zod.string().min(1),
+  phone: zod.string().optional(),
+  company: zod.string().optional(),
+  supplyType: zod.string().optional(),
+  subject: zod.string().optional(),
+  message: zod.string().min(1),
+});
+
+/**
+ * @summary Update a message (admin)
+ */
+export const UpdateMessageParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateMessageBody = zod.object({
+  handled: zod.boolean().optional(),
+});
+
+export const UpdateMessageResponse = zod.object({
+  id: zod.number(),
+  kind: zod.string(),
+  name: zod.string(),
+  email: zod.string(),
+  phone: zod.string(),
+  company: zod.string(),
+  supplyType: zod.string(),
+  subject: zod.string(),
+  message: zod.string(),
+  handled: zod.boolean(),
+  createdAt: zod.string(),
+});
+
+/**
+ * @summary Delete a message (admin)
+ */
+export const DeleteMessageParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
  * @summary Get the full menu (categories with items)
  */
 export const GetMenuResponseItem = zod.object({

@@ -6,6 +6,7 @@ import {
   useListEvents,
   useListHours,
   useListPhotos,
+  useCreateMessage,
 } from "@workspace/api-client-react";
 
 export const EASE: [number, number, number, number] = [0.65, 0, 0.35, 1];
@@ -1920,6 +1921,271 @@ function TodayEventPopup() {
   );
 }
 
+const SUPPLY_TYPES = [
+  "Bière",
+  "Vin",
+  "Spiritueux",
+  "Café / Thé",
+  "Produits alimentaires",
+  "Autre",
+] as const;
+
+type ContactKind = "question" | "fournisseur";
+
+const emptyContactForm = {
+  name: "",
+  email: "",
+  phone: "",
+  company: "",
+  supplyType: SUPPLY_TYPES[0] as string,
+  subject: "",
+  message: "",
+};
+
+function ContactForm() {
+  const [kind, setKind] = useState<ContactKind>("question");
+  const [form, setForm] = useState({ ...emptyContactForm });
+  const [done, setDone] = useState(false);
+
+  const create = useCreateMessage({
+    mutation: {
+      onSuccess: () => {
+        setDone(true);
+        setForm({ ...emptyContactForm });
+      },
+    },
+  });
+
+  const set =
+    (k: keyof typeof form) =>
+    (
+      e: React.ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >,
+    ) =>
+      setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  const isFournisseur = kind === "fournisseur";
+  const canSubmit =
+    form.name.trim() !== "" &&
+    form.email.trim() !== "" &&
+    form.message.trim() !== "" &&
+    (!isFournisseur || form.company.trim() !== "");
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!canSubmit) return;
+    create.mutate({
+      data: {
+        kind,
+        name: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        company: isFournisseur ? form.company.trim() : "",
+        supplyType: isFournisseur ? form.supplyType : "",
+        subject: isFournisseur ? "" : form.subject.trim(),
+        message: form.message.trim(),
+      },
+    });
+  };
+
+  const switchKind = (k: ContactKind) => {
+    setKind(k);
+    setDone(false);
+  };
+
+  const inputCls =
+    "w-full bg-transparent border border-bg-primary/25 px-4 py-3 text-bg-primary placeholder:text-bg-primary/40 rounded-[2px] focus:border-orange focus:outline-none transition-colors";
+  const labelCls =
+    "block text-[0.7rem] font-medium uppercase tracking-[0.18em] text-bg-primary/60 mb-2";
+
+  if (done) {
+    return (
+      <div className="border border-bg-primary/20 bg-bg-primary/[0.03] p-8 md:p-10 text-center rounded-[2px]">
+        <div className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-orange mb-3">
+          <span aria-hidden="true">✶ </span>Message envoyé
+        </div>
+        <h3 className="font-serif text-[1.6rem] text-bg-primary mb-3">
+          Merci, on vous revient bientôt.
+        </h3>
+        <p className="font-sans text-bg-primary/70 mb-6 max-w-md mx-auto">
+          Votre message a bien été reçu. Nous répondons généralement sous 48 h
+          ouvrables.
+        </p>
+        <button
+          type="button"
+          onClick={() => setDone(false)}
+          className="inline-flex items-center gap-2 px-6 py-3 border border-bg-primary/30 text-bg-primary text-[0.72rem] font-medium tracking-[0.18em] uppercase rounded-[2px] hover:bg-bg-primary hover:text-cream transition-all duration-300"
+        >
+          Écrire un autre message
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <form
+      onSubmit={submit}
+      className="border border-bg-primary/15 bg-bg-primary/[0.02] p-6 md:p-10 rounded-[2px]"
+    >
+      <div
+        className="inline-flex mb-8 border border-bg-primary/20 rounded-[2px] overflow-hidden"
+        role="tablist"
+        aria-label="Type de demande"
+      >
+        {(
+          [
+            ["question", "J'ai une question"],
+            ["fournisseur", "Je suis fournisseur"],
+          ] as const
+        ).map(([value, label]) => (
+          <button
+            key={value}
+            type="button"
+            role="tab"
+            aria-selected={kind === value}
+            onClick={() => switchKind(value)}
+            className={`px-5 py-2.5 text-[0.72rem] font-medium tracking-[0.14em] uppercase transition-colors ${
+              kind === value
+                ? "bg-bg-primary text-cream"
+                : "bg-transparent text-bg-primary/60 hover:text-bg-primary"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label className={labelCls} htmlFor="cf-name">
+            Nom {isFournisseur ? "du contact" : ""}
+          </label>
+          <input
+            id="cf-name"
+            className={inputCls}
+            value={form.name}
+            onChange={set("name")}
+            required
+            autoComplete="name"
+          />
+        </div>
+        <div>
+          <label className={labelCls} htmlFor="cf-email">
+            Courriel
+          </label>
+          <input
+            id="cf-email"
+            type="email"
+            className={inputCls}
+            value={form.email}
+            onChange={set("email")}
+            required
+            autoComplete="email"
+          />
+        </div>
+
+        <div>
+          <label className={labelCls} htmlFor="cf-phone">
+            Téléphone <span className="normal-case text-bg-primary/40">(optionnel)</span>
+          </label>
+          <input
+            id="cf-phone"
+            type="tel"
+            className={inputCls}
+            value={form.phone}
+            onChange={set("phone")}
+            autoComplete="tel"
+          />
+        </div>
+
+        {isFournisseur ? (
+          <div>
+            <label className={labelCls} htmlFor="cf-company">
+              Entreprise
+            </label>
+            <input
+              id="cf-company"
+              className={inputCls}
+              value={form.company}
+              onChange={set("company")}
+              required
+              autoComplete="organization"
+            />
+          </div>
+        ) : (
+          <div>
+            <label className={labelCls} htmlFor="cf-subject">
+              Sujet <span className="normal-case text-bg-primary/40">(optionnel)</span>
+            </label>
+            <input
+              id="cf-subject"
+              className={inputCls}
+              value={form.subject}
+              onChange={set("subject")}
+            />
+          </div>
+        )}
+
+        {isFournisseur && (
+          <div className="sm:col-span-2">
+            <label className={labelCls} htmlFor="cf-supply">
+              Ce que vous proposez
+            </label>
+            <select
+              id="cf-supply"
+              className={`${inputCls} appearance-none`}
+              value={form.supplyType}
+              onChange={set("supplyType")}
+            >
+              {SUPPLY_TYPES.map((t) => (
+                <option key={t} value={t} className="text-bg-primary">
+                  {t}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        <div className="sm:col-span-2">
+          <label className={labelCls} htmlFor="cf-message">
+            {isFournisseur ? "Présentez-nous vos produits" : "Votre message"}
+          </label>
+          <textarea
+            id="cf-message"
+            className={`${inputCls} min-h-[130px] resize-y`}
+            value={form.message}
+            onChange={set("message")}
+            required
+            placeholder={
+              isFournisseur
+                ? "Gamme de produits, région, échantillons, conditions…"
+                : "Réservation de groupe, allergies, événement privé…"
+            }
+          />
+        </div>
+      </div>
+
+      {create.isError && (
+        <p className="mt-4 text-sm text-red-700">
+          Une erreur est survenue. Vérifiez vos informations et réessayez.
+        </p>
+      )}
+
+      <div className="mt-7 flex items-center gap-4">
+        <button
+          type="submit"
+          disabled={!canSubmit || create.isPending}
+          className="inline-flex items-center gap-3 px-7 py-3 bg-bg-primary text-cream text-[0.75rem] font-medium tracking-[0.2em] uppercase rounded-[2px] hover:bg-orange hover:text-bg-primary transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-bg-primary disabled:hover:text-cream"
+        >
+          {create.isPending ? "Envoi…" : "Envoyer"}
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </form>
+  );
+}
+
 function Contact() {
   const photos = usePhotos();
   const daysLabel = useOpenDaysLabel();
@@ -2043,6 +2309,23 @@ function Contact() {
             </span>
           </motion.div>
         </div>
+
+        {/* Contact form */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: EASE }}
+          className="mt-24 md:mt-32 max-w-3xl"
+        >
+          <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-4">
+            Écrivez-nous
+          </div>
+          <h3 className="font-serif text-[clamp(2rem,4vw,3rem)] text-bg-primary leading-tight mb-8">
+            Une question, ou vous nous approvisionnez&nbsp;?
+          </h3>
+          <ContactForm />
+        </motion.div>
 
         {/* Map + directions */}
         <motion.div

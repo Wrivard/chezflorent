@@ -64,6 +64,46 @@ export interface EventUpdate {
   sortOrder?: number;
 }
 
+export interface Message {
+  id: number;
+  kind: string;
+  name: string;
+  email: string;
+  phone: string;
+  company: string;
+  supplyType: string;
+  subject: string;
+  message: string;
+  handled: boolean;
+  createdAt: string;
+}
+
+export type MessageInputKind =
+  (typeof MessageInputKind)[keyof typeof MessageInputKind];
+
+export const MessageInputKind = {
+  question: "question",
+  fournisseur: "fournisseur",
+} as const;
+
+export interface MessageInput {
+  kind: MessageInputKind;
+  /** @minLength 1 */
+  name: string;
+  /** @minLength 1 */
+  email: string;
+  phone?: string;
+  company?: string;
+  supplyType?: string;
+  subject?: string;
+  /** @minLength 1 */
+  message: string;
+}
+
+export interface MessageUpdate {
+  handled?: boolean;
+}
+
 export interface MenuItem {
   id: number;
   categoryId: number;
