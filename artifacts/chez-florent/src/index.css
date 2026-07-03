@@ -47,6 +47,12 @@ body {
   font-family: var(--font-display) !important;
 }
 
+/* Menu item names are <h3> for semantics, but the display script is hard to
+   read for a list of dishes — keep them in the legible sans face. */
+.site-root .menu-item-name {
+  font-family: var(--font-sans) !important;
+}
+
 .link-underline {
   position: relative;
   text-decoration: none;

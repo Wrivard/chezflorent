@@ -1062,7 +1062,7 @@ function Menu() {
                           animate={{ x: isActive ? 12 : 0 }}
                           transition={{ duration: 0.3, ease: "easeOut" }}
                         >
-                          <h3 className="font-serif font-semibold text-[1.5rem] md:text-[1.75rem] text-cream leading-tight">
+                          <h3 className="menu-item-name font-medium text-[1.35rem] md:text-[1.6rem] text-cream leading-tight tracking-[-0.01em]">
                             {dish.name}
                           </h3>
                           <p className="font-sans font-light italic text-cream-soft/85 max-w-[600px] leading-relaxed text-sm md:text-base">
