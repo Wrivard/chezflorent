@@ -348,7 +348,7 @@ export default function MenuPage() {
                   <span aria-hidden="true">✶ </span>03 — Au menu ce soir
                 </div>
                 <h1 className="ardoise-clip font-display leading-[1.18] pb-[0.28em] text-[clamp(2rem,11vw,11rem)] max-w-full overflow-visible">
-                  Le menu
+                  Le Menu
                 </h1>
                 <p className="font-sans italic text-cream-soft/75 max-w-2xl text-lg mt-6">
                   Notre carte complète — encas, salades, pizzas au four à bois,

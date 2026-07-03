@@ -938,7 +938,7 @@ function Menu() {
             
             {/* Image-through-text reveal (with @supports fallback in CSS) */}
             <h2 className="ardoise-clip font-display text-[clamp(2.25rem,12vw,12rem)] leading-[1.2] pb-[0.3em] pl-[0.08em] mb-8 max-w-full overflow-visible">
-              Le menu
+              Le Menu
             </h2>
             <AnimatePresence mode="wait">
               <motion.p
