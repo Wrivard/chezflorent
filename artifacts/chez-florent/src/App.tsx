@@ -518,7 +518,7 @@ function Hero() {
 
   const lineVariants = {
     hidden: { clipPath: "inset(0 0 100% 0)", y: 20 },
-    visible: { clipPath: "inset(0 0 0 0)", y: 0, transition: { duration: 0.8, ease: EASE } }
+    visible: { clipPath: "inset(-0.1em -0.5em -1em -0.2em)", y: 0, transition: { duration: 0.8, ease: EASE } }
   };
 
   const fadeVariants = {
