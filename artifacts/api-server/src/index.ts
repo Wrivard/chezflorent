@@ -1,5 +1,6 @@
 import app from "./app";
 import { logger } from "./lib/logger";
+import { ensureAdminSeed } from "./lib/ensureAdmin";
 
 const rawPort = process.env["PORT"];
 
@@ -22,4 +23,9 @@ app.listen(port, (err) => {
   }
 
   logger.info({ port }, "Server listening");
+
+  // Make sure the configured admin account exists in whatever database this
+  // instance is connected to (production has its own DB the local seed never
+  // touches). Runs after listen so a slow DB can't delay the healthcheck.
+  void ensureAdminSeed();
 });
