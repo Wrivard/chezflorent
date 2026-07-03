@@ -287,6 +287,10 @@ export interface AboutTexts {
   closingNote: string;
 }
 
+export interface MenuMarquee {
+  suppliers: string[];
+}
+
 export interface AboutContent {
   texts: AboutTexts;
   voices: AboutVoice[];

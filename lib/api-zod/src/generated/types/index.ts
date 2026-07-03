@@ -34,6 +34,7 @@ export * from "./menuCategoryUpdate";
 export * from "./menuItem";
 export * from "./menuItemInput";
 export * from "./menuItemUpdate";
+export * from "./menuMarquee";
 export * from "./message";
 export * from "./messageInput";
 export * from "./messageInputKind";

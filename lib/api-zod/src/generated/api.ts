@@ -611,3 +611,21 @@ export const UpdateAboutContentResponse = zod.object({
     story2: zod.string(),
   }),
 });
+
+/**
+ * @summary Get the Menu-page suppliers band
+ */
+export const GetMenuMarqueeResponse = zod.object({
+  suppliers: zod.array(zod.string()),
+});
+
+/**
+ * @summary Replace the Menu-page suppliers band
+ */
+export const UpdateMenuMarqueeBody = zod.object({
+  suppliers: zod.array(zod.string()),
+});
+
+export const UpdateMenuMarqueeResponse = zod.object({
+  suppliers: zod.array(zod.string()),
+});

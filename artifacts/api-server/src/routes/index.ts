@@ -7,6 +7,7 @@ import hoursRouter from "./hours";
 import photosRouter from "./photos";
 import groupContentRouter from "./groupContent";
 import aboutContentRouter from "./aboutContent";
+import menuMarqueeRouter from "./menuMarquee";
 import messagesRouter from "./messages";
 import uploadRouter from "./upload";
 
@@ -20,6 +21,7 @@ router.use(hoursRouter);
 router.use(photosRouter);
 router.use(groupContentRouter);
 router.use(aboutContentRouter);
+router.use(menuMarqueeRouter);
 router.use(messagesRouter);
 router.use(uploadRouter);
 

@@ -6,6 +6,7 @@ import {
   useListEvents,
   useListHours,
   useListPhotos,
+  useGetMenuMarquee,
   useCreateMessage,
 } from "@workspace/api-client-react";
 
@@ -820,6 +821,7 @@ const menuCategories: MenuCategory[] = [
 
 function Menu() {
   const allCategories = useMenuCategoriesData();
+  const suppliers = useMenuSuppliers();
   const categories = allCategories.filter((c) => FOOD_SLUGS.includes(c.id));
   const [activeCategoryId, setActiveCategoryId] = useState<string>(categories[0]?.id ?? "");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -839,10 +841,9 @@ function Menu() {
         <div className="flex whitespace-nowrap animate-marquee-slow w-max">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="flex items-center text-[0.875rem] font-medium tracking-[0.2em] uppercase text-cream-soft">
-              <span className="px-8">★ FERME J.N BEAUCHEMIN</span>
-              <span className="px-8">★ FROMAGERIE FUOCO</span>
-              <span className="px-8">★ LES COWBOYS DU BBQ</span>
-              <span className="px-8">★ HUILE D'OLIVE QC</span>
+              {suppliers.map((s, j) => (
+                <span key={j} className="px-8">★ {s}</span>
+              ))}
             </div>
           ))}
         </div>
@@ -1233,6 +1234,21 @@ export function useAgendaEventsData(): AgendaEvent[] {
   return base
     .filter((e) => e.isoDate >= todayIso)
     .sort((a, b) => a.isoDate.localeCompare(b.isoDate));
+}
+
+const DEFAULT_MENU_SUPPLIERS = [
+  "Ferme J.N Beauchemin",
+  "Fromagerie Fuoco",
+  "Les Cowboys du BBQ",
+  "Huile d'olive QC",
+];
+
+// The suppliers shown in the scrolling band on the Menu page. Editable in the
+// admin (« Menu » tab); falls back to defaults so the band is never empty.
+function useMenuSuppliers(): string[] {
+  const { data } = useGetMenuMarquee();
+  const suppliers = data?.suppliers?.filter((s) => s.trim() !== "");
+  return suppliers && suppliers.length > 0 ? suppliers : DEFAULT_MENU_SUPPLIERS;
 }
 
 type ScheduleMap = Record<number, { open: number; close: number } | null>;

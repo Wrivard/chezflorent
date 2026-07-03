@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   useGetMenu,
@@ -9,6 +9,9 @@ import {
   useUpdateMenuItem,
   useDeleteMenuItem,
   getGetMenuQueryKey,
+  useGetMenuMarquee,
+  useUpdateMenuMarquee,
+  getGetMenuMarqueeQueryKey,
 } from "@workspace/api-client-react";
 import type { MenuCategory, MenuItem } from "@workspace/api-client-react";
 import {
@@ -503,6 +506,115 @@ function AddCategory({ nextSortOrder }: { nextSortOrder: number }) {
   );
 }
 
+function SupplierBandEditor() {
+  const queryClient = useQueryClient();
+  const { data, isLoading, isError, error } = useGetMenuMarquee();
+  const [suppliers, setSuppliers] = useState<string[]>([]);
+  const [saved, setSaved] = useState(false);
+  const initializedRef = useRef(false);
+
+  useEffect(() => {
+    if (!data || initializedRef.current) return;
+    initializedRef.current = true;
+    setSuppliers(data.suppliers.length > 0 ? data.suppliers : [""]);
+  }, [data]);
+
+  const update = useUpdateMenuMarquee({
+    mutation: {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: getGetMenuMarqueeQueryKey(),
+        });
+        setSaved(true);
+      },
+    },
+  });
+
+  function setAt(i: number, value: string) {
+    setSuppliers((prev) => prev.map((s, j) => (j === i ? value : s)));
+    setSaved(false);
+  }
+  function removeAt(i: number) {
+    setSuppliers((prev) => prev.filter((_, j) => j !== i));
+    setSaved(false);
+  }
+  function add() {
+    setSuppliers((prev) => [...prev, ""]);
+    setSaved(false);
+  }
+  function save() {
+    update.mutate({
+      data: {
+        suppliers: suppliers.map((s) => s.trim()).filter((s) => s !== ""),
+      },
+    });
+  }
+
+  return (
+    <Card>
+      <div className="mb-4">
+        <h3 className="font-serif text-xl text-cream">Bande des fournisseurs</h3>
+        <p className="mt-1 max-w-xl text-sm text-cream-soft/60">
+          Les noms qui défilent tout en haut de la page « Menu ». Ils
+          s'affichent en majuscules automatiquement.
+        </p>
+      </div>
+
+      {isLoading ? (
+        <p className="text-sm text-cream-soft/60">Chargement…</p>
+      ) : isError ? (
+        <ErrorText error={error} />
+      ) : (
+        <>
+          <div className="space-y-2">
+            {suppliers.length === 0 && (
+              <p className="text-sm text-cream-soft/50">
+                Aucun fournisseur. Ajoutez-en un ci-dessous.
+              </p>
+            )}
+            {suppliers.map((s, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <div className="flex-1">
+                  <TextInput
+                    value={s}
+                    placeholder="Nom du fournisseur"
+                    onChange={(e) => setAt(i, e.target.value)}
+                  />
+                </div>
+                <IconButton
+                  label="Retirer le fournisseur"
+                  className="border-red-400/30 text-red-300 hover:border-red-400/60"
+                  onClick={() => removeAt(i)}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M3 6h18M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+                  </svg>
+                </IconButton>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-3">
+            <Button variant="subtle" onClick={add}>
+              + Ajouter un fournisseur
+            </Button>
+          </div>
+
+          <div className="mt-4 flex items-center gap-3 border-t border-border pt-4">
+            <Button onClick={save} disabled={update.isPending}>
+              {update.isPending ? "Enregistrement…" : "Enregistrer la bande"}
+            </Button>
+            {saved && !update.isPending && (
+              <span className="text-sm text-orange">✓ Enregistré</span>
+            )}
+          </div>
+          <ErrorText error={update.error} />
+        </>
+      )}
+    </Card>
+  );
+}
+
 export default function MenuEditor() {
   const { data: menu, isLoading, isError, error } = useGetMenu();
 
@@ -523,6 +635,9 @@ export default function MenuEditor() {
         description="Chaque catégorie a son tableau. Ajoutez, modifiez ou retirez les plats directement dans la bonne section."
         action={<AddCategory nextSortOrder={nextSortOrder} />}
       />
+      <div className="mb-6">
+        <SupplierBandEditor />
+      </div>
       <div className="space-y-6">
         {categories.length === 0 && (
           <p className="text-cream-soft/60">

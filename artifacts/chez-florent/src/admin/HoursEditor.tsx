@@ -17,7 +17,30 @@ import {
 } from "./ui";
 import { DAY_NAMES } from "./lib";
 
-type DayDraft = { closed: boolean; openHour: string; closeHour: string };
+// The site stores hours as decimal numbers (11.5 = 11h30). In the CMS we edit
+// them as real "HH:MM" times and convert at the boundary, so the owner never
+// deals with decimals. Midnight closing is stored as 24 (end of day), shown as
+// "00:00" in the picker.
+function decimalToTime(h: number | null | undefined): string {
+  if (h == null) return "";
+  const total = Math.round(h * 60);
+  const hrs = Math.floor(total / 60) % 24;
+  const mins = total % 60;
+  return `${String(hrs).padStart(2, "0")}:${String(mins).padStart(2, "0")}`;
+}
+
+function timeToDecimal(t: string, isClose: boolean): number | null {
+  if (!t) return null;
+  const [hStr, mStr] = t.split(":");
+  const h = Number(hStr);
+  const m = Number(mStr);
+  if (Number.isNaN(h) || Number.isNaN(m)) return null;
+  let dec = h + m / 60;
+  if (isClose && dec === 0) dec = 24;
+  return dec;
+}
+
+type DayDraft = { closed: boolean; open: string; close: string };
 
 function HoursRow({
   dayOfWeek,
@@ -43,26 +66,20 @@ function HoursRow({
         />
         {!draft.closed && (
           <>
-            <Field label="Ouverture (h)" hint="ex. 11.5 = 11h30">
+            <Field label="Ouverture">
               <TextInput
-                type="number"
-                min={0}
-                max={23}
-                step={0.5}
-                className="w-24"
-                value={draft.openHour}
-                onChange={(e) => onChange({ openHour: e.target.value })}
+                type="time"
+                className="w-36"
+                value={draft.open}
+                onChange={(e) => onChange({ open: e.target.value })}
               />
             </Field>
-            <Field label="Fermeture (h)" hint="ex. 23 = 23h00">
+            <Field label="Fermeture" hint="minuit = 00:00">
               <TextInput
-                type="number"
-                min={0}
-                max={24}
-                step={0.5}
-                className="w-24"
-                value={draft.closeHour}
-                onChange={(e) => onChange({ closeHour: e.target.value })}
+                type="time"
+                className="w-36"
+                value={draft.close}
+                onChange={(e) => onChange({ close: e.target.value })}
               />
             </Field>
           </>
@@ -90,8 +107,8 @@ export default function HoursEditor() {
     hours.forEach((h: Hours) =>
       m.set(h.dayOfWeek, {
         closed: h.closed,
-        openHour: h.openHour != null ? String(h.openHour) : "",
-        closeHour: h.closeHour != null ? String(h.closeHour) : "",
+        open: decimalToTime(h.openHour),
+        close: decimalToTime(h.closeHour),
       }),
     );
     setDrafts(m);
@@ -102,8 +119,8 @@ export default function HoursEditor() {
       const next = new Map(prev);
       const cur = next.get(dayOfWeek) ?? {
         closed: false,
-        openHour: "",
-        closeHour: "",
+        open: "",
+        close: "",
       };
       next.set(dayOfWeek, { ...cur, ...patch });
       return next;
@@ -112,6 +129,22 @@ export default function HoursEditor() {
   }
 
   async function saveAll() {
+    const missing = [...drafts.entries()].filter(
+      ([, d]) => !d.closed && (!d.open || !d.close),
+    );
+    if (missing.length > 0) {
+      const names = missing
+        .map(([day]) => DAY_NAMES[day])
+        .filter(Boolean)
+        .join(", ");
+      setSaveError(
+        new Error(
+          `Indiquez une heure d'ouverture et de fermeture, ou cochez « Fermé » pour : ${names}.`,
+        ),
+      );
+      setSaved(false);
+      return;
+    }
     setSaving(true);
     setSaveError(null);
     setSaved(false);
@@ -122,10 +155,8 @@ export default function HoursEditor() {
             dayOfWeek,
             data: {
               closed: d.closed,
-              openHour:
-                d.closed || d.openHour === "" ? null : Number(d.openHour),
-              closeHour:
-                d.closed || d.closeHour === "" ? null : Number(d.closeHour),
+              openHour: d.closed ? null : timeToDecimal(d.open, false),
+              closeHour: d.closed ? null : timeToDecimal(d.close, true),
             },
           }),
         ),
@@ -147,7 +178,9 @@ export default function HoursEditor() {
   return (
     <div className="space-y-4">
       <p className="text-sm text-cream-soft/60">
-        Indiquez l'heure d'ouverture et de fermeture sur 24h. Pour les demies-heures, utilisez 0.5 (ex. 11.5 = 11h30). L'horaire affiché sur le site est regroupé automatiquement.
+        Indiquez l'heure d'ouverture et de fermeture. Pour une fermeture à
+        minuit, utilisez 00:00. L'horaire affiché sur le site est regroupé
+        automatiquement.
       </p>
       {list.map((row) => {
         const draft = drafts.get(row.dayOfWeek);

@@ -627,6 +627,47 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /menu-marquee:
+    get:
+      operationId: getMenuMarquee
+      tags: [menu]
+      summary: Get the Menu-page suppliers band
+      responses:
+        "200":
+          description: Suppliers band content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MenuMarquee"
+    put:
+      operationId: updateMenuMarquee
+      tags: [menu]
+      summary: Replace the Menu-page suppliers band
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MenuMarquee"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MenuMarquee"
+        "400":
+          description: Invalid content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
 components:
   schemas:
@@ -1125,6 +1166,14 @@ components:
           type: string
         closingNote:
           type: string
+    MenuMarquee:
+      type: object
+      required: [suppliers]
+      properties:
+        suppliers:
+          type: array
+          items:
+            type: string
     AboutContent:
       type: object
       required: [texts, voices, suppliers, images]
