@@ -42,15 +42,24 @@ body {
 
 /* Unify every public-site heading to the display face (Pacifico),
    matching the "Nos rendez-vous" title. Scoped to .site-root so the
-   admin CMS keeps its own legible fonts. */
-.site-root :is(h1, h2, h3, h4, h5, h6) {
+   admin CMS keeps its own legible fonts.
+   The Pacifico script has very tight glyphs that collide (dots, ascenders,
+   loops run into neighbouring letters), so we add letter-spacing to every
+   display-font element to keep each letter clearly legible. */
+.site-root :is(h1, h2, h3, h4, h5, h6),
+.site-root .font-display {
   font-family: var(--font-display) !important;
+  letter-spacing: 0.04em;
+  word-spacing: 0.06em;
 }
 
 /* Menu item names are <h3> for semantics, but the display script is hard to
-   read for a list of dishes — keep them in the legible sans face. */
+   read for a list of dishes — keep them in the legible sans face with its
+   own tighter tracking (undo the display letter-spacing above). */
 .site-root .menu-item-name {
   font-family: var(--font-sans) !important;
+  letter-spacing: -0.01em;
+  word-spacing: normal;
 }
 
 .link-underline {
