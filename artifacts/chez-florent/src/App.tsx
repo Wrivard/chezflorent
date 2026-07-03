@@ -1734,6 +1734,45 @@ function FAQ() {
         </>
       ),
     },
+    {
+      q: "Stationnement",
+      a: (
+        <>
+          Du stationnement sur rue est disponible autour du bistro, et les
+          stationnements publics du centre-ville sont à quelques pas. Les soirs
+          d'événement, prévois un petit délai.
+        </>
+      ),
+    },
+    {
+      q: "Enfants et familles",
+      a: (
+        <>
+          Les familles sont les bienvenues — chaises hautes disponibles et un
+          menu qui plaît aux plus petits. Les jeux de société font patienter
+          toute la tablée jusqu'au dessert.
+        </>
+      ),
+    },
+    {
+      q: "Terrasse et animaux",
+      a: (
+        <>
+          Dès les beaux jours, la devanture devient une terrasse. Les chiens
+          tranquilles y sont acceptés — une gamelle d'eau les attend.
+        </>
+      ),
+    },
+    {
+      q: "Cartes-cadeaux et paiement",
+      a: (
+        <>
+          On offre des cartes-cadeaux, parfaites pour faire découvrir la maison.
+          On accepte l'argent comptant ainsi que les cartes de débit et de
+          crédit.
+        </>
+      ),
+    },
   ];
 
   return (
@@ -1999,39 +2038,33 @@ function Contact() {
           transition={{ duration: 0.8, ease: EASE }}
           className="mt-20 md:mt-28"
         >
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-8">
-            <div>
-              <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-3">
-                <span aria-hidden="true">◦ </span>Nous rejoindre
-              </div>
-              <p className="font-serif text-bg-primary text-[1.5rem] md:text-[1.75rem] leading-snug not-italic">
-                57 Rue du Roi, Sorel-Tracy, QC J3P 4M6
-              </p>
-            </div>
+          <div className="flex justify-center mb-8">
             <a
               href="https://www.google.com/maps/dir/?api=1&destination=57%20Rue%20du%20Roi%2C%20Sorel-Tracy%2C%20QC%20J3P%204M6"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Obtenir l'itinéraire vers Chez Florent (nouvel onglet)"
-              className="inline-flex items-center gap-3 px-7 py-3 bg-bg-primary text-cream text-[0.75rem] font-medium tracking-[0.2em] uppercase rounded-[2px] hover:bg-orange hover:text-bg-primary transition-all duration-300 self-start"
+              className="inline-flex items-center gap-3 px-7 py-3 bg-bg-primary text-cream text-[0.75rem] font-medium tracking-[0.2em] uppercase rounded-[2px] hover:bg-orange hover:text-bg-primary transition-all duration-300"
             >
               Obtenir l'itinéraire
               <span aria-hidden="true">→</span>
             </a>
           </div>
-          <div className="aspect-[16/9] md:aspect-[21/9] overflow-hidden ring-1 ring-bg-primary/15">
-            <iframe
-              title="Carte — Chez Florent, 57 Rue du Roi, Sorel-Tracy"
-              src="https://www.google.com/maps?q=57%20Rue%20du%20Roi%2C%20Sorel-Tracy%2C%20QC%20J3P%204M6&output=embed"
-              width="100%"
-              height="100%"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              style={{ border: 0 }}
-              className="w-full h-full"
-            />
-          </div>
         </motion.div>
+      </div>
+
+      {/* Full-width map */}
+      <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen aspect-[16/9] md:aspect-[21/8] overflow-hidden mt-8">
+        <iframe
+          title="Carte — Chez Florent, 57 Rue du Roi, Sorel-Tracy"
+          src="https://www.google.com/maps?q=57%20Rue%20du%20Roi%2C%20Sorel-Tracy%2C%20QC%20J3P%204M6&output=embed"
+          width="100%"
+          height="100%"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          style={{ border: 0 }}
+          className="w-full h-full"
+        />
       </div>
     </section>
   );
