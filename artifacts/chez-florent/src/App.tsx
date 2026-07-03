@@ -2904,7 +2904,7 @@ export default function App() {
     return (
       <div className="min-h-[100dvh] w-full bg-bg-primary text-cream selection:bg-orange selection:text-bg-primary relative">
         <FilmGrain />
-        <div className="overflow-x-hidden">
+        <div className="overflow-x-clip">
           {previewSection === "hero" && <Hero />}
           {previewSection === "a-propos" && <About />}
           {previewSection === "menu" && <Menu />}
@@ -2943,7 +2943,7 @@ export default function App() {
         {showPreloader && <Preloader key="preloader" onComplete={handlePreloaderComplete} />}
       </AnimatePresence>
 
-      <div className="overflow-x-hidden">
+      <div className="overflow-x-clip">
         <Navbar activeSection={activeSection} />
         <main>
           <Hero />
