@@ -69,7 +69,16 @@ interface ContentSnapshot {
 
 const snapshot = snapshotJson as unknown as ContentSnapshot;
 
-export async function importContentSnapshot(): Promise<void> {
+/**
+ * Returns `true` when the database is in a consistent seeded state after this
+ * call (either the snapshot committed successfully, or it was a no-op because
+ * the tables were already populated), and `false` when the import failed and was
+ * rolled back. Callers that add more startup seeding (e.g. gallery slots) must
+ * gate on `true` so they never write into a database whose snapshot import is
+ * still pending a retry — writing early would leave `site_photos` non-empty and
+ * make the next boot skip the original photo slots.
+ */
+export async function importContentSnapshot(): Promise<boolean> {
   try {
     const imported = await db.transaction(async (tx) => {
       const counts = {
@@ -212,10 +221,12 @@ export async function importContentSnapshot(): Promise<void> {
     if (didWork) {
       logger.info(imported, "Content snapshot imported into empty database");
     }
+    return true;
   } catch (err) {
     logger.error(
       { err },
       "Content snapshot import failed and was rolled back; will retry on next boot",
     );
+    return false;
   }
 }

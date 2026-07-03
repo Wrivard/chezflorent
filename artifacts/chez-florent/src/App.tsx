@@ -1458,7 +1458,25 @@ const PHOTO_FALLBACK: PhotoMap = {
   voice2: { url: "/images/run-club.png", alt: "Groupe de coureurs réunis après le run club Chez Florent" },
   voice3: { url: "/images/quiz-gagnant.jpg", alt: "Une carte-cadeau gagnée lors d'un quiz Chez Florent" },
   facade: { url: "/images/facade-pizza.jpg", alt: "Devanture de Chez Florent, 57 rue du Roi à Sorel-Tracy" },
+  gallery1: { url: "/images/g-photo-01.jpg", alt: "Ambiance Chez Florent" },
+  gallery2: { url: "/images/g-photo-02.jpg", alt: "Un soir Chez Florent" },
+  gallery3: { url: "/images/g-photo-03.jpg", alt: "La salle Chez Florent" },
+  gallery4: { url: "/images/g-photo-04.jpg", alt: "Le bar Chez Florent" },
+  gallery5: { url: "/images/g-photo-05.jpg", alt: "Autour de la table Chez Florent" },
+  gallery6: { url: "/images/g-photo-06.jpg", alt: "Bouchées et verres partagés" },
+  gallery7: { url: "/images/g-photo-07.jpg", alt: "Ambiance de quartier Chez Florent" },
+  gallery8: { url: "/images/g-photo-08.jpg", alt: "Verres et bonne compagnie" },
+  gallery9: { url: "/images/g-photo-09.jpg", alt: "Détail de service Chez Florent" },
+  gallery10: { url: "/images/g-photo-10.jpg", alt: "Convives attablés Chez Florent" },
+  gallery11: { url: "/images/g-photo-11.jpg", alt: "La salle à manger Chez Florent" },
+  gallery12: { url: "/images/g-photo-12.jpg", alt: "L'ardoise et les verres" },
+  gallery13: { url: "/images/g-photo-13.jpg", alt: "Moment de partage Chez Florent" },
+  gallery14: { url: "/images/g-photo-14.jpg", alt: "Le comptoir Chez Florent" },
+  gallery15: { url: "/images/g-photo-15.jpg", alt: "Soirée animée Chez Florent" },
+  gallery16: { url: "/images/g-photo-16.jpg", alt: "Fragment d'un soir Chez Florent" },
 };
+
+const GALLERY_SLOTS = Array.from({ length: 16 }, (_, i) => `gallery${i + 1}`);
 
 export function usePhotos(): PhotoMap {
   const { data } = useListPhotos();
@@ -2592,27 +2610,11 @@ function Testimonials() {
   );
 }
 
-type GalleryPhoto = { src: string; alt: string };
-const GALLERY: GalleryPhoto[] = [
-  { src: "/images/g-photo-01.jpg", alt: "Ambiance Chez Florent" },
-  { src: "/images/g-photo-02.jpg", alt: "Un soir Chez Florent" },
-  { src: "/images/g-photo-03.jpg", alt: "La salle Chez Florent" },
-  { src: "/images/g-photo-04.jpg", alt: "Le bar Chez Florent" },
-  { src: "/images/g-photo-05.jpg", alt: "Autour de la table Chez Florent" },
-  { src: "/images/g-photo-06.jpg", alt: "Bouchées et verres partagés" },
-  { src: "/images/g-photo-07.jpg", alt: "Ambiance de quartier Chez Florent" },
-  { src: "/images/g-photo-08.jpg", alt: "Verres et bonne compagnie" },
-  { src: "/images/g-photo-09.jpg", alt: "Détail de service Chez Florent" },
-  { src: "/images/g-photo-10.jpg", alt: "Convives attablés Chez Florent" },
-  { src: "/images/g-photo-11.jpg", alt: "La salle à manger Chez Florent" },
-  { src: "/images/g-photo-12.jpg", alt: "L'ardoise et les verres" },
-  { src: "/images/g-photo-13.jpg", alt: "Moment de partage Chez Florent" },
-  { src: "/images/g-photo-14.jpg", alt: "Le comptoir Chez Florent" },
-  { src: "/images/g-photo-15.jpg", alt: "Soirée animée Chez Florent" },
-  { src: "/images/g-photo-16.jpg", alt: "Fragment d'un soir Chez Florent" },
-];
-
 function Gallery() {
+  const photos = usePhotos();
+  const items = GALLERY_SLOTS.map((slot) => photos[slot]).filter(
+    (p): p is { url: string; alt: string } => Boolean(p),
+  );
   return (
     <section
       id="galerie"
@@ -2663,16 +2665,16 @@ function Gallery() {
           aria-label="Galerie d'ambiance Chez Florent"
           className="flex w-max gap-3 md:gap-4 animate-marquee hover:[animation-play-state:paused]"
         >
-          {[...GALLERY, ...GALLERY].map((p, i) => {
-            const isClone = i >= GALLERY.length;
+          {[...items, ...items].map((p, i) => {
+            const isClone = i >= items.length;
             return (
               <div
-                key={`${p.src}-${i}`}
+                key={`${p.url}-${i}`}
                 aria-hidden={isClone ? "true" : undefined}
                 className="group relative w-[220px] md:w-[300px] aspect-[3/4] shrink-0 overflow-hidden rounded-sm ring-1 ring-cream/10"
               >
                 <img
-                  src={p.src}
+                  src={p.url}
                   alt={isClone ? "" : p.alt}
                   loading="lazy"
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -2908,6 +2910,7 @@ export default function App() {
           {previewSection === "hero" && <Hero />}
           {previewSection === "a-propos" && <About />}
           {previewSection === "menu" && <Menu />}
+          {previewSection === "galerie" && <Gallery />}
           {previewSection === "voix" && <Rendezvous />}
           {previewSection === "agenda" && <Agenda />}
           {previewSection === "reservation" && <Reservation />}
@@ -2918,6 +2921,7 @@ export default function App() {
             "hero",
             "a-propos",
             "menu",
+            "galerie",
             "voix",
             "agenda",
             "reservation",

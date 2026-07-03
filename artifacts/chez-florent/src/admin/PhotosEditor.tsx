@@ -155,6 +155,7 @@ export default function PhotosEditor() {
         <div className="space-y-8">
           <SectionPreview compact section="hero" title="En-tête" height={460} />
           <SectionPreview compact section="a-propos" title="À propos" />
+          <SectionPreview compact section="galerie" title="Galerie" />
           <SectionPreview compact section="voix" title="Les voix" />
           <SectionPreview compact section="contact" title="Contact" />
         </div>

@@ -87,6 +87,16 @@ export const PHOTO_GROUPS: PhotoGroup[] = [
     description: "La photo de la façade affichée dans la section contact.",
     slots: [{ slot: "facade", label: "Devanture du restaurant", ratio: "4/5" }],
   },
+  {
+    title: "Galerie « Un soir chez Florent »",
+    description:
+      "Les seize photos du carrousel d'ambiance sur la page d'accueil.",
+    slots: Array.from({ length: 16 }, (_, i) => ({
+      slot: `gallery${i + 1}`,
+      label: `Galerie — photo ${i + 1}`,
+      ratio: "3/4",
+    })),
+  },
 ];
 
 /**
