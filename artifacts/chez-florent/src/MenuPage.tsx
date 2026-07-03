@@ -307,7 +307,7 @@ export default function MenuPage() {
       <ScrollProgress />
       <FilmGrain />
 
-      <div className="overflow-x-hidden">
+      <div className="overflow-x-clip">
         <Navbar activeSection="" onMenuPage />
 
         <main>
