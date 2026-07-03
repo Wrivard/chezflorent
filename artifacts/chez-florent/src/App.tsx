@@ -1359,7 +1359,7 @@ const PHOTO_FALLBACK: PhotoMap = {
   about3: { url: "/images/pizza-planche.jpg", alt: "Pizza du four à bois servie sur planche" },
   press: { url: "/images/interior-bar.jpg", alt: "Salle à manger de Chez Florent" },
   voice1: { url: "/images/jeux-societe.jpg", alt: "Un jeu de société sur une table Chez Florent" },
-  voice2: { url: "/images/interior-bar.jpg", alt: "" },
+  voice2: { url: "/images/run-club.png", alt: "Groupe de coureurs réunis après le run club Chez Florent" },
   voice3: { url: "/images/quiz-gagnant.jpg", alt: "Une carte-cadeau gagnée lors d'un quiz Chez Florent" },
   facade: { url: "/images/facade-pizza.jpg", alt: "Devanture de Chez Florent, 57 rue du Roi à Sorel-Tracy" },
 };
@@ -2612,7 +2612,7 @@ export function Footer() {
           <div>© {year} Chez Florent</div>
           <div className="flex items-center gap-2">
             <span>Conçu avec <span aria-hidden="true">♥</span><span className="sr-only">amour</span> à Sorel-Tracy par</span>
-            <img src="/images/kua-logo.png" alt="küa" className="h-3.5 w-auto" />
+            <a href="https://kua.quebec" target="_blank" rel="noopener noreferrer"><img src="/images/kua-logo.png" alt="küa" className="h-[17.5px] w-auto" /></a>
           </div>
           <a href={`${base}/confidentialite`} className="hover:text-cream transition-colors">Confidentialité</a>
         </div>

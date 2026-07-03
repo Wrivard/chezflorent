@@ -353,8 +353,8 @@ async function seedPhotos(): Promise<void> {
     },
     {
       slot: "voice2",
-      url: "/images/interior-bar.jpg",
-      alt: "Salle à manger de Chez Florent",
+      url: "/images/run-club.png",
+      alt: "Groupe de coureurs réunis après le run club Chez Florent",
     },
     {
       slot: "voice3",
