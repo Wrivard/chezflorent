@@ -2311,7 +2311,6 @@ export function ContactForm() {
 }
 
 function Contact() {
-  const photos = usePhotos();
   const daysLabel = useOpenDaysLabel();
   return (
     <section id="contact" className="bg-cream-soft py-32 px-6 md:px-12 relative overflow-hidden">
@@ -2421,15 +2420,28 @@ function Contact() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: EASE, delay: 0.4 }}
           >
-            <div className="bg-bg-primary aspect-[4/5] overflow-hidden group ring-1 ring-bg-primary/15">
-              <img 
-                src={photos.facade.url} 
-                alt={photos.facade.alt} 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+            <div className="flex justify-end mb-4">
+              <a
+                href={MAPS_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-3 border border-bg-primary/30 text-bg-primary hover:bg-bg-primary hover:text-cream transition-all duration-300 rounded-[2px] text-[0.72rem] font-medium tracking-[0.2em] uppercase whitespace-nowrap"
+              >
+                Itinéraire <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+            <div className="bg-bg-primary aspect-[4/5] overflow-hidden ring-1 ring-bg-primary/15">
+              <iframe
+                title="Carte — Chez Florent, 57 Rue du Roi, Sorel-Tracy"
+                src={MAPS_EMBED}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full h-full border-0 grayscale-[0.2] contrast-[1.05]"
+                allowFullScreen
               />
             </div>
             <span className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/75 mt-4 block text-right">
-              — Notre façade, 57 rue du Roi
+              — 57 rue du Roi, Sorel-Tracy
             </span>
           </motion.div>
         </div>
@@ -2660,7 +2672,7 @@ function Gallery() {
   );
 }
 
-export function Footer() {
+export function Footer({ hideMap = false }: { hideMap?: boolean } = {}) {
   const year = new Date().getFullYear();
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   const daysLabel = useOpenDaysLabel();
@@ -2668,7 +2680,7 @@ export function Footer() {
 
   return (
     <>
-      <MapSection />
+      {!hideMap && <MapSection />}
       <footer className="bg-bg-primary pt-20 relative z-10 overflow-hidden flex flex-col">
       {/* Quick links + contact */}
       <div className="w-full px-6 md:px-12">
@@ -2931,7 +2943,7 @@ export default function App() {
           {/* <FAQ /> — masqué; réactiver au besoin */}
           <Contact />
         </main>
-        <Footer />
+        <Footer hideMap />
         <TodayEventPopup />
       </div>
     </div>
