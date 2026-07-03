@@ -62,8 +62,9 @@ const DEFAULT_ABOUT_CONTENT: AboutContent = {
   ],
   images: {
     hero: "hero-interior.png",
-    story1: "tap-pour.jpg",
-    story2: "florent-glass.jpg",
+    story1: "suflo-crew-dos.jpg",
+    story2: "equipe-bar.jpg",
+    story3: "chef-four-a-bois.jpg",
   },
 };
 
@@ -213,7 +214,7 @@ export default function AboutPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ duration: 0.9, ease: EASE }}
-                  className="md:col-span-7 aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10"
+                  className="md:col-span-6 aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10"
                 >
                   <img
                     src={imgSrc(images.story1)}
@@ -226,10 +227,23 @@ export default function AboutPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ duration: 0.9, ease: EASE, delay: 0.12 }}
-                  className="md:col-span-5 aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10"
+                  className="md:col-span-3 aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10"
                 >
                   <img
                     src={imgSrc(images.story2)}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.9, ease: EASE, delay: 0.24 }}
+                  className="md:col-span-3 aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10"
+                >
+                  <img
+                    src={imgSrc(images.story3)}
                     alt=""
                     className="w-full h-full object-cover"
                   />

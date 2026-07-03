@@ -1127,13 +1127,15 @@ components:
           type: string
     AboutImages:
       type: object
-      required: [hero, story1, story2]
+      required: [hero, story1, story2, story3]
       properties:
         hero:
           type: string
         story1:
           type: string
         story2:
+          type: string
+        story3:
           type: string
     AboutTexts:
       type: object

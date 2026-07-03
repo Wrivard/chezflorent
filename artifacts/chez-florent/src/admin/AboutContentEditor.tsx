@@ -328,7 +328,7 @@ function EditorInner({ initial }: { initial: AboutContent }) {
         {/* IMAGES */}
         <Card>
           <h3 className="mb-4 font-serif text-xl text-cream">Images</h3>
-          <div className="grid gap-5 sm:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             <ImageField
               label="Image de fond (héro)"
               value={draft.images.hero}
@@ -343,6 +343,11 @@ function EditorInner({ initial }: { initial: AboutContent }) {
               label="Photo 2 (portrait)"
               value={draft.images.story2}
               onChange={(url) => setImage("story2", url)}
+            />
+            <ImageField
+              label="Photo 3 (portrait)"
+              value={draft.images.story3}
+              onChange={(url) => setImage("story3", url)}
             />
           </div>
         </Card>

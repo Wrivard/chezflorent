@@ -10,4 +10,5 @@ export interface AboutImages {
   hero: string;
   story1: string;
   story2: string;
+  story3: string;
 }

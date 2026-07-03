@@ -56,7 +56,8 @@ export const DEFAULT_ABOUT_CONTENT: AboutContent = {
   ],
   images: {
     hero: "hero-interior.png",
-    story1: "tap-pour.jpg",
-    story2: "florent-glass.jpg",
+    story1: "suflo-crew-dos.jpg",
+    story2: "equipe-bar.jpg",
+    story3: "chef-four-a-bois.jpg",
   },
 };

@@ -543,6 +543,7 @@ export const GetAboutContentResponse = zod.object({
     hero: zod.string(),
     story1: zod.string(),
     story2: zod.string(),
+    story3: zod.string(),
   }),
 });
 
@@ -579,6 +580,7 @@ export const UpdateAboutContentBody = zod.object({
     hero: zod.string(),
     story1: zod.string(),
     story2: zod.string(),
+    story3: zod.string(),
   }),
 });
 
@@ -612,6 +614,7 @@ export const UpdateAboutContentResponse = zod.object({
     hero: zod.string(),
     story1: zod.string(),
     story2: zod.string(),
+    story3: zod.string(),
   }),
 });
 
