@@ -1884,7 +1884,7 @@ function TodayEventPopup() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 40, scale: 0.96 }}
           transition={{ duration: 0.5, ease: EASE }}
-          className="fixed bottom-5 right-5 left-5 sm:left-auto z-[90] w-auto sm:w-[min(92vw,380px)] bg-bg-primary text-cream ring-1 ring-cream/15 shadow-2xl p-6"
+          className="fixed bottom-5 left-5 right-5 sm:right-auto z-[90] w-auto sm:w-[min(92vw,380px)] bg-bg-primary text-cream ring-1 ring-cream/15 shadow-2xl p-6"
         >
           <button
             type="button"
