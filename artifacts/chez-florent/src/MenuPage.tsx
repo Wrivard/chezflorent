@@ -11,6 +11,7 @@ import {
   EASE,
   EASE_SMOOTH,
   FOOD_SLUGS,
+  ARDOISE_PDF_URL,
   type MenuCategory,
 } from "./App";
 
@@ -346,19 +347,20 @@ export default function MenuPage() {
                   <span aria-hidden="true">✶ </span>03 — Au menu ce soir
                 </div>
                 <h1 className="ardoise-clip font-display leading-[1.18] pb-[0.28em] text-[clamp(2rem,11vw,11rem)] max-w-full overflow-visible">
-                  L'ardoise
+                  Le menu
                 </h1>
                 <p className="font-sans italic text-cream-soft/75 max-w-2xl text-lg mt-6">
-                  Notre carte complète — à partager, les plats du chef et le bar.
-                  L'ardoise évolue selon les arrivages et les humeurs de la cuisine.
+                  Notre carte complète — encas, salades, pizzas au four à bois,
+                  hoagies, desserts et boissons. Pour les spéciaux qui changent
+                  chaque semaine, consultez l'ardoise.
                 </p>
                 <a
-                  href="https://irp.cdn-website.com/d33e0c61/files/uploaded/ardoise+mai.pdf"
+                  href={ARDOISE_PDF_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 mt-8 px-5 py-2.5 border border-orange text-orange text-[0.75rem] font-medium tracking-[0.2em] uppercase hover:bg-orange hover:text-bg-primary transition-all duration-300 rounded-[2px]"
                 >
-                  Voir la carte en PDF
+                  Voir l'ardoise (PDF)
                   <span aria-hidden="true">↗</span>
                 </a>
               </motion.div>
@@ -373,7 +375,10 @@ export default function MenuPage() {
             <div className="max-w-7xl mx-auto relative z-10 flex flex-col gap-24 md:gap-32">
               {food.length > 0 && (
                 <div>
-                  <BoardHeading kicker="À partager & les plats" title="La cuisine" />
+                  <BoardHeading
+                    kicker="Encas, salades, pizzas & hoagies"
+                    title="La cuisine"
+                  />
                   <MenuBoard categories={food} boardId="food" />
                 </div>
               )}
@@ -381,8 +386,8 @@ export default function MenuPage() {
               {drinks.length > 0 && (
                 <div>
                   <BoardHeading
-                    kicker="Vins, bières, cocktails & boissons"
-                    title="Le bar"
+                    kicker="Desserts, cafés, alcools & extras"
+                    title="Pour finir"
                   />
                   <MenuBoard categories={drinks} showPhoto={false} boardId="bar" />
                 </div>
@@ -391,7 +396,7 @@ export default function MenuPage() {
 
             <div className="max-w-7xl mx-auto mt-16 text-center relative z-10">
               <p className="font-sans italic text-cream-soft/85 text-sm">
-                « L'ardoise change. Suivez-nous sur les réseaux pour voir les ajouts du chef. »
+                « L'ardoise change chaque semaine — consultez-la en PDF pour les spéciaux du chef. »
               </p>
             </div>
           </section>

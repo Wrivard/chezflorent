@@ -5,6 +5,15 @@ description: How Chez Florent pulls its drinks menu from Untappd into the CMS, a
 
 # Untappd → CMS menu import
 
+> **OBSOLETE / DANGEROUS as of the fixed-menu migration.** The site moved off
+> the Untappd-drinks model: the menu is now the real printed menu (8 categories
+> incl. desserts, cafés/thés, alcools, extras — see `seed-scripts.md`). Those
+> non-food categories are NOT Untappd-owned anymore. `PROTECTED_SLUGS` in the
+> importer is still `["partager","plats"]` (slugs that no longer exist), so
+> running `import:untappd` would DELETE every real category and replace them
+> with beer data. Do NOT run the importer; it needs removal or a rewrite before
+> it is ever used again. The rest of this file describes the old model.
+
 ## Reading the menu without auth
 - Untappd "for Business" menu data is readable WITHOUT any token from the PUBLIC theme JS bundle: `https://business.untappd.com/locations/{LOCATION}/themes/{THEME}/js`. It embeds the fully-rendered menu HTML (escaped). Unescape `\/ \" \n \t \$` then parse the HTML.
 - The direct REST API (`/api/v1/menus/{theme}`) returns 401/403 for every token auth scheme tried. Do NOT keep retrying the API for read — use the theme JS.

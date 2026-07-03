@@ -767,46 +767,118 @@ function About() {
 export type Dish = { name: string; price: string; desc: string; image: string };
 export type MenuCategory = { id: string; label: string; tagline: string; dishes: Dish[] };
 
-// Categories that belong to the food menu. Everything else (the imported
-// Untappd drinks) is treated as the bar/boissons menu. Used to show food-only
-// on the homepage and to split the two sections on the menu page.
-export const FOOD_SLUGS = ["partager", "plats"];
+// Categories shown on the homepage tabs and in the Menu page's "La cuisine"
+// board (with photos). The remaining categories (desserts, cafés/thés, alcools,
+// extras) render in a photo-less board on the Menu page.
+export const FOOD_SLUGS = ["encas", "salades", "pizzas", "hoagies"];
 
+// URL of the rotating "ardoise" (daily specials) PDF. Shown as a button on the
+// homepage menu section and the Menu page — distinct from the fixed menu.
+export const ARDOISE_PDF_URL =
+  "https://irp.cdn-website.com/d33e0c61/files/uploaded/ardoise+mai.pdf";
+
+// Static fallback used only when the API returns no menu (DB is the source of
+// truth once seeded). Mirrors MENU_SEED in the api-server.
 const menuCategories: MenuCategory[] = [
   {
-    id: "partager",
-    label: "À partager",
-    tagline: "Pour ouvrir la soirée — un verre, une planche, le temps qui ralentit.",
+    id: "encas",
+    label: "Encas",
+    tagline: "Petites bouchées pour ouvrir la soirée.",
     dishes: [
-      { name: "Trempette de poireaux bacon", price: "16,95 $", desc: "Servi avec pain plat gratiné.", image: "naan-dip.jpg" },
-      { name: "Focaccia", price: "19,95 $", desc: "Focaccia maison, miel, huile épicée, huile d'olive (Esporao), mélange de fromages ricotta et chèvre, prosciutto, tomates, glaze balsamique, poivre moulu, basilic frais.", image: "bread-tearing.png" },
-      { name: "Bufarella ananananas", price: "17,95 $", desc: "Boule de fromage bufarella (Fromagerie Fuoco) accompagnée d'une compote d'ananas, mayonnaise chili épicée maison, crumble d'amandes, de sucre et de coconut, zeste de lime. Servi avec pains naan grillés.", image: "bufarella-mint.jpg" },
-      { name: "« Messieurs patates »", price: "9,95 $", desc: "Bouchées de pommes de terre frits, parmesan, huile de truffe, beurre à l'ail confit maison, poivre moulu, sirop d'érable. Servi avec sauce marinara.", image: "dish-tasting.png" },
-      { name: "Assiette de charcuterie", price: "35,95 $", desc: "Calabrese, prosciutto, saucissons secs, olives méli-mélo, fromages du moment, pickle d'oignons rouges, petits cornichons. Servi avec pain et croutons.", image: "dish-charcuterie.png" },
+      { name: "Bol de chips", price: "6,00 $", desc: "Croustilles Covered Bridge.", image: "dish-tasting.png" },
+      { name: "Saucissons secs", price: "6,25 $", desc: "Porc Épique.", image: "dish-charcuterie.png" },
+      { name: "Bol d'olives", price: "6,25 $", desc: "Olives méli-mélo.", image: "dish-charcuterie.png" },
+      { name: "Soupe du jour", price: "6,95 $", desc: "Servie avec pain au levain (Maison Jaune).", image: "naan-dip.jpg" },
+      { name: "Frites épicées", price: "7,25 $", desc: "Mayonnaise ordinaire, jalapenos ou épicée / sauce ranch au bleu / ketchup.", image: "dish-tasting.png" },
+      { name: "Pizza à l'ail", price: "15,95 $", desc: "Trempette marinara.", image: "pizza-oven.jpg" },
+      { name: "Trempette et chips de maïs", price: "15,95 $", desc: "Guacamole, salsa maison, crème sûre, fromage râpé.", image: "naan-dip.jpg" },
+      { name: "Crostini bruschetta", price: "17,00 $", desc: "Pain baguette, cheddar fort, glaze balsamique, mayonnaise lime.", image: "bread-tearing.png" },
+      { name: "Choux-fleurs « pop-corn »", price: "17,50 $", desc: "Trempette avocat-lime.", image: "dish-tasting.png" },
     ],
   },
   {
-    id: "plats",
-    label: "Les plats",
-    tagline: "Le coeur de l'ardoise — sandwichs travaillés, plats roboratifs, à manger sans manières.",
+    id: "salades",
+    label: "Salades",
+    tagline: "Prix : accompagnement / repas.",
     dishes: [
-      { name: "Grilled cheese sur baguette", price: "5,95 $ / 11,95 $", desc: "Provolone, mozzarella, fromage jaune, beurre à l'ail.", image: "tower-sandwich.jpg" },
-      { name: "Le « Choux-Choux »", price: "21,95 $", desc: "Pain ciabatta, dinde fumée, salade de choux rouge crémeuse, gelée de betteraves jaunes, roquette.", image: "dish-sandwich.png" },
-      { name: "Pizza « Bimi »", price: "25,95 $", desc: "Sauce au fromage (Île-aux-Grues, cheddar vieilli 2 ans), broccolini, jambon (Charcuterie Porc Épique), coulis de moutarde et miel, huile d'olive.", image: "pizza-oven.jpg" },
-      { name: "« Philly T »", price: "25,95 $", desc: "Pain baguette, fromages (jaune, mozzarella, provolone), poivrons rouges, oignons blancs, brisket (Les Cowboys du BBQ), mayonnaise épicée. Servi avec salade de pâte maison et cup de sauce BBQ.", image: "sandwich-mac.jpg" },
+      { name: "Verte", price: "5,50 $ / 9,50 $", desc: "Mélange de salade, vinaigre balsamique, huile d'olive.", image: "bufarella-mint.jpg" },
+      { name: "Maison", price: "7,95 $ / 11,95 $", desc: "Mélange de salade, concombres, tomates, oignons marinés, vinaigrette citron-érable.", image: "bufarella-mint.jpg" },
+      { name: "César", price: "10,50 $ / 16,50 $", desc: "Laitue romaine, bacon, croutons, parmesan, sauce césar maison.", image: "bufarella-mint.jpg" },
+      { name: "Canneberge", price: "12,25 $ / 20,50 $", desc: "Mélange de salade, cheddar fort, noix de Grenoble caramélisées, oignons marinés, canneberges séchées.", image: "bufarella-mint.jpg" },
+      { name: "Truite fumée", price: "14,95 $ / 24,95 $", desc: "Truite fumée (Les Cowboys du BBQ), mélange de salade, radis, concombres, fenouils. Vinaigrette citron-érable ou sauce maison ranch au bleu.", image: "bufarella-mint.jpg" },
     ],
   },
   {
-    id: "bar",
-    label: "Au bar",
-    tagline: "Cocktails maison, vins choisis, bières du coin — le bar reste ouvert tard.",
+    id: "pizzas",
+    label: "Pizzas four à bois",
+    tagline: "Fromage végétalien +2,00 $ · Pâte sans gluten Oggi +4,95 $.",
     dishes: [
-      { name: "Sorel-Spritz", price: "14,00 $", desc: "Vin pétillant, Aperol, sirop maison aux canneberges du Lac St-Pierre, branche de romarin frais.", image: "tap-pour.jpg" },
-      { name: "Old Fashioned du Florent", price: "16,00 $", desc: "Rye canadien, sirop d'érable d'Yamaska, bitter aux noix grillées, zeste d'orange brûlé au chalumeau.", image: "florent-glass.jpg" },
-      { name: "Negroni Sapin", price: "15,00 $", desc: "Gin local Québec Distillerie, Campari, vermouth maison infusé sapinette des bois — boisé, presque résineux.", image: "florent-glass.jpg" },
-      { name: "Vin de la maison", price: "9,00 $ / 38,00 $", desc: "Rouge ou blanc, sélection rotative du sommelier — au verre ou à la bouteille. Demandez la suggestion.", image: "tap-pour.jpg" },
-      { name: "Pinte Riverbend", price: "8,00 $", desc: "Blonde houblonnée brassée à Sorel par Riverbend Brewing Co. — locale, fraîche, désaltérante.", image: "florent-glass.jpg" },
-      { name: "Espresso & digestif", price: "5,00 $ / 9,00 $", desc: "Café espresso bien serré, accompagné d'un Amaro maison ou d'un cognac à l'ancienne. Pour finir en beauté.", image: "interior-bar.jpg" },
+      { name: "Margherita", price: "20,95 $", desc: "Sauce tomate, bufarella, parmesan, basilic.", image: "pizza-oven.jpg" },
+      { name: "4 fromages", price: "21,95 $", desc: "Mozzarella, cheddar fort, parmesan, provolone. Beurre à l'ail +2,50 $.", image: "dish-pizza.png" },
+      { name: "Pesto", price: "21,95 $", desc: "Courgette, roquette, parmesan.", image: "pizza-planche.jpg" },
+      { name: "Calabrese", price: "22,95 $", desc: "Sauce tomate, mozzarella, oignons blancs, miel (Les Ruchers Bérard).", image: "facade-pizza.jpg" },
+      { name: "Pepperoni", price: "22,95 $", desc: "Sauce tomate, mozzarella.", image: "chef-four-a-bois.jpg" },
+      { name: "La Toute", price: "23,95 $", desc: "Sauce tomate, mozzarella, pepperoni, poivrons, bacon, champignons.", image: "pizza-oven.jpg" },
+      { name: "Prosciutto", price: "24,95 $", desc: "Sauce tomate, mozzarella, bufarella, roquette, glaze balsamique, parmesan.", image: "dish-pizza.png" },
+      { name: "La « Bigflo »", price: "24,95 $", desc: "Fromage jaune, viande hachée, cornichons, salade romaine, sauce maison style « bigmac ».", image: "pizza-planche.jpg" },
+      { name: "La Québécoise", price: "25,95 $", desc: "Sauce tomate, mozzarella, bacon, pepperoni, oignons rouges, chair de saucisses (Ferme J.N Beauchemin), oignons verts.", image: "facade-pizza.jpg" },
+      { name: "La Maï Maï", price: "25,95 $", desc: "Sauce crème citron-romarin, truite fumée (Les Cowboys du BBQ), oignons verts, roquette, fenouils.", image: "chef-four-a-bois.jpg" },
+      { name: "La « Sweet Lou »", price: "25,95 $", desc: "Sauce tomate et sauce BBQ, mozzarella, brisket (Les Cowboys du BBQ), fromage de chèvre, oignons marinés.", image: "pizza-oven.jpg" },
+    ],
+  },
+  {
+    id: "hoagies",
+    label: "Hoagies",
+    tagline: "Servis avec frites ou salade (Verte, Maison, César, Canneberge +1,25 $, Truite fumée +5,50 $). Option « sans accompagnement » disponible à moindre coût.",
+    dishes: [
+      { name: "BLT su flo'", price: "20,95 $", desc: "Mayonnaise jalapenos, bacon, laitue, tomates. Champignons shiitake (protéine végétale) +4,00 $ · option « sans bacon ».", image: "sandwich-mac.jpg" },
+      { name: "Légumes et fromage de chèvre", price: "21,25 $", desc: "Pesto de tomates séchées, courgettes, poivrons, champignons, roquette.", image: "dish-sandwich.png" },
+      { name: "Jambon", price: "23,50 $", desc: "Jambon (Porc Épique), mayonnaise moutarde, fromage suisse, roquette.", image: "feuillete-ham.jpg" },
+      { name: "Charcuteux", price: "24,95 $", desc: "Mayonnaise balsamique, prosciutto, calabrese, bufarella, tomates, roquette.", image: "tower-sandwich.jpg" },
+      { name: "Brisket", price: "24,95 $", desc: "Brisket (Les Cowboys du BBQ), moutarde maison, cornichons. Fromage provolone +1,00 $.", image: "miche-porc.jpg" },
+    ],
+  },
+  {
+    id: "desserts",
+    label: "Desserts",
+    tagline: "Pâtisseries en rotation chaque semaine — prix variable.",
+    dishes: [
+      { name: "Pâtisseries invitées", price: "", desc: "Le Comptoir d'Alexandrine, Christophe, Pâtisserie Aveline — en rotation chaque semaine, prix variable.", image: "" },
+      { name: "Croustade maison", price: "7,95 $", desc: "Servie avec crème glacée.", image: "" },
+      { name: "Pizza dessert maison", price: "9,95 $", desc: "≈ 10 pouces.", image: "" },
+    ],
+  },
+  {
+    id: "cafes-thes",
+    label: "Cafés & thés",
+    tagline: "",
+    dishes: [
+      { name: "Café décaféiné", price: "3,00 $", desc: "", image: "" },
+      { name: "Café filtre", price: "3,50 $", desc: "Wiltor.", image: "" },
+      { name: "Thé vert / thé chaï / thé noir", price: "3,50 $", desc: "", image: "" },
+      { name: "Tisane gingembre et citron / camomille", price: "3,50 $", desc: "", image: "" },
+    ],
+  },
+  {
+    id: "alcools",
+    label: "Alcools",
+    tagline: "Prix : 1 oz / avec café.",
+    dishes: [
+      { name: "Coureur des bois", price: "9,00 $ / 10,00 $", desc: "Crème d'érable.", image: "" },
+      { name: "Crémette espresso", price: "9,00 $ / 10,00 $", desc: "", image: "" },
+      { name: "Tioméo, rhum chocolat café", price: "10,00 $ / 11,00 $", desc: "Rosemont.", image: "" },
+    ],
+  },
+  {
+    id: "extras",
+    label: "Extras",
+    tagline: "Suppléments à ajouter à vos plats.",
+    dishes: [
+      { name: "Viandes", price: "+3,50 $", desc: "", image: "" },
+      { name: "Légumes", price: "+1,75 $", desc: "", image: "" },
+      { name: "Champignons shiitake", price: "+4,00 $", desc: "Protéine végétale.", image: "" },
+      { name: "Fromages", price: "+2,75 $", desc: "", image: "" },
+      { name: "Bufarella", price: "+5,50 $", desc: "", image: "" },
     ],
   },
 ];
@@ -852,7 +924,7 @@ function Menu() {
             
             {/* Image-through-text reveal (with @supports fallback in CSS) */}
             <h2 className="ardoise-clip font-display text-[clamp(2.25rem,12vw,12rem)] leading-[1.2] pb-[0.3em] pl-[0.08em] mb-8 max-w-full overflow-visible">
-              L'ardoise
+              Le menu
             </h2>
             <AnimatePresence mode="wait">
               <motion.p
@@ -866,6 +938,16 @@ function Menu() {
                 {activeCategory.tagline}
               </motion.p>
             </AnimatePresence>
+
+            <a
+              href={ARDOISE_PDF_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-8 px-5 py-2.5 border border-orange text-orange text-[0.75rem] font-medium tracking-[0.2em] uppercase hover:bg-orange hover:text-bg-primary transition-all duration-300 rounded-[2px]"
+            >
+              Voir l'ardoise (PDF)
+              <span aria-hidden="true">↗</span>
+            </a>
           </div>
 
           {/* Category tabs */}
@@ -1022,7 +1104,7 @@ function Menu() {
 
           <div className="mt-16 text-center">
             <p className="font-sans italic text-cream-soft/85 text-sm">
-              « L'ardoise change chaque mois — suivez-nous pour ne rien manquer. »
+              « L'ardoise change chaque semaine — jetez-y un œil en PDF. »
             </p>
           </div>
         </div>

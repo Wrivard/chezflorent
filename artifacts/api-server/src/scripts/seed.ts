@@ -14,6 +14,7 @@ import { hashPassword } from "../lib/auth";
 import { logger } from "../lib/logger";
 import { DEFAULT_GROUP_CONTENT, GROUP_CONTENT_ID } from "../lib/groupContent";
 import { DEFAULT_ABOUT_CONTENT, ABOUT_CONTENT_ID } from "../lib/aboutContent";
+import { MENU_SEED } from "./menuSeed";
 
 async function seedAdmin(): Promise<void> {
   const email = (process.env.ADMIN_EMAIL ?? "").trim().toLowerCase();
@@ -160,139 +161,12 @@ async function seedEvents(): Promise<void> {
   logger.info("Events seeded");
 }
 
+
 async function seedMenu(): Promise<void> {
   const existing = await db.select().from(menuCategoriesTable);
   if (existing.length > 0) return;
 
-  const categories = [
-    {
-      slug: "partager",
-      label: "À partager",
-      tagline:
-        "Pour ouvrir la soirée — un verre, une planche, le temps qui ralentit.",
-      items: [
-        {
-          name: "Trempette de poireaux bacon",
-          price: "16,95 $",
-          description: "Servi avec pain plat gratiné.",
-          image: "/images/naan-dip.jpg",
-        },
-        {
-          name: "Focaccia",
-          price: "19,95 $",
-          description:
-            "Focaccia maison, miel, huile épicée, huile d'olive (Esporao), mélange de fromages ricotta et chèvre, prosciutto, tomates, glaze balsamique, poivre moulu, basilic frais.",
-          image: "/images/bread-tearing.png",
-        },
-        {
-          name: "Bufarella ananananas",
-          price: "17,95 $",
-          description:
-            "Boule de fromage bufarella (Fromagerie Fuoco) accompagnée d'une compote d'ananas, mayonnaise chili épicée maison, crumble d'amandes, de sucre et de coconut, zeste de lime. Servi avec pains naan grillés.",
-          image: "/images/bufarella-mint.jpg",
-        },
-        {
-          name: "« Messieurs patates »",
-          price: "9,95 $",
-          description:
-            "Bouchées de pommes de terre frits, parmesan, huile de truffe, beurre à l'ail confit maison, poivre moulu, sirop d'érable. Servi avec sauce marinara.",
-          image: "/images/dish-tasting.png",
-        },
-        {
-          name: "Assiette de charcuterie",
-          price: "35,95 $",
-          description:
-            "Calabrese, prosciutto, saucissons secs, olives méli-mélo, fromages du moment, pickle d'oignons rouges, petits cornichons. Servi avec pain et croutons.",
-          image: "/images/dish-charcuterie.png",
-        },
-      ],
-    },
-    {
-      slug: "plats",
-      label: "Les plats",
-      tagline:
-        "Le coeur de l'ardoise — sandwichs travaillés, plats roboratifs, à manger sans manières.",
-      items: [
-        {
-          name: "Grilled cheese sur baguette",
-          price: "5,95 $ / 11,95 $",
-          description: "Provolone, mozzarella, fromage jaune, beurre à l'ail.",
-          image: "/images/tower-sandwich.jpg",
-        },
-        {
-          name: "Le « Choux-Choux »",
-          price: "21,95 $",
-          description:
-            "Pain ciabatta, dinde fumée, salade de choux rouge crémeuse, gelée de betteraves jaunes, roquette.",
-          image: "/images/dish-sandwich.png",
-        },
-        {
-          name: "Pizza « Bimi »",
-          price: "25,95 $",
-          description:
-            "Sauce au fromage (Île-aux-Grues, cheddar vieilli 2 ans), broccolini, jambon (Charcuterie Porc Épique), coulis de moutarde et miel, huile d'olive.",
-          image: "/images/pizza-oven.jpg",
-        },
-        {
-          name: "« Philly T »",
-          price: "25,95 $",
-          description:
-            "Pain baguette, fromages (jaune, mozzarella, provolone), poivrons rouges, oignons blancs, brisket (Les Cowboys du BBQ), mayonnaise épicée. Servi avec salade de pâte maison et cup de sauce BBQ.",
-          image: "/images/sandwich-mac.jpg",
-        },
-      ],
-    },
-    {
-      slug: "bar",
-      label: "Au bar",
-      tagline:
-        "Cocktails maison, vins choisis, bières du coin — le bar reste ouvert tard.",
-      items: [
-        {
-          name: "Sorel-Spritz",
-          price: "14,00 $",
-          description:
-            "Vin pétillant, Aperol, sirop maison aux canneberges du Lac St-Pierre, branche de romarin frais.",
-          image: "/images/tap-pour.jpg",
-        },
-        {
-          name: "Old Fashioned du Florent",
-          price: "16,00 $",
-          description:
-            "Rye canadien, sirop d'érable d'Yamaska, bitter aux noix grillées, zeste d'orange brûlé au chalumeau.",
-          image: "/images/florent-glass.jpg",
-        },
-        {
-          name: "Negroni Sapin",
-          price: "15,00 $",
-          description:
-            "Gin local Québec Distillerie, Campari, vermouth maison infusé sapinette des bois — boisé, presque résineux.",
-          image: "/images/florent-glass.jpg",
-        },
-        {
-          name: "Vin de la maison",
-          price: "9,00 $ / 38,00 $",
-          description:
-            "Rouge ou blanc, sélection rotative du sommelier — au verre ou à la bouteille. Demandez la suggestion.",
-          image: "/images/tap-pour.jpg",
-        },
-        {
-          name: "Pinte Riverbend",
-          price: "8,00 $",
-          description:
-            "Blonde houblonnée brassée à Sorel par Riverbend Brewing Co. — locale, fraîche, désaltérante.",
-          image: "/images/florent-glass.jpg",
-        },
-        {
-          name: "Espresso & digestif",
-          price: "5,00 $ / 9,00 $",
-          description:
-            "Café espresso bien serré, accompagné d'un Amaro maison ou d'un cognac à l'ancienne. Pour finir en beauté.",
-          image: "/images/interior-bar.jpg",
-        },
-      ],
-    },
-  ];
+  const categories = MENU_SEED;
 
   for (let c = 0; c < categories.length; c++) {
     const category = categories[c];
