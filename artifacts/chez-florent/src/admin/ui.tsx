@@ -6,7 +6,7 @@ export function cn(
   return parts.filter(Boolean).join(" ");
 }
 
-export const ACCENT = "#D85A2C";
+export const ACCENT = "#DE450F";
 
 export function Card({
   children,

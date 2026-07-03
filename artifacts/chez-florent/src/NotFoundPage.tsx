@@ -35,7 +35,7 @@ export default function NotFoundPage() {
               className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  "linear-gradient(180deg, rgba(14,31,28,0.86) 0%, rgba(14,31,28,0.78) 45%, rgba(14,31,28,0.96) 100%)",
+                  "linear-gradient(180deg, rgba(0,25,30,0.86) 0%, rgba(0,25,30,0.78) 45%, rgba(0,25,30,0.96) 100%)",
               }}
             />
             <div

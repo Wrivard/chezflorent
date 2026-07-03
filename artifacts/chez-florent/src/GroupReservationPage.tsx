@@ -206,7 +206,7 @@ export default function GroupReservationPage() {
               className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  "linear-gradient(180deg, rgba(14,31,28,0.82) 0%, rgba(14,31,28,0.72) 45%, rgba(14,31,28,0.94) 100%)",
+                  "linear-gradient(180deg, rgba(0,25,30,0.82) 0%, rgba(0,25,30,0.72) 45%, rgba(0,25,30,0.94) 100%)",
               }}
             />
             <div
@@ -711,7 +711,7 @@ export default function GroupReservationPage() {
               className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  "linear-gradient(180deg, rgba(14,31,28,0.88) 0%, rgba(14,31,28,0.78) 50%, rgba(14,31,28,0.92) 100%)",
+                  "linear-gradient(180deg, rgba(0,25,30,0.88) 0%, rgba(0,25,30,0.78) 50%, rgba(0,25,30,0.92) 100%)",
               }}
             />
             <div

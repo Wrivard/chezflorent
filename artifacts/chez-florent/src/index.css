@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-bg-primary: #0E1F1C;
-  --color-bg-secondary: #142826;
-  --color-bg-tertiary: #1A332F;
-  --color-cream: #F4C9A0;
-  --color-cream-soft: #EBC097;
-  --color-orange: #D85A2C;
-  --color-orange-dark: #B8451F;
-  --color-border: rgba(244, 201, 160, 0.12);
-  --color-border-strong: rgba(244, 201, 160, 0.25);
+  --color-bg-primary: #00191E;
+  --color-bg-secondary: #082830;
+  --color-bg-tertiary: #0F3742;
+  --color-cream: #ECB989;
+  --color-cream-soft: #ECB989;
+  --color-orange: #DE450F;
+  --color-orange-dark: #B8380C;
+  --color-border: rgba(236, 185, 137, 0.12);
+  --color-border-strong: rgba(236, 185, 137, 0.25);
 
   --font-display: 'Pacifico', cursive;
   --font-serif: 'Fraunces', serif;
@@ -17,15 +17,15 @@
 }
 
 :root {
-  --color-bg-primary: #0E1F1C;
-  --color-bg-secondary: #142826;
-  --color-bg-tertiary: #1A332F;
-  --color-cream: #F4C9A0;
-  --color-cream-soft: #EBC097;
-  --color-orange: #D85A2C;
-  --color-orange-dark: #B8451F;
-  --color-border: rgba(244, 201, 160, 0.12);
-  --color-border-strong: rgba(244, 201, 160, 0.25);
+  --color-bg-primary: #00191E;
+  --color-bg-secondary: #082830;
+  --color-bg-tertiary: #0F3742;
+  --color-cream: #ECB989;
+  --color-cream-soft: #ECB989;
+  --color-orange: #DE450F;
+  --color-orange-dark: #B8380C;
+  --color-border: rgba(236, 185, 137, 0.12);
+  --color-border-strong: rgba(236, 185, 137, 0.25);
 }
 
 html {

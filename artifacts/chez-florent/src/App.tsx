@@ -541,13 +541,13 @@ function Hero() {
         <div 
           className="absolute inset-0"
           style={{
-            background: "linear-gradient(180deg, rgba(14,31,28,0.85) 0%, rgba(14,31,28,0.55) 40%, rgba(14,31,28,0.9) 100%)"
+            background: "linear-gradient(180deg, rgba(0,25,30,0.85) 0%, rgba(0,25,30,0.55) 40%, rgba(0,25,30,0.9) 100%)"
           }}
         />
         <div 
           className="absolute inset-0"
           style={{
-            background: "radial-gradient(circle at center, transparent 40%, rgba(14,31,28,0.6) 100%)"
+            background: "radial-gradient(circle at center, transparent 40%, rgba(0,25,30,0.6) 100%)"
           }}
         />
       </div>

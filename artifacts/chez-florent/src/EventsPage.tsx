@@ -182,7 +182,7 @@ function EventsCalendar({
               aria-label={`${dayEvents.length} événement${
                 dayEvents.length > 1 ? "s" : ""
               } le ${fullDateLabel(iso)}`}
-              className={`${base} bg-bg-primary cursor-pointer group shadow-[0_6px_22px_-12px_rgba(14,31,28,0.6)] hover:shadow-[0_12px_30px_-12px_rgba(14,31,28,0.7)] hover:-translate-y-0.5 ${
+              className={`${base} bg-bg-primary cursor-pointer group shadow-[0_6px_22px_-12px_rgba(0,25,30,0.6)] hover:shadow-[0_12px_30px_-12px_rgba(0,25,30,0.7)] hover:-translate-y-0.5 ${
                 isToday ? "ring-2 ring-orange ring-offset-2 ring-offset-cream-soft" : ""
               }`}
             >
@@ -507,7 +507,7 @@ export default function EventsPage() {
               className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  "linear-gradient(180deg, rgba(14,31,28,0.82) 0%, rgba(14,31,28,0.72) 45%, rgba(14,31,28,0.94) 100%)",
+                  "linear-gradient(180deg, rgba(0,25,30,0.82) 0%, rgba(0,25,30,0.72) 45%, rgba(0,25,30,0.94) 100%)",
               }}
             />
             <div
