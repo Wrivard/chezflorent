@@ -1054,8 +1054,8 @@ const RENDEZVOUS: RendezvousItem[] = [
     slot: "voice2",
   },
   {
-    title: "Cinq à sept",
-    desc: "Bières de microbrasserie, vins québécois et l'ardoise du moment pour étirer la fin de journée comme il faut.",
+    title: "Quiz",
+    desc: "Testez vos connaissances en équipe, une pinte à la main. Le quiz du quartier, avec cartes-cadeaux à gagner pour les plus futés.",
     slot: "voice3",
   },
 ];
@@ -1358,9 +1358,9 @@ const PHOTO_FALLBACK: PhotoMap = {
   about2: { url: "/images/trio-biere.jpg", alt: "Trio de bières de microbrasserie québécoises" },
   about3: { url: "/images/pizza-planche.jpg", alt: "Pizza du four à bois servie sur planche" },
   press: { url: "/images/interior-bar.jpg", alt: "Salle à manger de Chez Florent" },
-  voice1: { url: "/images/tap-pour.jpg", alt: "" },
+  voice1: { url: "/images/jeux-societe.jpg", alt: "Un jeu de société sur une table Chez Florent" },
   voice2: { url: "/images/interior-bar.jpg", alt: "" },
-  voice3: { url: "/images/pizza-oven.jpg", alt: "" },
+  voice3: { url: "/images/quiz-gagnant.jpg", alt: "Une carte-cadeau gagnée lors d'un quiz Chez Florent" },
   facade: { url: "/images/facade-pizza.jpg", alt: "Devanture de Chez Florent, 57 rue du Roi à Sorel-Tracy" },
 };
 
@@ -2486,14 +2486,22 @@ function Testimonials() {
 
 type GalleryPhoto = { src: string; alt: string };
 const GALLERY: GalleryPhoto[] = [
-  { src: "/images/g-salle-clients.jpg", alt: "Des convives attablés dans la salle" },
-  { src: "/images/g-verre-florent.jpg", alt: "Un verre signé Florent" },
-  { src: "/images/g-bar-service.jpg", alt: "Service au bar chez Florent" },
-  { src: "/images/g-crokinole.jpg", alt: "Une partie de crokinole entre amis" },
-  { src: "/images/g-chandail-vert.jpg", alt: "Le chandail vert Chez Florent" },
-  { src: "/images/g-carte-cadeau.jpg", alt: "Carte-cadeau Chez Florent" },
-  { src: "/images/g-chandail-billard.jpg", alt: "Chandail Chez Florent près du billard" },
-  { src: "/images/g-chandail-dos.jpg", alt: "Le chandail Chez Florent, vu de dos" },
+  { src: "/images/g-photo-01.jpg", alt: "Ambiance Chez Florent" },
+  { src: "/images/g-photo-02.jpg", alt: "Un soir Chez Florent" },
+  { src: "/images/g-photo-03.jpg", alt: "La salle Chez Florent" },
+  { src: "/images/g-photo-04.jpg", alt: "Le bar Chez Florent" },
+  { src: "/images/g-photo-05.jpg", alt: "Autour de la table Chez Florent" },
+  { src: "/images/g-photo-06.jpg", alt: "Bouchées et verres partagés" },
+  { src: "/images/g-photo-07.jpg", alt: "Ambiance de quartier Chez Florent" },
+  { src: "/images/g-photo-08.jpg", alt: "Verres et bonne compagnie" },
+  { src: "/images/g-photo-09.jpg", alt: "Détail de service Chez Florent" },
+  { src: "/images/g-photo-10.jpg", alt: "Convives attablés Chez Florent" },
+  { src: "/images/g-photo-11.jpg", alt: "La salle à manger Chez Florent" },
+  { src: "/images/g-photo-12.jpg", alt: "L'ardoise et les verres" },
+  { src: "/images/g-photo-13.jpg", alt: "Moment de partage Chez Florent" },
+  { src: "/images/g-photo-14.jpg", alt: "Le comptoir Chez Florent" },
+  { src: "/images/g-photo-15.jpg", alt: "Soirée animée Chez Florent" },
+  { src: "/images/g-photo-16.jpg", alt: "Fragment d'un soir Chez Florent" },
 ];
 
 function Gallery() {

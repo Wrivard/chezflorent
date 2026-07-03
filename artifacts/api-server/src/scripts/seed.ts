@@ -348,8 +348,8 @@ async function seedPhotos(): Promise<void> {
     },
     {
       slot: "voice1",
-      url: "/images/tap-pour.jpg",
-      alt: "Service au comptoir Chez Florent",
+      url: "/images/jeux-societe.jpg",
+      alt: "Un jeu de société sur une table Chez Florent",
     },
     {
       slot: "voice2",
@@ -358,8 +358,8 @@ async function seedPhotos(): Promise<void> {
     },
     {
       slot: "voice3",
-      url: "/images/pizza-oven.jpg",
-      alt: "Le four à pizza de Chez Florent",
+      url: "/images/quiz-gagnant.jpg",
+      alt: "Une carte-cadeau gagnée lors d'un quiz Chez Florent",
     },
     {
       slot: "facade",
