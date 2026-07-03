@@ -138,7 +138,7 @@ export default function ContactPage() {
 
                   <div className="flex gap-8 text-[0.875rem] font-medium tracking-[0.2em] uppercase text-bg-primary">
                     <a
-                      href="https://www.instagram.com/chezflorent.bistro/"
+                      href="https://www.instagram.com/chez.florent"
                       target="_blank"
                       rel="noopener noreferrer me"
                       className="link-underline"
@@ -148,7 +148,7 @@ export default function ContactPage() {
                     </a>
                     <span aria-hidden="true" className="text-orange">·</span>
                     <a
-                      href="https://www.facebook.com/chezflorent.bistro/"
+                      href="https://www.facebook.com/p/Chez-Florent-61558102300719/"
                       target="_blank"
                       rel="noopener noreferrer me"
                       className="link-underline"

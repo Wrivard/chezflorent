@@ -2313,7 +2313,7 @@ function Contact() {
 
             <div className="flex items-center gap-4 mt-8 lg:mt-0 p-6 lg:p-0">
               <a
-                href="https://www.instagram.com/chezflorent.bistro/"
+                href="https://www.instagram.com/chez.florent"
                 target="_blank"
                 rel="noopener noreferrer me"
                 aria-label="Instagram de Chez Florent (nouvel onglet)"
@@ -2326,7 +2326,7 @@ function Contact() {
                 </svg>
               </a>
               <a
-                href="https://www.facebook.com/chezflorent.bistro/"
+                href="https://www.facebook.com/p/Chez-Florent-61558102300719/"
                 target="_blank"
                 rel="noopener noreferrer me"
                 aria-label="Facebook de Chez Florent (nouvel onglet)"
@@ -2593,12 +2593,12 @@ export function Footer() {
             <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85 mb-4">Suivre</div>
             <ul className="space-y-2 font-sans text-cream text-sm">
               <li>
-                <a href="https://www.instagram.com/chezflorent.bistro/" target="_blank" rel="noopener noreferrer me" className="hover:text-orange transition-colors">
+                <a href="https://www.instagram.com/chez.florent" target="_blank" rel="noopener noreferrer me" className="hover:text-orange transition-colors">
                   Instagram <span aria-hidden="true">↗</span>
                 </a>
               </li>
               <li>
-                <a href="https://www.facebook.com/chezflorent.bistro/" target="_blank" rel="noopener noreferrer me" className="hover:text-orange transition-colors">
+                <a href="https://www.facebook.com/p/Chez-Florent-61558102300719/" target="_blank" rel="noopener noreferrer me" className="hover:text-orange transition-colors">
                   Facebook <span aria-hidden="true">↗</span>
                 </a>
               </li>
