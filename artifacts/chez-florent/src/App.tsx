@@ -1564,7 +1564,7 @@ function Reservation() {
 
   return (
     <>
-      <HoursBand />
+      {/* <HoursBand /> — bande défilante masquée; réactiver au besoin */}
 
       <section id="reservation" className="bg-bg-primary py-32 md:py-40 px-6 md:px-12 relative overflow-hidden">
         <SectionMarker number="05" />
