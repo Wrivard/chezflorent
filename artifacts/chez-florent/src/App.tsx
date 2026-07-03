@@ -1158,6 +1158,7 @@ export type AgendaEvent = {
 };
 
 const agendaEvents: AgendaEvent[] = [
+  { id: "5a7-du-jour", date: { day: "03", month: "JUIL" }, isoDate: "2026-07-03", title: "5 à 7 — Découvertes du jour", desc: "Le sommelier ouvre quelques bouteilles à découvrir, planche de charcuteries en accompagnement. Passe faire un tour !", tag: "5 à 7 · 17h–19h" },
   { id: "sapinage",   date: { day: "16", month: "JUIL" }, isoDate: "2026-07-16", title: "Soirée Cocktails du Sapinage", desc: "Cinq cocktails signature au sapin baumier, à découvrir au 5 à 7. Bouchées chaudes incluses.", tag: "5 à 7 · 17h–19h" },
   { id: "jazz",       date: { day: "25", month: "JUIL" }, isoDate: "2026-07-25", title: "Trio Jazz Manouche", desc: "Trois instrumentistes du Sud-Ouest, en visite pour une soirée. Entrée libre, bon vin recommandé.", tag: "Live · 20h" },
   { id: "vins-qc",    date: { day: "01", month: "AOÛT" }, isoDate: "2026-08-01", title: "Dégustation de vins québécois", desc: "Six vins d'ici présentés par le sommelier, bouchées d'accompagnement incluses. Places limitées.", tag: "Soirée · 19h" },

@@ -68,6 +68,14 @@ async function seedEvents(): Promise<void> {
   if (existing.length > 0) return;
   const rows = [
     {
+      isoDate: "2026-07-03",
+      title: "5 à 7 — Découvertes du jour",
+      description:
+        "Le sommelier ouvre quelques bouteilles à découvrir, planche de charcuteries en accompagnement. Passe faire un tour !",
+      tag: "5 à 7 · 17h–19h",
+      soldOut: false,
+    },
+    {
       isoDate: "2026-07-16",
       title: "Soirée Cocktails du Sapinage",
       description:
