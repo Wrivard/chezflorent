@@ -2841,12 +2841,12 @@ export default function App() {
           <Hero />
           <About />
           <Menu />
-          <Testimonials />
+          {/* <Testimonials /> — masqué; réactiver au besoin */}
           <Gallery />
           <Rendezvous />
-          <Agenda />
+          {/* <Agenda /> — masqué; réactiver au besoin */}
           <Reservation />
-          <FAQ />
+          {/* <FAQ /> — masqué; réactiver au besoin */}
           <Contact />
         </main>
         <Footer />

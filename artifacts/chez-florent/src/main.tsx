@@ -33,14 +33,24 @@ const isHome = current === base;
 
 function Root() {
   if (isAdmin) return <AdminApp />;
-  if (isEvents) return <EventsPage />;
-  if (isMenu) return <MenuPage />;
-  if (isAbout) return <AboutPage />;
-  if (isContact) return <ContactPage />;
-  if (isGroups) return <GroupReservationPage />;
-  if (isPrivacy) return <PrivacyPage />;
-  if (isHome) return <App />;
-  return <NotFoundPage />;
+  const page = isEvents ? (
+    <EventsPage />
+  ) : isMenu ? (
+    <MenuPage />
+  ) : isAbout ? (
+    <AboutPage />
+  ) : isContact ? (
+    <ContactPage />
+  ) : isGroups ? (
+    <GroupReservationPage />
+  ) : isPrivacy ? (
+    <PrivacyPage />
+  ) : isHome ? (
+    <App />
+  ) : (
+    <NotFoundPage />
+  );
+  return <div className="site-root">{page}</div>;
 }
 
 createRoot(document.getElementById("root")!).render(

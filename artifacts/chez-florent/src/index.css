@@ -40,6 +40,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Unify every public-site heading to the display face (Pacifico),
+   matching the "Nos rendez-vous" title. Scoped to .site-root so the
+   admin CMS keeps its own legible fonts. */
+.site-root :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-display) !important;
+}
+
 .link-underline {
   position: relative;
   text-decoration: none;
