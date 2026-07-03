@@ -12,6 +12,7 @@ export interface AboutTexts {
   heroLede: string;
   quote: string;
   storyP1: string;
+  storyQuestion2?: string;
   storyP2: string;
   voicesMarker: string;
   suppliersMarker: string;

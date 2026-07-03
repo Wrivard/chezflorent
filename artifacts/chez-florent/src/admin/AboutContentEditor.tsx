@@ -273,20 +273,28 @@ function EditorInner({ initial }: { initial: AboutContent }) {
             </p>
             <div className="grid gap-4">
               <AreaRow
-                label="Citation principale"
+                label="Grande citation / question"
                 value={t.quote}
                 onChange={(v) => setText("quote", v)}
-                hint="ex. « On vient ici pour rester. »"
+                hint="S'affiche en très grand. ex. « Quand nous allons Chez Florent, chez qui allons-nous ? »"
               />
               <AreaRow
-                label="Paragraphe 1"
+                label="Réponse (paragraphes)"
                 value={t.storyP1}
                 onChange={(v) => setText("storyP1", v)}
+                hint="Séparez les paragraphes par une ligne vide."
+              />
+              <TextRow
+                label="Deuxième question"
+                value={t.storyQuestion2 ?? ""}
+                onChange={(v) => setText("storyQuestion2", v)}
+                hint="ex. « D'où vient l'idée d'ouvrir le restaurant ? »"
               />
               <AreaRow
-                label="Paragraphe 2"
+                label="Réponse à la deuxième question (paragraphes)"
                 value={t.storyP2}
                 onChange={(v) => setText("storyP2", v)}
+                hint="Séparez les paragraphes par une ligne vide."
               />
             </div>
           </div>

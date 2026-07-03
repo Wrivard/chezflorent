@@ -11,11 +11,12 @@ export const DEFAULT_ABOUT_CONTENT: AboutContent = {
     heroTitle: "La maison",
     heroLede:
       "Un bistro de quartier, une certaine idée du temps qui passe — et des gens qui le font vivre.",
-    quote: "« On vient ici pour rester. »",
+    quote: "Quand nous allons Chez Florent, chez qui allons-nous ?",
     storyP1:
-      "Chez Florent est né d'une envie simple : un endroit où l'on s'attable sans cérémonie, où le vin se verse au pichet, et où la cuisine ne triche jamais avec ses produits. Pas de chichi — juste de bons plats, partagés à la bonne température.",
+      "Florent était le grand-père de Marie-Laurence, copropriétaire de l'établissement. Afin de souligner son parcours entrepreneurial marquant avec la cantine Nic et Flo, qu'il a fondée dans les années 1970 avec sa douce moitié, Nicole, Maxime et Marie-Laurence ont choisi d'unir distinction et racines soreloises en dédiant cet établissement à cet homme grand, jovial et profondément apprécié, qui nous a quittés beaucoup trop tôt.",
+    storyQuestion2: "D'où vient l'idée d'ouvrir le restaurant ?",
     storyP2:
-      "On travaille avec des fermiers et artisans qu'on appelle par leur prénom. L'ardoise change au gré des arrivages et des saisons — c'est ça, un bistro vivant : du temps, de l'huile de coude, et le plaisir de bien recevoir.",
+      "Il fut un temps où, à Sorel, il y avait un endroit où nous pouvions consommer de la bière artisanale et nous retrouver entre amis dans une ambiance décontractée, un endroit où l'on se sentait comme à la maison. Malheureusement, cet endroit a été emporté par les flammes.\n\nQuelques années plus tard, Maxime et Marie-Laurence devinrent collègues et amis, liés par leur lieu de travail, La Grange à Houblon. C'est après plusieurs quarts de travail à partager ce qu'ils aimaient, et aimaient moins, d'un établissement culinaire qu'ils ont réalisé qu'un concept complètement distinct, à leur image, pourrait représenter un vent de fraîcheur au cœur du centre-ville de Sorel-Tracy. Conseillés et appuyés par leurs mentors respectifs, Pierre-Luc et Fabienne, Max et Marie se lancèrent enfin dans cette grande aventure.\n\nCette aventure était alimentée par le désir de recréer ce lieu rassembleur mettant de l'avant le monde brassicole et viticole québécois, ainsi que les maraîchers locaux. Leur objectif était d'offrir un endroit accessible et familial, propice à tous les types de rassemblements, tout en proposant des assiettes, ma foi simples, bien que toujours préparées avec une qualité inébranlable.\n\nPassionnés, jeunes et ambitieux, ils ont vu ce projet se développer petit à petit. Puis, en mai 2025, Chez Florent prit vie.",
     voicesMarker: "Les voix de la maison",
     suppliersMarker: "Nos producteurs",
     closingNote:

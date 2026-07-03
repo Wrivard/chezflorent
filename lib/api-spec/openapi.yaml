@@ -1158,6 +1158,8 @@ components:
           type: string
         storyP1:
           type: string
+        storyQuestion2:
+          type: string
         storyP2:
           type: string
         voicesMarker:

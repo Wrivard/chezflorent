@@ -17,11 +17,12 @@ const DEFAULT_ABOUT_CONTENT: AboutContent = {
     heroTitle: "La maison",
     heroLede:
       "Un bistro de quartier, une certaine idée du temps qui passe — et des gens qui le font vivre.",
-    quote: "« On vient ici pour rester. »",
+    quote: "Quand nous allons Chez Florent, chez qui allons-nous ?",
     storyP1:
-      "Chez Florent est né d'une envie simple : un endroit où l'on s'attable sans cérémonie, où le vin se verse au pichet, et où la cuisine ne triche jamais avec ses produits. Pas de chichi — juste de bons plats, partagés à la bonne température.",
+      "Florent était le grand-père de Marie-Laurence, copropriétaire de l'établissement. Afin de souligner son parcours entrepreneurial marquant avec la cantine Nic et Flo, qu'il a fondée dans les années 1970 avec sa douce moitié, Nicole, Maxime et Marie-Laurence ont choisi d'unir distinction et racines soreloises en dédiant cet établissement à cet homme grand, jovial et profondément apprécié, qui nous a quittés beaucoup trop tôt.",
+    storyQuestion2: "D'où vient l'idée d'ouvrir le restaurant ?",
     storyP2:
-      "On travaille avec des fermiers et artisans qu'on appelle par leur prénom. L'ardoise change au gré des arrivages et des saisons — c'est ça, un bistro vivant : du temps, de l'huile de coude, et le plaisir de bien recevoir.",
+      "Il fut un temps où, à Sorel, il y avait un endroit où nous pouvions consommer de la bière artisanale et nous retrouver entre amis dans une ambiance décontractée, un endroit où l'on se sentait comme à la maison. Malheureusement, cet endroit a été emporté par les flammes.\n\nQuelques années plus tard, Maxime et Marie-Laurence devinrent collègues et amis, liés par leur lieu de travail, La Grange à Houblon. C'est après plusieurs quarts de travail à partager ce qu'ils aimaient, et aimaient moins, d'un établissement culinaire qu'ils ont réalisé qu'un concept complètement distinct, à leur image, pourrait représenter un vent de fraîcheur au cœur du centre-ville de Sorel-Tracy. Conseillés et appuyés par leurs mentors respectifs, Pierre-Luc et Fabienne, Max et Marie se lancèrent enfin dans cette grande aventure.\n\nCette aventure était alimentée par le désir de recréer ce lieu rassembleur mettant de l'avant le monde brassicole et viticole québécois, ainsi que les maraîchers locaux. Leur objectif était d'offrir un endroit accessible et familial, propice à tous les types de rassemblements, tout en proposant des assiettes, ma foi simples, bien que toujours préparées avec une qualité inébranlable.\n\nPassionnés, jeunes et ambitieux, ils ont vu ce projet se développer petit à petit. Puis, en mai 2025, Chez Florent prit vie.",
     voicesMarker: "Les voix de la maison",
     suppliersMarker: "Nos producteurs",
     closingNote:
@@ -66,11 +67,22 @@ const DEFAULT_ABOUT_CONTENT: AboutContent = {
   },
 };
 
+// Splits an editable text field into paragraphs on blank lines, so the CMS can
+// hold multi-paragraph stories in a single field.
+function toParagraphs(s: string): string[] {
+  return s
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+}
+
 export default function AboutPage() {
   const { data } = useGetAboutContent();
   const content = data ?? DEFAULT_ABOUT_CONTENT;
   const { texts, voices, suppliers, images } = content;
   const quoteWords = texts.quote.split(" ");
+  const question2 =
+    texts.storyQuestion2 ?? DEFAULT_ABOUT_CONTENT.texts.storyQuestion2 ?? "";
 
   const voiceStyles = [
     {
@@ -160,27 +172,52 @@ export default function AboutPage() {
                 ))}
               </h2>
 
-              {/* Narrative */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 max-w-5xl mb-20 md:mb-24">
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.8, ease: EASE }}
-                  className="font-serif text-bg-primary text-[1.0625rem] md:text-[1.125rem] leading-[1.85]"
-                >
-                  {texts.storyP1}
-                </motion.p>
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
-                  className="font-sans font-light text-bg-primary/80 text-[1rem] leading-[1.85]"
-                >
-                  {texts.storyP2}
-                </motion.p>
+              {/* Narrative — the answer to the pull quote */}
+              <div className="max-w-3xl space-y-5 mb-16 md:mb-20">
+                {toParagraphs(texts.storyP1).map((p, i) => (
+                  <motion.p
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.8, ease: EASE, delay: i * 0.05 }}
+                    className="font-serif text-bg-primary text-[1.0625rem] md:text-[1.1875rem] leading-[1.9]"
+                  >
+                    {p}
+                  </motion.p>
+                ))}
               </div>
+
+              {/* Second chapter — the origin story */}
+              {(question2 || texts.storyP2) && (
+                <div className="max-w-3xl mb-20 md:mb-24">
+                  {question2 && (
+                    <motion.h3
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-100px" }}
+                      transition={{ duration: 0.8, ease: EASE }}
+                      className="font-serif italic font-light text-bg-primary text-[clamp(1.75rem,4.5vw,3rem)] leading-[1.15] mb-8"
+                    >
+                      {question2}
+                    </motion.h3>
+                  )}
+                  <div className="space-y-5">
+                    {toParagraphs(texts.storyP2).map((p, i) => (
+                      <motion.p
+                        key={i}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.8, ease: EASE, delay: i * 0.05 }}
+                        className="font-sans font-light text-bg-primary/80 text-[1rem] md:text-[1.0625rem] leading-[1.9]"
+                      >
+                        {p}
+                      </motion.p>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Asymmetric image stack */}
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
