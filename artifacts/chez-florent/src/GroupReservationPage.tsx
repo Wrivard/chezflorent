@@ -228,7 +228,7 @@ export default function GroupReservationPage() {
                 <span aria-hidden="true">✶ </span>
                 {t.heroMarker}
               </motion.div>
-              <h1 className="font-display text-cream leading-[1.05] pb-[0.1em] text-[clamp(3.5rem,11vw,11rem)]">
+              <h1 className="font-display text-cream leading-[1.05] pb-[0.1em] text-[clamp(2rem,11vw,11rem)]">
                 {t.heroTitle.split(" ").map((word, i) => (
                   <motion.span
                     key={`${word}-${i}`}
@@ -394,7 +394,7 @@ export default function GroupReservationPage() {
                   <span aria-hidden="true">✶ </span>
                   {t.formulesMarker}
                 </div>
-                <h2 className="font-display text-cream leading-[1.05] pb-[0.1em] text-[clamp(3rem,8vw,7rem)]">
+                <h2 className="font-display text-cream leading-[1.05] pb-[0.1em] text-[clamp(1.75rem,8vw,7rem)]">
                   {t.formulesTitle}
                 </h2>
                 <div className="flex items-baseline gap-4 mt-6">
@@ -565,7 +565,7 @@ export default function GroupReservationPage() {
                   <span aria-hidden="true">✶ </span>
                   {t.stepsMarker}
                 </div>
-                <h2 className="font-display text-cream text-[clamp(2.75rem,7vw,6rem)] leading-[1.05] pb-[0.08em]">
+                <h2 className="font-display text-cream text-[clamp(1.75rem,7vw,6rem)] leading-[1.05] pb-[0.08em]">
                   {t.stepsTitle}
                 </h2>
               </motion.div>
@@ -663,7 +663,7 @@ export default function GroupReservationPage() {
               <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-6">
                 <span aria-hidden="true">◦ </span>Questions fréquentes
               </div>
-              <h2 className="font-display text-bg-primary text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] pb-[0.08em] mb-12">
+              <h2 className="font-display text-bg-primary text-[clamp(1.75rem,6vw,4.5rem)] leading-[1.05] pb-[0.08em] mb-12">
                 Bon à savoir
               </h2>
               <div className="border-t border-bg-primary/15">
@@ -726,7 +726,7 @@ export default function GroupReservationPage() {
               >
                 <span aria-hidden="true">✶ </span>On planifie ensemble
               </motion.div>
-              <h2 className="font-display text-cream text-[clamp(3rem,9vw,8.5rem)] leading-[1.02] pb-[0.08em] mb-8">
+              <h2 className="font-display text-cream text-[clamp(1.75rem,9vw,8.5rem)] leading-[1.02] pb-[0.08em] mb-8">
                 Écrivons votre soirée
               </h2>
               <p className="font-serif italic text-cream-soft/90 text-lg md:text-2xl leading-snug max-w-2xl mx-auto mb-12">

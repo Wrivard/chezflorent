@@ -345,7 +345,7 @@ export default function MenuPage() {
                 <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
                   <span aria-hidden="true">✶ </span>03 — Au menu ce soir
                 </div>
-                <h1 className="ardoise-clip font-display leading-[1.18] pb-[0.28em] text-[clamp(3.5rem,11vw,11rem)] max-w-full overflow-visible">
+                <h1 className="ardoise-clip font-display leading-[1.18] pb-[0.28em] text-[clamp(2rem,11vw,11rem)] max-w-full overflow-visible">
                   L'ardoise
                 </h1>
                 <p className="font-sans italic text-cream-soft/75 max-w-2xl text-lg mt-6">

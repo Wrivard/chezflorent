@@ -68,7 +68,7 @@ export default function ContactPage() {
                 <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
                   <span aria-hidden="true">✶ </span>06 — Nous trouver
                 </div>
-                <h1 className="font-display text-cream leading-[1.18] pb-[0.28em] text-[clamp(3.5rem,11vw,11rem)]">
+                <h1 className="font-display text-cream leading-[1.18] pb-[0.28em] text-[clamp(2rem,11vw,11rem)]">
                   Passez nous voir
                 </h1>
                 <p className="font-sans italic text-cream-soft/75 max-w-2xl text-lg mt-6">

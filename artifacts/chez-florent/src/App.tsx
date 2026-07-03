@@ -573,7 +573,7 @@ function Hero() {
           </div>
 
           {/* Broken Type Headline */}
-          <h1 className="font-serif font-light text-cream leading-[1.08] pb-[0.18em] text-[clamp(4.5rem,11vw,11rem)] mb-16 w-full">
+          <h1 className="font-serif font-light text-cream leading-[1.08] pb-[0.18em] text-[clamp(2rem,11vw,11rem)] mb-16 w-full">
             <motion.div variants={lineVariants} className="block italic">
               Une cuisine
             </motion.div>
@@ -670,7 +670,7 @@ function About() {
         </div>
 
         {/* Massive Pull Quote — dark green text on cream */}
-        <h2 className="font-serif italic font-light text-bg-primary leading-[1.1] pb-[0.22em] text-[clamp(4rem,11vw,10rem)] mb-10 max-w-6xl flex flex-wrap gap-x-[0.3em] gap-y-4">
+        <h2 className="font-serif italic font-light text-bg-primary leading-[1.1] pb-[0.22em] text-[clamp(2.25rem,11vw,10rem)] mb-10 max-w-6xl flex flex-wrap gap-x-[0.3em] gap-y-4">
           {quoteWords.map((word, i) => (
             <motion.span
               key={i}
@@ -851,7 +851,7 @@ function Menu() {
             </div>
             
             {/* Image-through-text reveal (with @supports fallback in CSS) */}
-            <h2 className="ardoise-clip font-display text-[clamp(4.5rem,12vw,12rem)] leading-[1.2] pb-[0.3em] pl-[0.08em] mb-8 max-w-full overflow-visible">
+            <h2 className="ardoise-clip font-display text-[clamp(2.25rem,12vw,12rem)] leading-[1.2] pb-[0.3em] pl-[0.08em] mb-8 max-w-full overflow-visible">
               L'ardoise
             </h2>
             <AnimatePresence mode="wait">
@@ -1071,7 +1071,7 @@ function Rendezvous() {
         <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-6">
           <span aria-hidden="true">◦ </span>Interlude — Ce qui nous rassemble
         </div>
-        <h2 className="font-display text-cream leading-[1.18] pb-[0.28em] pl-[0.06em] text-[clamp(3.5rem,10vw,9rem)] mb-8">
+        <h2 className="font-display text-cream leading-[1.18] pb-[0.28em] pl-[0.06em] text-[clamp(2rem,10vw,9rem)] mb-8">
           <motion.span
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1388,7 +1388,7 @@ function Agenda() {
           <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-6">
             04 — La programmation
           </div>
-          <h2 className="font-display text-bg-primary leading-[1.18] pb-[0.28em] pl-[0.08em] text-[clamp(3.75rem,10vw,9.5rem)]">
+          <h2 className="font-display text-bg-primary leading-[1.18] pb-[0.28em] pl-[0.08em] text-[clamp(2rem,10vw,9.5rem)]">
             L'agenda
           </h2>
           <p className="font-sans italic text-bg-primary/65 max-w-2xl text-lg mt-6">
@@ -1591,7 +1591,7 @@ function Reservation() {
             <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
               <span aria-hidden="true">✶ </span>05 — Une table pour vous
             </div>
-            <h2 className="font-display text-[clamp(4.5rem,12vw,13rem)] text-cream leading-[1.18] pb-[0.28em] mb-8">
+            <h2 className="font-display text-[clamp(2.5rem,12vw,13rem)] text-cream leading-[1.18] pb-[0.28em] mb-8">
               Réserver
             </h2>
             <div className="flex items-baseline gap-4">
@@ -1729,7 +1729,7 @@ function Reservation() {
                   title="Réserver une table chez Florent"
                   src="https://tableagent.com/iframe/chez-florent/"
                   sandbox="allow-forms allow-modals allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
-                  className="w-full min-w-[300px] min-h-[760px] border-0 block bg-cream-soft"
+                  className="w-full min-h-[760px] border-0 block bg-cream-soft"
                   style={{ minHeight: 760 }}
                 />
               </div>
@@ -1846,7 +1846,7 @@ function FAQ() {
           <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-6">
             <span aria-hidden="true">◦ </span>Bon à savoir
           </div>
-          <h2 className="font-display text-bg-primary leading-[1.18] pb-[0.28em] pl-[0.06em] text-[clamp(3rem,8vw,7rem)]">
+          <h2 className="font-display text-bg-primary leading-[1.18] pb-[0.28em] pl-[0.06em] text-[clamp(1.75rem,8vw,7rem)]">
             Questions fréquentes
           </h2>
         </motion.div>
@@ -2245,7 +2245,7 @@ function Contact() {
           <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-4">
             06 — Nous trouver
           </div>
-          <h2 className="font-display text-[clamp(3.5rem,9vw,8rem)] text-bg-primary leading-[1.18] pb-[0.28em] mb-6">
+          <h2 className="font-display text-[clamp(2rem,9vw,8rem)] text-bg-primary leading-[1.18] pb-[0.28em] mb-6">
             Passez nous voir
           </h2>
           <p className="font-sans italic text-bg-primary/70 max-w-xl text-base md:text-lg">
@@ -2448,7 +2448,7 @@ function Testimonials() {
           <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
             <span aria-hidden="true">✶ </span>Ils en parlent
           </div>
-          <h2 className="font-serif italic font-light text-cream leading-[1.1] pb-[0.14em] text-[clamp(2.75rem,7vw,6rem)]">
+          <h2 className="font-serif italic font-light text-cream leading-[1.1] pb-[0.14em] text-[clamp(1.75rem,7vw,6rem)]">
             Le quartier a son mot à dire.
           </h2>
           <p className="font-sans italic text-cream-soft/70 max-w-xl text-base md:text-lg mt-6">
@@ -2519,7 +2519,7 @@ function Gallery() {
             <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
               <span aria-hidden="true">◦ </span>En images
             </div>
-            <h2 className="font-serif italic font-light text-cream leading-[1.1] pb-[0.14em] text-[clamp(2.75rem,7vw,6rem)]">
+            <h2 className="font-serif italic font-light text-cream leading-[1.1] pb-[0.14em] text-[clamp(1.75rem,7vw,6rem)]">
               Un soir chez Florent.
             </h2>
           </div>

@@ -138,7 +138,7 @@ export default function AboutPage() {
                   <span aria-hidden="true">✶ </span>
                   {texts.heroMarker}
                 </div>
-                <h1 className="font-display text-cream leading-[1.18] pb-[0.28em] text-[clamp(3.5rem,11vw,11rem)]">
+                <h1 className="font-display text-cream leading-[1.18] pb-[0.28em] text-[clamp(2rem,11vw,11rem)]">
                   {texts.heroTitle}
                 </h1>
                 <p className="font-sans italic text-cream-soft/75 max-w-2xl text-lg mt-6">
@@ -152,7 +152,7 @@ export default function AboutPage() {
           <section className="bg-cream-soft pt-20 md:pt-24 pb-24 md:pb-28 px-6 md:px-12 relative overflow-hidden">
             <SectionMarker number="02" tone="light" />
             <div className="max-w-7xl mx-auto relative z-10">
-              <h2 className="font-serif italic font-light text-bg-primary leading-[1.1] pb-[0.22em] text-[clamp(3rem,9vw,8rem)] mb-10 max-w-6xl flex flex-wrap gap-x-[0.3em] gap-y-4">
+              <h2 className="font-serif italic font-light text-bg-primary leading-[1.1] pb-[0.22em] text-[clamp(1.75rem,9vw,8rem)] mb-10 max-w-6xl flex flex-wrap gap-x-[0.3em] gap-y-4">
                 {quoteWords.map((word, i) => (
                   <motion.span
                     key={i}
@@ -282,7 +282,7 @@ export default function AboutPage() {
                     />
                   </div>
                   <div className="mt-6">
-                    <h2 className="font-display text-cream leading-[1.05] text-[clamp(2.25rem,5vw,3.5rem)]">
+                    <h2 className="font-display text-cream leading-[1.05] text-[clamp(1.75rem,5vw,3.5rem)]">
                       {chef.name}
                     </h2>
                     <p className="mt-2 font-serif italic text-orange text-lg">
