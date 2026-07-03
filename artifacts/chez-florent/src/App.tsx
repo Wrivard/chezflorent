@@ -78,20 +78,6 @@ function Preloader({ onComplete }: { onComplete: () => void }) {
         />
       ))}
 
-      {/* Top eyebrow (after logo holds) */}
-      <motion.div
-        className="absolute top-14 md:top-20 left-1/2 -translate-x-1/2 flex items-center gap-3 md:gap-4 text-[0.65rem] md:text-[0.72rem] tracking-[0.42em] uppercase text-cream-soft/70 font-sans whitespace-nowrap"
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 1.4, ease: EASE_SMOOTH }}
-      >
-        <span className="hidden sm:inline-block w-8 h-px bg-cream-soft/40" aria-hidden="true" />
-        <span aria-hidden="true">✶</span>
-        <span>Bistro · Bar à vins</span>
-        <span aria-hidden="true">✶</span>
-        <span className="hidden sm:inline-block w-8 h-px bg-cream-soft/40" aria-hidden="true" />
-      </motion.div>
-
       {/* Editorial tagline in serif italic */}
       <motion.div
         className="mt-8 md:mt-10 font-serif italic text-cream/90 text-lg md:text-2xl text-center px-8 max-w-md leading-snug"
