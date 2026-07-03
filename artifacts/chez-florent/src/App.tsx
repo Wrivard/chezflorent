@@ -641,13 +641,13 @@ function Hero() {
         <div className="flex whitespace-nowrap animate-marquee w-max items-center">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="flex items-center">
-              <span className="font-serif italic text-2xl text-cream px-6">ARDOISE QUI CHANGE</span>
+              <span className="font-serif italic text-2xl text-cream px-6">Bière de microbrasserie</span>
               <span aria-hidden="true" className="text-cream-soft/45 text-sm">✶</span>
-              <span className="font-serif italic text-2xl text-cream px-6">PRODUITS LOCAUX</span>
+              <span className="font-serif italic text-2xl text-cream px-6">Vins québécois</span>
               <span aria-hidden="true" className="text-cream-soft/45 text-sm">✶</span>
-              <span className="font-serif italic text-2xl text-cream px-6">TABLE ARTISANALE</span>
+              <span className="font-serif italic text-2xl text-cream px-6">Four à bois</span>
               <span aria-hidden="true" className="text-cream-soft/45 text-sm">✶</span>
-              <span className="font-serif italic text-2xl text-cream px-6">DEPUIS 2026</span>
+              <span className="font-serif italic text-2xl text-cream px-6">Jeux de société</span>
               <span aria-hidden="true" className="text-cream-soft/45 text-sm">✶</span>
             </div>
           ))}
@@ -698,7 +698,7 @@ function About() {
           transition={{ duration: 0.8, ease: EASE }}
           className="font-sans italic text-bg-primary/70 max-w-2xl text-base md:text-lg mb-24"
         >
-          Un bistro de quartier, une certaine idée du temps qui passe.
+          L'endroit idéal pour sortir de la maison sans avoir à se mettre sur son 31 — une ambiance conviviale, familiale et décontractée. Viens prendre un verre.
         </motion.p>
 
         {/* Asymmetric Image Stack — clean stack on mobile, editorial triptych on md+ */}
@@ -1037,45 +1037,41 @@ function Menu() {
   );
 }
 
-type PatronVoice = {
-  quote: string;
-  name: string;
-  context: string;
-  source: string;
-  date: string;
-  image: string;
+type RendezvousItem = {
+  title: string;
+  tag: string;
+  desc: string;
+  slot: "press" | "voice1" | "voice2" | "voice3";
 };
 
-const PATRON_VOICES: PatronVoice[] = [
+const RENDEZVOUS: RendezvousItem[] = [
   {
-    quote: "Le grilled-cheese / vin orange du jeudi soir, c'est devenu notre rituel. Ils nous accueillent comme à la maison — sauf qu'à la maison, on ne mange pas aussi bien.",
-    name: "Marie-Pier Lafontaine",
-    context: "Sorel-Tracy · Habituée du jeudi",
-    source: "Google",
-    date: "Mars 2026",
-    image: "tap-pour.jpg",
+    title: "Jeux de société",
+    tag: "Tous les soirs",
+    desc: "Une pleine bibliothèque de jeux à portée de main. Choisis ta boîte, prends une pinte, et que le meilleur gagne.",
+    slot: "voice1",
   },
   {
-    quote: "Sans réservation un mardi, Florent nous a placés au comptoir avec un pichet de gamay et une planche. Trois heures plus tard, on parlait encore avec la table d'à côté.",
-    name: "Étienne Caron",
-    context: "Trois-Rivières · Premier passage",
-    source: "Tripadvisor",
-    date: "Janvier 2026",
-    image: "interior-bar.jpg",
+    title: "Soirée hipster",
+    tag: "Vendredi",
+    desc: "Vinyles, vins nature et bouchées de l'ardoise — la soirée où le quartier au complet se donne rendez-vous.",
+    slot: "press",
   },
   {
-    quote: "La pizza Vodka. Trois fois par mois. Pas la peine d'en dire plus.",
-    name: "Jean-Sébastien Boucher",
-    context: "Saint-Hyacinthe · 14 visites",
-    source: "Instagram",
-    date: "Avril 2026",
-    image: "pizza-oven.jpg",
+    title: "Run club",
+    tag: "Mercredi · 18h",
+    desc: "On part ensemble, on revient assoiffés. Un parcours décontracté suivi d'une bière de microbrasserie bien méritée.",
+    slot: "voice2",
+  },
+  {
+    title: "Cinq à sept",
+    tag: "Jeu — Ven",
+    desc: "Bières de microbrasserie, vins québécois et l'ardoise du moment pour étirer la fin de journée comme il faut.",
+    slot: "voice3",
   },
 ];
 
-const VOICE_SLOTS = ["voice1", "voice2", "voice3"] as const;
-
-function Testimonials() {
+function Rendezvous() {
   const photos = usePhotos();
   return (
     <section id="voix" className="bg-bg-primary pt-32 pb-32 relative overflow-hidden">
@@ -1084,7 +1080,7 @@ function Testimonials() {
       {/* Header */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 mb-20 md:mb-24">
         <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft mb-6">
-          <span aria-hidden="true">◦ </span>Interlude — Voix de la salle
+          <span aria-hidden="true">◦ </span>Interlude — Ce qui nous rassemble
         </div>
         <h2 className="font-display text-cream leading-[1.18] pb-[0.28em] pl-[0.06em] text-[clamp(3.5rem,10vw,9rem)] mb-8">
           <motion.span
@@ -1094,7 +1090,7 @@ function Testimonials() {
             transition={{ duration: 0.8, ease: EASE }}
             className="block"
           >
-            Bouche à oreille
+            Nos rendez-vous
           </motion.span>
         </h2>
         <motion.p
@@ -1104,109 +1100,60 @@ function Testimonials() {
           transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
           className="font-serif italic text-cream-soft/85 max-w-2xl text-lg md:text-xl"
         >
-          Quelques voix glanées au comptoir, dans la presse, sur le téléphone du midi.
+          Des soirées qui reviennent, semaine après semaine — pas besoin d'occasion, juste l'envie de sortir de la maison.
         </motion.p>
       </div>
 
-      {/* Featured press critique — split editorial layout */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 mb-24 md:mb-32">
-        <motion.article
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.9, ease: EASE }}
-          className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14 items-center border-y border-border py-12 md:py-16"
-        >
-          <div className="md:col-span-7 relative">
-            <div className="aspect-[5/4] overflow-hidden ring-1 ring-cream/10">
-              <img
-                src={photos.press.url}
-                alt={photos.press.alt}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            {/* Press stamp */}
-            <div className="absolute top-4 right-4 md:top-6 md:right-6 bg-cream-soft text-bg-primary px-4 py-2 font-sans text-[0.65rem] md:text-[0.7rem] font-medium tracking-[0.22em] uppercase rotate-2 shadow-lg">
-              <span aria-hidden="true">✶ </span>Presse · 2025
-            </div>
-          </div>
-          <div className="md:col-span-5">
-            <div className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-orange mb-5">
-              <span aria-hidden="true">✶ </span>Critique gastronomique
-            </div>
-            <blockquote className="font-serif italic font-light text-cream leading-[1.18] text-[clamp(1.6rem,2.5vw,2.2rem)] mb-8">
-              <span aria-hidden="true" className="text-orange/70 select-none">«&nbsp;</span>
-              Une cuisine qui ne joue pas la carte du « bistro chic », mais celle, plus rare, de la générosité tenue jusqu'au bout. À 19h45 un samedi, c'est une vraie réussite.
-              <span aria-hidden="true" className="text-orange/70 select-none">&nbsp;»</span>
-            </blockquote>
-            <cite className="not-italic block">
-              <div className="font-serif text-cream text-lg md:text-xl">Geneviève Forget</div>
-              <div className="font-sans text-[0.72rem] tracking-[0.22em] uppercase text-cream-soft/80 mt-2 flex items-center gap-3">
-                <span aria-hidden="true" className="inline-block w-8 h-px bg-orange/70" />
-                Le Devoir
-                <span aria-hidden="true" className="text-orange/70">·</span>
-                12 mai 2025
-              </div>
-            </cite>
-          </div>
-        </motion.article>
-      </div>
-
-      {/* Patron voices — asymmetric staggered grid */}
+      {/* Recurring rendez-vous — asymmetric staggered grid */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 lg:gap-14">
-          {PATRON_VOICES.map((v, i) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8 lg:gap-10">
+          {RENDEZVOUS.map((r, i) => (
             <motion.article
-              key={v.name}
+              key={r.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.8, ease: EASE, delay: i * 0.12 }}
+              transition={{ duration: 0.8, ease: EASE, delay: i * 0.1 }}
               className={`flex flex-col group ${
-                i === 0 ? "" : i === 1 ? "md:mt-8 lg:mt-16" : "md:mt-16 lg:mt-32"
+                i % 2 === 1 ? "lg:mt-12" : ""
               }`}
             >
-              {/* Photo with rating overlay */}
+              {/* Photo with tag overlay */}
               <div className="relative aspect-[4/5] overflow-hidden ring-1 ring-cream/10 mb-6">
                 <img
-                  src={photos[VOICE_SLOTS[i]].url}
-                  alt={photos[VOICE_SLOTS[i]].alt}
+                  src={photos[r.slot].url}
+                  alt={photos[r.slot].alt}
                   className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
                 />
                 <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-bg-primary/85 backdrop-blur-sm px-3 py-1.5">
-                  <span
-                    className="text-orange tracking-[0.15em] text-sm leading-none"
-                    aria-label="5 étoiles sur 5"
-                  >
-                    ★★★★★
+                  <span className="text-orange text-[0.7rem] font-medium tracking-[0.2em] uppercase leading-none">
+                    {r.tag}
                   </span>
                 </div>
               </div>
 
-              {/* Quote */}
-              <blockquote className="font-serif italic text-cream/95 text-[1.08rem] md:text-[1.18rem] leading-[1.55] mb-6">
-                <span aria-hidden="true" className="text-orange/80">«&nbsp;</span>
-                {v.quote}
-                <span aria-hidden="true" className="text-orange/80">&nbsp;»</span>
-              </blockquote>
-
-              {/* Attribution */}
-              <div className="mt-auto pt-5 border-t border-border">
-                <div className="font-serif text-cream text-base md:text-lg leading-tight">
-                  {v.name}
-                </div>
-                <div className="font-sans italic text-cream-soft/80 text-[0.85rem] mt-1.5">
-                  {v.context}
-                </div>
-                <div className="flex items-center gap-3 mt-3 text-[0.7rem] font-medium tracking-[0.22em] uppercase text-cream-soft/70">
-                  <span aria-hidden="true" className="inline-block w-6 h-px bg-orange/60" />
-                  <span>{v.source}</span>
-                  <span aria-hidden="true" className="text-orange/60">·</span>
-                  <span>{v.date}</span>
-                </div>
-              </div>
+              {/* Title + description */}
+              <h3 className="font-serif font-semibold text-cream text-[1.35rem] md:text-[1.5rem] leading-tight mb-3">
+                {r.title}
+              </h3>
+              <p className="font-sans font-light text-cream-soft/85 text-[0.95rem] leading-[1.7]">
+                {r.desc}
+              </p>
             </motion.article>
           ))}
+        </div>
+
+        <div className="mt-16 md:mt-20 text-center">
+          <p className="font-serif italic text-cream-soft/85 text-lg">
+            « L'ardoise change chaque mois — suivez-nous pour ne rien manquer. »
+          </p>
+          <a
+            href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/evenements`}
+            className="mt-6 inline-flex items-center gap-3 px-7 py-3 border border-cream/30 text-cream text-[0.75rem] font-medium tracking-[0.2em] uppercase rounded-[2px] hover:bg-cream hover:text-bg-primary transition-all duration-300"
+          >
+            Voir tous les événements
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
     </section>
@@ -1761,6 +1708,178 @@ function Reservation() {
   );
 }
 
+type FaqItem = { q: string; a: React.ReactNode };
+
+function FAQ() {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  const faqs: FaqItem[] = [
+    {
+      q: "Réservation de groupe",
+      a: (
+        <>
+          Party de bureau, anniversaire, ou envie de privatiser le bistro au
+          complet — on s'occupe de tout. Écris-nous ou appelle au{" "}
+          <a href="tel:+14507431448" className="text-orange link-underline">450 743-1448</a>{" "}
+          et jette un œil à notre{" "}
+          <a href={`${base}/groupes`} className="text-orange link-underline">page groupes</a>.
+        </>
+      ),
+    },
+    {
+      q: "Pâtes sans gluten, allergies et options",
+      a: (
+        <>
+          On offre des pâtes sans gluten, ainsi que des options sans alcool,
+          végétariennes et sans lactose — l'ardoise change chaque mois. Mentionne
+          tes allergies au moment de réserver ou à ton arrivée : la cuisine
+          s'adapte du mieux qu'elle peut.
+        </>
+      ),
+    },
+    {
+      q: "Mobilité et accessibilité",
+      a: (
+        <>
+          Le bistro est accessible de plain-pied. Pour toute question
+          d'accessibilité ou pour qu'on te réserve la place la plus pratique,
+          appelle-nous avant ta visite au{" "}
+          <a href="tel:+14507431448" className="text-orange link-underline">450 743-1448</a>.
+        </>
+      ),
+    },
+  ];
+
+  return (
+    <section id="faq" className="bg-cream-soft pt-32 pb-32 relative">
+      <SectionMarker number="—" tone="light" />
+      <div className="max-w-4xl mx-auto px-6 md:px-12 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: EASE }}
+          className="mb-14"
+        >
+          <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-6">
+            <span aria-hidden="true">◦ </span>Bon à savoir
+          </div>
+          <h2 className="font-display text-bg-primary leading-[1.18] pb-[0.28em] pl-[0.06em] text-[clamp(3rem,8vw,7rem)]">
+            Questions fréquentes
+          </h2>
+        </motion.div>
+
+        <div className="border-t border-bg-primary/15">
+          {faqs.map((f, i) => (
+            <motion.details
+              key={f.q}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.6, ease: EASE, delay: i * 0.06 }}
+              className="group border-b border-bg-primary/15 py-6"
+            >
+              <summary className="flex items-center justify-between gap-6 cursor-pointer list-none font-serif text-bg-primary text-[1.25rem] md:text-[1.55rem] leading-snug outline-none focus-visible:text-orange">
+                <span>{f.q}</span>
+                <span
+                  aria-hidden="true"
+                  className="text-orange text-2xl leading-none transition-transform duration-300 group-open:rotate-45 shrink-0"
+                >
+                  +
+                </span>
+              </summary>
+              <div className="mt-4 font-sans font-light text-bg-primary/75 leading-[1.8] max-w-2xl text-[0.95rem] md:text-base">
+                {f.a}
+              </div>
+            </motion.details>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function TodayEventPopup() {
+  const events = useAgendaEventsData();
+  const [visibleId, setVisibleId] = useState<string | null>(null);
+
+  // Stable primitive: the id of today's first non-sold-out event (or null).
+  const now = new Date();
+  const todayIso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  const matchId =
+    events.find((e) => e.isoDate === todayIso && !e.soldOut)?.id ?? null;
+
+  useEffect(() => {
+    if (!matchId) return;
+    try {
+      if (sessionStorage.getItem(`cf-event-popup-${matchId}`)) return;
+    } catch {
+      /* sessionStorage unavailable — show anyway */
+    }
+    const t = setTimeout(() => setVisibleId(matchId), 1400);
+    return () => clearTimeout(t);
+  }, [matchId]);
+
+  const event = visibleId
+    ? events.find((e) => e.id === visibleId) ?? null
+    : null;
+
+  const dismiss = () => {
+    if (visibleId) {
+      try {
+        sessionStorage.setItem(`cf-event-popup-${visibleId}`, "1");
+      } catch {
+        /* ignore */
+      }
+    }
+    setVisibleId(null);
+  };
+
+  return (
+    <AnimatePresence>
+      {event && (
+        <motion.aside
+          role="dialog"
+          aria-label={`Événement ce soir : ${event.title}`}
+          initial={{ opacity: 0, y: 40, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 40, scale: 0.96 }}
+          transition={{ duration: 0.5, ease: EASE }}
+          className="fixed bottom-5 right-5 left-5 sm:left-auto z-[90] w-auto sm:w-[min(92vw,380px)] bg-bg-primary text-cream ring-1 ring-cream/15 shadow-2xl p-6"
+        >
+          <button
+            type="button"
+            onClick={dismiss}
+            aria-label="Fermer"
+            className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center text-cream-soft/70 hover:text-cream text-xl leading-none transition-colors"
+          >
+            ×
+          </button>
+          <div className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-orange mb-3">
+            <span aria-hidden="true">✶ </span>Ce soir · encore des places
+          </div>
+          <h3 className="font-serif font-semibold text-cream text-[1.35rem] leading-tight mb-2 pr-6">
+            {event.title}
+          </h3>
+          <p className="font-sans font-light text-cream-soft/85 text-[0.9rem] leading-[1.65] mb-5">
+            {event.desc}
+          </p>
+          <div className="flex items-center gap-4">
+            <a
+              href="tel:+14507431448"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-orange text-bg-primary text-[0.72rem] font-medium tracking-[0.18em] uppercase rounded-[2px] hover:brightness-105 transition"
+            >
+              Réserver par tél.
+            </a>
+            <span className="text-[0.7rem] font-medium tracking-[0.18em] uppercase text-cream-soft/70">
+              {event.tag}
+            </span>
+          </div>
+        </motion.aside>
+      )}
+    </AnimatePresence>
+  );
+}
+
 function Contact() {
   const photos = usePhotos();
   const daysLabel = useOpenDaysLabel();
@@ -1836,22 +1955,31 @@ function Contact() {
               </div>
             </div>
 
-            <div className="flex gap-8 text-[0.875rem] font-medium tracking-[0.2em] uppercase text-bg-primary mt-8 lg:mt-0 p-6 lg:p-0">
+            <div className="flex items-center gap-4 mt-8 lg:mt-0 p-6 lg:p-0">
               <a
                 href="https://www.instagram.com/chezflorent.bistro/"
                 target="_blank"
                 rel="noopener noreferrer me"
-                className="link-underline"
                 aria-label="Instagram de Chez Florent (nouvel onglet)"
-              >Instagram</a>
-              <span aria-hidden="true" className="text-orange">·</span>
+                className="w-12 h-12 flex items-center justify-center border border-bg-primary/25 rounded-full text-bg-primary hover:bg-bg-primary hover:text-cream transition-all duration-300"
+              >
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none" />
+                </svg>
+              </a>
               <a
                 href="https://www.facebook.com/chezflorent.bistro/"
                 target="_blank"
                 rel="noopener noreferrer me"
-                className="link-underline"
                 aria-label="Facebook de Chez Florent (nouvel onglet)"
-              >Facebook</a>
+                className="w-12 h-12 flex items-center justify-center border border-bg-primary/25 rounded-full text-bg-primary hover:bg-bg-primary hover:text-cream transition-all duration-300"
+              >
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                  <path d="M14 8.5V6.7c0-.8.2-1.2 1.3-1.2H17V2.3c-.4-.1-1.4-.2-2.6-.2-2.5 0-4.2 1.5-4.2 4.3v2.1H7.5V12h2.7v9h3.5v-9h2.6l.4-3.5H14z" />
+                </svg>
+              </a>
             </div>
           </motion.div>
 
@@ -1875,6 +2003,48 @@ function Contact() {
             </span>
           </motion.div>
         </div>
+
+        {/* Map + directions */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: EASE }}
+          className="mt-20 md:mt-28"
+        >
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-8">
+            <div>
+              <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-3">
+                <span aria-hidden="true">◦ </span>Nous rejoindre
+              </div>
+              <p className="font-serif text-bg-primary text-[1.5rem] md:text-[1.75rem] leading-snug not-italic">
+                57 Rue du Roi, Sorel-Tracy, QC J3P 4M6
+              </p>
+            </div>
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=57%20Rue%20du%20Roi%2C%20Sorel-Tracy%2C%20QC%20J3P%204M6"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Obtenir l'itinéraire vers Chez Florent (nouvel onglet)"
+              className="inline-flex items-center gap-3 px-7 py-3 bg-bg-primary text-cream text-[0.75rem] font-medium tracking-[0.2em] uppercase rounded-[2px] hover:bg-orange hover:text-bg-primary transition-all duration-300 self-start"
+            >
+              Obtenir l'itinéraire
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+          <div className="aspect-[16/9] md:aspect-[21/9] overflow-hidden ring-1 ring-bg-primary/15">
+            <iframe
+              title="Carte — Chez Florent, 57 Rue du Roi, Sorel-Tracy"
+              src="https://www.google.com/maps?q=57%20Rue%20du%20Roi%2C%20Sorel-Tracy%2C%20QC%20J3P%204M6&output=embed"
+              width="100%"
+              height="100%"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              style={{ border: 0 }}
+              className="w-full h-full"
+            />
+          </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -2096,9 +2266,10 @@ export default function App() {
           {previewSection === "hero" && <Hero />}
           {previewSection === "a-propos" && <About />}
           {previewSection === "menu" && <Menu />}
-          {previewSection === "voix" && <Testimonials />}
+          {previewSection === "voix" && <Rendezvous />}
           {previewSection === "agenda" && <Agenda />}
           {previewSection === "reservation" && <Reservation />}
+          {previewSection === "faq" && <FAQ />}
           {previewSection === "contact" && <Contact />}
           {previewSection === "horaires" && <HoursBand />}
           {![
@@ -2108,6 +2279,7 @@ export default function App() {
             "voix",
             "agenda",
             "reservation",
+            "faq",
             "contact",
             "horaires",
           ].includes(previewSection ?? "") && (
@@ -2135,12 +2307,14 @@ export default function App() {
           <Hero />
           <About />
           <Menu />
-          <Testimonials />
+          <Rendezvous />
           <Agenda />
           <Reservation />
+          <FAQ />
           <Contact />
         </main>
         <Footer />
+        <TodayEventPopup />
       </div>
     </div>
   );
