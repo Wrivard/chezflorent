@@ -28,6 +28,7 @@ router.get("/about-content", async (_req, res): Promise<void> => {
         voices: stored.voices ?? DEFAULT_ABOUT_CONTENT.voices,
         suppliers: stored.suppliers ?? DEFAULT_ABOUT_CONTENT.suppliers,
         images: { ...DEFAULT_ABOUT_CONTENT.images, ...stored.images },
+        chef: { ...DEFAULT_ABOUT_CONTENT.chef, ...stored.chef },
       }
     : DEFAULT_ABOUT_CONTENT;
   res.json(GetAboutContentResponse.parse(data));

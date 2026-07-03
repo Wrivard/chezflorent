@@ -60,4 +60,11 @@ export const DEFAULT_ABOUT_CONTENT: AboutContent = {
     story2: "equipe-bar.jpg",
     story3: "chef-four-a-bois.jpg",
   },
+  chef: {
+    marker: "Le chef",
+    name: "Tommy Therrien",
+    role: "Chef cuisinier",
+    bio: "Tommy Therrien a développé son expertise culinaire à travers plusieurs établissements reconnus. Après sept années formatrices au Distingo de Sorel-Tracy auprès de son mentor, François Leduc, il a poursuivi son parcours au prestigieux Club Saint-James de Montréal, où il a perfectionné sa rigueur et son souci du détail.\n\nIl a ensuite occupé le poste de chef de production au Café Monk, participant activement au développement de son identité culinaire, avant de rejoindre L'Aurochs Steakhouse, où il a approfondi sa maîtrise des viandes de qualité supérieure et des techniques de cuisson.\n\nAujourd'hui, chez Florent, il met à profit l'ensemble de ces expériences dans un défi qui revêt pour lui une importance autant personnelle que professionnelle. Porter le nom de son grand-père sur sa veste de chef est une immense fierté qui l'accompagne à travers les hauts et les bas du monde de la restauration.\n\nPour Tommy, la cuisine est avant tout une histoire de transmission, de passion et de partage. Chaque assiette est une occasion de raconter une histoire, de créer une émotion et de rendre hommage aux producteurs, aux artisans et aux personnes qui se rassemblent autour d'une même table.",
+    image: "chef-four-a-bois.jpg",
+  },
 };

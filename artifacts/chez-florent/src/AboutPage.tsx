@@ -66,6 +66,13 @@ const DEFAULT_ABOUT_CONTENT: AboutContent = {
     story2: "equipe-bar.jpg",
     story3: "chef-four-a-bois.jpg",
   },
+  chef: {
+    marker: "Le chef",
+    name: "Tommy Therrien",
+    role: "Chef cuisinier",
+    bio: "Tommy Therrien a développé son expertise culinaire à travers plusieurs établissements reconnus. Après sept années formatrices au Distingo de Sorel-Tracy auprès de son mentor, François Leduc, il a poursuivi son parcours au prestigieux Club Saint-James de Montréal, où il a perfectionné sa rigueur et son souci du détail.\n\nIl a ensuite occupé le poste de chef de production au Café Monk, participant activement au développement de son identité culinaire, avant de rejoindre L'Aurochs Steakhouse, où il a approfondi sa maîtrise des viandes de qualité supérieure et des techniques de cuisson.\n\nAujourd'hui, chez Florent, il met à profit l'ensemble de ces expériences dans un défi qui revêt pour lui une importance autant personnelle que professionnelle. Porter le nom de son grand-père sur sa veste de chef est une immense fierté qui l'accompagne à travers les hauts et les bas du monde de la restauration.\n\nPour Tommy, la cuisine est avant tout une histoire de transmission, de passion et de partage. Chaque assiette est une occasion de raconter une histoire, de créer une émotion et de rendre hommage aux producteurs, aux artisans et aux personnes qui se rassemblent autour d'une même table.",
+    image: "chef-four-a-bois.jpg",
+  },
 };
 
 // Splits an editable text field into paragraphs on blank lines, so the CMS can
@@ -80,7 +87,7 @@ function toParagraphs(s: string): string[] {
 export default function AboutPage() {
   const { data } = useGetAboutContent();
   const content = data ?? DEFAULT_ABOUT_CONTENT;
-  const { texts, suppliers, images } = content;
+  const { texts, suppliers, images, chef } = content;
   const quoteWords = texts.quote.split(" ");
   const question2 =
     texts.storyQuestion2 ?? DEFAULT_ABOUT_CONTENT.texts.storyQuestion2 ?? "";
@@ -252,8 +259,57 @@ export default function AboutPage() {
             </div>
           </section>
 
+          {/* Chef */}
+          <section className="bg-bg-primary pt-20 md:pt-24 pb-16 md:pb-20 px-6 md:px-12 relative">
+            <div className="max-w-7xl mx-auto relative z-10">
+              <div className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-orange mb-10">
+                <span aria-hidden="true">◦ </span>
+                {chef.marker}
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14 items-start">
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.9, ease: EASE }}
+                  className="md:col-span-5 md:sticky md:top-28"
+                >
+                  <div className="aspect-[3/4] overflow-hidden ring-1 ring-cream/10">
+                    <img
+                      src={imgSrc(chef.image)}
+                      alt={chef.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="mt-6">
+                    <h2 className="font-display text-cream leading-[1.05] text-[clamp(2.25rem,5vw,3.5rem)]">
+                      {chef.name}
+                    </h2>
+                    <p className="mt-2 font-serif italic text-orange text-lg">
+                      {chef.role}
+                    </p>
+                  </div>
+                </motion.div>
+                <div className="md:col-span-7 space-y-5">
+                  {toParagraphs(chef.bio).map((p, i) => (
+                    <motion.p
+                      key={i}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-100px" }}
+                      transition={{ duration: 0.8, ease: EASE, delay: i * 0.05 }}
+                      className="font-serif text-cream-soft/85 text-[1.0625rem] md:text-[1.1875rem] leading-[1.9]"
+                    >
+                      {p}
+                    </motion.p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* Suppliers */}
-          <section className="bg-bg-primary pt-20 md:pt-24 pb-24 md:pb-32 px-6 md:px-12 relative">
+          <section className="bg-bg-primary pt-12 md:pt-16 pb-24 md:pb-32 px-6 md:px-12 relative">
             <div className="max-w-7xl mx-auto relative z-10">
               <div className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-orange mb-10">
                 <span aria-hidden="true">◦ </span>

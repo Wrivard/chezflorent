@@ -293,9 +293,18 @@ export interface MenuMarquee {
   suppliers: string[];
 }
 
+export interface AboutChef {
+  marker: string;
+  name: string;
+  role: string;
+  bio: string;
+  image: string;
+}
+
 export interface AboutContent {
   texts: AboutTexts;
   voices: AboutVoice[];
   suppliers: AboutSupplier[];
   images: AboutImages;
+  chef: AboutChef;
 }

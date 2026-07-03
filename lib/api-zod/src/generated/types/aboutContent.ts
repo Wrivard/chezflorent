@@ -5,6 +5,7 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+import type { AboutChef } from "./aboutChef";
 import type { AboutImages } from "./aboutImages";
 import type { AboutSupplier } from "./aboutSupplier";
 import type { AboutTexts } from "./aboutTexts";
@@ -15,4 +16,5 @@ export interface AboutContent {
   voices: AboutVoice[];
   suppliers: AboutSupplier[];
   images: AboutImages;
+  chef: AboutChef;
 }

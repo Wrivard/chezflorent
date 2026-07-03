@@ -1178,9 +1178,23 @@ components:
           type: array
           items:
             type: string
+    AboutChef:
+      type: object
+      required: [marker, name, role, bio, image]
+      properties:
+        marker:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+        bio:
+          type: string
+        image:
+          type: string
     AboutContent:
       type: object
-      required: [texts, voices, suppliers, images]
+      required: [texts, voices, suppliers, images, chef]
       properties:
         texts:
           $ref: "#/components/schemas/AboutTexts"
@@ -1194,3 +1208,5 @@ components:
             $ref: "#/components/schemas/AboutSupplier"
         images:
           $ref: "#/components/schemas/AboutImages"
+        chef:
+          $ref: "#/components/schemas/AboutChef"

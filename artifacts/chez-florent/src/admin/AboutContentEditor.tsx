@@ -191,6 +191,8 @@ function EditorInner({ initial }: { initial: AboutContent }) {
     setDraft((d) => ({ ...d, texts: { ...d.texts, [key]: v } }));
   const setImage = (key: keyof AboutContent["images"], v: string) =>
     setDraft((d) => ({ ...d, images: { ...d.images, [key]: v } }));
+  const setChef = (key: keyof AboutContent["chef"], v: string) =>
+    setDraft((d) => ({ ...d, chef: { ...d.chef, [key]: v } }));
   const setVoice = (i: number, patch: Partial<AboutVoice>) =>
     setDraft((d) => ({
       ...d,
@@ -348,6 +350,43 @@ function EditorInner({ initial }: { initial: AboutContent }) {
               label="Photo 3 (portrait)"
               value={draft.images.story3}
               onChange={(url) => setImage("story3", url)}
+            />
+          </div>
+        </Card>
+
+        {/* CHEF */}
+        <Card>
+          <h3 className="mb-4 font-serif text-xl text-cream">
+            Le chef
+          </h3>
+          <div className="grid gap-5">
+            <div className="grid gap-5 sm:grid-cols-3">
+              <TextRow
+                label="Petit titre"
+                value={draft.chef.marker}
+                onChange={(v) => setChef("marker", v)}
+              />
+              <TextRow
+                label="Nom"
+                value={draft.chef.name}
+                onChange={(v) => setChef("name", v)}
+              />
+              <TextRow
+                label="Rôle"
+                value={draft.chef.role}
+                onChange={(v) => setChef("role", v)}
+              />
+            </div>
+            <AreaRow
+              label="Biographie (paragraphes)"
+              value={draft.chef.bio}
+              onChange={(v) => setChef("bio", v)}
+              hint="Séparez les paragraphes par une ligne vide."
+            />
+            <ImageField
+              label="Photo du chef (portrait)"
+              value={draft.chef.image}
+              onChange={(url) => setChef("image", url)}
             />
           </div>
         </Card>

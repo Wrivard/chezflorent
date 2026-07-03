@@ -545,6 +545,13 @@ export const GetAboutContentResponse = zod.object({
     story2: zod.string(),
     story3: zod.string(),
   }),
+  chef: zod.object({
+    marker: zod.string(),
+    name: zod.string(),
+    role: zod.string(),
+    bio: zod.string(),
+    image: zod.string(),
+  }),
 });
 
 /**
@@ -582,6 +589,13 @@ export const UpdateAboutContentBody = zod.object({
     story2: zod.string(),
     story3: zod.string(),
   }),
+  chef: zod.object({
+    marker: zod.string(),
+    name: zod.string(),
+    role: zod.string(),
+    bio: zod.string(),
+    image: zod.string(),
+  }),
 });
 
 export const UpdateAboutContentResponse = zod.object({
@@ -615,6 +629,13 @@ export const UpdateAboutContentResponse = zod.object({
     story1: zod.string(),
     story2: zod.string(),
     story3: zod.string(),
+  }),
+  chef: zod.object({
+    marker: zod.string(),
+    name: zod.string(),
+    role: zod.string(),
+    bio: zod.string(),
+    image: zod.string(),
   }),
 });
 
