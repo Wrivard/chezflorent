@@ -1,6 +1,7 @@
 import app from "./app";
 import { logger } from "./lib/logger";
 import { ensureAdminSeed } from "./lib/ensureAdmin";
+import { importContentSnapshot } from "./lib/importSnapshot";
 
 const rawPort = process.env["PORT"];
 
@@ -28,4 +29,9 @@ app.listen(port, (err) => {
   // instance is connected to (production has its own DB the local seed never
   // touches). Runs after listen so a slow DB can't delay the healthcheck.
   void ensureAdminSeed();
+
+  // Populate an empty database (e.g. a fresh production deploy) with the content
+  // snapshot exported from development. Idempotent: skips any table that already
+  // has rows, so it never overwrites edits made through the CMS.
+  void importContentSnapshot();
 });

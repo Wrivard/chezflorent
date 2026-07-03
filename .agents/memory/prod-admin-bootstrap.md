@@ -24,3 +24,14 @@ description: Why admin login worked in dev but not on the published site, and th
 - Run AFTER `listen` so a slow DB can't delay the deployment healthcheck.
 - Takes effect in production only after the user RE-PUBLISHES (the running deployment keeps old code until then).
 - This is DATA bootstrap, not schema DDL — distinct from the "never script prod schema migrations" rule (schema is handled by Replit's publish-time diff).
+
+## Copying ALL dev content into an empty prod DB (not just admin)
+
+Same root problem, bigger scope: when the user wants the published site to show the EXACT content they curated in dev (full menu, events, hours, photos, singleton jsonb docs), you still can't write prod directly. Pattern that works:
+1. Export dev content to a JSON snapshot committed in the repo (generate it with a throwaway node script that reads the dev DB via `pg` + `DATABASE_URL`, then delete the script). Run that script from a dir where `pg` resolves (e.g. `lib/db`), not the sandbox/workspace root — `pg` isn't resolvable there.
+2. `import` the JSON into the server (esbuild bundles it; needs `resolveJsonModule: true` in the api-server tsconfig) and insert it on startup.
+3. Bundle check: after build, grep dist for a distinctive snapshot string to confirm esbuild inlined the JSON.
+
+**Why a single transaction matters (hard-won):** wrap the WHOLE import in one `db.transaction`. Per-step, non-transactional inserts gated only on "table has any row" are unsafe — a mid-run failure leaves the table half-populated but permanently "skipped", and two autoscale instances racing on an empty DB can partially double-insert / hit unique violations. One transaction makes it atomic (failure rolls back → next boot retries) AND race-safe (the losing instance hits a unique-key conflict on natural keys like category.slug / hours.dayOfWeek / photos.slot and rolls back entirely, leaving the winner's complete copy).
+
+**Snapshot is a frozen copy, not a live mirror:** future dev edits do NOT propagate; after first publish, prod is managed independently through the CMS. Re-exporting the snapshot only re-seeds a prod table that is still empty.

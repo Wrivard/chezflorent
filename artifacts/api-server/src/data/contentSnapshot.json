@@ -1,0 +1,2103 @@
+{
+  "generatedAt": "2026-07-03T18:11:26.122Z",
+  "menu": [
+    {
+      "slug": "encas",
+      "label": "Encas",
+      "tagline": "Petites bouchées pour ouvrir la soirée.",
+      "sortOrder": 0,
+      "items": [
+        {
+          "name": "Bol de chips",
+          "price": "6,00 $",
+          "description": "Croustilles Covered Bridge.",
+          "image": "/images/dish-tasting.png",
+          "sortOrder": 0
+        },
+        {
+          "name": "Saucissons secs",
+          "price": "6,25 $",
+          "description": "Porc Épique.",
+          "image": "/images/dish-charcuterie.png",
+          "sortOrder": 1
+        },
+        {
+          "name": "Bol d'olives",
+          "price": "6,25 $",
+          "description": "Olives méli-mélo.",
+          "image": "/images/dish-charcuterie.png",
+          "sortOrder": 2
+        },
+        {
+          "name": "Soupe du jour",
+          "price": "6,95 $",
+          "description": "Servie avec pain au levain (Maison Jaune).",
+          "image": "/images/naan-dip.jpg",
+          "sortOrder": 3
+        },
+        {
+          "name": "Frites épicées",
+          "price": "7,25 $",
+          "description": "Mayonnaise ordinaire, jalapenos ou épicée / sauce ranch au bleu / ketchup.",
+          "image": "/images/dish-tasting.png",
+          "sortOrder": 4
+        },
+        {
+          "name": "Pizza à l'ail",
+          "price": "15,95 $",
+          "description": "Trempette marinara.",
+          "image": "/images/pizza-oven.jpg",
+          "sortOrder": 5
+        },
+        {
+          "name": "Trempette et chips de maïs",
+          "price": "15,95 $",
+          "description": "Guacamole, salsa maison, crème sûre, fromage râpé.",
+          "image": "/images/naan-dip.jpg",
+          "sortOrder": 6
+        },
+        {
+          "name": "Crostini bruschetta",
+          "price": "17,00 $",
+          "description": "Pain baguette, cheddar fort, glaze balsamique, mayonnaise lime.",
+          "image": "/images/bread-tearing.png",
+          "sortOrder": 7
+        },
+        {
+          "name": "Choux-fleurs « pop-corn »",
+          "price": "17,50 $",
+          "description": "Trempette avocat-lime.",
+          "image": "/images/dish-tasting.png",
+          "sortOrder": 8
+        }
+      ]
+    },
+    {
+      "slug": "salades",
+      "label": "Salades",
+      "tagline": "Prix : accompagnement / repas.",
+      "sortOrder": 1,
+      "items": [
+        {
+          "name": "Verte",
+          "price": "5,50 $ / 9,50 $",
+          "description": "Mélange de salade, vinaigre balsamique, huile d'olive.",
+          "image": "/images/bufarella-mint.jpg",
+          "sortOrder": 0
+        },
+        {
+          "name": "Maison",
+          "price": "7,95 $ / 11,95 $",
+          "description": "Mélange de salade, concombres, tomates, oignons marinés, vinaigrette citron-érable.",
+          "image": "/images/bufarella-mint.jpg",
+          "sortOrder": 1
+        },
+        {
+          "name": "César",
+          "price": "10,50 $ / 16,50 $",
+          "description": "Laitue romaine, bacon, croutons, parmesan, sauce césar maison.",
+          "image": "/images/bufarella-mint.jpg",
+          "sortOrder": 2
+        },
+        {
+          "name": "Canneberge",
+          "price": "12,25 $ / 20,50 $",
+          "description": "Mélange de salade, cheddar fort, noix de Grenoble caramélisées, oignons marinés, canneberges séchées.",
+          "image": "/images/bufarella-mint.jpg",
+          "sortOrder": 3
+        },
+        {
+          "name": "Truite fumée",
+          "price": "14,95 $ / 24,95 $",
+          "description": "Truite fumée (Les Cowboys du BBQ), mélange de salade, radis, concombres, fenouils. Vinaigrette citron-érable ou sauce maison ranch au bleu.",
+          "image": "/images/bufarella-mint.jpg",
+          "sortOrder": 4
+        }
+      ]
+    },
+    {
+      "slug": "pizzas",
+      "label": "Pizzas four à bois",
+      "tagline": "Fromage végétalien +2,00 $ · Pâte sans gluten Oggi +4,95 $.",
+      "sortOrder": 2,
+      "items": [
+        {
+          "name": "Margherita",
+          "price": "20,95 $",
+          "description": "Sauce tomate, bufarella, parmesan, basilic.",
+          "image": "/images/pizza-oven.jpg",
+          "sortOrder": 0
+        },
+        {
+          "name": "4 fromages",
+          "price": "21,95 $",
+          "description": "Mozzarella, cheddar fort, parmesan, provolone. Beurre à l'ail +2,50 $.",
+          "image": "/images/dish-pizza.png",
+          "sortOrder": 1
+        },
+        {
+          "name": "Pesto",
+          "price": "21,95 $",
+          "description": "Courgette, roquette, parmesan.",
+          "image": "/images/pizza-planche.jpg",
+          "sortOrder": 2
+        },
+        {
+          "name": "Calabrese",
+          "price": "22,95 $",
+          "description": "Sauce tomate, mozzarella, oignons blancs, miel (Les Ruchers Bérard).",
+          "image": "/images/facade-pizza.jpg",
+          "sortOrder": 3
+        },
+        {
+          "name": "Pepperoni",
+          "price": "22,95 $",
+          "description": "Sauce tomate, mozzarella.",
+          "image": "/images/chef-four-a-bois.jpg",
+          "sortOrder": 4
+        },
+        {
+          "name": "La Toute",
+          "price": "23,95 $",
+          "description": "Sauce tomate, mozzarella, pepperoni, poivrons, bacon, champignons.",
+          "image": "/images/pizza-oven.jpg",
+          "sortOrder": 5
+        },
+        {
+          "name": "Prosciutto",
+          "price": "24,95 $",
+          "description": "Sauce tomate, mozzarella, bufarella, roquette, glaze balsamique, parmesan.",
+          "image": "/images/dish-pizza.png",
+          "sortOrder": 6
+        },
+        {
+          "name": "La « Bigflo »",
+          "price": "24,95 $",
+          "description": "Fromage jaune, viande hachée, cornichons, salade romaine, sauce maison style « bigmac ».",
+          "image": "/images/pizza-planche.jpg",
+          "sortOrder": 7
+        },
+        {
+          "name": "La Québécoise",
+          "price": "25,95 $",
+          "description": "Sauce tomate, mozzarella, bacon, pepperoni, oignons rouges, chair de saucisses (Ferme J.N Beauchemin), oignons verts.",
+          "image": "/images/facade-pizza.jpg",
+          "sortOrder": 8
+        },
+        {
+          "name": "La Maï Maï",
+          "price": "25,95 $",
+          "description": "Sauce crème citron-romarin, truite fumée (Les Cowboys du BBQ), oignons verts, roquette, fenouils.",
+          "image": "/images/chef-four-a-bois.jpg",
+          "sortOrder": 9
+        },
+        {
+          "name": "La « Sweet Lou »",
+          "price": "25,95 $",
+          "description": "Sauce tomate et sauce BBQ, mozzarella, brisket (Les Cowboys du BBQ), fromage de chèvre, oignons marinés.",
+          "image": "/images/pizza-oven.jpg",
+          "sortOrder": 10
+        }
+      ]
+    },
+    {
+      "slug": "hoagies",
+      "label": "Hoagies",
+      "tagline": "Servis avec frites ou salade (Verte, Maison, César, Canneberge +1,25 $, Truite fumée +5,50 $). Option « sans accompagnement » disponible à moindre coût.",
+      "sortOrder": 3,
+      "items": [
+        {
+          "name": "BLT su flo'",
+          "price": "20,95 $",
+          "description": "Mayonnaise jalapenos, bacon, laitue, tomates. Champignons shiitake (protéine végétale) +4,00 $ · option « sans bacon ».",
+          "image": "/images/sandwich-mac.jpg",
+          "sortOrder": 0
+        },
+        {
+          "name": "Légumes et fromage de chèvre",
+          "price": "21,25 $",
+          "description": "Pesto de tomates séchées, courgettes, poivrons, champignons, roquette.",
+          "image": "/images/dish-sandwich.png",
+          "sortOrder": 1
+        },
+        {
+          "name": "Jambon",
+          "price": "23,50 $",
+          "description": "Jambon (Porc Épique), mayonnaise moutarde, fromage suisse, roquette.",
+          "image": "/images/feuillete-ham.jpg",
+          "sortOrder": 2
+        },
+        {
+          "name": "Charcuteux",
+          "price": "24,95 $",
+          "description": "Mayonnaise balsamique, prosciutto, calabrese, bufarella, tomates, roquette.",
+          "image": "/images/tower-sandwich.jpg",
+          "sortOrder": 3
+        },
+        {
+          "name": "Brisket",
+          "price": "24,95 $",
+          "description": "Brisket (Les Cowboys du BBQ), moutarde maison, cornichons. Fromage provolone +1,00 $.",
+          "image": "/images/miche-porc.jpg",
+          "sortOrder": 4
+        }
+      ]
+    },
+    {
+      "slug": "desserts",
+      "label": "Desserts",
+      "tagline": "Pâtisseries en rotation chaque semaine — prix variable.",
+      "sortOrder": 4,
+      "items": [
+        {
+          "name": "Pâtisseries invitées",
+          "price": "",
+          "description": "Le Comptoir d'Alexandrine, Christophe, Pâtisserie Aveline — en rotation chaque semaine, prix variable.",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Croustade maison",
+          "price": "7,95 $",
+          "description": "Servie avec crème glacée.",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Pizza dessert maison",
+          "price": "9,95 $",
+          "description": "≈ 10 pouces.",
+          "image": null,
+          "sortOrder": 2
+        }
+      ]
+    },
+    {
+      "slug": "cafes-thes",
+      "label": "Cafés & thés",
+      "tagline": "",
+      "sortOrder": 5,
+      "items": [
+        {
+          "name": "Café décaféiné",
+          "price": "3,00 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Café filtre",
+          "price": "3,50 $",
+          "description": "Wiltor.",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Thé vert / thé chaï / thé noir",
+          "price": "3,50 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 2
+        },
+        {
+          "name": "Tisane gingembre et citron / camomille",
+          "price": "3,50 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 3
+        }
+      ]
+    },
+    {
+      "slug": "alcools",
+      "label": "Alcools",
+      "tagline": "Prix : 1 oz / avec café.",
+      "sortOrder": 6,
+      "items": [
+        {
+          "name": "Coureur des bois",
+          "price": "9,00 $ / 10,00 $",
+          "description": "Crème d'érable.",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Crémette espresso",
+          "price": "9,00 $ / 10,00 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Tioméo, rhum chocolat café",
+          "price": "10,00 $ / 11,00 $",
+          "description": "Rosemont.",
+          "image": null,
+          "sortOrder": 2
+        }
+      ]
+    },
+    {
+      "slug": "extras",
+      "label": "Extras",
+      "tagline": "Suppléments à ajouter à vos plats.",
+      "sortOrder": 7,
+      "items": [
+        {
+          "name": "Viandes",
+          "price": "+3,50 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Légumes",
+          "price": "+1,75 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Champignons shiitake",
+          "price": "+4,00 $",
+          "description": "Protéine végétale.",
+          "image": null,
+          "sortOrder": 2
+        },
+        {
+          "name": "Fromages",
+          "price": "+2,75 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 3
+        },
+        {
+          "name": "Bufarella",
+          "price": "+5,50 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 4
+        }
+      ]
+    },
+    {
+      "slug": "en-futs",
+      "label": "En fûts",
+      "tagline": "",
+      "sortOrder": 8,
+      "items": [
+        {
+          "name": "Dans Une Forêt De Feuilles D'Or",
+          "price": "9,25 $ / 11,25 $",
+          "description": "Brasserie Ayawan · Pilsner - Czech · 5% · Val-Morin, QC",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Flotter Sur La Mer Morte",
+          "price": "10,50 $ / 12,50 $",
+          "description": "Messorem · Sour - Fruited Gose · 5% · Montreal, QC",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Gros Pin",
+          "price": "8,95 $ / 10,50 $",
+          "description": "La Souche Microbrasserie · Red Ale - Irish · 5.5% · Quebec, QC",
+          "image": null,
+          "sortOrder": 2
+        },
+        {
+          "name": "HUGO BLANCHE",
+          "price": "9,25 $ / 11,25 $",
+          "description": "WILLS · Wheat Beer - Witbier · 4.5% · Montréal, QC",
+          "image": null,
+          "sortOrder": 3
+        },
+        {
+          "name": "Lumière Incertaine",
+          "price": "10,50 $ / 12,50 $",
+          "description": "Brasserie Sir John Brewing Co. · IPA - American · 7% · Lachute, QC",
+          "image": null,
+          "sortOrder": 4
+        },
+        {
+          "name": "Beaux Jours",
+          "price": "8,95 $ / 10,50 $",
+          "description": "Le Cheptel · Sour - Berliner Weisse · 3.2% · Sainte-Victoire-de-Sorel, qc",
+          "image": null,
+          "sortOrder": 5
+        },
+        {
+          "name": "Question De Perspective",
+          "price": "9,25 $ / 11,25 $",
+          "description": "Brasserie Ayawan · Stout - American · 7% · Val-Morin, QC",
+          "image": null,
+          "sortOrder": 6
+        },
+        {
+          "name": "Le Matin Des Magiciens",
+          "price": "9,25 $ / 11,25 $",
+          "description": "Brasserie Ayawan · Pale Ale - New England · 5.3% · Val-Morin, QC",
+          "image": null,
+          "sortOrder": 7
+        },
+        {
+          "name": "EXTRA DRY HOPPED TIBIA",
+          "price": "10,50 $ / 12,50 $",
+          "description": "Bad Bones · IPA - Imperial · 8.4% · Dunham, QC",
+          "image": null,
+          "sortOrder": 8
+        },
+        {
+          "name": "Spiralité 2/4",
+          "price": "9,25 $ / 11,25 $",
+          "description": "Brasserie Ayawan · Brown Ale - Other · 5.4% · Val-Morin, QC",
+          "image": null,
+          "sortOrder": 9
+        },
+        {
+          "name": "Dégustation",
+          "price": "17,95 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 10
+        }
+      ]
+    },
+    {
+      "slug": "bouteilles-et-canettes",
+      "label": "Bouteilles et canettes",
+      "tagline": "",
+      "sortOrder": 9,
+      "items": [
+        {
+          "name": "Trace Du Temps",
+          "price": "20,00 $",
+          "description": "Gaspard Brasserie Artisanale · Farmhouse Ale - Brett · Boucherville, QC",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Junco",
+          "price": "12,95 $",
+          "description": "Brasserie Dunham · Farmhouse Ale - Grisette · 5% · Dunham, QC",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Crème Solaire",
+          "price": "12,95 $",
+          "description": "Gaspard Brasserie Artisanale · Wheat Beer - Witbier · 5.5% · Boucherville, QC",
+          "image": null,
+          "sortOrder": 2
+        },
+        {
+          "name": "B comme Blanche",
+          "price": "12,95 $",
+          "description": "La Barberie · Wheat Beer - Witbier · 4.5% · Québec, QC",
+          "image": null,
+          "sortOrder": 3
+        },
+        {
+          "name": "Westy Hogan",
+          "price": "20,00 $",
+          "description": "5e Baron · IPA - Triple · 10% · Aylmer, QC",
+          "image": null,
+          "sortOrder": 4
+        },
+        {
+          "name": "Des Écores",
+          "price": "25,00 $",
+          "description": "Brasserie Auval Brewing · Farmhouse Ale - Saison · 6% · Val d'Espoir, QC",
+          "image": null,
+          "sortOrder": 5
+        },
+        {
+          "name": "Le Grain De Sel",
+          "price": "10,50 $",
+          "description": "Shawbridge - Microbrasserie et Charcuteries · Sour - Traditional Gose · 5% · Prévost, QC",
+          "image": null,
+          "sortOrder": 6
+        },
+        {
+          "name": "Saison du Pinacle",
+          "price": "20,00 $",
+          "description": "Brasserie Dunham · Farmhouse Ale - Saison · 6.5% · Dunham, QC",
+          "image": null,
+          "sortOrder": 7
+        },
+        {
+          "name": "Bobonom",
+          "price": "14,00 $",
+          "description": "Auberge Sutton Brouërie · Pale Ale - American · 6% · Sutton, QC",
+          "image": null,
+          "sortOrder": 8
+        },
+        {
+          "name": "Saison Bee-bop",
+          "price": "14,00 $",
+          "description": "Auberge Sutton Brouërie · Farmhouse Ale - Saison · 5.8% · Sutton, QC",
+          "image": null,
+          "sortOrder": 9
+        },
+        {
+          "name": "Délice Nocturne",
+          "price": "14,00 $",
+          "description": "Gaspard Brasserie Artisanale · Stout - Oatmeal · Boucherville, QC",
+          "image": null,
+          "sortOrder": 10
+        },
+        {
+          "name": "Russian Imperial Stout 1848",
+          "price": "13,75 $",
+          "description": "Brasserie Artisanale Albion · Stout - Russian Imperial · 10% · Joliette, QC",
+          "image": null,
+          "sortOrder": 11
+        },
+        {
+          "name": "90 Shilling",
+          "price": "13,75 $",
+          "description": "Brasserie Artisanale Albion · Scottish Export Ale · 6% · Joliette, QC",
+          "image": null,
+          "sortOrder": 12
+        },
+        {
+          "name": "Gros Mollet",
+          "price": "50,00 $",
+          "description": "Microbrasserie du Lac Saint-Jean · Belgian Dubbel · 7.8% · St-Gédéon, qc",
+          "image": null,
+          "sortOrder": 13
+        },
+        {
+          "name": "Carouge",
+          "price": "22,00 $",
+          "description": "Brasserie Dunham · Farmhouse Ale - Saison · 6.5% · Dunham, QC",
+          "image": null,
+          "sortOrder": 14
+        },
+        {
+          "name": "Garde Partagée",
+          "price": "22,00 $",
+          "description": "Brasserie Dunham · Wild Ale - Other · 6% · Dunham, QC",
+          "image": null,
+          "sortOrder": 15
+        },
+        {
+          "name": "Barley Wine",
+          "price": "13,75 $",
+          "description": "L'Apothicaire · Barleywine - English · 10% · Saint-Jacques, QC",
+          "image": null,
+          "sortOrder": 16
+        },
+        {
+          "name": "Quadrupel 4e Anniversaire",
+          "price": "21,00 $",
+          "description": "Microbrasserie Au Frontibus · Belgian Quadrupel · 10.5% · Gaspé, QC",
+          "image": null,
+          "sortOrder": 17
+        }
+      ]
+    },
+    {
+      "slug": "sans-gluten",
+      "label": "Sans gluten",
+      "tagline": "",
+      "sortOrder": 10,
+      "items": [
+        {
+          "name": "Sour Pêche Et Fruit De La Passion",
+          "price": "8,75 $",
+          "description": "Helix - Sans Gluten Free · Sour - Fruited · 3.8% · Saint-Alexis-des-Monts, QC",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Helix Gose",
+          "price": "8,75 $",
+          "description": "Helix - Sans Gluten Free · Sour - Other Gose · 4.8% · Saint-Alexis-des-Monts, QC",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Helix Saison Houblonnée",
+          "price": "8,75 $",
+          "description": "Helix - Sans Gluten Free · Gluten-Free · 6.7% · Saint-Alexis-des-Monts, QC",
+          "image": null,
+          "sortOrder": 2
+        },
+        {
+          "name": "Helix Ale Rousse",
+          "price": "8,75 $",
+          "description": "Microbrasserie Nouvelle-France · Red Ale - American Amber · 5.2% · Saint-Alexis-des-Monts, QC",
+          "image": null,
+          "sortOrder": 3
+        },
+        {
+          "name": "Helix Blonde",
+          "price": "8,75 $",
+          "description": "Helix - Sans Gluten Free · Gluten-Free · 5% · Saint-Alexis-des-Monts, QC",
+          "image": null,
+          "sortOrder": 4
+        },
+        {
+          "name": "Helix Blanche - Belgian White",
+          "price": "8,75 $",
+          "description": "Helix - Sans Gluten Free · Gluten-Free · 5% · Saint-Alexis-des-Monts, QC",
+          "image": null,
+          "sortOrder": 5
+        },
+        {
+          "name": "NEIPA",
+          "price": "11,75 $",
+          "description": "Helix - Sans Gluten Free · Gluten-Free · 5.1% · Saint-Alexis-des-Monts, QC",
+          "image": null,
+          "sortOrder": 6
+        }
+      ]
+    },
+    {
+      "slug": "sans-alcool",
+      "label": "Sans alcool",
+      "tagline": "",
+      "sortOrder": 11,
+      "items": [
+        {
+          "name": "Sans Limite - Blanche",
+          "price": "10,25 $",
+          "description": "Shawbridge - Microbrasserie et Charcuteries · Non-Alcoholic - Wheat · 0.5% · Prévost, QC",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Placebo - Statera",
+          "price": "12,00 $",
+          "description": "La Barberie · Non-Alcoholic - Other Beer · 0.5% · Québec, QC",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Lunchroom",
+          "price": "11,00 $",
+          "description": "Microbrasserie St-Pancrace · Non-Alcoholic - Blonde · 0.5% · Baie-Comeau, QC",
+          "image": null,
+          "sortOrder": 2
+        },
+        {
+          "name": "Deluxe Zero 5",
+          "price": "9,95 $",
+          "description": "Burdock Brewery · Non-Alcoholic - Lager · 0.5% · Toronto, on",
+          "image": null,
+          "sortOrder": 3
+        },
+        {
+          "name": "Blonde Sans Gluten Sans Alcool",
+          "price": "12,00 $",
+          "description": "Helix - Sans Gluten Free · Non-Alcoholic - Other Beer · Saint-Alexis-des-Monts, QC",
+          "image": null,
+          "sortOrder": 4
+        },
+        {
+          "name": "Ti-Zeste",
+          "price": "12,00 $",
+          "description": "Gaspard Brasserie Artisanale · Non-Alcoholic - Sour · Boucherville, QC",
+          "image": null,
+          "sortOrder": 5
+        },
+        {
+          "name": "Cyclope IPA sans alcool",
+          "price": "12,00 $",
+          "description": "Brasserie Dunham · Non-Alcoholic - IPA · Dunham, QC",
+          "image": null,
+          "sortOrder": 6
+        },
+        {
+          "name": "Placebo - Rousse",
+          "price": "12,00 $",
+          "description": "La Barberie · Non-Alcoholic - Other Beer · 0.5% · Québec, QC",
+          "image": null,
+          "sortOrder": 7
+        },
+        {
+          "name": "Ti-Peu",
+          "price": "12,00 $",
+          "description": "Gaspard Brasserie Artisanale · Non-Alcoholic - IPA · 0.2% · Boucherville, QC",
+          "image": null,
+          "sortOrder": 8
+        },
+        {
+          "name": "Placebo - Sure aux framboises",
+          "price": "12,00 $",
+          "description": "La Barberie · Non-Alcoholic - Sour · 0.5% · Québec, QC",
+          "image": null,
+          "sortOrder": 9
+        },
+        {
+          "name": "Frambou",
+          "price": "11,15 $",
+          "description": "Ras L'Bock · Non-Alcoholic - Wheat · 0.5% · Saint-Jean-Port-Joli, QC",
+          "image": null,
+          "sortOrder": 10
+        },
+        {
+          "name": "Sans Limite - Rousse",
+          "price": "10,25 $",
+          "description": "Shawbridge - Microbrasserie et Charcuteries · Non-Alcoholic - Red Ale · 0.5% · Prévost, QC",
+          "image": null,
+          "sortOrder": 11
+        },
+        {
+          "name": "Petite Pause",
+          "price": "10,25 $",
+          "description": "Microbrasserie Les Grands Bois · Non-Alcoholic - IPA · 0.5% · Saint-Casimir, QC",
+          "image": null,
+          "sortOrder": 12
+        },
+        {
+          "name": "Swoon",
+          "price": "9,95 $",
+          "description": "Burdock Brewery · Non-Alcoholic - Porter · 0.5% · Toronto, on",
+          "image": null,
+          "sortOrder": 13
+        }
+      ]
+    },
+    {
+      "slug": "blancs",
+      "label": "Blancs",
+      "tagline": "",
+      "sortOrder": 12,
+      "items": [
+        {
+          "name": "Vidal Geisenheim",
+          "price": "60,00 $",
+          "description": "Vidal, Geisenheim · 12%",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Chardonnay",
+          "price": "12,00 $ / 75,00 $",
+          "description": "Chardonnay · 12.6%",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Haute Saison",
+          "price": "9,00 $ / 45,00 $",
+          "description": "Vidal, frontenac blanc, cayuga · 12%",
+          "image": null,
+          "sortOrder": 2
+        },
+        {
+          "name": "Cuvée Cimetière",
+          "price": "15,50 $ / 90,00 $",
+          "description": "94% Chardonnay, 6% Riesling, Savagnin, Melon, Ehrenfelser",
+          "image": null,
+          "sortOrder": 3
+        },
+        {
+          "name": "Au Bout De La Route",
+          "price": "13,50 $",
+          "description": "Seyval, Geisenheim · 12.6%",
+          "image": null,
+          "sortOrder": 4
+        },
+        {
+          "name": "Voile De La Mariée",
+          "price": "11,00 $ / 60,00 $",
+          "description": "Acadie, Gewurztraminer · 11.9%",
+          "image": null,
+          "sortOrder": 5
+        },
+        {
+          "name": "Roland",
+          "price": "85,00 $",
+          "description": "Roland",
+          "image": null,
+          "sortOrder": 6
+        },
+        {
+          "name": "Matiere à Discussion",
+          "price": "82,00 $",
+          "description": "Vidal · 10%",
+          "image": null,
+          "sortOrder": 7
+        }
+      ]
+    },
+    {
+      "slug": "rouges",
+      "label": "Rouges",
+      "tagline": "",
+      "sortOrder": 13,
+      "items": [
+        {
+          "name": "Etnella 'Notti Stellate' Etna Rosso",
+          "price": "140,00 $",
+          "description": "Nerello Cappuccio - Nerello Mascalese · 13%",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Saint Armand",
+          "price": "90,00 $",
+          "description": "Pinot Noir, Marquette · 11.8%",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Pinot Madeleine",
+          "price": "100,00 $",
+          "description": "Pinot Madeleine · 11%",
+          "image": null,
+          "sortOrder": 2
+        },
+        {
+          "name": "Côte d'en Haut",
+          "price": "60,00 $",
+          "description": "Frontenac Noir et Marquette",
+          "image": null,
+          "sortOrder": 3
+        },
+        {
+          "name": "Marron",
+          "price": "95,00 $ / 19,00 $",
+          "description": "Marquette",
+          "image": null,
+          "sortOrder": 4
+        },
+        {
+          "name": "Beach Goth",
+          "price": "95,00 $",
+          "description": "Domina, régent, pinot gris · 11.5%",
+          "image": null,
+          "sortOrder": 5
+        },
+        {
+          "name": "Schlado",
+          "price": "92,00 $",
+          "description": "Regent 55% , Domina 25%, Schwarzriesling 10%, Pinot Gris · 11%",
+          "image": null,
+          "sortOrder": 6
+        },
+        {
+          "name": "Rouge Cognac",
+          "price": "70,00 $ / 12,00 $",
+          "description": "Frontenac, Marquette · 13%",
+          "image": null,
+          "sortOrder": 7
+        },
+        {
+          "name": "New World",
+          "price": "100,00 $",
+          "description": "Pinot Noir · 12.5%",
+          "image": null,
+          "sortOrder": 8
+        },
+        {
+          "name": "Cavalier du Versant Rouge",
+          "price": "45,00 $",
+          "description": "Radisson, sabrevois, frontenac noir · 11.7%",
+          "image": null,
+          "sortOrder": 9
+        },
+        {
+          "name": "Vero 2022",
+          "price": "102,00 $",
+          "description": "Homok, Rozsa, Rèt · 11%",
+          "image": null,
+          "sortOrder": 10
+        },
+        {
+          "name": "Marquette Clos Rousseau",
+          "price": "82,00 $",
+          "description": "Marquette · 12%",
+          "image": null,
+          "sortOrder": 11
+        },
+        {
+          "name": "Régent",
+          "price": "85,00 $",
+          "description": "Régent",
+          "image": null,
+          "sortOrder": 12
+        },
+        {
+          "name": "Gamma-Rays",
+          "price": "87,00 $ / 15,00 $",
+          "description": "Gamaret, Gamay · 11.9%",
+          "image": null,
+          "sortOrder": 13
+        },
+        {
+          "name": "Champs Fleuri",
+          "price": "80,00 $",
+          "description": "12.5%",
+          "image": null,
+          "sortOrder": 14
+        },
+        {
+          "name": "Les P'tits Tanants",
+          "price": "60,00 $",
+          "description": "Petite perle · 12.5%",
+          "image": null,
+          "sortOrder": 15
+        }
+      ]
+    },
+    {
+      "slug": "rose",
+      "label": "Rosé",
+      "tagline": "",
+      "sortOrder": 14,
+      "items": [
+        {
+          "name": "Chair à canon",
+          "price": "13,50 $ / 80,00 $",
+          "description": "Chardonnay, Pinot Noir, Pinot Meunier · 12.7%",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "La Dérive",
+          "price": "65,00 $",
+          "description": "Pinot Noir, Pinot Gris, Gamay et Cabernet Franc · 11%",
+          "image": null,
+          "sortOrder": 1
+        }
+      ]
+    },
+    {
+      "slug": "bulles",
+      "label": "Bulles",
+      "tagline": "",
+      "sortOrder": 15,
+      "items": [
+        {
+          "name": "Amourette",
+          "price": "18,00 $",
+          "description": "68% Frontenac noir, 13% Frontenac blanc, 13% Marquette, 4% Acadie blanc, 2% Vidal · 11.9%",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Colfo",
+          "price": "18,00 $",
+          "description": "48 % Frontenac Blanc, 22 % Acadie Blanc, 18 % Gesenheim, 6 % La Crescent, 2 % Vidal, 2 % Frontenac Gris, 2 % Seyval · 12.2%",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Cousins Germains",
+          "price": "90,00 $",
+          "description": "Riesling, Acadie, Gewurtztraminer",
+          "image": null,
+          "sortOrder": 2
+        },
+        {
+          "name": "Mousseux",
+          "price": "45,00 $",
+          "description": "Vidal 38 %, Eona 33 %, Cayuga 27 %, Geisenheim 2 % · 13%",
+          "image": null,
+          "sortOrder": 3
+        },
+        {
+          "name": "Ces Petits Imprevus",
+          "price": "80,00 $",
+          "description": "Vidal · 10.4%",
+          "image": null,
+          "sortOrder": 4
+        }
+      ]
+    },
+    {
+      "slug": "cidres",
+      "label": "Cidres",
+      "tagline": "",
+      "sortOrder": 16,
+      "items": [
+        {
+          "name": "Honeycrisp Sour",
+          "price": "14,95 $",
+          "description": "Cidrerie Milton · Cider - Dry · Sainte-Cécile-de-Milton, QC",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Mi-Cryo",
+          "price": "9,50 $ / 36,00 $",
+          "description": "Cidrerie CRYO inc. · Cider - Traditional · 10.8% · Mont-Saint-Hilaire, QC",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Cryo De Glace",
+          "price": "17,50 $ / 52,00 $",
+          "description": "Cidrerie CRYO inc. · Cider - Ice · 10.8% · Mont-Saint-Hilaire, QC",
+          "image": null,
+          "sortOrder": 2
+        },
+        {
+          "name": "Léger",
+          "price": "9,95 $",
+          "description": "Cidrerie Le Somnambule · Cider - Sweet · 5% · Saint-Henri, QC",
+          "image": null,
+          "sortOrder": 3
+        },
+        {
+          "name": "Cid Original",
+          "price": "8,95 $",
+          "description": "Cidrerie Milton · Cider - Traditional · 4.5% · Sainte-Cécile-de-Milton, QC",
+          "image": null,
+          "sortOrder": 4
+        }
+      ]
+    },
+    {
+      "slug": "prets-a-boire",
+      "label": "Prêts-à-boire",
+      "tagline": "",
+      "sortOrder": 17,
+      "items": [
+        {
+          "name": "Limoncello Spritz",
+          "price": "12,50 $",
+          "description": "5%",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Limonade Rose",
+          "price": "12,50 $",
+          "description": "Gin · 4.9%",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Gin tonic pamplemousse",
+          "price": "11,00 $",
+          "description": "7%",
+          "image": null,
+          "sortOrder": 2
+        },
+        {
+          "name": "Cidre Limonade Framboise",
+          "price": "10,95 $",
+          "description": "5%",
+          "image": null,
+          "sortOrder": 3
+        },
+        {
+          "name": "Whiskey Lime Gingembre",
+          "price": "9,95 $",
+          "description": "7%",
+          "image": null,
+          "sortOrder": 4
+        },
+        {
+          "name": "Gingria Rosée",
+          "price": "9,00 $",
+          "description": "5%",
+          "image": null,
+          "sortOrder": 5
+        },
+        {
+          "name": "Gingria Rouge",
+          "price": "8,95 $",
+          "description": "5%",
+          "image": null,
+          "sortOrder": 6
+        },
+        {
+          "name": "Gin Tonic",
+          "price": "10,00 $",
+          "description": "Cocktails · 7%",
+          "image": null,
+          "sortOrder": 7
+        },
+        {
+          "name": "Paloma Blanco",
+          "price": "9,50 $",
+          "description": "hard seltzer · 4.5%",
+          "image": null,
+          "sortOrder": 8
+        },
+        {
+          "name": "Ranch Water",
+          "price": "9,50 $",
+          "description": "Hard Seltzer · 4.5%",
+          "image": null,
+          "sortOrder": 9
+        }
+      ]
+    },
+    {
+      "slug": "cocktails-maison",
+      "label": "Cocktails maison",
+      "tagline": "",
+      "sortOrder": 18,
+      "items": [
+        {
+          "name": "Aperol Spritz",
+          "price": "14,00 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Amaretto Sour",
+          "price": "14,00 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Espresso Martini",
+          "price": "16,00 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 2
+        },
+        {
+          "name": "Old Fashioned",
+          "price": "13,00 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 3
+        }
+      ]
+    },
+    {
+      "slug": "whisky",
+      "label": "Whisky",
+      "tagline": "",
+      "sortOrder": 19,
+      "items": [
+        {
+          "name": "La Pomme (Apple Brandy)",
+          "price": "10,00 $",
+          "description": "42.8%",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Baril Caché",
+          "price": "9,00 $",
+          "description": "Whiskey · 42%",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Coureur des bois excellence",
+          "price": "9,00 $",
+          "description": "Whiskey · 40%",
+          "image": null,
+          "sortOrder": 2
+        },
+        {
+          "name": "Franklin Origine 67",
+          "price": "9,00 $",
+          "description": "Whiskey · 40%",
+          "image": null,
+          "sortOrder": 3
+        },
+        {
+          "name": "Sortilège Rye",
+          "price": "9,00 $",
+          "description": "Whiskey · 40%",
+          "image": null,
+          "sortOrder": 4
+        },
+        {
+          "name": "Whisky De Montréal",
+          "price": "9,00 $",
+          "description": "Whiskey · 42%",
+          "image": null,
+          "sortOrder": 5
+        }
+      ]
+    },
+    {
+      "slug": "alcool",
+      "label": "Alcool",
+      "tagline": "",
+      "sortOrder": 20,
+      "items": [
+        {
+          "name": "Eva",
+          "price": "6,00 $",
+          "description": "Crème de menth · 24%",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Abeille",
+          "price": "9,00 $",
+          "description": "Liqueur · 35%",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Liqueur de café",
+          "price": "9,00 $",
+          "description": "Liqueur · 23%",
+          "image": null,
+          "sortOrder": 2
+        },
+        {
+          "name": "Chat Bleu",
+          "price": "6,00 $",
+          "description": "Liqueur · 15%",
+          "image": null,
+          "sortOrder": 3
+        },
+        {
+          "name": "Crème de menthe Arthur (rose)",
+          "price": "6,00 $",
+          "description": "Crème · 24%",
+          "image": null,
+          "sortOrder": 4
+        },
+        {
+          "name": "Crème de menthe Émilie Glaciale (bleue)",
+          "price": "6,00 $",
+          "description": "Crème · 24%",
+          "image": null,
+          "sortOrder": 5
+        },
+        {
+          "name": "Eau De Sève",
+          "price": "15,00 $",
+          "description": "Eau De Vie · 40%",
+          "image": null,
+          "sortOrder": 6
+        },
+        {
+          "name": "Entaille",
+          "price": "12,00 $",
+          "description": "Liqueur · 25%",
+          "image": null,
+          "sortOrder": 7
+        },
+        {
+          "name": "Grand Antonio",
+          "price": "10,00 $",
+          "description": "Liqueur d'orange · 40%",
+          "image": null,
+          "sortOrder": 8
+        },
+        {
+          "name": "Liqueur Agave & Café",
+          "price": "10,50 $",
+          "description": "Liqueur · 23%",
+          "image": null,
+          "sortOrder": 9
+        },
+        {
+          "name": "Pastis de MTL",
+          "price": "9,00 $",
+          "description": "Pastis · 50%",
+          "image": null,
+          "sortOrder": 10
+        },
+        {
+          "name": "Poisson Rouge",
+          "price": "6,00 $",
+          "description": "Liqueur · 30%",
+          "image": null,
+          "sortOrder": 11
+        },
+        {
+          "name": "Sang D'ange",
+          "price": "13,00 $",
+          "description": "Absinthe · 55%",
+          "image": null,
+          "sortOrder": 12
+        }
+      ]
+    },
+    {
+      "slug": "gin",
+      "label": "Gin",
+      "tagline": "",
+      "sortOrder": 21,
+      "items": [
+        {
+          "name": "Gin Conifère",
+          "price": "9,00 $ / 11,00 $",
+          "description": "Gin · 40%",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Gin Rose",
+          "price": "9,00 $ / 11,00 $",
+          "description": "Gin · 40%",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Bleu Royal Pêche",
+          "price": "9,00 $ / 11,00 $",
+          "description": "Gin · 40%",
+          "image": null,
+          "sortOrder": 2
+        },
+        {
+          "name": "Prélude",
+          "price": "9,00 $ / 11,00 $",
+          "description": "Gin · 44%",
+          "image": null,
+          "sortOrder": 3
+        },
+        {
+          "name": "Radoune gin",
+          "price": "9,00 $ / 11,00 $",
+          "description": "Gin · 42.9%",
+          "image": null,
+          "sortOrder": 4
+        },
+        {
+          "name": "Gin Forestier",
+          "price": "9,00 $ / 11,00 $",
+          "description": "Gin · 40%",
+          "image": null,
+          "sortOrder": 5
+        },
+        {
+          "name": "Wabasso Forida Snowbird Gin",
+          "price": "9,00 $ / 11,00 $",
+          "description": "Gin · 30%",
+          "image": null,
+          "sortOrder": 6
+        },
+        {
+          "name": "Romeo's X",
+          "price": "9,00 $ / 11,00 $",
+          "description": "Gin · 41%",
+          "image": null,
+          "sortOrder": 7
+        },
+        {
+          "name": "Romeo's V",
+          "price": "9,00 $ / 11,00 $",
+          "description": "Gin · 41%",
+          "image": null,
+          "sortOrder": 8
+        },
+        {
+          "name": "Romeo's ZAY",
+          "price": "9,00 $ / 11,00 $",
+          "description": "Gin · 40%",
+          "image": null,
+          "sortOrder": 9
+        },
+        {
+          "name": "Gin Du Jardin",
+          "price": "9,00 $ / 11,00 $",
+          "description": "Gin · 42%",
+          "image": null,
+          "sortOrder": 10
+        },
+        {
+          "name": "Ungava Fraise & Yuzu",
+          "price": "9,00 $ / 11,00 $",
+          "description": "Gin Tonic · 35%",
+          "image": null,
+          "sortOrder": 11
+        },
+        {
+          "name": "L'appel de la rivière",
+          "price": "9,00 $ / 11,00 $",
+          "description": "39.9%",
+          "image": null,
+          "sortOrder": 12
+        },
+        {
+          "name": "Holy Smoke",
+          "price": "10,00 $ / 12,00 $",
+          "description": "43%",
+          "image": null,
+          "sortOrder": 13
+        },
+        {
+          "name": "Koï",
+          "price": "9,00 $ / 11,00 $",
+          "description": "Gin · 41%",
+          "image": null,
+          "sortOrder": 14
+        },
+        {
+          "name": "Gin Concombre",
+          "price": "9,00 $ / 11,00 $",
+          "description": "Gin · 40%",
+          "image": null,
+          "sortOrder": 15
+        },
+        {
+          "name": "Gin Fin Zesté",
+          "price": "9,00 $ / 11,00 $",
+          "description": "Gin · 42%",
+          "image": null,
+          "sortOrder": 16
+        },
+        {
+          "name": "Récif",
+          "price": "9,00 $ / 11,00 $",
+          "description": "Gin · 43.7%",
+          "image": null,
+          "sortOrder": 17
+        },
+        {
+          "name": "Premium Gin",
+          "price": "9,00 $ / 11,00 $",
+          "description": "Dry Gin · 46.2%",
+          "image": null,
+          "sortOrder": 18
+        }
+      ]
+    },
+    {
+      "slug": "rhum",
+      "label": "Rhum",
+      "tagline": "",
+      "sortOrder": 22,
+      "items": [
+        {
+          "name": "Tio Méo",
+          "price": "10,00 $ / 12,00 $",
+          "description": "Rhum · 35%",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Rhum Épicé",
+          "price": "8,00 $ / 10,00 $",
+          "description": "Rhum · 40%",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "L'assemblée",
+          "price": "8,00 $ / 10,00 $",
+          "description": "Rhum · 40%",
+          "image": null,
+          "sortOrder": 2
+        },
+        {
+          "name": "Exploratum",
+          "price": "8,00 $ / 10,00 $",
+          "description": "Rhum · 40%",
+          "image": null,
+          "sortOrder": 3
+        }
+      ]
+    },
+    {
+      "slug": "alcool-creme",
+      "label": "Alcool Crème",
+      "tagline": "",
+      "sortOrder": 23,
+      "items": [
+        {
+          "name": "Coureur des bois FRAISE",
+          "price": "9,00 $",
+          "description": "Crème d'érable · 15%",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Crèmette Espresso",
+          "price": "9,00 $ / 10,00 $",
+          "description": "Liqueur/ Crème · 29.7%",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Coureur Des Bois",
+          "price": "9,00 $ / 10,00 $",
+          "description": "Crème d'érable · 15%",
+          "image": null,
+          "sortOrder": 2
+        }
+      ]
+    },
+    {
+      "slug": "mocktails",
+      "label": "Mocktails",
+      "tagline": "",
+      "sortOrder": 24,
+      "items": [
+        {
+          "name": "Comont, Paloma",
+          "price": "9,85 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "Fou Gin, Smash Citron & Basilic",
+          "price": "8,25 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "Statera Gin Tonic",
+          "price": "9,85 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 2
+        },
+        {
+          "name": "Statera London Mule",
+          "price": "9,85 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 3
+        },
+        {
+          "name": "Statera Spicy Mango Margarita",
+          "price": "9,85 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 4
+        },
+        {
+          "name": "Statera, Sex on the Peach",
+          "price": "9,85 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 5
+        }
+      ]
+    },
+    {
+      "slug": "boissons",
+      "label": "Boissons",
+      "tagline": "",
+      "sortOrder": 25,
+      "items": [
+        {
+          "name": "HARRINGTON concombre et thé des bois",
+          "price": "6,00 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 0
+        },
+        {
+          "name": "YESTERDAY pomme",
+          "price": "6,00 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 1
+        },
+        {
+          "name": "YESTERDAY pêche",
+          "price": "6,00 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 2
+        },
+        {
+          "name": "YESTERDAY Fruits sauvages",
+          "price": "6,00 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 3
+        },
+        {
+          "name": "Montellier (Eau pétillante)",
+          "price": "3,00 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 4
+        },
+        {
+          "name": "Seta, Matcha Limonade Pêche",
+          "price": "6,50 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 5
+        },
+        {
+          "name": "Fuze Thé Glacé",
+          "price": "3,50 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 6
+        },
+        {
+          "name": "Menaud gingembre",
+          "price": "8,50 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 7
+        },
+        {
+          "name": "Menaud matcha",
+          "price": "8,50 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 8
+        },
+        {
+          "name": "Gutsy Gingerbeer Mojito",
+          "price": "6,25 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 9
+        },
+        {
+          "name": "Gutsy Gingerbeer",
+          "price": "6,25 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 10
+        },
+        {
+          "name": "Gutsy Framboise Menthe",
+          "price": "5,95 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 11
+        },
+        {
+          "name": "Gutsy Gingembre framboisier",
+          "price": "5,95 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 12
+        },
+        {
+          "name": "Flirt Limo Clémentine",
+          "price": "6,75 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 13
+        },
+        {
+          "name": "Flirt Limo Mûres",
+          "price": "6,75 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 14
+        },
+        {
+          "name": "Flirt Limo Lime & Menthe",
+          "price": "6,75 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 15
+        },
+        {
+          "name": "Flirt Basilic",
+          "price": "6,75 $",
+          "description": "",
+          "image": null,
+          "sortOrder": 16
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "isoDate": "2026-07-03",
+      "title": "5 à 7 — Découvertes du jour",
+      "description": "Le sommelier ouvre quelques bouteilles à découvrir, planche de charcuteries en accompagnement. Passe faire un tour !",
+      "tag": "5 à 7 · 17h–19h",
+      "soldOut": false,
+      "sortOrder": 0
+    },
+    {
+      "isoDate": "2026-07-16",
+      "title": "Soirée Cocktails du Sapinage",
+      "description": "Cinq cocktails signature au sapin baumier, à découvrir au 5 à 7. Bouchées chaudes incluses.",
+      "tag": "5 à 7 · 17h–19h",
+      "soldOut": false,
+      "sortOrder": 1
+    },
+    {
+      "isoDate": "2026-07-25",
+      "title": "Trio Jazz Manouche",
+      "description": "Trois instrumentistes du Sud-Ouest, en visite pour une soirée. Entrée libre, bon vin recommandé.",
+      "tag": "Live · 20h",
+      "soldOut": false,
+      "sortOrder": 2
+    },
+    {
+      "isoDate": "2026-08-01",
+      "title": "Dégustation de vins québécois",
+      "description": "Six vins d'ici présentés par le sommelier, bouchées d'accompagnement incluses. Places limitées.",
+      "tag": "Soirée · 19h",
+      "soldOut": false,
+      "sortOrder": 3
+    },
+    {
+      "isoDate": "2026-08-08",
+      "title": "Huîtres & bulles",
+      "description": "Trois variétés de la Côte-Nord, accord avec champagnes et pétillants québécois.",
+      "tag": "Soirée · 19h",
+      "soldOut": false,
+      "sortOrder": 4
+    },
+    {
+      "isoDate": "2026-08-12",
+      "title": "Soirée jeux de société géants",
+      "description": "Version XL de nos classiques, en équipes. Pintes de microbrasserie pour les gagnants.",
+      "tag": "Dès 18h",
+      "soldOut": false,
+      "sortOrder": 5
+    },
+    {
+      "isoDate": "2026-08-15",
+      "title": "Brunch gourmand — 4 services",
+      "description": "Menu 4 services, mimosas maison, places limitées. Réservation fortement suggérée.",
+      "tag": "Menu spécial · 38 $",
+      "soldOut": true,
+      "sortOrder": 6
+    },
+    {
+      "isoDate": "2026-08-20",
+      "title": "5 à 7 des microbrasseries",
+      "description": "Quatre brasseries de la région en dégustation, planche de charcuteries incluse.",
+      "tag": "5 à 7 · 17h–19h",
+      "soldOut": false,
+      "sortOrder": 7
+    },
+    {
+      "isoDate": "2026-08-22",
+      "title": "Open Mic — Poésie & guitare",
+      "description": "Soirée micro ouvert, ambiance feutrée. Inscrivez-vous sur place.",
+      "tag": "Acoustique · 20h",
+      "soldOut": false,
+      "sortOrder": 8
+    },
+    {
+      "isoDate": "2026-08-29",
+      "title": "Table d'hôte à quatre mains",
+      "description": "Notre chef reçoit un invité le temps d'un soir pour un menu dégustation en duo.",
+      "tag": "Menu spécial · 45 $",
+      "soldOut": false,
+      "sortOrder": 9
+    },
+    {
+      "isoDate": "2026-09-05",
+      "title": "Buffet & DJ — Fin d'été",
+      "description": "Buffet québécois, DJ jusqu'à 1h. La devanture devient une terrasse-piste.",
+      "tag": "Toute la soirée",
+      "soldOut": false,
+      "sortOrder": 10
+    }
+  ],
+  "hours": [
+    {
+      "dayOfWeek": 0,
+      "closed": false,
+      "openHour": 17,
+      "closeHour": 21
+    },
+    {
+      "dayOfWeek": 1,
+      "closed": false,
+      "openHour": 11.5,
+      "closeHour": 21
+    },
+    {
+      "dayOfWeek": 2,
+      "closed": false,
+      "openHour": 11.5,
+      "closeHour": 21
+    },
+    {
+      "dayOfWeek": 3,
+      "closed": false,
+      "openHour": 11.5,
+      "closeHour": 21
+    },
+    {
+      "dayOfWeek": 4,
+      "closed": false,
+      "openHour": 11.5,
+      "closeHour": 23
+    },
+    {
+      "dayOfWeek": 5,
+      "closed": false,
+      "openHour": 11.5,
+      "closeHour": 23
+    },
+    {
+      "dayOfWeek": 6,
+      "closed": false,
+      "openHour": 17,
+      "closeHour": 23
+    }
+  ],
+  "sitePhotos": [
+    {
+      "slot": "hero",
+      "url": "/images/salle-manger.webp",
+      "alt": "Salle à manger de Chez Florent"
+    },
+    {
+      "slot": "about1",
+      "url": "/images/proprietaires-dos.jpg",
+      "alt": "Florent et ses associés, de dos, au comptoir"
+    },
+    {
+      "slot": "about2",
+      "url": "/images/trio-biere.jpg",
+      "alt": "Trio de bières de microbrasserie québécoises"
+    },
+    {
+      "slot": "about3",
+      "url": "/images/pizza-planche.jpg",
+      "alt": "Pizza du four à bois servie sur planche"
+    },
+    {
+      "slot": "press",
+      "url": "/images/interior-bar.jpg",
+      "alt": "Salle à manger de Chez Florent"
+    },
+    {
+      "slot": "voice1",
+      "url": "/images/jeux-societe.jpg",
+      "alt": "Un jeu de société sur une table Chez Florent"
+    },
+    {
+      "slot": "voice2",
+      "url": "/images/run-club.png",
+      "alt": "Groupe de coureurs réunis après le run club Chez Florent"
+    },
+    {
+      "slot": "voice3",
+      "url": "/images/quiz-gagnant.jpg",
+      "alt": "Une carte-cadeau gagnée lors d'un quiz Chez Florent"
+    },
+    {
+      "slot": "facade",
+      "url": "/images/facade-pizza.jpg",
+      "alt": "Devanture de Chez Florent, 57 rue du Roi à Sorel-Tracy"
+    }
+  ],
+  "groupContent": {
+    "steps": [
+      {
+        "body": "Un appel ou un courriel : la date, le nombre de convives, l'occasion. On part de là.",
+        "title": "On se parle"
+      },
+      {
+        "body": "Le chef compose le menu et le déroulé à votre image, ajustés à votre budget.",
+        "title": "On bâtit votre soirée"
+      },
+      {
+        "body": "Le jour venu, on s'occupe de tout. Vous n'avez qu'à profiter de vos gens.",
+        "title": "On vous reçoit"
+      }
+    ],
+    "texts": {
+      "heroLede": "Un party de bureau, un anniversaire, un mariage intime ou une envie de privatiser le bistro au complet — on s'occupe de tout.",
+      "heroTitle": "Réunir vos gens",
+      "heroMarker": "07 — Groupes & privatisation",
+      "stepsTitle": "Simple, comme à la maison",
+      "stepsMarker": "07 — Comment ça se passe",
+      "formulesLede": "Quatre façons de réunir vos gens — chacune s'ajuste au nombre, à l'occasion et au budget. Les tarifs sont à confirmer.",
+      "formulesTitle": "L'art de recevoir",
+      "manifestoBody": "Que vous soyez une dizaine autour d'une grande tablée ou que vous preniez la place au complet, on prépare votre soirée comme si c'était la nôtre — le menu, le vin, le rythme du service. Vous n'avez qu'à réunir vos gens.",
+      "signatureName": "Florent",
+      "signatureRole": "Propriétaire",
+      "essentialTitle": "L'essentiel",
+      "formulesMarker": "07 — Les formules",
+      "manifestoQuote": "« On ne reçoit pas un groupe comme une réservation de plus. On le reçoit comme on reçoit chez nous. »",
+      "manifestoTitle": "« Vos gens, notre maison. »",
+      "occasionsTitle": "On célèbre quoi ?",
+      "manifestoMarker": "07 — Le mot de Florent",
+      "occasionsMarker": "07 — Pour toutes les occasions",
+      "essentialFootnote": "Valeurs à confirmer avec Florent."
+    },
+    "details": [
+      {
+        "label": "Réservation de groupe",
+        "value": "dès 00 pers."
+      },
+      {
+        "label": "Privatisation complète",
+        "value": "dès 00 pers."
+      },
+      {
+        "label": "Durée typique",
+        "value": "00 h"
+      },
+      {
+        "label": "Acompte",
+        "value": "00 $ · appliqué à la facture"
+      },
+      {
+        "label": "Délai conseillé",
+        "value": "00 jours à l'avance"
+      },
+      {
+        "label": "Menu",
+        "value": "bâti avec le chef"
+      }
+    ],
+    "formules": [
+      {
+        "desc": "Planches à partager, bouchées chaudes et une consommation de bienvenue — pour trinquer entre collègues ou amis, sans cérémonie.",
+        "kind": "Apéro · format debout",
+        "name": "Le 5 à 7",
+        "unit": "/ pers.",
+        "image": "tap-pour.jpg",
+        "price": "à p. de 00 $"
+      },
+      {
+        "desc": "Entrée à partager, plat au choix, dessert maison. L'ardoise revisitée pour votre groupe, servie au cœur de la salle.",
+        "kind": "Repas attablé",
+        "name": "La grande tablée",
+        "unit": "/ pers.",
+        "image": "bread-tearing.png",
+        "price": "à p. de 00 $"
+      },
+      {
+        "desc": "Stations et bouchées qui circulent, bar ouvert. Pour un groupe qui aime se mêler, verre à la main.",
+        "kind": "Réception debout",
+        "name": "Le cocktail dînatoire",
+        "unit": "/ pers.",
+        "image": "dish-charcuterie.png",
+        "price": "à p. de 00 $"
+      },
+      {
+        "desc": "On ferme les portes pour votre soirée : salle entière, bar et service dédiés, menu bâti de A à Z avec le chef.",
+        "kind": "Privatisation complète",
+        "name": "Le bistro, rien qu'à vous",
+        "unit": "",
+        "image": "ambiance-smoke.png",
+        "price": "Sur mesure"
+      }
+    ],
+    "occasions": [
+      {
+        "tag": "Entre proches",
+        "desc": "Réunissez vos proches autour d'une grande tablée et d'un gâteau du chef.",
+        "image": "interior-bar.jpg",
+        "title": "Fêtes & anniversaires"
+      },
+      {
+        "tag": "Au bureau",
+        "desc": "5 à 7, party de bureau, lancement — un cadre chaleureux loin des salles fades.",
+        "image": "tap-pour.jpg",
+        "title": "Événements corporatifs"
+      },
+      {
+        "tag": "Grandes occasions",
+        "desc": "Mariages, fiançailles, retrouvailles : la maison ferme ses portes, rien que pour vous.",
+        "image": "florent-glass.jpg",
+        "title": "Célébrations intimes"
+      }
+    ]
+  },
+  "aboutContent": {
+    "chef": {
+      "bio": "Tommy Therrien a développé son expertise culinaire à travers plusieurs établissements reconnus. Après sept années formatrices au Distingo de Sorel-Tracy auprès de son mentor, François Leduc, il a poursuivi son parcours au prestigieux Club Saint-James de Montréal, où il a perfectionné sa rigueur et son souci du détail.\n\nIl a ensuite occupé le poste de chef de production au Café Monk, participant activement au développement de son identité culinaire, avant de rejoindre L'Aurochs Steakhouse, où il a approfondi sa maîtrise des viandes de qualité supérieure et des techniques de cuisson.\n\nAujourd'hui, chez Florent, il met à profit l'ensemble de ces expériences dans un défi qui revêt pour lui une importance autant personnelle que professionnelle. Porter le nom de son grand-père sur sa veste de chef est une immense fierté qui l'accompagne à travers les hauts et les bas du monde de la restauration.\n\nPour Tommy, la cuisine est avant tout une histoire de transmission, de passion et de partage. Chaque assiette est une occasion de raconter une histoire, de créer une émotion et de rendre hommage aux producteurs, aux artisans et aux personnes qui se rassemblent autour d'une même table.",
+      "name": "Tommy Therrien",
+      "role": "Chef cuisinier",
+      "image": "chef-four-a-bois.jpg",
+      "marker": "Le chef"
+    },
+    "texts": {
+      "quote": "Quand nous allons Chez Florent, chez qui allons-nous ?",
+      "storyP1": "Florent était le grand-père de Marie-Laurence, copropriétaire de l'établissement. Afin de souligner son parcours entrepreneurial marquant avec la cantine Nic et Flo, qu'il a fondée dans les années 1970 avec sa douce moitié, Nicole, Maxime et Marie-Laurence ont choisi d'unir distinction et racines soreloises en dédiant cet établissement à cet homme grand, jovial et profondément apprécié, qui nous a quittés beaucoup trop tôt.",
+      "storyP2": "Il fut un temps où, à Sorel, il y avait un endroit où nous pouvions consommer de la bière artisanale et nous retrouver entre amis dans une ambiance décontractée, un endroit où l'on se sentait comme à la maison. Malheureusement, cet endroit a été emporté par les flammes.\n\nQuelques années plus tard, Maxime et Marie-Laurence devinrent collègues et amis, liés par leur lieu de travail, La Grange à Houblon. C'est après plusieurs quarts de travail à partager ce qu'ils aimaient, et aimaient moins, d'un établissement culinaire qu'ils ont réalisé qu'un concept complètement distinct, à leur image, pourrait représenter un vent de fraîcheur au cœur du centre-ville de Sorel-Tracy. Conseillés et appuyés par leurs mentors respectifs, Pierre-Luc et Fabienne, Max et Marie se lancèrent enfin dans cette grande aventure.\n\nCette aventure était alimentée par le désir de recréer ce lieu rassembleur mettant de l'avant le monde brassicole et viticole québécois, ainsi que les maraîchers locaux. Leur objectif était d'offrir un endroit accessible et familial, propice à tous les types de rassemblements, tout en proposant des assiettes, ma foi simples, bien que toujours préparées avec une qualité inébranlable.\n\nPassionnés, jeunes et ambitieux, ils ont vu ce projet se développer petit à petit. Puis, en mai 2025, Chez Florent prit vie.",
+      "heroLede": "Un bistro de quartier, une certaine idée du temps qui passe — et des gens qui le font vivre.",
+      "heroTitle": "La maison",
+      "heroMarker": "02 — La maison",
+      "closingNote": "« On vient ici pour rester. » — Au plaisir de vous recevoir, 57 rue du Roi.",
+      "voicesMarker": "Les voix de la maison",
+      "storyQuestion2": "D'où vient l'idée d'ouvrir le restaurant ?",
+      "suppliersMarker": "Nos producteurs"
+    },
+    "images": {
+      "hero": "hero-interior.png",
+      "story1": "suflo-crew-dos.jpg",
+      "story2": "equipe-bar.jpg",
+      "story3": "chef-four-a-bois.jpg"
+    },
+    "voices": [
+      {
+        "name": "Florent Tremblay",
+        "role": "Propriétaire",
+        "quote": "« Florent n'est pas seulement un nom au-dessus de la porte. C'est une certaine idée du bistro : celle où l'on s'attable sans cérémonie, où le vin se verse au pichet, et où la cuisine ne triche jamais avec ses produits. »"
+      },
+      {
+        "name": "Annie Vincent",
+        "role": "Sommelière",
+        "quote": "« On travaille avec des fermiers qu'on appelle par leur prénom — la Ferme J.N Beauchemin pour les saucisses, Fromagerie Fuoco pour la bufarella, Les Cowboys du BBQ pour le brisket. Le reste, c'est de l'huile de coude et du temps. »"
+      }
+    ],
+    "suppliers": [
+      {
+        "name": "Ferme J.N Beauchemin",
+        "note": "Saucisses & charcuteries, élevées à quelques minutes d'ici."
+      },
+      {
+        "name": "Fromagerie Fuoco",
+        "note": "La bufarella et les fromages du moment, frais chaque semaine."
+      },
+      {
+        "name": "Les Cowboys du BBQ",
+        "note": "Brisket fumé lentement pour nos sandwichs signature."
+      },
+      {
+        "name": "Riverbend Brewing Co.",
+        "note": "Bières brassées à Sorel — locales, fraîches, désaltérantes."
+      }
+    ]
+  },
+  "menuMarquee": {
+    "id": "menu",
+    "data": {
+      "suppliers": [
+        "Les Cowboys du BBQ",
+        "Fuoco",
+        "L'or de l'Italie",
+        "Wiltor Café",
+        "Ferme J.N Beauchemin",
+        "Charcuteries Porc Épique",
+        "Christophe",
+        "Le Comptoir Alexandrine",
+        "Pâtisserie Aveline",
+        "Comont",
+        "Flirt",
+        "Statera",
+        "Rosemont",
+        "Helix",
+        "La Barberie",
+        "Auval",
+        "Dunham",
+        "5e Baron",
+        "Cheptel",
+        "Messorem",
+        "Bad Bones",
+        "Prospecteur",
+        "Stadaconé",
+        "Domaine du Fleuve",
+        "Domaine l'Espiègle",
+        "Nival",
+        "Domaine Gélinas",
+        "Vignoble Ste-Pétronile",
+        "Gutsy",
+        "Brasserie du Bas-Canada",
+        "Albion",
+        "Artisans du Terroir",
+        "Les Ouches",
+        "Wein Goutte",
+        "Herman",
+        "Tête d'allumette",
+        "Gaspard",
+        "Sir John"
+      ]
+    }
+  }
+}
