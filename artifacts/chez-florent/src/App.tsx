@@ -1160,9 +1160,13 @@ export type AgendaEvent = {
 const agendaEvents: AgendaEvent[] = [
   { id: "sapinage",   date: { day: "16", month: "JUIL" }, isoDate: "2026-07-16", title: "Soirée Cocktails du Sapinage", desc: "Cinq cocktails signature au sapin baumier, à découvrir au 5 à 7. Bouchées chaudes incluses.", tag: "5 à 7 · 17h–19h" },
   { id: "jazz",       date: { day: "25", month: "JUIL" }, isoDate: "2026-07-25", title: "Trio Jazz Manouche", desc: "Trois instrumentistes du Sud-Ouest, en visite pour une soirée. Entrée libre, bon vin recommandé.", tag: "Live · 20h" },
+  { id: "vins-qc",    date: { day: "01", month: "AOÛT" }, isoDate: "2026-08-01", title: "Dégustation de vins québécois", desc: "Six vins d'ici présentés par le sommelier, bouchées d'accompagnement incluses. Places limitées.", tag: "Soirée · 19h" },
   { id: "huitres",    date: { day: "08", month: "AOÛT" }, isoDate: "2026-08-08", title: "Huîtres & bulles", desc: "Trois variétés de la Côte-Nord, accord avec champagnes et pétillants québécois.", tag: "Soirée · 19h" },
+  { id: "jeux-geants", date: { day: "12", month: "AOÛT" }, isoDate: "2026-08-12", title: "Soirée jeux de société géants", desc: "Version XL de nos classiques, en équipes. Pintes de microbrasserie pour les gagnants.", tag: "Dès 18h" },
   { id: "brunch",     date: { day: "15", month: "AOÛT" }, isoDate: "2026-08-15", title: "Brunch gourmand — 4 services", desc: "Menu 4 services, mimosas maison, places limitées. Réservation fortement suggérée.", tag: "Menu spécial · 38 $", soldOut: true },
+  { id: "5a7-brasseries", date: { day: "20", month: "AOÛT" }, isoDate: "2026-08-20", title: "5 à 7 des microbrasseries", desc: "Quatre brasseries de la région en dégustation, planche de charcuteries incluse.", tag: "5 à 7 · 17h–19h" },
   { id: "open-mic",   date: { day: "22", month: "AOÛT" }, isoDate: "2026-08-22", title: "Open Mic — Poésie & guitare", desc: "Soirée micro ouvert, ambiance feutrée. Inscrivez-vous sur place.", tag: "Acoustique · 20h" },
+  { id: "quatre-mains", date: { day: "29", month: "AOÛT" }, isoDate: "2026-08-29", title: "Table d'hôte à quatre mains", desc: "Notre chef reçoit un invité le temps d'un soir pour un menu dégustation en duo.", tag: "Menu spécial · 45 $" },
   { id: "fin-ete",    date: { day: "05", month: "SEPT" }, isoDate: "2026-09-05", title: "Buffet & DJ — Fin d'été", desc: "Buffet québécois, DJ jusqu'à 1h. La devanture devient une terrasse-piste.", tag: "Toute la soirée" },
 ];
 

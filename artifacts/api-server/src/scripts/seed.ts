@@ -84,11 +84,27 @@ async function seedEvents(): Promise<void> {
       soldOut: false,
     },
     {
+      isoDate: "2026-08-01",
+      title: "Dégustation de vins québécois",
+      description:
+        "Six vins d'ici présentés par le sommelier, bouchées d'accompagnement incluses. Places limitées.",
+      tag: "Soirée · 19h",
+      soldOut: false,
+    },
+    {
       isoDate: "2026-08-08",
       title: "Huîtres & bulles",
       description:
         "Trois variétés de la Côte-Nord, accord avec champagnes et pétillants québécois.",
       tag: "Soirée · 19h",
+      soldOut: false,
+    },
+    {
+      isoDate: "2026-08-12",
+      title: "Soirée jeux de société géants",
+      description:
+        "Version XL de nos classiques, en équipes. Pintes de microbrasserie pour les gagnants.",
+      tag: "Dès 18h",
       soldOut: false,
     },
     {
@@ -100,11 +116,27 @@ async function seedEvents(): Promise<void> {
       soldOut: true,
     },
     {
+      isoDate: "2026-08-20",
+      title: "5 à 7 des microbrasseries",
+      description:
+        "Quatre brasseries de la région en dégustation, planche de charcuteries incluse.",
+      tag: "5 à 7 · 17h–19h",
+      soldOut: false,
+    },
+    {
       isoDate: "2026-08-22",
       title: "Open Mic — Poésie & guitare",
       description:
         "Soirée micro ouvert, ambiance feutrée. Inscrivez-vous sur place.",
       tag: "Acoustique · 20h",
+      soldOut: false,
+    },
+    {
+      isoDate: "2026-08-29",
+      title: "Table d'hôte à quatre mains",
+      description:
+        "Notre chef reçoit un invité le temps d'un soir pour un menu dégustation en duo.",
+      tag: "Menu spécial · 45 $",
       soldOut: false,
     },
     {
