@@ -79,23 +79,10 @@ function toParagraphs(s: string): string[] {
 export default function AboutPage() {
   const { data } = useGetAboutContent();
   const content = data ?? DEFAULT_ABOUT_CONTENT;
-  const { texts, voices, suppliers, images } = content;
+  const { texts, suppliers, images } = content;
   const quoteWords = texts.quote.split(" ");
   const question2 =
     texts.storyQuestion2 ?? DEFAULT_ABOUT_CONTENT.texts.storyQuestion2 ?? "";
-
-  const voiceStyles = [
-    {
-      blockquote:
-        "font-serif font-normal text-cream text-[1.125rem] leading-[1.8]",
-      delay: 0,
-    },
-    {
-      blockquote:
-        "font-sans font-light text-cream-soft/85 text-[1rem] leading-[1.8]",
-      delay: 0.1,
-    },
-  ];
 
   return (
     <div className="min-h-[100dvh] w-full bg-bg-primary text-cream selection:bg-orange selection:text-bg-primary relative">
@@ -251,45 +238,8 @@ export default function AboutPage() {
             </div>
           </section>
 
-          {/* Team voices */}
-          <section className="bg-bg-primary pt-20 md:pt-24 pb-16 md:pb-20 px-6 md:px-12 relative">
-            <div className="max-w-7xl mx-auto relative z-10">
-              <div className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-orange mb-10">
-                <span aria-hidden="true">◦ </span>
-                {texts.voicesMarker}
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 max-w-5xl">
-                {voices.map((v, i) => {
-                  const style = voiceStyles[i] ?? voiceStyles[1];
-                  return (
-                    <motion.figure
-                      key={i}
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: "-100px" }}
-                      transition={{ duration: 0.8, ease: EASE, delay: style.delay }}
-                      className="m-0"
-                    >
-                      <blockquote className={style.blockquote}>
-                        {v.quote}
-                      </blockquote>
-                      <figcaption className="mt-4 font-sans text-[0.75rem] tracking-[0.2em] uppercase text-cream-soft/75 flex items-center gap-3">
-                        <span aria-hidden="true" className="inline-block w-8 h-px bg-orange/70" />
-                        {v.name}
-                        <span aria-hidden="true" className="text-orange/70">·</span>
-                        <span className="font-serif normal-case italic tracking-normal text-cream-soft/80">
-                          {v.role}
-                        </span>
-                      </figcaption>
-                    </motion.figure>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
-
           {/* Suppliers */}
-          <section className="bg-bg-primary pt-12 md:pt-16 pb-24 md:pb-32 px-6 md:px-12 relative">
+          <section className="bg-bg-primary pt-20 md:pt-24 pb-24 md:pb-32 px-6 md:px-12 relative">
             <div className="max-w-7xl mx-auto relative z-10">
               <div className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-orange mb-10">
                 <span aria-hidden="true">◦ </span>
