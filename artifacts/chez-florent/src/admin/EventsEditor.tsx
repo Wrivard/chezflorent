@@ -163,6 +163,9 @@ export default function EventsEditor() {
   const queryClient = useQueryClient();
   const { data: events, isLoading, isError, error } = useListEvents();
   const [cursor, setCursor] = useState<Date>(() => new Date());
+  const [showArchive, setShowArchive] = useState(false);
+  const [clearing, setClearing] = useState(false);
+  const [clearResult, setClearResult] = useState<string | null>(null);
   const [modal, setModal] = useState<ModalState>({ mode: "closed" });
   const [dlg, setDlg] = useState<{
     open: boolean;
@@ -186,6 +189,26 @@ export default function EventsEditor() {
     mutation: { onSuccess: () => { invalidate(); setModal({ mode: "closed" }); } },
   });
 
+  async function clearArchive(ids: number[]) {
+    setClearing(true);
+    setClearResult(null);
+    let failed = 0;
+    for (const id of ids) {
+      try {
+        await remove.mutateAsync({ id });
+      } catch {
+        failed += 1;
+      }
+    }
+    setClearing(false);
+    invalidate();
+    setClearResult(
+      failed === 0
+        ? `${ids.length} événement(s) archivé(s) supprimé(s).`
+        : `${ids.length - failed} supprimé(s), ${failed} en échec. Réessayez.`,
+    );
+  }
+
   const list = useMemo(() => events ?? [], [events]);
 
   const byDate = useMemo(() => {
@@ -201,13 +224,58 @@ export default function EventsEditor() {
   const nextSortOrder =
     list.length > 0 ? Math.max(...list.map((e) => e.sortOrder)) + 1 : 0;
 
-  const upcoming = useMemo(
-    () => [...list].sort((a, b) => a.isoDate.localeCompare(b.isoDate)),
-    [list],
-  );
+  const upcoming = useMemo(() => {
+    const todayIso = fmtISO(new Date());
+    return list
+      .filter((e) => e.isoDate >= todayIso)
+      .sort((a, b) => a.isoDate.localeCompare(b.isoDate));
+  }, [list]);
+
+  const archived = useMemo(() => {
+    const todayIso = fmtISO(new Date());
+    return list
+      .filter((e) => e.isoDate < todayIso)
+      .sort((a, b) => b.isoDate.localeCompare(a.isoDate));
+  }, [list]);
 
   if (isLoading) return <p className="text-cream-soft/60">Chargement…</p>;
   if (isError) return <ErrorText error={error} />;
+
+  const renderCard = (ev: Event, muted = false) => {
+    const d = parseISO(ev.isoDate);
+    return (
+      <button
+        key={ev.id}
+        onClick={() => setModal({ mode: "edit", event: ev })}
+        className={`flex items-stretch gap-4 rounded-xl border border-border bg-bg-secondary p-4 text-left transition-colors hover:border-cream-soft/30 ${
+          muted ? "opacity-60 hover:opacity-100" : ""
+        }`}
+      >
+        <div className="flex w-14 shrink-0 flex-col items-center justify-center rounded-lg bg-bg-tertiary py-2">
+          <span className="font-serif text-2xl leading-none text-orange">
+            {d ? d.getDate() : "—"}
+          </span>
+          <span className="mt-1 text-[0.6rem] uppercase tracking-[0.12em] text-cream-soft/60">
+            {d ? MONTHS_FR[d.getMonth()].slice(0, 4) : ""}
+          </span>
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2">
+            <h4 className="truncate font-serif text-base text-cream">
+              {ev.title}
+            </h4>
+            {ev.soldOut && <Badge tone="danger">Complet</Badge>}
+          </div>
+          {ev.tag && (
+            <div className="mt-0.5 text-xs text-orange/90">{ev.tag}</div>
+          )}
+          <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-cream-soft/60">
+            {ev.description}
+          </p>
+        </div>
+      </button>
+    );
+  };
 
   const year = cursor.getFullYear();
   const month = cursor.getMonth();
@@ -326,46 +394,67 @@ export default function EventsEditor() {
       </Card>
 
       <div className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-cream-soft/50">
-        Tous les événements ({upcoming.length})
+        À venir ({upcoming.length})
       </div>
       {upcoming.length === 0 && (
-        <p className="text-cream-soft/60">Aucun événement pour le moment.</p>
+        <p className="text-cream-soft/60">Aucun événement à venir.</p>
       )}
       <div className="grid gap-3 sm:grid-cols-2">
-        {upcoming.map((ev) => {
-          const d = parseISO(ev.isoDate);
-          return (
-            <button
-              key={ev.id}
-              onClick={() => setModal({ mode: "edit", event: ev })}
-              className="flex items-stretch gap-4 rounded-xl border border-border bg-bg-secondary p-4 text-left transition-colors hover:border-cream-soft/30"
-            >
-              <div className="flex w-14 shrink-0 flex-col items-center justify-center rounded-lg bg-bg-tertiary py-2">
-                <span className="font-serif text-2xl leading-none text-orange">
-                  {d ? d.getDate() : "—"}
-                </span>
-                <span className="mt-1 text-[0.6rem] uppercase tracking-[0.12em] text-cream-soft/60">
-                  {d ? MONTHS_FR[d.getMonth()].slice(0, 4) : ""}
-                </span>
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2">
-                  <h4 className="truncate font-serif text-base text-cream">
-                    {ev.title}
-                  </h4>
-                  {ev.soldOut && <Badge tone="danger">Complet</Badge>}
-                </div>
-                {ev.tag && (
-                  <div className="mt-0.5 text-xs text-orange/90">{ev.tag}</div>
-                )}
-                <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-cream-soft/60">
-                  {ev.description}
-                </p>
-              </div>
-            </button>
-          );
-        })}
+        {upcoming.map((ev) => renderCard(ev))}
       </div>
+
+      {archived.length > 0 && (
+        <div className="mt-10">
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <button
+              onClick={() => setShowArchive((v) => !v)}
+              className="flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-cream-soft/50 transition-colors hover:text-cream-soft"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                className={`transition-transform ${showArchive ? "rotate-90" : ""}`}
+              >
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+              Archives ({archived.length})
+            </button>
+            {showArchive && (
+              <Button
+                variant="danger"
+                onClick={() =>
+                  openDlg(
+                    `Supprimer définitivement les ${archived.length} événement(s) archivé(s) ? Cette action est irréversible.`,
+                    () => clearArchive(archived.map((e) => e.id)),
+                  )
+                }
+                disabled={clearing}
+              >
+                {clearing ? "Suppression…" : "Vider les archives"}
+              </Button>
+            )}
+          </div>
+          {showArchive && (
+            <>
+              <p className="mb-4 text-xs text-cream-soft/50">
+                Les événements passés sont automatiquement retirés du site et
+                regroupés ici. Ils restent modifiables tant que vous ne les
+                supprimez pas.
+              </p>
+              {clearResult && (
+                <p className="mb-4 text-xs text-orange/90">{clearResult}</p>
+              )}
+              <div className="grid gap-3 sm:grid-cols-2">
+                {archived.map((ev) => renderCard(ev, true))}
+              </div>
+            </>
+          )}
+        </div>
+      )}
 
       <SectionPreview
         section="agenda"
