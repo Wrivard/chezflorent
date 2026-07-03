@@ -1327,10 +1327,10 @@ export function useEarliestOpenHour(): string | null {
 
 type PhotoMap = Record<string, { url: string; alt: string }>;
 const PHOTO_FALLBACK: PhotoMap = {
-  hero: { url: "/images/interior-bar.jpg", alt: "Salle à manger de Chez Florent" },
-  about1: { url: "/images/tap-pour.jpg", alt: "Service au comptoir Chez Florent" },
-  about2: { url: "/images/florent-glass.jpg", alt: "Verre signature Chez Florent" },
-  about3: { url: "/images/facade-pizza.jpg", alt: "La devanture, 57 rue du Roi" },
+  hero: { url: "/images/salle-manger.webp", alt: "Salle à manger de Chez Florent" },
+  about1: { url: "/images/proprietaires-dos.jpg", alt: "Florent et ses associés, de dos, au comptoir" },
+  about2: { url: "/images/trio-biere.jpg", alt: "Trio de bières de microbrasserie québécoises" },
+  about3: { url: "/images/pizza-planche.jpg", alt: "Pizza du four à bois servie sur planche" },
   press: { url: "/images/interior-bar.jpg", alt: "Salle à manger de Chez Florent" },
   voice1: { url: "/images/tap-pour.jpg", alt: "" },
   voice2: { url: "/images/interior-bar.jpg", alt: "" },
@@ -1958,7 +1958,7 @@ const emptyContactForm = {
   message: "",
 };
 
-function ContactForm() {
+export function ContactForm() {
   const [kind, setKind] = useState<ContactKind>("question");
   const [form, setForm] = useState({ ...emptyContactForm });
   const [done, setDone] = useState(false);
@@ -2326,58 +2326,193 @@ function Contact() {
           </motion.div>
         </div>
 
-        {/* Contact form */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: EASE }}
-          className="mt-24 md:mt-32 max-w-3xl"
-        >
-          <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-4">
-            Écrivez-nous
-          </div>
-          <h3 className="font-serif text-[clamp(2rem,4vw,3rem)] text-bg-primary leading-tight mb-8">
-            Une question, ou vous nous approvisionnez&nbsp;?
-          </h3>
-          <ContactForm />
-        </motion.div>
-
-        {/* Map + directions */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: EASE }}
-          className="mt-20 md:mt-28"
-        >
-          <div className="flex justify-center mb-8">
-            <a
-              href="https://www.google.com/maps/dir/?api=1&destination=57%20Rue%20du%20Roi%2C%20Sorel-Tracy%2C%20QC%20J3P%204M6"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Obtenir l'itinéraire vers Chez Florent (nouvel onglet)"
-              className="inline-flex items-center gap-3 px-7 py-3 bg-bg-primary text-cream text-[0.75rem] font-medium tracking-[0.2em] uppercase rounded-[2px] hover:bg-orange hover:text-bg-primary transition-all duration-300"
-            >
-              Obtenir l'itinéraire
-              <span aria-hidden="true">→</span>
-            </a>
-          </div>
-        </motion.div>
       </div>
+    </section>
+  );
+}
 
-      {/* Full-width map */}
-      <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen aspect-[16/9] md:aspect-[21/8] overflow-hidden mt-8">
-        <iframe
-          title="Carte — Chez Florent, 57 Rue du Roi, Sorel-Tracy"
-          src="https://www.google.com/maps?q=57%20Rue%20du%20Roi%2C%20Sorel-Tracy%2C%20QC%20J3P%204M6&output=embed"
-          width="100%"
-          height="100%"
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          style={{ border: 0 }}
-          className="w-full h-full"
-        />
+const MAPS_EMBED =
+  "https://www.google.com/maps?q=57+Rue+du+Roi,+Sorel-Tracy,+QC+J3P+4M6&output=embed";
+const MAPS_LINK =
+  "https://www.google.com/maps/search/?api=1&query=57+Rue+du+Roi+Sorel-Tracy+QC+J3P+4M6";
+
+// Shared "how to find us" map band — rendered above the footer on every page.
+export function MapSection() {
+  return (
+    <section className="bg-bg-primary pt-16 md:pt-20 pb-20 md:pb-24 px-6 md:px-12 relative">
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="flex items-end justify-between gap-4 mb-8">
+          <div>
+            <div className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-orange mb-3">
+              <span aria-hidden="true">◦ </span>Sur la carte
+            </div>
+            <h2 className="font-serif text-cream text-[2rem] md:text-[2.75rem] leading-tight">
+              Comment nous rejoindre
+            </h2>
+          </div>
+          <a
+            href={MAPS_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:inline-flex items-center gap-2 px-5 py-3 border border-orange text-orange hover:bg-orange hover:text-bg-primary transition-all duration-300 rounded-[2px] text-[0.72rem] font-medium tracking-[0.2em] uppercase whitespace-nowrap"
+          >
+            Itinéraire <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <div className="w-full aspect-[16/10] md:aspect-[16/7] overflow-hidden ring-1 ring-cream/10 bg-bg-secondary">
+          <iframe
+            title="Carte — Chez Florent, 57 Rue du Roi, Sorel-Tracy"
+            src={MAPS_EMBED}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="w-full h-full border-0 grayscale-[0.2] contrast-[1.05]"
+            allowFullScreen
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+type Review = { name: string; quote: string; meta: string };
+const REVIEWS: Review[] = [
+  {
+    name: "Charles Frenette",
+    quote:
+      "Super belle ambiance, le personnel très accueillant, très beaux choix de vin, spiritueux et bières québécoises. Les propriétaires sont présents et très sympathiques.",
+    meta: "Avis Google",
+  },
+  {
+    name: "Paul Larochelle",
+    quote:
+      "Un très bel endroit où l'on sent, dès l'entrée, un accueil chaleureux. Une belle diversité de bières qu'on dirait fraîchement brassées du matin, un petit verre de vin québécois servi avec le sourire, et voilà. Un fabuleux petit joyau sorelois.",
+    meta: "Avis Google",
+  },
+  {
+    name: "Monique Rooke",
+    quote: "Tout est parfait et délicieux. À refaire, encore et encore. ❤",
+    meta: "Avis Google",
+  },
+];
+
+function Stars() {
+  return (
+    <div className="flex gap-1 text-orange" aria-label="5 étoiles sur 5">
+      {[...Array(5)].map((_, i) => (
+        <svg key={i} viewBox="0 0 20 20" width="18" height="18" fill="currentColor" aria-hidden="true">
+          <path d="M10 1.5l2.6 5.27 5.82.85-4.21 4.1.99 5.79L10 14.98 4.8 17.5l.99-5.79-4.21-4.1 5.82-.85L10 1.5z" />
+        </svg>
+      ))}
+    </div>
+  );
+}
+
+function Testimonials() {
+  return (
+    <section id="temoignages" className="bg-bg-primary py-32 px-6 md:px-12 relative overflow-hidden">
+      <SectionMarker number="✶" />
+      <div className="max-w-7xl mx-auto relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: EASE }}
+          className="mb-16 max-w-3xl"
+        >
+          <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
+            <span aria-hidden="true">✶ </span>Ils en parlent
+          </div>
+          <h2 className="font-serif italic font-light text-cream leading-[1.1] pb-[0.14em] text-[clamp(2.75rem,7vw,6rem)]">
+            Le quartier a son mot à dire.
+          </h2>
+          <p className="font-sans italic text-cream-soft/70 max-w-xl text-base md:text-lg mt-6">
+            Quelques mots laissés par ceux qui ont poussé la porte — cinq étoiles, et le cœur avec.
+          </p>
+        </motion.div>
+
+        <div className="grid gap-6 md:grid-cols-3 items-stretch">
+          {REVIEWS.map((r, i) => (
+            <motion.figure
+              key={r.name}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.7, ease: EASE, delay: i * 0.12 }}
+              className="m-0 flex flex-col gap-5 border border-border bg-cream/[0.03] p-8 rounded-[2px] h-full"
+            >
+              <Stars />
+              <blockquote className="font-serif text-cream text-[1.0625rem] leading-[1.75] flex-1">
+                « {r.quote} »
+              </blockquote>
+              <figcaption className="flex items-center gap-3 text-[0.75rem] tracking-[0.2em] uppercase text-cream-soft/75 pt-4 border-t border-border">
+                <span aria-hidden="true" className="inline-block w-8 h-px bg-orange/70 shrink-0" />
+                <span className="text-cream">{r.name}</span>
+                <span aria-hidden="true" className="text-orange/70">·</span>
+                <span className="normal-case tracking-normal font-sans text-cream-soft/60">{r.meta}</span>
+              </figcaption>
+            </motion.figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+type GalleryPhoto = { src: string; alt: string };
+const GALLERY: GalleryPhoto[] = [
+  { src: "/images/g-salle-clients.jpg", alt: "Des convives attablés dans la salle" },
+  { src: "/images/g-verre-florent.jpg", alt: "Un verre signé Florent" },
+  { src: "/images/g-bar-service.jpg", alt: "Service au bar chez Florent" },
+  { src: "/images/g-crokinole.jpg", alt: "Une partie de crokinole entre amis" },
+  { src: "/images/g-chandail-vert.jpg", alt: "Le chandail vert Chez Florent" },
+  { src: "/images/g-carte-cadeau.jpg", alt: "Carte-cadeau Chez Florent" },
+  { src: "/images/g-chandail-billard.jpg", alt: "Chandail Chez Florent près du billard" },
+  { src: "/images/g-chandail-dos.jpg", alt: "Le chandail Chez Florent, vu de dos" },
+];
+
+function Gallery() {
+  return (
+    <section id="galerie" className="bg-bg-primary pt-4 pb-32 px-6 md:px-12 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: EASE }}
+          className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6"
+        >
+          <div className="max-w-2xl">
+            <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
+              <span aria-hidden="true">◦ </span>En images
+            </div>
+            <h2 className="font-serif italic font-light text-cream leading-[1.1] pb-[0.14em] text-[clamp(2.75rem,7vw,6rem)]">
+              Un soir chez Florent.
+            </h2>
+          </div>
+          <p className="font-sans italic text-cream-soft/70 max-w-sm text-base md:text-lg">
+            La salle, le bar, les jeux et les verres partagés — quelques fragments de nos soirées.
+          </p>
+        </motion.div>
+
+        <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
+          {GALLERY.map((p, i) => (
+            <motion.div
+              key={p.src}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, ease: EASE, delay: (i % 4) * 0.08 }}
+              className="mb-4 break-inside-avoid overflow-hidden ring-1 ring-cream/10 group"
+            >
+              <img
+                src={p.src}
+                alt={p.alt}
+                loading="lazy"
+                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -2390,7 +2525,9 @@ export function Footer() {
   const openHour = useEarliestOpenHour();
 
   return (
-    <footer className="bg-bg-primary pt-20 relative z-10 overflow-hidden flex flex-col">
+    <>
+      <MapSection />
+      <footer className="bg-bg-primary pt-20 relative z-10 overflow-hidden flex flex-col">
       {/* Quick links + contact */}
       <div className="w-full px-6 md:px-12">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-10 pb-12">
@@ -2476,6 +2613,7 @@ export function Footer() {
         </div>
       </div>
     </footer>
+    </>
   );
 }
 
@@ -2640,6 +2778,8 @@ export default function App() {
           <Hero />
           <About />
           <Menu />
+          <Testimonials />
+          <Gallery />
           <Rendezvous />
           <Agenda />
           <Reservation />

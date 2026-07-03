@@ -11,14 +11,11 @@ import {
   useEarliestOpenHour,
   imgSrc,
   EASE,
+  ContactForm,
 } from "./App";
 
 const RESTO_PHONE = "450 743-1448";
 const RESTO_PHONE_HREF = "tel:+14507431448";
-const MAPS_EMBED =
-  "https://www.google.com/maps?q=57+Rue+du+Roi,+Sorel-Tracy,+QC+J3P+4M6&output=embed";
-const MAPS_LINK =
-  "https://www.google.com/maps/search/?api=1&query=57+Rue+du+Roi+Sorel-Tracy+QC+J3P+4M6";
 
 export default function ContactPage() {
   const photos = usePhotos();
@@ -185,38 +182,23 @@ export default function ContactPage() {
             </div>
           </section>
 
-          {/* Map */}
-          <section className="bg-bg-primary pt-16 md:pt-20 pb-24 md:pb-28 px-6 md:px-12 relative">
-            <div className="max-w-7xl mx-auto relative z-10">
-              <div className="flex items-end justify-between gap-4 mb-8">
-                <div>
-                  <div className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-orange mb-3">
-                    <span aria-hidden="true">◦ </span>Sur la carte
-                  </div>
-                  <h2 className="font-serif text-cream text-[2rem] md:text-[2.75rem] leading-tight">
-                    Comment nous rejoindre
-                  </h2>
-                </div>
-                <a
-                  href={MAPS_LINK}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hidden sm:inline-flex items-center gap-2 px-5 py-3 border border-orange text-orange hover:bg-orange hover:text-bg-primary transition-all duration-300 rounded-[2px] text-[0.72rem] font-medium tracking-[0.2em] uppercase whitespace-nowrap"
-                >
-                  Itinéraire <span aria-hidden="true">↗</span>
-                </a>
+          {/* Contact form */}
+          <section className="bg-cream-soft pt-4 md:pt-6 pb-24 md:pb-28 px-6 md:px-12 relative">
+            <motion.div
+              className="max-w-3xl mx-auto relative z-10"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, ease: EASE }}
+            >
+              <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-4">
+                Écrivez-nous
               </div>
-              <div className="w-full aspect-[16/10] md:aspect-[16/7] overflow-hidden ring-1 ring-cream/10 bg-bg-secondary">
-                <iframe
-                  title="Carte — Chez Florent, 57 Rue du Roi, Sorel-Tracy"
-                  src={MAPS_EMBED}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  className="w-full h-full border-0 grayscale-[0.2] contrast-[1.05]"
-                  allowFullScreen
-                />
-              </div>
-            </div>
+              <h2 className="font-serif text-[clamp(2rem,4vw,3rem)] text-bg-primary leading-tight mb-8">
+                Une question, ou vous nous approvisionnez&nbsp;?
+              </h2>
+              <ContactForm />
+            </motion.div>
           </section>
         </main>
 
