@@ -674,8 +674,8 @@ function About() {
           {quoteWords.map((word, i) => (
             <motion.span
               key={i}
-              initial={{ clipPath: "inset(100% 0 0 0)", y: 20 }}
-              whileInView={{ clipPath: "inset(0 0 0 0)", y: 0 }}
+              initial={{ clipPath: "inset(100% -0.5em -0.6em -0.3em)", y: 20 }}
+              whileInView={{ clipPath: "inset(-0.2em -0.5em -0.6em -0.3em)", y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, ease: EASE, delay: i * 0.08 }}
               className="block"

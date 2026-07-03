@@ -37,8 +37,8 @@ function RevealHeading({
       {text.split(" ").map((word, i) => (
         <motion.span
           key={`${word}-${i}`}
-          initial={{ clipPath: "inset(100% 0 0 0)", y: 20 }}
-          whileInView={{ clipPath: "inset(0 0 0 0)", y: 0 }}
+          initial={{ clipPath: "inset(100% -0.5em -0.6em -0.3em)", y: 20 }}
+          whileInView={{ clipPath: "inset(-0.2em -0.5em -0.6em -0.3em)", y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: EASE, delay: i * 0.08 }}
           className="inline-block mr-[0.28em]"
@@ -232,8 +232,8 @@ export default function GroupReservationPage() {
                 {t.heroTitle.split(" ").map((word, i) => (
                   <motion.span
                     key={`${word}-${i}`}
-                    initial={{ clipPath: "inset(100% 0 0 0)", y: 24 }}
-                    animate={{ clipPath: "inset(0 0 0 0)", y: 0 }}
+                    initial={{ clipPath: "inset(100% -0.5em -0.6em -0.3em)", y: 24 }}
+                    animate={{ clipPath: "inset(-0.2em -0.5em -0.6em -0.3em)", y: 0 }}
                     transition={{ duration: 0.85, ease: EASE, delay: 0.15 + i * 0.12 }}
                     className="inline-block mr-[0.22em]"
                   >
