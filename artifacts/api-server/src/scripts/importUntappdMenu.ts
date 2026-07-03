@@ -26,8 +26,8 @@ const THEME_URL = `https://business.untappd.com/locations/${LOCATION_ID}/themes/
 // considered an imported Untappd drink and is replaced on each run — this keeps
 // the import idempotent even when Untappd renames sections (no orphans) and
 // guarantees the fixed menu survives even if an Untappd section happened to
-// slugify to one of these names. Keep this in sync with MENU_SLUGS in the
-// frontend (App.tsx) — those are the categories shown as the fixed menu tabs.
+// slugify to one of these names. Keep this in sync with FIXED_MENU_SLUGS in the
+// frontend (App.tsx) — the full set of site-owned fixed categories.
 const PROTECTED_SLUGS = [
   "encas",
   "salades",

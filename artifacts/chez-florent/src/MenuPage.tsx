@@ -11,6 +11,7 @@ import {
   EASE,
   EASE_SMOOTH,
   MENU_SLUGS,
+  FIXED_MENU_SLUGS,
   ARDOISE_PDF_URL,
   type MenuCategory,
 } from "./App";
@@ -299,7 +300,7 @@ function MenuBoard({
 export default function MenuPage() {
   const allCategories = useMenuCategoriesData();
   const menu = allCategories.filter((c) => MENU_SLUGS.includes(c.id));
-  const bar = allCategories.filter((c) => !MENU_SLUGS.includes(c.id));
+  const bar = allCategories.filter((c) => !FIXED_MENU_SLUGS.includes(c.id));
 
   return (
     <div className="min-h-[100dvh] w-full bg-bg-primary text-cream selection:bg-orange selection:text-bg-primary relative">
@@ -376,7 +377,7 @@ export default function MenuPage() {
               {menu.length > 0 && (
                 <div>
                   <BoardHeading
-                    kicker="Encas, salades, pizzas, hoagies, desserts, cafés & alcools"
+                    kicker="Encas, salades, pizzas, hoagies, desserts & cafés"
                     title="La cuisine"
                   />
                   <MenuBoard categories={menu} boardId="menu" />

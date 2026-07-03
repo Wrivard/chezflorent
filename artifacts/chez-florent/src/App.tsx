@@ -771,10 +771,11 @@ export type MenuCategory = { id: string; label: string; tagline: string; dishes:
 // a broader set — see MENU_SLUGS.
 export const FOOD_SLUGS = ["encas", "salades", "pizzas", "hoagies"];
 
-// All fixed printed-menu categories (kitchen + desserts/cafés/alcools/extras).
-// They render as ONE unified tab bar on the Menu page. Any category NOT in this
-// list is an imported Untappd drink and renders in the separate "Le bar" board.
-export const MENU_SLUGS = [
+// All site-owned fixed printed-menu categories (never imported from Untappd).
+// Used to separate the fixed menu from imported drinks on the Menu page, and
+// MUST stay in sync with PROTECTED_SLUGS in the api-server importUntappdMenu.ts
+// so a re-import never deletes them.
+export const FIXED_MENU_SLUGS = [
   "encas",
   "salades",
   "pizzas",
@@ -782,6 +783,20 @@ export const MENU_SLUGS = [
   "desserts",
   "cafes-thes",
   "alcools",
+  "extras",
+];
+
+// Fixed categories displayed in the Menu page's main "La cuisine" tab bar.
+// NOTE: "alcools" is intentionally NOT shown here (removed from the main menu
+// per request); it stays a fixed/protected category above (kept in the DB and
+// editable in the admin), just hidden from the public Menu page.
+export const MENU_SLUGS = [
+  "encas",
+  "salades",
+  "pizzas",
+  "hoagies",
+  "desserts",
+  "cafes-thes",
   "extras",
 ];
 
