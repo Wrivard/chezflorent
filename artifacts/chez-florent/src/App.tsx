@@ -1028,7 +1028,7 @@ function Menu() {
 
           <div className="mt-16 text-center">
             <p className="font-sans italic text-cream-soft/85 text-sm">
-              « L'ardoise change. Suivez-nous sur les réseaux pour voir les ajouts du chef. »
+              « L'ardoise change chaque mois — suivez-nous pour ne rien manquer. »
             </p>
           </div>
         </div>
@@ -1039,7 +1039,6 @@ function Menu() {
 
 type RendezvousItem = {
   title: string;
-  tag: string;
   desc: string;
   slot: "press" | "voice1" | "voice2" | "voice3";
 };
@@ -1047,25 +1046,21 @@ type RendezvousItem = {
 const RENDEZVOUS: RendezvousItem[] = [
   {
     title: "Jeux de société",
-    tag: "Tous les soirs",
     desc: "Une pleine bibliothèque de jeux à portée de main. Choisis ta boîte, prends une pinte, et que le meilleur gagne.",
     slot: "voice1",
   },
   {
     title: "Soirée hipster",
-    tag: "Vendredi",
     desc: "Vinyles, vins nature et bouchées de l'ardoise — la soirée où le quartier au complet se donne rendez-vous.",
     slot: "press",
   },
   {
     title: "Run club",
-    tag: "Mercredi · 18h",
     desc: "On part ensemble, on revient assoiffés. Un parcours décontracté suivi d'une bière de microbrasserie bien méritée.",
     slot: "voice2",
   },
   {
     title: "Cinq à sept",
-    tag: "Jeu — Ven",
     desc: "Bières de microbrasserie, vins québécois et l'ardoise du moment pour étirer la fin de journée comme il faut.",
     slot: "voice3",
   },
@@ -1118,18 +1113,13 @@ function Rendezvous() {
                 i % 2 === 1 ? "lg:mt-12" : ""
               }`}
             >
-              {/* Photo with tag overlay */}
+              {/* Photo */}
               <div className="relative aspect-[4/5] overflow-hidden ring-1 ring-cream/10 mb-6">
                 <img
                   src={photos[r.slot].url}
                   alt={photos[r.slot].alt}
                   className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
                 />
-                <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-bg-primary/85 backdrop-blur-sm px-3 py-1.5">
-                  <span className="text-orange text-[0.7rem] font-medium tracking-[0.2em] uppercase leading-none">
-                    {r.tag}
-                  </span>
-                </div>
               </div>
 
               {/* Title + description */}
@@ -1144,9 +1134,6 @@ function Rendezvous() {
         </div>
 
         <div className="mt-16 md:mt-20 text-center">
-          <p className="font-serif italic text-cream-soft/85 text-lg">
-            « L'ardoise change chaque mois — suivez-nous pour ne rien manquer. »
-          </p>
           <a
             href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/evenements`}
             className="mt-6 inline-flex items-center gap-3 px-7 py-3 border border-cream/30 text-cream text-[0.75rem] font-medium tracking-[0.2em] uppercase rounded-[2px] hover:bg-cream hover:text-bg-primary transition-all duration-300"
