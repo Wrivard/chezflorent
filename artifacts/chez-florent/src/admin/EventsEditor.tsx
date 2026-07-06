@@ -457,9 +457,9 @@ export default function EventsEditor() {
       )}
 
       <SectionPreview
-        section="agenda"
-        title="La section « Agenda » du site"
-        description="Voici à quoi ressemble votre programmation sur la page publique."
+        section="voix"
+        title="La section « Nos rendez-vous » du site"
+        description="Voici la section programmation telle qu'elle apparaît sur la page publique."
       />
 
       <ConfirmModal

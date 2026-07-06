@@ -205,10 +205,9 @@ export default function HoursEditor() {
       <ErrorText error={saveError} />
 
       <SectionPreview
-        section="horaires"
-        title="Le bandeau « Horaires » du site"
-        description="Voici le bandeau d'ouverture tel qu'il défile sur la page publique."
-        height={220}
+        section="contact"
+        title="La section « Nous trouver » du site"
+        description="Voici les horaires tels qu'ils apparaissent dans la section contact de la page publique."
       />
     </div>
   );
