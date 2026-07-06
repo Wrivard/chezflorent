@@ -1880,6 +1880,66 @@
       "slot": "facade",
       "url": "/images/facade-pizza.jpg",
       "alt": "Devanture de Chez Florent, 57 rue du Roi à Sorel-Tracy"
+    },
+    {
+      "slot": "grp-formule-1",
+      "url": "/images/tap-pour.jpg",
+      "alt": "Formule — service au comptoir"
+    },
+    {
+      "slot": "grp-formule-2",
+      "url": "/images/bread-tearing.png",
+      "alt": "Formule — pain partagé"
+    },
+    {
+      "slot": "grp-formule-3",
+      "url": "/images/dish-charcuterie.png",
+      "alt": "Formule — planche de charcuterie"
+    },
+    {
+      "slot": "grp-formule-4",
+      "url": "/images/ambiance-smoke.png",
+      "alt": "Formule — ambiance du bistro"
+    },
+    {
+      "slot": "grp-occasion-1",
+      "url": "/images/interior-bar.jpg",
+      "alt": "Occasion — la salle Chez Florent"
+    },
+    {
+      "slot": "grp-occasion-2",
+      "url": "/images/tap-pour.jpg",
+      "alt": "Occasion — au comptoir"
+    },
+    {
+      "slot": "grp-occasion-3",
+      "url": "/images/florent-glass.jpg",
+      "alt": "Occasion — verre signature"
+    },
+    {
+      "slot": "apropos-hero",
+      "url": "/images/hero-interior.png",
+      "alt": "Intérieur de Chez Florent"
+    },
+    {
+      "slot": "apropos-1",
+      "url": "/images/suflo-crew-dos.jpg",
+      "alt": "L'équipe de Chez Florent"
+    },
+    {
+      "slot": "apropos-2",
+      "url": "/images/equipe-bar.jpg",
+      "alt": "L'équipe au bar"
+    },
+    {
+      "slot": "apropos-3",
+      "url": "/images/chef-four-a-bois.jpg",
+      "alt": "Le chef au four à bois"
+    },
+    {
+      "slot": "apropos-chef",
+      "url": "/images/chef-four-a-bois.jpg",
+      "alt": "Portrait du chef"
     }
   ],
   "groupContent": {
@@ -1900,21 +1960,21 @@
     "texts": {
       "heroLede": "Un party de bureau, un anniversaire, un mariage intime ou une envie de privatiser le bistro au complet — on s'occupe de tout.",
       "heroTitle": "Réunir vos gens",
-      "heroMarker": "07 — Groupes & privatisation",
+      "heroMarker": "01 — Groupes & privatisation",
       "stepsTitle": "Simple, comme à la maison",
-      "stepsMarker": "07 — Comment ça se passe",
+      "stepsMarker": "05 — Comment ça se passe",
       "formulesLede": "Quatre façons de réunir vos gens — chacune s'ajuste au nombre, à l'occasion et au budget. Les tarifs sont à confirmer.",
       "formulesTitle": "L'art de recevoir",
       "manifestoBody": "Que vous soyez une dizaine autour d'une grande tablée ou que vous preniez la place au complet, on prépare votre soirée comme si c'était la nôtre — le menu, le vin, le rythme du service. Vous n'avez qu'à réunir vos gens.",
       "signatureName": "Florent",
       "signatureRole": "Propriétaire",
       "essentialTitle": "L'essentiel",
-      "formulesMarker": "07 — Les formules",
+      "formulesMarker": "03 — Les formules",
       "manifestoQuote": "« On ne reçoit pas un groupe comme une réservation de plus. On le reçoit comme on reçoit chez nous. »",
       "manifestoTitle": "« Vos gens, notre maison. »",
       "occasionsTitle": "On célèbre quoi ?",
-      "manifestoMarker": "07 — Le mot de Florent",
-      "occasionsMarker": "07 — Pour toutes les occasions",
+      "manifestoMarker": "02 — Le mot de Florent",
+      "occasionsMarker": "04 — Pour toutes les occasions",
       "essentialFootnote": "Valeurs à confirmer avec Florent."
     },
     "details": [
@@ -2012,7 +2072,7 @@
       "storyP2": "Il fut un temps où, à Sorel, il y avait un endroit où nous pouvions consommer de la bière artisanale et nous retrouver entre amis dans une ambiance décontractée, un endroit où l'on se sentait comme à la maison. Malheureusement, cet endroit a été emporté par les flammes.\n\nQuelques années plus tard, Maxime et Marie-Laurence devinrent collègues et amis, liés par leur lieu de travail, La Grange à Houblon. C'est après plusieurs quarts de travail à partager ce qu'ils aimaient, et aimaient moins, d'un établissement culinaire qu'ils ont réalisé qu'un concept complètement distinct, à leur image, pourrait représenter un vent de fraîcheur au cœur du centre-ville de Sorel-Tracy. Conseillés et appuyés par leurs mentors respectifs, Pierre-Luc et Fabienne, Max et Marie se lancèrent enfin dans cette grande aventure.\n\nCette aventure était alimentée par le désir de recréer ce lieu rassembleur mettant de l'avant le monde brassicole et viticole québécois, ainsi que les maraîchers locaux. Leur objectif était d'offrir un endroit accessible et familial, propice à tous les types de rassemblements, tout en proposant des assiettes, ma foi simples, bien que toujours préparées avec une qualité inébranlable.\n\nPassionnés, jeunes et ambitieux, ils ont vu ce projet se développer petit à petit. Puis, en mai 2025, Chez Florent prit vie.",
       "heroLede": "Un bistro de quartier, une certaine idée du temps qui passe — et des gens qui le font vivre.",
       "heroTitle": "La maison",
-      "heroMarker": "02 — La maison",
+      "heroMarker": "01 — La maison",
       "closingNote": "« On vient ici pour rester. » — Au plaisir de vous recevoir, 57 rue du Roi.",
       "voicesMarker": "Les voix de la maison",
       "storyQuestion2": "D'où vient l'idée d'ouvrir le restaurant ?",

@@ -7,7 +7,7 @@ export const ABOUT_CONTENT_ID = "apropos";
 // fallback constants used by the public page so the page never looks broken.
 export const DEFAULT_ABOUT_CONTENT: AboutContent = {
   texts: {
-    heroMarker: "02 — La maison",
+    heroMarker: "01 — La maison",
     heroTitle: "La maison",
     heroLede:
       "Un bistro de quartier, une certaine idée du temps qui passe — et des gens qui le font vivre.",

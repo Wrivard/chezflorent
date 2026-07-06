@@ -1471,6 +1471,18 @@ const PHOTO_FALLBACK: PhotoMap = {
   voice2: { url: "/images/run-club.png", alt: "Groupe de coureurs réunis après le run club Chez Florent" },
   voice3: { url: "/images/quiz-gagnant.jpg", alt: "Une carte-cadeau gagnée lors d'un quiz Chez Florent" },
   facade: { url: "/images/facade-pizza.jpg", alt: "Devanture de Chez Florent, 57 rue du Roi à Sorel-Tracy" },
+  "grp-formule-1": { url: "/images/tap-pour.jpg", alt: "Formule — service au comptoir" },
+  "grp-formule-2": { url: "/images/bread-tearing.png", alt: "Formule — pain partagé" },
+  "grp-formule-3": { url: "/images/dish-charcuterie.png", alt: "Formule — planche de charcuterie" },
+  "grp-formule-4": { url: "/images/ambiance-smoke.png", alt: "Formule — ambiance du bistro" },
+  "grp-occasion-1": { url: "/images/interior-bar.jpg", alt: "Occasion — la salle Chez Florent" },
+  "grp-occasion-2": { url: "/images/tap-pour.jpg", alt: "Occasion — au comptoir" },
+  "grp-occasion-3": { url: "/images/florent-glass.jpg", alt: "Occasion — verre signature" },
+  "apropos-hero": { url: "/images/hero-interior.png", alt: "Intérieur de Chez Florent" },
+  "apropos-1": { url: "/images/suflo-crew-dos.jpg", alt: "L'équipe de Chez Florent" },
+  "apropos-2": { url: "/images/equipe-bar.jpg", alt: "L'équipe au bar" },
+  "apropos-3": { url: "/images/chef-four-a-bois.jpg", alt: "Le chef au four à bois" },
+  "apropos-chef": { url: "/images/chef-four-a-bois.jpg", alt: "Portrait du chef" },
   gallery1: { url: "/images/g-photo-01.jpg", alt: "Ambiance Chez Florent" },
   gallery2: { url: "/images/g-photo-02.jpg", alt: "Un soir Chez Florent" },
   gallery3: { url: "/images/g-photo-03.jpg", alt: "La salle Chez Florent" },
@@ -1694,12 +1706,12 @@ function Reservation() {
       {/* <HoursBand /> — bande défilante masquée; réactiver au besoin */}
 
       <section id="reservation" className="bg-bg-primary py-32 md:py-40 px-6 md:px-12 relative overflow-hidden">
-        <SectionMarker number="05" />
+        <SectionMarker number="04" />
 
         {/* Massive ghost number behind everything for editorial weight */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
           <span className="font-display text-[40vw] md:text-[28vw] text-cream/[0.025] leading-none -translate-y-12">
-            05
+            04
           </span>
         </div>
 
@@ -1716,7 +1728,7 @@ function Reservation() {
             className="mb-12 md:mb-16 max-w-5xl"
           >
             <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
-              <span aria-hidden="true">✶ </span>05 — Une table pour vous
+              <span aria-hidden="true">✶ </span>04 — Une table pour vous
             </div>
             <h2 className="font-display font-display-tight text-[clamp(2.5rem,12vw,13rem)] text-cream leading-[1.18] pb-[0.28em] mb-8">
               Réserver
@@ -2394,7 +2406,7 @@ function Contact() {
   const daysLabel = useOpenDaysLabel();
   return (
     <section id="contact" className="bg-cream-soft py-32 px-6 md:px-12 relative overflow-hidden">
-      <SectionMarker number="06" tone="light" />
+      <SectionMarker number="05" tone="light" />
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -2404,7 +2416,7 @@ function Contact() {
           className="mb-16"
         >
           <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-4">
-            06 — Nous trouver
+            05 — Nous trouver
           </div>
           <h2 className="font-display text-[clamp(2rem,9vw,8rem)] text-bg-primary leading-[1.18] pb-[0.28em] mb-6">
             Passez nous voir

@@ -352,7 +352,7 @@ export default function MenuPage() {
                   "radial-gradient(120% 90% at 80% 0%, rgba(216,90,44,0.28) 0%, transparent 55%)",
               }}
             />
-            <SectionMarker number="03" />
+            <SectionMarker number="01" />
             <div className="max-w-7xl mx-auto relative z-10">
               <motion.div
                 initial={{ opacity: 0, y: 24 }}
@@ -360,7 +360,7 @@ export default function MenuPage() {
                 transition={{ duration: 0.8, ease: EASE }}
               >
                 <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
-                  <span aria-hidden="true">✶ </span>03 — Au menu ce soir
+                  <span aria-hidden="true">✶ </span>01 — Au menu ce soir
                 </div>
                 <h1 className="ardoise-clip font-display leading-[1.18] pb-[0.28em] text-[clamp(2rem,11vw,11rem)] max-w-full overflow-visible">
                   Le Menu
@@ -410,7 +410,7 @@ export default function MenuPage() {
 
           {/* Dietary FAQ — styled like the Groupes page */}
           <section className="bg-cream-soft pt-24 md:pt-28 pb-24 md:pb-28 px-6 md:px-12 relative">
-            <SectionMarker number="04" tone="light" />
+            <SectionMarker number="02" tone="light" />
             <div className="max-w-3xl mx-auto relative z-10">
               <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-6">
                 <span aria-hidden="true">◦ </span>Questions fréquentes

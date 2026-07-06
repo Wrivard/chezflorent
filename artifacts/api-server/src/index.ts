@@ -3,6 +3,7 @@ import { logger } from "./lib/logger";
 import { ensureAdminSeed } from "./lib/ensureAdmin";
 import { importContentSnapshot } from "./lib/importSnapshot";
 import { ensureGalleryPhotos } from "./lib/ensureGalleryPhotos";
+import { ensureGroupAboutPhotos } from "./lib/ensureGroupAboutPhotos";
 import { ensureArdoiseMenu } from "./lib/ensureArdoiseMenu";
 
 const rawPort = process.env["PORT"];
@@ -43,6 +44,7 @@ app.listen(port, (err) => {
   void importContentSnapshot().then((ready) => {
     if (ready) {
       void ensureGalleryPhotos();
+      void ensureGroupAboutPhotos();
       void ensureArdoiseMenu();
     }
   });

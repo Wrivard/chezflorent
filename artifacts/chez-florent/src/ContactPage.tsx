@@ -58,7 +58,7 @@ export default function ContactPage() {
                   "radial-gradient(120% 90% at 80% 0%, rgba(216,90,44,0.28) 0%, transparent 55%)",
               }}
             />
-            <SectionMarker number="06" />
+            <SectionMarker number="01" />
             <div className="max-w-7xl mx-auto relative z-10">
               <motion.div
                 initial={{ opacity: 0, y: 24 }}
@@ -66,7 +66,7 @@ export default function ContactPage() {
                 transition={{ duration: 0.8, ease: EASE }}
               >
                 <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
-                  <span aria-hidden="true">✶ </span>06 — Nous trouver
+                  <span aria-hidden="true">✶ </span>01 — Nous trouver
                 </div>
                 <h1 className="font-display text-cream leading-[1.18] pb-[0.28em] text-[clamp(2rem,11vw,11rem)]">
                   Passez nous voir
@@ -82,7 +82,7 @@ export default function ContactPage() {
 
           {/* Coordinates + façade */}
           <section className="bg-cream-soft pt-20 md:pt-24 pb-20 md:pb-24 px-6 md:px-12 relative">
-            <SectionMarker number="06" tone="light" />
+            <SectionMarker number="02" tone="light" />
             <div className="max-w-7xl mx-auto relative z-10">
               <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
                 {/* Left: details */}

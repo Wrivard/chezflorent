@@ -7,11 +7,11 @@ export const GROUP_CONTENT_ID = "groupes";
 // fallback constants used by the public page so the page never looks broken.
 export const DEFAULT_GROUP_CONTENT: GroupContent = {
   texts: {
-    heroMarker: "07 — Groupes & privatisation",
+    heroMarker: "01 — Groupes & privatisation",
     heroTitle: "Réunir vos gens",
     heroLede:
       "Un party de bureau, un anniversaire, un mariage intime ou une envie de privatiser le bistro au complet — on s'occupe de tout.",
-    manifestoMarker: "07 — Le mot de Florent",
+    manifestoMarker: "02 — Le mot de Florent",
     manifestoTitle: "« Vos gens, notre maison. »",
     manifestoBody:
       "Que vous soyez une dizaine autour d'une grande tablée ou que vous preniez la place au complet, on prépare votre soirée comme si c'était la nôtre — le menu, le vin, le rythme du service. Vous n'avez qu'à réunir vos gens.",
@@ -19,13 +19,13 @@ export const DEFAULT_GROUP_CONTENT: GroupContent = {
       "« On ne reçoit pas un groupe comme une réservation de plus. On le reçoit comme on reçoit chez nous. »",
     signatureName: "Florent",
     signatureRole: "Propriétaire",
-    formulesMarker: "07 — Les formules",
+    formulesMarker: "03 — Les formules",
     formulesTitle: "L'art de recevoir",
     formulesLede:
       "Quatre façons de réunir vos gens — chacune s'ajuste au nombre, à l'occasion et au budget. Les tarifs sont à confirmer.",
-    occasionsMarker: "07 — Pour toutes les occasions",
+    occasionsMarker: "04 — Pour toutes les occasions",
     occasionsTitle: "On célèbre quoi ?",
-    stepsMarker: "07 — Comment ça se passe",
+    stepsMarker: "05 — Comment ça se passe",
     stepsTitle: "Simple, comme à la maison",
     essentialTitle: "L'essentiel",
     essentialFootnote: "Valeurs à confirmer avec Florent.",

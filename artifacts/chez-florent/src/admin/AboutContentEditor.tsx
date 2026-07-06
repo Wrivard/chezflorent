@@ -20,15 +20,6 @@ import {
   TextInput,
   Textarea,
 } from "./ui";
-import { uploadImage } from "./lib";
-
-// Mirrors App.tsx imgSrc so bare filenames preview correctly in the admin.
-function imgPreview(image: string): string {
-  if (!image) return "";
-  if (image.startsWith("/") || image.startsWith("http")) return image;
-  return `/images/${image}`;
-}
-
 const TrashIcon = (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <path d="M3 6h18M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
@@ -68,65 +59,6 @@ function AreaRow({
     <Field label={label} hint={hint}>
       <Textarea value={value} onChange={(e) => onChange(e.target.value)} />
     </Field>
-  );
-}
-
-function ImageField({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  onChange: (url: string) => void;
-}) {
-  const [uploading, setUploading] = useState(false);
-  const [uploadError, setUploadError] = useState<unknown>(null);
-
-  async function onFile(file: File) {
-    setUploading(true);
-    setUploadError(null);
-    try {
-      onChange(await uploadImage(file));
-    } catch (err) {
-      setUploadError(err);
-    } finally {
-      setUploading(false);
-    }
-  }
-
-  return (
-    <div>
-      <span className="mb-1.5 block text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-cream-soft/60">
-        {label}
-      </span>
-      <div className="flex items-center gap-3">
-        <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-border bg-bg-tertiary">
-          {value ? (
-            <img
-              src={imgPreview(value)}
-              alt=""
-              className="h-full w-full object-cover"
-            />
-          ) : null}
-        </div>
-        <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-border-strong px-4 py-2 text-sm font-medium text-cream-soft transition-colors hover:text-cream hover:border-cream-soft/40">
-          {uploading ? "Téléversement…" : "Choisir une image"}
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            disabled={uploading}
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) onFile(file);
-              e.target.value = "";
-            }}
-          />
-        </label>
-      </div>
-      <ErrorText error={uploadError} />
-    </div>
   );
 }
 
@@ -189,8 +121,6 @@ function EditorInner({ initial }: { initial: AboutContent }) {
 
   const setText = (key: keyof AboutContent["texts"], v: string) =>
     setDraft((d) => ({ ...d, texts: { ...d.texts, [key]: v } }));
-  const setImage = (key: keyof AboutContent["images"], v: string) =>
-    setDraft((d) => ({ ...d, images: { ...d.images, [key]: v } }));
   const setChef = (key: keyof AboutContent["chef"], v: string) =>
     setDraft((d) => ({ ...d, chef: { ...d.chef, [key]: v } }));
   const setVoice = (i: number, patch: Partial<AboutVoice>) =>
@@ -213,7 +143,7 @@ function EditorInner({ initial }: { initial: AboutContent }) {
       <SectionHeading
         eyebrow="Page À propos"
         title="La maison"
-        description="Modifiez les textes, les images, les voix de la maison et la liste des producteurs de la page « À propos »."
+        description="Modifiez les textes, les voix de la maison et la liste des producteurs de la page « À propos ». Les photos se gèrent dans l'onglet « Photos »."
       />
 
       {/* Sticky save bar */}
@@ -327,33 +257,6 @@ function EditorInner({ initial }: { initial: AboutContent }) {
           </div>
         </Card>
 
-        {/* IMAGES */}
-        <Card>
-          <h3 className="mb-4 font-serif text-xl text-cream">Images</h3>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            <ImageField
-              label="Image de fond (héro)"
-              value={draft.images.hero}
-              onChange={(url) => setImage("hero", url)}
-            />
-            <ImageField
-              label="Photo 1 (grande)"
-              value={draft.images.story1}
-              onChange={(url) => setImage("story1", url)}
-            />
-            <ImageField
-              label="Photo 2 (portrait)"
-              value={draft.images.story2}
-              onChange={(url) => setImage("story2", url)}
-            />
-            <ImageField
-              label="Photo 3 (portrait)"
-              value={draft.images.story3}
-              onChange={(url) => setImage("story3", url)}
-            />
-          </div>
-        </Card>
-
         {/* CHEF */}
         <Card>
           <h3 className="mb-4 font-serif text-xl text-cream">
@@ -382,11 +285,6 @@ function EditorInner({ initial }: { initial: AboutContent }) {
               value={draft.chef.bio}
               onChange={(v) => setChef("bio", v)}
               hint="Séparez les paragraphes par une ligne vide."
-            />
-            <ImageField
-              label="Photo du chef (portrait)"
-              value={draft.chef.image}
-              onChange={(url) => setChef("image", url)}
             />
           </div>
         </Card>

@@ -518,7 +518,7 @@ export default function EventsPage() {
                   "radial-gradient(120% 90% at 80% 0%, rgba(216,90,44,0.28) 0%, transparent 55%)",
               }}
             />
-            <SectionMarker number="04" />
+            <SectionMarker number="01" />
             <div className="max-w-7xl mx-auto relative z-10">
               <motion.div
                 initial={{ opacity: 0, y: 24 }}
@@ -526,7 +526,7 @@ export default function EventsPage() {
                 transition={{ duration: 0.8, ease: EASE }}
               >
                 <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
-                  <span aria-hidden="true">✶ </span>04 — La programmation
+                  <span aria-hidden="true">✶ </span>01 — La programmation
                 </div>
                 <h1 className="font-display text-cream leading-[1.18] pb-[0.28em] text-[clamp(2rem,11vw,11rem)]">
                   Les événements
@@ -541,7 +541,7 @@ export default function EventsPage() {
 
           {/* Calendar + list (light section, echoes the homepage Agenda) */}
           <section className="bg-cream-soft pt-20 md:pt-24 pb-28 md:pb-32 px-6 md:px-12 relative">
-            <SectionMarker number="04" tone="light" />
+            <SectionMarker number="02" tone="light" />
             <div className="max-w-7xl mx-auto relative z-10">
               <EventsCalendar events={events} onSelectDate={setSelectedDate} />
               <div className="mt-20 md:mt-28">

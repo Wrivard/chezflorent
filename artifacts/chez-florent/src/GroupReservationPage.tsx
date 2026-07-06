@@ -10,6 +10,7 @@ import {
   ScrollProgress,
   SectionMarker,
   imgSrc,
+  usePhotos,
   EASE,
 } from "./App";
 
@@ -55,11 +56,11 @@ function RevealHeading({
 // is unavailable. Editable in the admin under the « Groupes » tab.
 const DEFAULT_GROUP_CONTENT: GroupContent = {
   texts: {
-    heroMarker: "07 — Groupes & privatisation",
+    heroMarker: "01 — Groupes & privatisation",
     heroTitle: "Réunir vos gens",
     heroLede:
       "Un party de bureau, un anniversaire, un mariage intime ou une envie de privatiser le bistro au complet — on s'occupe de tout.",
-    manifestoMarker: "07 — Le mot de Florent",
+    manifestoMarker: "02 — Le mot de Florent",
     manifestoTitle: "« Vos gens, notre maison. »",
     manifestoBody:
       "Que vous soyez une dizaine autour d'une grande tablée ou que vous preniez la place au complet, on prépare votre soirée comme si c'était la nôtre — le menu, le vin, le rythme du service. Vous n'avez qu'à réunir vos gens.",
@@ -67,13 +68,13 @@ const DEFAULT_GROUP_CONTENT: GroupContent = {
       "« On ne reçoit pas un groupe comme une réservation de plus. On le reçoit comme on reçoit chez nous. »",
     signatureName: "Florent",
     signatureRole: "Propriétaire",
-    formulesMarker: "07 — Les formules",
+    formulesMarker: "03 — Les formules",
     formulesTitle: "L'art de recevoir",
     formulesLede:
       "Quatre façons de réunir vos gens — chacune s'ajuste au nombre, à l'occasion et au budget. Les tarifs sont à confirmer.",
-    occasionsMarker: "07 — Pour toutes les occasions",
+    occasionsMarker: "04 — Pour toutes les occasions",
     occasionsTitle: "On célèbre quoi ?",
-    stepsMarker: "07 — Comment ça se passe",
+    stepsMarker: "05 — Comment ça se passe",
     stepsTitle: "Simple, comme à la maison",
     essentialTitle: "L'essentiel",
     essentialFootnote: "Valeurs à confirmer avec Florent.",
@@ -181,6 +182,7 @@ export default function GroupReservationPage() {
   const { data } = useGetGroupContent();
   const content = data ?? DEFAULT_GROUP_CONTENT;
   const t = content.texts;
+  const photos = usePhotos();
 
   return (
     <div className="min-h-[100dvh] w-full bg-bg-primary text-cream selection:bg-orange selection:text-bg-primary relative">
@@ -217,7 +219,7 @@ export default function GroupReservationPage() {
                   "radial-gradient(120% 90% at 80% 0%, rgba(216,90,44,0.28) 0%, transparent 55%)",
               }}
             />
-            <SectionMarker number="07" />
+            <SectionMarker number="01" />
             <div className="max-w-7xl mx-auto relative z-10">
               <motion.div
                 initial={{ opacity: 0, y: 24 }}
@@ -280,7 +282,7 @@ export default function GroupReservationPage() {
               asymmetric photo triptych + signed note. (Redesigned.)
           ============================================================ */}
           <section className="bg-cream-soft pt-24 md:pt-36 pb-24 md:pb-36 px-6 md:px-12 relative overflow-hidden">
-            <SectionMarker number="07" tone="light" />
+            <SectionMarker number="02" tone="light" />
             <div className="max-w-7xl mx-auto relative z-10">
               <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
                 {/* Left — words */}
@@ -379,7 +381,7 @@ export default function GroupReservationPage() {
             id="recevoir"
             className="bg-bg-primary pt-24 md:pt-32 pb-24 md:pb-32 px-6 md:px-12 relative overflow-hidden scroll-mt-28 md:scroll-mt-36"
           >
-            <SectionMarker number="07" />
+            <SectionMarker number="03" />
             <div
               aria-hidden="true"
               className="absolute top-0 right-0 w-[60vw] h-[60vw] max-w-[700px] max-h-[700px] -translate-y-1/3 translate-x-1/4 pointer-events-none rounded-full"
@@ -423,7 +425,7 @@ export default function GroupReservationPage() {
                       >
                         <div className="aspect-[4/3] overflow-hidden ring-1 ring-cream/10">
                           <img
-                            src={imgSrc(f.image)}
+                            src={photos[`grp-formule-${i + 1}`]?.url || imgSrc(f.image)}
                             alt={f.name}
                             className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
                           />
@@ -491,7 +493,7 @@ export default function GroupReservationPage() {
               ON CÉLÈBRE QUOI — occasions. Kept (image-led grid).
           ============================================================ */}
           <section className="bg-cream-soft pt-24 md:pt-32 pb-24 md:pb-32 px-6 md:px-12 relative">
-            <SectionMarker number="07" tone="light" />
+            <SectionMarker number="04" tone="light" />
             <div className="max-w-7xl mx-auto relative z-10">
               <div className="mb-16 md:mb-20">
                 <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-6">
@@ -517,7 +519,7 @@ export default function GroupReservationPage() {
                   >
                     <div className="relative aspect-[4/5] overflow-hidden ring-1 ring-bg-primary/15 mb-6">
                       <img
-                        src={imgSrc(occ.image)}
+                        src={photos[`grp-occasion-${i + 1}`]?.url || imgSrc(occ.image)}
                         alt=""
                         aria-hidden="true"
                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
@@ -544,7 +546,7 @@ export default function GroupReservationPage() {
               "L'essentiel" reservation-slip card. (Redesigned.)
           ============================================================ */}
           <section className="bg-bg-primary pt-24 md:pt-32 pb-24 md:pb-32 px-6 md:px-12 relative overflow-hidden">
-            <SectionMarker number="07" />
+            <SectionMarker number="05" />
             <div
               aria-hidden="true"
               className="absolute bottom-0 left-0 w-[55vw] h-[55vw] max-w-[640px] max-h-[640px] translate-y-1/3 -translate-x-1/4 pointer-events-none rounded-full"
@@ -658,7 +660,7 @@ export default function GroupReservationPage() {
               FAQ — kept.
           ============================================================ */}
           <section className="bg-cream-soft pt-24 md:pt-28 pb-24 md:pb-28 px-6 md:px-12 relative">
-            <SectionMarker number="07" tone="light" />
+            <SectionMarker number="06" tone="light" />
             <div className="max-w-3xl mx-auto relative z-10">
               <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-6">
                 <span aria-hidden="true">◦ </span>Questions fréquentes

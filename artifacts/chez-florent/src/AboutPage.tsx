@@ -6,6 +6,7 @@ import {
   ScrollProgress,
   SectionMarker,
   imgSrc,
+  usePhotos,
   EASE,
 } from "./App";
 import { useGetAboutContent } from "@workspace/api-client-react";
@@ -13,7 +14,7 @@ import type { AboutContent } from "@workspace/api-client-react";
 
 const DEFAULT_ABOUT_CONTENT: AboutContent = {
   texts: {
-    heroMarker: "02 — La maison",
+    heroMarker: "01 — La maison",
     heroTitle: "La maison",
     heroLede:
       "Un bistro de quartier, une certaine idée du temps qui passe — et des gens qui le font vivre.",
@@ -88,6 +89,7 @@ export default function AboutPage() {
   const { data } = useGetAboutContent();
   const content = data ?? DEFAULT_ABOUT_CONTENT;
   const { texts, suppliers, images, chef } = content;
+  const photos = usePhotos();
   const quoteWords = texts.quote.split(" ");
   const question2 =
     texts.storyQuestion2 ?? DEFAULT_ABOUT_CONTENT.texts.storyQuestion2 ?? "";
@@ -105,7 +107,7 @@ export default function AboutPage() {
           <section className="relative bg-bg-primary pt-40 md:pt-52 pb-16 md:pb-20 px-6 md:px-12 overflow-hidden">
             {/* Background photo */}
             <img
-              src={imgSrc(images.hero)}
+              src={photos["apropos-hero"]?.url || imgSrc(images.hero)}
               alt=""
               aria-hidden="true"
               className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
@@ -127,7 +129,7 @@ export default function AboutPage() {
                   "radial-gradient(120% 90% at 80% 0%, rgba(216,90,44,0.28) 0%, transparent 55%)",
               }}
             />
-            <SectionMarker number="02" />
+            <SectionMarker number="01" />
             <div className="max-w-7xl mx-auto relative z-10">
               <motion.div
                 initial={{ opacity: 0, y: 24 }}
@@ -224,7 +226,7 @@ export default function AboutPage() {
                   className="md:col-span-6 aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10"
                 >
                   <img
-                    src={imgSrc(images.story1)}
+                    src={photos["apropos-1"]?.url || imgSrc(images.story1)}
                     alt=""
                     className="w-full h-full object-cover"
                   />
@@ -237,7 +239,7 @@ export default function AboutPage() {
                   className="md:col-span-3 aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10"
                 >
                   <img
-                    src={imgSrc(images.story2)}
+                    src={photos["apropos-2"]?.url || imgSrc(images.story2)}
                     alt=""
                     className="w-full h-full object-cover"
                   />
@@ -250,7 +252,7 @@ export default function AboutPage() {
                   className="md:col-span-3 aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10"
                 >
                   <img
-                    src={imgSrc(images.story3)}
+                    src={photos["apropos-3"]?.url || imgSrc(images.story3)}
                     alt=""
                     className="w-full h-full object-cover"
                   />
@@ -276,7 +278,7 @@ export default function AboutPage() {
                 >
                   <div className="aspect-[3/4] overflow-hidden ring-1 ring-cream/10">
                     <img
-                      src={imgSrc(chef.image)}
+                      src={photos["apropos-chef"]?.url || imgSrc(chef.image)}
                       alt={chef.name}
                       className="w-full h-full object-cover"
                     />

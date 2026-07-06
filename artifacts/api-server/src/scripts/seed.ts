@@ -240,6 +240,18 @@ async function seedPhotos(): Promise<void> {
       url: "/images/facade-pizza.jpg",
       alt: "Devanture de Chez Florent, 57 rue du Roi à Sorel-Tracy",
     },
+    { slot: "grp-formule-1", url: "/images/tap-pour.jpg", alt: "Formule — service au comptoir" },
+    { slot: "grp-formule-2", url: "/images/bread-tearing.png", alt: "Formule — pain partagé" },
+    { slot: "grp-formule-3", url: "/images/dish-charcuterie.png", alt: "Formule — planche de charcuterie" },
+    { slot: "grp-formule-4", url: "/images/ambiance-smoke.png", alt: "Formule — ambiance du bistro" },
+    { slot: "grp-occasion-1", url: "/images/interior-bar.jpg", alt: "Occasion — la salle Chez Florent" },
+    { slot: "grp-occasion-2", url: "/images/tap-pour.jpg", alt: "Occasion — au comptoir" },
+    { slot: "grp-occasion-3", url: "/images/florent-glass.jpg", alt: "Occasion — verre signature" },
+    { slot: "apropos-hero", url: "/images/hero-interior.png", alt: "Intérieur de Chez Florent" },
+    { slot: "apropos-1", url: "/images/suflo-crew-dos.jpg", alt: "L'équipe de Chez Florent" },
+    { slot: "apropos-2", url: "/images/equipe-bar.jpg", alt: "L'équipe au bar" },
+    { slot: "apropos-3", url: "/images/chef-four-a-bois.jpg", alt: "Le chef au four à bois" },
+    { slot: "apropos-chef", url: "/images/chef-four-a-bois.jpg", alt: "Portrait du chef" },
   ];
   const existing = await db.select().from(sitePhotosTable);
   const existingSlots = new Set(existing.map((p) => p.slot));

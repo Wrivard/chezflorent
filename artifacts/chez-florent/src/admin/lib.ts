@@ -88,6 +88,39 @@ export const PHOTO_GROUPS: PhotoGroup[] = [
     slots: [{ slot: "facade", label: "Devanture du restaurant", ratio: "4/5" }],
   },
   {
+    title: "Page Groupes — Formules",
+    description:
+      "Les photos des formules de la page « Groupes & privatisation ».",
+    slots: [
+      { slot: "grp-formule-1", label: "Formule 1 — photo", ratio: "4/3" },
+      { slot: "grp-formule-2", label: "Formule 2 — photo", ratio: "4/3" },
+      { slot: "grp-formule-3", label: "Formule 3 — photo", ratio: "4/3" },
+      { slot: "grp-formule-4", label: "Formule 4 — photo", ratio: "4/3" },
+    ],
+  },
+  {
+    title: "Page Groupes — Occasions",
+    description:
+      "Les photos des occasions de la page « Groupes & privatisation ».",
+    slots: [
+      { slot: "grp-occasion-1", label: "Occasion 1 — photo", ratio: "4/5" },
+      { slot: "grp-occasion-2", label: "Occasion 2 — photo", ratio: "4/5" },
+      { slot: "grp-occasion-3", label: "Occasion 3 — photo", ratio: "4/5" },
+    ],
+  },
+  {
+    title: "Page À propos",
+    description:
+      "Les photos de la page « À propos » : en-tête, histoire et chef.",
+    slots: [
+      { slot: "apropos-hero", label: "En-tête (image de fond)", ratio: "16/9" },
+      { slot: "apropos-1", label: "Histoire — photo 1 (grande)", ratio: "4/3" },
+      { slot: "apropos-2", label: "Histoire — photo 2 (portrait)", ratio: "3/4" },
+      { slot: "apropos-3", label: "Histoire — photo 3 (portrait)", ratio: "3/4" },
+      { slot: "apropos-chef", label: "Photo du chef (portrait)", ratio: "3/4" },
+    ],
+  },
+  {
     title: "Galerie « Un soir chez Florent »",
     description:
       "Les seize photos du carrousel d'ambiance sur la page d'accueil.",
