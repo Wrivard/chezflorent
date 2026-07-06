@@ -3,6 +3,7 @@ import { logger } from "./lib/logger";
 import { ensureAdminSeed } from "./lib/ensureAdmin";
 import { importContentSnapshot } from "./lib/importSnapshot";
 import { ensureGalleryPhotos } from "./lib/ensureGalleryPhotos";
+import { ensureArdoiseMenu } from "./lib/ensureArdoiseMenu";
 
 const rawPort = process.env["PORT"];
 
@@ -40,6 +41,9 @@ app.listen(port, (err) => {
   // import is still pending a retry (it failed and rolled back) would leave
   // site_photos non-empty and make the next boot skip the original photos.
   void importContentSnapshot().then((ready) => {
-    if (ready) void ensureGalleryPhotos();
+    if (ready) {
+      void ensureGalleryPhotos();
+      void ensureArdoiseMenu();
+    }
   });
 });

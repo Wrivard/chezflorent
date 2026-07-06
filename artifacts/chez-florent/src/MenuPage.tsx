@@ -12,7 +12,6 @@ import {
   EASE_SMOOTH,
   MENU_SLUGS,
   FIXED_MENU_SLUGS,
-  ARDOISE_PDF_URL,
   type MenuCategory,
 } from "./App";
 
@@ -299,7 +298,9 @@ function MenuBoard({
 // -----------------------------------------------------------------------------
 export default function MenuPage() {
   const allCategories = useMenuCategoriesData();
-  const menu = allCategories.filter((c) => MENU_SLUGS.includes(c.id));
+  const menu = MENU_SLUGS.map((slug) =>
+    allCategories.find((c) => c.id === slug),
+  ).filter((c): c is (typeof allCategories)[number] => Boolean(c));
   const bar = allCategories.filter((c) => !FIXED_MENU_SLUGS.includes(c.id));
 
   return (
@@ -351,19 +352,10 @@ export default function MenuPage() {
                   Le Menu
                 </h1>
                 <p className="font-sans italic text-cream-soft/75 max-w-2xl text-lg mt-6">
-                  Notre carte complète — encas, salades, pizzas au four à bois,
-                  hoagies, desserts et boissons. Pour les spéciaux qui changent
-                  chaque semaine, consultez l'ardoise.
+                  Notre carte complète — l'ardoise du chef, encas, salades,
+                  pizzas au four à bois, hoagies, desserts et boissons. Les
+                  spéciaux de l'ardoise changent au gré des arrivages.
                 </p>
-                <a
-                  href={ARDOISE_PDF_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 mt-8 px-5 py-2.5 border border-orange text-orange text-[0.75rem] font-medium tracking-[0.2em] uppercase hover:bg-orange hover:text-bg-primary transition-all duration-300 rounded-[2px]"
-                >
-                  Voir l'ardoise (PDF)
-                  <span aria-hidden="true">↗</span>
-                </a>
               </motion.div>
             </div>
           </section>
@@ -397,7 +389,7 @@ export default function MenuPage() {
 
             <div className="max-w-7xl mx-auto mt-16 text-center relative z-10">
               <p className="font-sans italic text-cream-soft/85 text-sm">
-                « L'ardoise change chaque semaine — consultez-la en PDF pour les spéciaux du chef. »
+                « L'ardoise change chaque semaine — les spéciaux du chef, au gré des arrivages. »
               </p>
             </div>
           </section>

@@ -762,6 +762,7 @@ export const FOOD_SLUGS = ["encas", "salades", "pizzas", "hoagies"];
 // MUST stay in sync with PROTECTED_SLUGS in the api-server importUntappdMenu.ts
 // so a re-import never deletes them.
 export const FIXED_MENU_SLUGS = [
+  "ardoise",
   "encas",
   "salades",
   "pizzas",
@@ -773,10 +774,13 @@ export const FIXED_MENU_SLUGS = [
 ];
 
 // Fixed categories displayed in the Menu page's main "La cuisine" tab bar.
-// NOTE: "alcools" is intentionally NOT shown here (removed from the main menu
-// per request); it stays a fixed/protected category above (kept in the DB and
-// editable in the admin), just hidden from the public Menu page.
+// "ardoise" (the chef's rotating specials, formerly a PDF) leads the list so it
+// is the default tab. NOTE: "alcools" is intentionally NOT shown here (removed
+// from the main menu per request); it stays a fixed/protected category above
+// (kept in the DB and editable in the admin), just hidden from the public Menu
+// page.
 export const MENU_SLUGS = [
+  "ardoise",
   "encas",
   "salades",
   "pizzas",
@@ -785,11 +789,6 @@ export const MENU_SLUGS = [
   "cafes-thes",
   "extras",
 ];
-
-// URL of the rotating "ardoise" (daily specials) PDF. Shown as a button on the
-// homepage menu section and the Menu page — distinct from the fixed menu.
-export const ARDOISE_PDF_URL =
-  "https://irp.cdn-website.com/d33e0c61/files/uploaded/ardoise+mai.pdf";
 
 // Static fallback used only when the API returns no menu (DB is the source of
 // truth once seeded). Mirrors MENU_SEED in the api-server.
@@ -895,6 +894,22 @@ const menuCategories: MenuCategory[] = [
       { name: "Bufarella", price: "+5,50 $", desc: "", image: "" },
     ],
   },
+  {
+    id: "ardoise",
+    label: "L'ardoise",
+    tagline: "Les spéciaux du chef — au gré des arrivages du marché.",
+    dishes: [
+      { name: "Trempette de poireaux bacon", price: "16,95 $", desc: "Servi avec pain plat gratiné.", image: "naan-dip.jpg" },
+      { name: "Grilled cheese sur baguette", price: "5,95 $ / 11,95 $", desc: "Provolone, mozzarella, fromage jaune, beurre à l'ail.", image: "dish-sandwich.png" },
+      { name: "Focaccia", price: "19,95 $", desc: "Focaccia maison, miel, huile épicée, huile d'olive (Esporao), mélange de fromages ricotta et chèvre, prosciutto, tomates, glaze balsamique, poivre moulu, basilic frais.", image: "bread-tearing.png" },
+      { name: "Bufarella ananananas", price: "17,95 $", desc: "Boule de fromage bufarella (Fromagerie Fuoco) accompagnée d'une compote d'ananas, mayonnaise chili épicée maison, crumble d'amandes, de sucre et de coconut, zeste de lime. Servi avec pains naan grillés.", image: "bufarella-mint.jpg" },
+      { name: "Le « Choux-Choux »", price: "21,95 $", desc: "Pain ciabatta, dinde fumée, salade de choux rouge crémeuse, gelée de betteraves jaunes, roquette.", image: "tower-sandwich.jpg" },
+      { name: "« Messieurs patates »", price: "9,95 $", desc: "Bouchées de pommes de terre frits, parmesan, huile de truffe, beurre à l'ail confit maison, poivre moulu, sirop d'érable. Servi avec sauce marinara.", image: "dish-tasting.png" },
+      { name: "Pizza « Bimi »", price: "25,95 $", desc: "Sauce au fromage (Île-aux-Grues, cheddar vieilli 2 ans), broccolini, jambon (Charcuterie Porc Épique), coulis de moutarde et miel, huile d'olive.", image: "pizza-oven.jpg" },
+      { name: "Assiette de charcuterie", price: "35,95 $", desc: "Calabrese, prosciutto, saucissons secs, olives méli-mélo, fromages du moment, pickle d'onions rouges, petits cornichons. Servi avec pain et croutons.", image: "dish-charcuterie.png" },
+      { name: "« Philly T »", price: "25,95 $", desc: "Pain baguette, fromages (jaune, mozzarella, provolone), poivrons rouges, onions blancs, brisket (Les Cowboys du BBQ), mayonnaise épicée. Servi avec salade de pâte maison et cup de sauce BBQ.", image: "miche-porc.jpg" },
+    ],
+  },
 ];
 
 function Menu() {
@@ -954,13 +969,11 @@ function Menu() {
             </AnimatePresence>
 
             <a
-              href={ARDOISE_PDF_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/menu`}
               className="inline-flex items-center gap-2 mt-8 px-5 py-2.5 border border-orange text-orange text-[0.75rem] font-medium tracking-[0.2em] uppercase hover:bg-orange hover:text-bg-primary transition-all duration-300 rounded-[2px]"
             >
-              Voir l'ardoise (PDF)
-              <span aria-hidden="true">↗</span>
+              Voir l'ardoise
+              <span aria-hidden="true">→</span>
             </a>
           </div>
 
@@ -1118,7 +1131,7 @@ function Menu() {
 
           <div className="mt-16 text-center">
             <p className="font-sans italic text-cream-soft/85 text-sm">
-              « L'ardoise change chaque semaine — jetez-y un œil en PDF. »
+              « L'ardoise change chaque semaine — au gré du chef et des arrivages. »
             </p>
           </div>
         </div>

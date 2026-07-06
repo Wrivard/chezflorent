@@ -1,6 +1,7 @@
 // Canonical fixed menu ("Le menu"), transcribed from the restaurant's printed
-// menu. This is the real menu — distinct from the rotating "ardoise" (daily
-// specials), which lives as a downloadable PDF on the Menu page.
+// menu. Includes the rotating "ardoise" (chef's daily specials) as a real,
+// CMS-editable category — it leads the "La cuisine" tab bar on the Menu page
+// (formerly a downloadable PDF).
 export const MENU_SEED = [
   {
     slug: "encas",
@@ -327,6 +328,74 @@ export const MENU_SEED = [
       },
       { name: "Fromages", price: "+2,75 $", description: "", image: null },
       { name: "Bufarella", price: "+5,50 $", description: "", image: null },
+    ],
+  },
+  {
+    slug: "ardoise",
+    label: "L'ardoise",
+    tagline: "Les spéciaux du chef — au gré des arrivages du marché.",
+    items: [
+      {
+        name: "Trempette de poireaux bacon",
+        price: "16,95 $",
+        description: "Servi avec pain plat gratiné.",
+        image: "/images/naan-dip.jpg",
+      },
+      {
+        name: "Grilled cheese sur baguette",
+        price: "5,95 $ / 11,95 $",
+        description: "Provolone, mozzarella, fromage jaune, beurre à l'ail.",
+        image: "/images/dish-sandwich.png",
+      },
+      {
+        name: "Focaccia",
+        price: "19,95 $",
+        description:
+          "Focaccia maison, miel, huile épicée, huile d'olive (Esporao), mélange de fromages ricotta et chèvre, prosciutto, tomates, glaze balsamique, poivre moulu, basilic frais.",
+        image: "/images/bread-tearing.png",
+      },
+      {
+        name: "Bufarella ananananas",
+        price: "17,95 $",
+        description:
+          "Boule de fromage bufarella (Fromagerie Fuoco) accompagnée d'une compote d'ananas, mayonnaise chili épicée maison, crumble d'amandes, de sucre et de coconut, zeste de lime. Servi avec pains naan grillés.",
+        image: "/images/bufarella-mint.jpg",
+      },
+      {
+        name: "Le « Choux-Choux »",
+        price: "21,95 $",
+        description:
+          "Pain ciabatta, dinde fumée, salade de choux rouge crémeuse, gelée de betteraves jaunes, roquette.",
+        image: "/images/tower-sandwich.jpg",
+      },
+      {
+        name: "« Messieurs patates »",
+        price: "9,95 $",
+        description:
+          "Bouchées de pommes de terre frits, parmesan, huile de truffe, beurre à l'ail confit maison, poivre moulu, sirop d'érable. Servi avec sauce marinara.",
+        image: "/images/dish-tasting.png",
+      },
+      {
+        name: "Pizza « Bimi »",
+        price: "25,95 $",
+        description:
+          "Sauce au fromage (Île-aux-Grues, cheddar vieilli 2 ans), broccolini, jambon (Charcuterie Porc Épique), coulis de moutarde et miel, huile d'olive.",
+        image: "/images/pizza-oven.jpg",
+      },
+      {
+        name: "Assiette de charcuterie",
+        price: "35,95 $",
+        description:
+          "Calabrese, prosciutto, saucissons secs, olives méli-mélo, fromages du moment, pickle d'onions rouges, petits cornichons. Servi avec pain et croutons.",
+        image: "/images/dish-charcuterie.png",
+      },
+      {
+        name: "« Philly T »",
+        price: "25,95 $",
+        description:
+          "Pain baguette, fromages (jaune, mozzarella, provolone), poivrons rouges, onions blancs, brisket (Les Cowboys du BBQ), mayonnaise épicée. Servi avec salade de pâte maison et cup de sauce BBQ.",
+        image: "/images/miche-porc.jpg",
+      },
     ],
   },
 ];

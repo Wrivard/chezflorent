@@ -29,6 +29,7 @@ const THEME_URL = `https://business.untappd.com/locations/${LOCATION_ID}/themes/
 // slugify to one of these names. Keep this in sync with FIXED_MENU_SLUGS in the
 // frontend (App.tsx) — the full set of site-owned fixed categories.
 const PROTECTED_SLUGS = [
+  "ardoise",
   "encas",
   "salades",
   "pizzas",
