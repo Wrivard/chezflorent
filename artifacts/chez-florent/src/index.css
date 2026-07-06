@@ -62,6 +62,14 @@ body {
   word-spacing: normal;
 }
 
+/* Short display headings (e.g. "Réserver") where the default 0.04em tracking
+   splits the é and s apart — pull the Pacifico glyphs back together so the
+   cursive letters connect naturally. Placed after the rule above so it wins for
+   elements carrying both classes (same specificity). */
+.site-root .font-display-tight {
+  letter-spacing: -0.015em;
+}
+
 .link-underline {
   position: relative;
   text-decoration: none;

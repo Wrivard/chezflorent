@@ -1718,7 +1718,7 @@ function Reservation() {
             <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-orange mb-6">
               <span aria-hidden="true">✶ </span>05 — Une table pour vous
             </div>
-            <h2 className="font-display text-[clamp(2.5rem,12vw,13rem)] text-cream leading-[1.18] pb-[0.28em] mb-8">
+            <h2 className="font-display font-display-tight text-[clamp(2.5rem,12vw,13rem)] text-cream leading-[1.18] pb-[0.28em] mb-8">
               Réserver
             </h2>
             <div className="flex items-baseline gap-4">
