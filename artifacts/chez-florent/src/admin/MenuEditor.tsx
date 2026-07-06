@@ -615,16 +615,23 @@ function SupplierBandEditor() {
   );
 }
 
+// Categories intentionally hidden from the CMS. « Alcools » is managed through
+// Untappd, so it is not editable here (but stays in the DB / on the site).
+const HIDDEN_EDITOR_SLUGS = ["alcools"];
+
 export default function MenuEditor() {
   const { data: menu, isLoading, isError, error } = useGetMenu();
 
   if (isLoading) return <p className="text-cream-soft/60">Chargement…</p>;
   if (isError) return <ErrorText error={error} />;
 
-  const categories = menu ?? [];
+  const allCategories = menu ?? [];
+  const categories = allCategories.filter(
+    (c) => !HIDDEN_EDITOR_SLUGS.includes(c.slug),
+  );
   const nextSortOrder =
-    categories.length > 0
-      ? Math.max(...categories.map((c) => c.sortOrder)) + 1
+    allCategories.length > 0
+      ? Math.max(...allCategories.map((c) => c.sortOrder)) + 1
       : 0;
 
   return (
