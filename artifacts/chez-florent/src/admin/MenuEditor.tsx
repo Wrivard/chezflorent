@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   useGetMenu,
-  useCreateMenuCategory,
   useUpdateMenuCategory,
   useDeleteMenuCategory,
   useCreateMenuItem,
@@ -446,66 +445,6 @@ function CategorySection({ category }: { category: MenuCategory }) {
   );
 }
 
-function AddCategory({ nextSortOrder }: { nextSortOrder: number }) {
-  const invalidate = useMenuInvalidate();
-  const [open, setOpen] = useState(false);
-  const [label, setLabel] = useState("");
-  const [slug, setSlug] = useState("");
-  const [tagline, setTagline] = useState("");
-
-  const create = useCreateMenuCategory({
-    mutation: {
-      onSuccess: () => {
-        invalidate();
-        setOpen(false);
-        setLabel("");
-        setSlug("");
-        setTagline("");
-      },
-    },
-  });
-
-  return (
-    <>
-      <Button onClick={() => setOpen(true)}>+ Ajouter une catégorie</Button>
-      <Modal open={open} onClose={() => setOpen(false)} title="Nouvelle catégorie">
-        <div className="grid gap-3 sm:grid-cols-2">
-          <Field label="Nom de la catégorie">
-            <TextInput value={label} onChange={(e) => setLabel(e.target.value)} />
-          </Field>
-          <Field label="Identifiant (slug)" hint="lettres minuscules, sans espace">
-            <TextInput value={slug} onChange={(e) => setSlug(e.target.value)} />
-          </Field>
-          <div className="sm:col-span-2">
-            <Field label="Sous-titre">
-              <TextInput
-                value={tagline}
-                onChange={(e) => setTagline(e.target.value)}
-              />
-            </Field>
-          </div>
-        </div>
-        <div className="mt-6 flex items-center gap-3">
-          <Button
-            onClick={() =>
-              create.mutate({
-                data: { label, slug, tagline, sortOrder: nextSortOrder },
-              })
-            }
-            disabled={create.isPending || !label || !slug}
-          >
-            {create.isPending ? "…" : "Ajouter"}
-          </Button>
-          <Button variant="ghost" onClick={() => setOpen(false)}>
-            Annuler
-          </Button>
-        </div>
-        <ErrorText error={create.error} />
-      </Modal>
-    </>
-  );
-}
-
 function SupplierBandEditor() {
   const queryClient = useQueryClient();
   const { data, isLoading, isError, error } = useGetMenuMarquee();
@@ -615,8 +554,25 @@ function SupplierBandEditor() {
   );
 }
 
-// Categories intentionally hidden from the CMS. « Alcools » is managed through
-// Untappd, so it is not editable here (but stays in the DB / on the site).
+// The CMS Menu editor manages ONLY the site-owned fixed printed-menu categories.
+// Every drink category (beers, wines, spirits, cocktails, « alcool », etc.) is
+// imported from and managed through Untappd — showing them here would be futile
+// since a re-import overwrites them — so they are hidden. Keep this in sync with
+// FIXED_MENU_SLUGS in App.tsx and PROTECTED_SLUGS in importUntappdMenu.ts.
+const FIXED_MENU_SLUGS = [
+  "ardoise",
+  "encas",
+  "salades",
+  "pizzas",
+  "hoagies",
+  "desserts",
+  "cafes-thes",
+  "alcools",
+  "extras",
+];
+
+// Fixed categories that also stay out of the CMS. « Alcools » is kept in the DB
+// but not edited here.
 const HIDDEN_EDITOR_SLUGS = ["alcools"];
 
 export default function MenuEditor() {
@@ -626,30 +582,27 @@ export default function MenuEditor() {
   if (isError) return <ErrorText error={error} />;
 
   const allCategories = menu ?? [];
+  // The CMS only manages the fixed, site-owned food categories. Every drink
+  // category (beers, wines, spirits, cocktails, « alcool », etc.) is imported
+  // from and managed through Untappd, so it is hidden here.
   const categories = allCategories.filter(
-    (c) => !HIDDEN_EDITOR_SLUGS.includes(c.slug),
+    (c) =>
+      FIXED_MENU_SLUGS.includes(c.slug) && !HIDDEN_EDITOR_SLUGS.includes(c.slug),
   );
-  const nextSortOrder =
-    allCategories.length > 0
-      ? Math.max(...allCategories.map((c) => c.sortOrder)) + 1
-      : 0;
 
   return (
     <div>
       <SectionHeading
         eyebrow="L'ardoise"
         title="Menu du restaurant"
-        description="Chaque catégorie a son tableau. Ajoutez, modifiez ou retirez les plats directement dans la bonne section."
-        action={<AddCategory nextSortOrder={nextSortOrder} />}
+        description="Chaque catégorie a son tableau. Modifiez les plats directement dans la bonne section. Les boissons sont gérées via Untappd."
       />
       <div className="mb-6">
         <SupplierBandEditor />
       </div>
       <div className="space-y-6">
         {categories.length === 0 && (
-          <p className="text-cream-soft/60">
-            Aucune catégorie. Commencez par en ajouter une.
-          </p>
+          <p className="text-cream-soft/60">Aucune catégorie à afficher.</p>
         )}
         {categories.map((category) => (
           <CategorySection key={category.id} category={category} />
