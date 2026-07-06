@@ -379,7 +379,7 @@ export default function MenuPage() {
               {bar.length > 0 && (
                 <div>
                   <BoardHeading
-                    kicker="Bières & boissons — rafraîchi depuis Untappd"
+                    kicker="Bières & boissons"
                     title="Le bar"
                   />
                   <MenuBoard categories={bar} showPhoto={false} boardId="bar" />
