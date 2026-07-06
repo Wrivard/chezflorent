@@ -16,6 +16,20 @@ import {
 } from "./App";
 
 // -----------------------------------------------------------------------------
+// DIETARY FAQ
+// -----------------------------------------------------------------------------
+const MENU_FAQS: { q: string; a: string }[] = [
+  {
+    q: "Avez-vous de la pâte à pizza sans gluten ?",
+    a: "Oui — une pâte à pizza sans gluten est offerte sur demande pour la plupart de nos pizzas. Mentionnez-le à votre serveur. Nos plats sont préparés dans une cuisine où le gluten est présent, alors nous ne pouvons garantir l'absence totale de traces.",
+  },
+  {
+    q: "Offrez-vous du fromage sans lactose ?",
+    a: "Oui — nous pouvons remplacer le fromage par une option sans lactose sur plusieurs plats. Demandez à votre serveur les choix du moment.",
+  },
+];
+
+// -----------------------------------------------------------------------------
 // SUPPLIERS MARQUEE
 // -----------------------------------------------------------------------------
 function SuppliersMarquee() {
@@ -391,6 +405,40 @@ export default function MenuPage() {
               <p className="font-sans italic text-cream-soft/85 text-sm">
                 « L'ardoise change chaque semaine — les spéciaux du chef, au gré des arrivages. »
               </p>
+            </div>
+          </section>
+
+          {/* Dietary FAQ — styled like the Groupes page */}
+          <section className="bg-cream-soft pt-24 md:pt-28 pb-24 md:pb-28 px-6 md:px-12 relative">
+            <SectionMarker number="04" tone="light" />
+            <div className="max-w-3xl mx-auto relative z-10">
+              <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-6">
+                <span aria-hidden="true">◦ </span>Questions fréquentes
+              </div>
+              <h2 className="font-display text-bg-primary text-[clamp(1.75rem,6vw,4.5rem)] leading-[1.05] pb-[0.08em] mb-12">
+                Allergies & régimes
+              </h2>
+              <div className="border-t border-bg-primary/15">
+                {MENU_FAQS.map((faq) => (
+                  <details
+                    key={faq.q}
+                    className="group border-b border-bg-primary/15 py-6"
+                  >
+                    <summary className="flex items-center justify-between gap-4 cursor-pointer list-none font-serif text-bg-primary text-[1.25rem] md:text-[1.45rem] leading-snug">
+                      {faq.q}
+                      <span
+                        aria-hidden="true"
+                        className="text-orange text-2xl shrink-0 transition-transform duration-300 group-open:rotate-45"
+                      >
+                        +
+                      </span>
+                    </summary>
+                    <p className="font-sans text-bg-primary/70 leading-relaxed mt-4 text-sm md:text-base">
+                      {faq.a}
+                    </p>
+                  </details>
+                ))}
+              </div>
             </div>
           </section>
         </main>
