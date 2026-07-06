@@ -295,7 +295,7 @@ export function Navbar({
   const status = useOpenStatus();
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   const onSubPage = onEventsPage || onMenuPage || onAboutPage || onContactPage || onGroupsPage || onOtherPage;
-  const bistroActive = onAboutPage || onContactPage || onGroupsPage;
+  const bistroActive = onAboutPage || onContactPage || onEventsPage;
   const sectionHref = (id: string) =>
     onSubPage ? `${base}/#${id}` : `#${id}`;
   const homeHref = onSubPage ? `${base}/` : "#accueil";
@@ -415,14 +415,14 @@ export function Navbar({
                       <div className="flex flex-col bg-bg-primary/95 backdrop-blur-md border border-border rounded-[2px] overflow-hidden shadow-2xl">
                         <a href={aboutHref} className={`px-5 py-3.5 hover:bg-cream/5 hover:text-cream transition-colors border-b border-border/60 ${onAboutPage ? "text-cream bg-cream/5" : ""}`}>À propos</a>
                         <a href={contactHref} className={`px-5 py-3.5 hover:bg-cream/5 hover:text-cream transition-colors border-b border-border/60 ${onContactPage ? "text-cream bg-cream/5" : ""}`}>Contact</a>
-                        <a href={groupsHref} className={`px-5 py-3.5 hover:bg-cream/5 hover:text-cream transition-colors ${onGroupsPage ? "text-cream bg-cream/5" : ""}`}>Groupes</a>
+                        <a href={eventsHref} className={`px-5 py-3.5 hover:bg-cream/5 hover:text-cream transition-colors ${onEventsPage ? "text-cream bg-cream/5" : ""}`}>Agenda</a>
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
 
-              <a href={eventsHref} className={`link-underline hover:text-cream transition-colors ${onEventsPage ? "active text-cream" : ""}`}>Agenda</a>
+              <a href={groupsHref} className={`link-underline hover:text-cream transition-colors ${onGroupsPage ? "active text-cream" : ""}`}>Groupes</a>
               <a
                 href={sectionHref("reservation")}
                 className="px-5 py-2 border border-orange text-orange hover:bg-orange hover:text-bg-primary transition-all duration-300 rounded-[2px]"
