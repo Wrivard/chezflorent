@@ -2008,15 +2008,49 @@ function FAQ() {
   );
 }
 
+// Human label for how soon an event is: "Ce soir" (today), "Demain" (tomorrow),
+// otherwise the French weekday name (e.g. "Vendredi").
+function eventLabel(isoDate: string): string {
+  const parts = isoDate.split("-");
+  const evt = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+  evt.setHours(0, 0, 0, 0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const diff = Math.round((evt.getTime() - today.getTime()) / 86_400_000);
+  if (diff <= 0) return "Ce soir";
+  if (diff === 1) return "Demain";
+  const names = [
+    "Dimanche",
+    "Lundi",
+    "Mardi",
+    "Mercredi",
+    "Jeudi",
+    "Vendredi",
+    "Samedi",
+  ];
+  return names[evt.getDay()] ?? "Bientôt";
+}
+
 function TodayEventPopup() {
   const events = useAgendaEventsData();
   const [visibleId, setVisibleId] = useState<string | null>(null);
 
-  // Stable primitive: the id of today's first non-sold-out event (or null).
+  // Stable primitive: the id of the soonest non-sold-out event happening within
+  // the next 5 days (today included), or null. The 5-day lead means the popup
+  // appears ahead of time — e.g. on Sunday you already see Friday's event.
   const now = new Date();
-  const todayIso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  const toIso = (d: Date) =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const todayIso = toIso(now);
+  const horizon = new Date(now);
+  horizon.setDate(horizon.getDate() + 5);
+  const horizonIso = toIso(horizon);
   const matchId =
-    events.find((e) => e.isoDate === todayIso && !e.soldOut)?.id ?? null;
+    [...events]
+      .filter(
+        (e) => !e.soldOut && e.isoDate >= todayIso && e.isoDate <= horizonIso,
+      )
+      .sort((a, b) => a.isoDate.localeCompare(b.isoDate))[0]?.id ?? null;
 
   useEffect(() => {
     if (!matchId) return;
@@ -2049,7 +2083,7 @@ function TodayEventPopup() {
       {event && (
         <motion.aside
           role="dialog"
-          aria-label={`Événement ce soir : ${event.title}`}
+          aria-label={`Événement à venir : ${event.title}`}
           initial={{ opacity: 0, y: 40, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 40, scale: 0.96 }}
@@ -2065,7 +2099,8 @@ function TodayEventPopup() {
             ×
           </button>
           <div className="text-[0.6rem] sm:text-[0.7rem] font-medium tracking-[0.2em] sm:tracking-[0.22em] uppercase text-orange mb-2 sm:mb-3">
-            <span aria-hidden="true">✶ </span>Ce soir · encore des places
+            <span aria-hidden="true">✶ </span>
+            {eventLabel(event.isoDate)} · encore des places
           </div>
           <h3 className="font-serif font-semibold text-cream text-[1.05rem] sm:text-[1.35rem] leading-tight mb-1.5 sm:mb-2 pr-6">
             {event.title}
