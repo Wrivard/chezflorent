@@ -638,11 +638,7 @@ function Hero() {
 }
 
 function About() {
-  const { scrollYProgress } = useScroll();
-  const prefersReducedMotion = useReducedMotion();
   const photos = usePhotos();
-  const ySlow = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : 200]);
-  const yFast = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : -150]);
 
   const quoteWords = "« On vient ici pour rester. »".split(" ");
 
@@ -681,19 +677,26 @@ function About() {
           L'endroit idéal pour sortir de la maison sans avoir à se mettre sur son 31 — une ambiance conviviale, familiale et décontractée. Viens prendre un verre.
         </motion.p>
 
-        {/* Asymmetric Image Stack — 2-col collage on mobile, dense overlapping
-            editorial collage of 8 smaller photos on md+ */}
-        <div className="relative mb-24 md:mb-32 md:min-h-[112vh] lg:min-h-[102vh] grid grid-cols-2 gap-4 md:block md:gap-0">
+        {/* Editorial photo collage — 2-col on mobile, staggered 3-col grid on
+            md+. Uniform gaps (no absolute positioning, no overlap); the
+            stagger comes from mixed aspect ratios + small translate offsets. */}
+        <div className="mb-24 md:mb-32 grid grid-cols-2 md:grid-cols-6 gap-4 md:gap-6 items-start">
           <motion.div
-            style={{ y: ySlow }}
-            className="col-span-2 aspect-[4/3] md:w-[38%] lg:w-[36%] overflow-hidden relative md:absolute md:top-0 md:left-0 md:z-10 ring-1 ring-bg-primary/10"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.9, ease: EASE }}
+            className="col-span-2 aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10"
           >
             <img src={photos.about1.url} alt={photos.about1.alt} className="w-full h-full object-cover" />
           </motion.div>
 
           <motion.div
-            style={{ y: yFast }}
-            className="aspect-[3/4] md:w-[24%] lg:w-[22%] overflow-hidden relative md:absolute md:top-[6%] md:left-[42%] md:z-20 ring-1 ring-bg-primary/10 md:outline md:outline-[6px] md:outline-cream-soft"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.9, ease: EASE, delay: 0.08 }}
+            className="col-span-1 md:col-span-2 aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10 md:translate-y-4"
           >
             <img src={photos.about2.url} alt={photos.about2.alt} className="w-full h-full object-cover" />
           </motion.div>
@@ -702,8 +705,8 @@ function About() {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
-            className="aspect-[3/4] md:w-[27%] lg:w-[25%] overflow-hidden relative md:absolute md:top-[2%] md:right-0 md:z-[15] ring-1 ring-bg-primary/10"
+            transition={{ duration: 0.9, ease: EASE, delay: 0.16 }}
+            className="col-span-1 md:col-span-2 aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10 md:-translate-y-2"
           >
             <img src={photos.about8.url} alt={photos.about8.alt} className="w-full h-full object-cover" />
           </motion.div>
@@ -712,15 +715,18 @@ function About() {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.9, ease: EASE, delay: 0.15 }}
-            className="col-span-2 aspect-[4/3] md:w-[34%] lg:w-[32%] overflow-hidden relative md:absolute md:top-[30%] md:left-[8%] md:z-[18] ring-1 ring-bg-primary/10 md:outline md:outline-[6px] md:outline-cream-soft"
+            transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
+            className="col-span-2 aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10 md:translate-y-2"
           >
             <img src={photos.about4.url} alt={photos.about4.alt} className="w-full h-full object-cover" />
           </motion.div>
 
           <motion.div
-            style={{ y: yFast }}
-            className="aspect-[3/4] md:w-[23%] lg:w-[21%] overflow-hidden relative md:absolute md:top-[34%] md:right-[14%] md:z-20 ring-1 ring-bg-primary/10"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.9, ease: EASE, delay: 0.18 }}
+            className="col-span-1 md:col-span-2 aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10 md:-translate-y-3"
           >
             <img src={photos.about5.url} alt={photos.about5.alt} className="w-full h-full object-cover" />
           </motion.div>
@@ -729,8 +735,8 @@ function About() {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
-            className="aspect-[4/3] md:w-[30%] lg:w-[28%] overflow-hidden relative md:absolute md:bottom-[4%] md:left-0 md:z-10 ring-1 ring-bg-primary/10"
+            transition={{ duration: 0.9, ease: EASE, delay: 0.26 }}
+            className="col-span-1 md:col-span-2 aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10 md:translate-y-5"
           >
             <img src={photos.about6.url} alt={photos.about6.alt} className="w-full h-full object-cover" />
           </motion.div>
@@ -739,15 +745,18 @@ function About() {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.9, ease: EASE, delay: 0.2 }}
-            className="aspect-[4/3] md:w-[34%] lg:w-[32%] overflow-hidden relative md:absolute md:bottom-0 md:left-[33%] md:z-[15] ring-1 ring-bg-primary/10 md:outline md:outline-[6px] md:outline-cream-soft"
+            transition={{ duration: 0.9, ease: EASE, delay: 0.12 }}
+            className="col-span-2 md:col-span-3 aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10 md:translate-y-3"
           >
             <img src={photos.about7.url} alt={photos.about7.alt} className="w-full h-full object-cover" />
           </motion.div>
 
           <motion.div
-            style={{ y: ySlow }}
-            className="col-span-2 aspect-[5/4] md:w-[28%] lg:w-[26%] overflow-hidden relative md:absolute md:bottom-[8%] md:right-0 md:z-20 ring-1 ring-bg-primary/10"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.9, ease: EASE, delay: 0.2 }}
+            className="col-span-2 md:col-span-3 aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10 md:-translate-y-2"
           >
             <img src={photos.about3.url} alt={photos.about3.alt} className="w-full h-full object-cover" />
           </motion.div>
