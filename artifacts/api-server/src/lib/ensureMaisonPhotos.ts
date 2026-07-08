@@ -10,7 +10,6 @@ const MAISON_PHOTOS: { slot: string; url: string; alt: string }[] = [
   { slot: "about4", url: "/images/maison-plats.jpg", alt: "Plats de la maison et pinte partagée" },
   { slot: "about5", url: "/images/maison-pizza-biere.jpg", alt: "Pointe de pizza et pinte Florent" },
   { slot: "about6", url: "/images/maison-vin.jpg", alt: "Vin québécois versé au verre" },
-  { slot: "about7", url: "/images/maison-pizza-four.jpg", alt: "Pizza qui sort du four à bois" },
   { slot: "about8", url: "/images/maison-four.jpg", alt: "Le four à bois de la maison" },
 ];
 

@@ -677,88 +677,87 @@ function About() {
           L'endroit idéal pour sortir de la maison sans avoir à se mettre sur son 31 — une ambiance conviviale, familiale et décontractée. Viens prendre un verre.
         </motion.p>
 
-        {/* Editorial photo collage — masonry columns: natural staggered flow,
-            uniform gaps, never any overlap. */}
-        <div className="mb-24 md:mb-32 columns-2 md:columns-3 gap-4 md:gap-6">
+        {/* Editorial photo collage — 5 balanced columns, vertically centered:
+            tall edges, two stacked pairs, and one large hero photo in the
+            middle. Uniform gaps, no overlap. */}
+        <div className="mb-24 md:mb-32 flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+          <div className="w-full md:w-[15%] shrink-0">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.9, ease: EASE }}
-            className="aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10 mb-4 md:mb-6 break-inside-avoid"
+            transition={{ duration: 0.9, ease: EASE, delay: 0 }}
+            className="aspect-[4/3] md:aspect-[9/16] overflow-hidden ring-1 ring-bg-primary/10"
           >
-            <img src={photos.about1.url} alt={photos.about1.alt} className="w-full h-full object-cover" />
+            <img src={photos.about6.url} alt={photos.about6.alt} className="w-full h-full object-cover" />
           </motion.div>
+          </div>
 
+          <div className="w-full md:w-[19%] shrink-0 flex flex-col gap-4 md:gap-6">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.08 }}
-            className="aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10 mb-4 md:mb-6 break-inside-avoid"
+            className="aspect-square overflow-hidden ring-1 ring-bg-primary/10"
           >
-            <img src={photos.about2.url} alt={photos.about2.alt} className="w-full h-full object-cover" />
+            <img src={photos.about1.url} alt={photos.about1.alt} className="w-full h-full object-cover" />
           </motion.div>
-
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.9, ease: EASE, delay: 0.16 }}
-            className="aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10 mb-4 md:mb-6 break-inside-avoid"
+            transition={{ duration: 0.9, ease: EASE, delay: 0.14 }}
+            className="aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10"
           >
-            <img src={photos.about8.url} alt={photos.about8.alt} className="w-full h-full object-cover" />
+            <img src={photos.about2.url} alt={photos.about2.alt} className="w-full h-full object-cover" />
           </motion.div>
+          </div>
 
+          <div className="w-full md:flex-1 min-w-0">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
-            className="aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10 mb-4 md:mb-6 break-inside-avoid"
+            className="aspect-[4/3] md:aspect-[4/5] overflow-hidden ring-1 ring-bg-primary/10"
           >
             <img src={photos.about4.url} alt={photos.about4.alt} className="w-full h-full object-cover" />
           </motion.div>
+          </div>
 
+          <div className="w-full md:w-[19%] shrink-0 flex flex-col gap-4 md:gap-6">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.9, ease: EASE, delay: 0.18 }}
-            className="aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10 mb-4 md:mb-6 break-inside-avoid"
+            transition={{ duration: 0.9, ease: EASE, delay: 0.16 }}
+            className="aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10"
+          >
+            <img src={photos.about8.url} alt={photos.about8.alt} className="w-full h-full object-cover" />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.9, ease: EASE, delay: 0.22 }}
+            className="aspect-square overflow-hidden ring-1 ring-bg-primary/10"
           >
             <img src={photos.about5.url} alt={photos.about5.alt} className="w-full h-full object-cover" />
           </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.9, ease: EASE, delay: 0.26 }}
-            className="aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10 mb-4 md:mb-6 break-inside-avoid"
-          >
-            <img src={photos.about6.url} alt={photos.about6.alt} className="w-full h-full object-cover" />
-          </motion.div>
-
+          <div className="w-full md:w-[15%] shrink-0">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.12 }}
-            className="aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10 mb-4 md:mb-6 break-inside-avoid"
-          >
-            <img src={photos.about7.url} alt={photos.about7.alt} className="w-full h-full object-cover" />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.9, ease: EASE, delay: 0.2 }}
-            className="aspect-[5/4] overflow-hidden ring-1 ring-bg-primary/10 mb-4 md:mb-6 break-inside-avoid"
+            className="aspect-[4/3] md:aspect-[9/16] overflow-hidden ring-1 ring-bg-primary/10"
           >
             <img src={photos.about3.url} alt={photos.about3.alt} className="w-full h-full object-cover" />
           </motion.div>
+          </div>
         </div>
 
         {/* Text Columns */}
@@ -1522,7 +1521,6 @@ const PHOTO_FALLBACK: PhotoMap = {
   about4: { url: "/images/maison-plats.jpg", alt: "Plats de la maison et pinte partagée" },
   about5: { url: "/images/maison-pizza-biere.jpg", alt: "Pointe de pizza et pinte Florent" },
   about6: { url: "/images/maison-vin.jpg", alt: "Vin québécois versé au verre" },
-  about7: { url: "/images/maison-pizza-four.jpg", alt: "Pizza qui sort du four à bois" },
   about8: { url: "/images/maison-four.jpg", alt: "Le four à bois de la maison" },
   press: { url: "/images/interior-bar.jpg", alt: "Salle à manger de Chez Florent" },
   voice1: { url: "/images/jeux-societe.jpg", alt: "Un jeu de société sur une table Chez Florent" },
