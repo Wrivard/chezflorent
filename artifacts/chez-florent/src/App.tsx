@@ -677,10 +677,20 @@ function About() {
           L'endroit idéal pour sortir de la maison sans avoir à se mettre sur son 31 — une ambiance conviviale, familiale et décontractée. Viens prendre un verre.
         </motion.p>
 
+        {/* Mobile-only horizontal slider: swipe left-right through the
+            7 collage photos. Hidden on md+ where the 5-column collage shows. */}
+        <div className="md:hidden mb-24 -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {(["about6", "about1", "about2", "about4", "about8", "about5", "about3"] as const).map((slot) => (
+            <div key={slot} className="w-[78%] shrink-0 snap-center aspect-[4/5] overflow-hidden ring-1 ring-bg-primary/10">
+              <img src={photos[slot].url} alt={photos[slot].alt} className="w-full h-full object-cover" />
+            </div>
+          ))}
+        </div>
+
         {/* Editorial photo collage — 5 balanced columns, vertically centered:
             tall edges, two stacked pairs, and one large hero photo in the
-            middle. Uniform gaps, no overlap. */}
-        <div className="mb-24 md:mb-32 flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+            middle. Uniform gaps, no overlap. Hidden on mobile (slider above). */}
+        <div className="mb-24 md:mb-32 hidden md:flex md:items-center gap-4 md:gap-6">
           <div className="w-full md:w-[15%] shrink-0">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
