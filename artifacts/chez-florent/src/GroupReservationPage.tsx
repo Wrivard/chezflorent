@@ -65,7 +65,7 @@ const DEFAULT_GROUP_CONTENT: GroupContent = {
     manifestoMarker: "02 — Le mot de Florent",
     manifestoTitle: "« Vos gens, notre maison. »",
     manifestoBody:
-      "Vous recevez vos beaux-parents et vous n'avez pas envie de passer la soirée dans la cuisine ? Venez célébrer chez nous : amenez vos décorations, on s'occupe du reste — la table, le menu, le service.",
+      "Que vous soyez une dizaine autour d'une grande tablée ou que vous preniez la place au complet, on prépare votre soirée comme si vous receviez vos beaux-parents ! — le menu, le vin, la bière, le rythme du service, l'ambiance. Vous n'avez qu'à réunir vos gens, amenez vos décorations, on s'occupe du reste !",
     manifestoQuote:
       "« On ne reçoit pas un groupe comme une réservation de plus. On le reçoit comme on reçoit chez nous. »",
     signatureName: "Florent",
@@ -431,7 +431,7 @@ export default function GroupReservationPage() {
                 <span aria-hidden="true">✶ </span>
                 {t.heroMarker}
               </motion.div>
-              <h1 className="font-display text-cream leading-[1.05] pb-[0.1em] text-[clamp(2rem,11vw,11rem)]">
+              <h1 className="font-display text-cream leading-[1.1] pb-[0.12em] text-[clamp(1.9rem,6.5vw,6.5rem)] max-w-5xl">
                 {t.heroTitle.split(" ").map((word, i) => (
                   <motion.span
                     key={`${word}-${i}`}

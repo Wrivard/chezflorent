@@ -683,7 +683,7 @@ function About() {
 
         {/* Asymmetric Image Stack — 2-col collage on mobile, dense overlapping
             editorial collage of 8 smaller photos on md+ */}
-        <div className="relative mb-24 md:mb-32 md:min-h-[150vh] lg:min-h-[135vh] grid grid-cols-2 gap-4 md:block md:gap-0">
+        <div className="relative mb-24 md:mb-32 md:min-h-[112vh] lg:min-h-[102vh] grid grid-cols-2 gap-4 md:block md:gap-0">
           <motion.div
             style={{ y: ySlow }}
             className="col-span-2 aspect-[4/3] md:w-[38%] lg:w-[36%] overflow-hidden relative md:absolute md:top-0 md:left-0 md:z-10 ring-1 ring-bg-primary/10"

@@ -17,7 +17,7 @@ export const DEFAULT_GROUP_CONTENT: GroupContent = {
     manifestoMarker: "02 — Le mot de Florent",
     manifestoTitle: "« Vos gens, notre maison. »",
     manifestoBody:
-      "Vous recevez vos beaux-parents et vous n'avez pas envie de passer la soirée dans la cuisine ? Venez célébrer chez nous : amenez vos décorations, on s'occupe du reste — la table, le menu, le service.",
+      "Que vous soyez une dizaine autour d'une grande tablée ou que vous preniez la place au complet, on prépare votre soirée comme si vous receviez vos beaux-parents ! — le menu, le vin, la bière, le rythme du service, l'ambiance. Vous n'avez qu'à réunir vos gens, amenez vos décorations, on s'occupe du reste !",
     manifestoQuote:
       "« On ne reçoit pas un groupe comme une réservation de plus. On le reçoit comme on reçoit chez nous. »",
     signatureName: "Florent",
@@ -102,6 +102,18 @@ export const DEFAULT_GROUP_CONTENT: GroupContent = {
     { label: "Dimanche au mardi", value: "à discuter" },
     { label: "Menu", value: "bâti avec le chef" },
   ],
+};
+
+// Previous (v2) default document: identical to the current default except for
+// the old "manifesto" paragraph. Kept so `ensureGroupContent` can migrate an
+// unedited stored row to the latest default.
+const GROUP_CONTENT_V2: GroupContent = {
+  ...DEFAULT_GROUP_CONTENT,
+  texts: {
+    ...DEFAULT_GROUP_CONTENT.texts,
+    manifestoBody:
+      "Vous recevez vos beaux-parents et vous n'avez pas envie de passer la soirée dans la cuisine ? Venez célébrer chez nous : amenez vos décorations, on s'occupe du reste — la table, le menu, le service.",
+  },
 };
 
 // Previous (v1) default document, kept only so `ensureGroupContent` can detect
@@ -204,12 +216,16 @@ export async function ensureGroupContent(): Promise<void> {
       .from(groupContentTable)
       .where(eq(groupContentTable.id, GROUP_CONTENT_ID));
     if (!row) return; // GET falls back to the new default — nothing to do.
-    if (stableStringify(row.data) === stableStringify(GROUP_CONTENT_V1)) {
+    const stored = stableStringify(row.data);
+    const isKnownOldDefault = [GROUP_CONTENT_V1, GROUP_CONTENT_V2].some(
+      (v) => stored === stableStringify(v),
+    );
+    if (isKnownOldDefault) {
       await db
         .update(groupContentTable)
         .set({ data: DEFAULT_GROUP_CONTENT })
         .where(eq(groupContentTable.id, GROUP_CONTENT_ID));
-      logger.info("Group content migrated to v2 default");
+      logger.info("Group content migrated to latest default");
     }
   } catch (err) {
     logger.error({ err }, "Failed to ensure group content");
