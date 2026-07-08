@@ -677,16 +677,15 @@ function About() {
           L'endroit idéal pour sortir de la maison sans avoir à se mettre sur son 31 — une ambiance conviviale, familiale et décontractée. Viens prendre un verre.
         </motion.p>
 
-        {/* Editorial photo collage — 2-col on mobile, staggered 3-col grid on
-            md+. Uniform gaps (no absolute positioning, no overlap); the
-            stagger comes from mixed aspect ratios + small translate offsets. */}
-        <div className="mb-24 md:mb-32 grid grid-cols-2 md:grid-cols-6 gap-4 md:gap-6 items-start">
+        {/* Editorial photo collage — masonry columns: natural staggered flow,
+            uniform gaps, never any overlap. */}
+        <div className="mb-24 md:mb-32 columns-2 md:columns-3 gap-4 md:gap-6">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: EASE }}
-            className="col-span-2 aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10"
+            className="aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10 mb-4 md:mb-6 break-inside-avoid"
           >
             <img src={photos.about1.url} alt={photos.about1.alt} className="w-full h-full object-cover" />
           </motion.div>
@@ -696,7 +695,7 @@ function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.08 }}
-            className="col-span-1 md:col-span-2 aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10 md:translate-y-4"
+            className="aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10 mb-4 md:mb-6 break-inside-avoid"
           >
             <img src={photos.about2.url} alt={photos.about2.alt} className="w-full h-full object-cover" />
           </motion.div>
@@ -706,7 +705,7 @@ function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.16 }}
-            className="col-span-1 md:col-span-2 aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10 md:-translate-y-2"
+            className="aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10 mb-4 md:mb-6 break-inside-avoid"
           >
             <img src={photos.about8.url} alt={photos.about8.alt} className="w-full h-full object-cover" />
           </motion.div>
@@ -716,7 +715,7 @@ function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
-            className="col-span-2 aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10 md:translate-y-2"
+            className="aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10 mb-4 md:mb-6 break-inside-avoid"
           >
             <img src={photos.about4.url} alt={photos.about4.alt} className="w-full h-full object-cover" />
           </motion.div>
@@ -726,7 +725,7 @@ function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.18 }}
-            className="col-span-1 md:col-span-2 aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10 md:-translate-y-3"
+            className="aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10 mb-4 md:mb-6 break-inside-avoid"
           >
             <img src={photos.about5.url} alt={photos.about5.alt} className="w-full h-full object-cover" />
           </motion.div>
@@ -736,7 +735,7 @@ function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.26 }}
-            className="col-span-1 md:col-span-2 aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10 md:translate-y-5"
+            className="aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10 mb-4 md:mb-6 break-inside-avoid"
           >
             <img src={photos.about6.url} alt={photos.about6.alt} className="w-full h-full object-cover" />
           </motion.div>
@@ -746,7 +745,7 @@ function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.12 }}
-            className="col-span-2 md:col-span-3 aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10 md:translate-y-3"
+            className="aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10 mb-4 md:mb-6 break-inside-avoid"
           >
             <img src={photos.about7.url} alt={photos.about7.alt} className="w-full h-full object-cover" />
           </motion.div>
@@ -756,7 +755,7 @@ function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.2 }}
-            className="col-span-2 md:col-span-3 aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10 md:-translate-y-2"
+            className="aspect-[5/4] overflow-hidden ring-1 ring-bg-primary/10 mb-4 md:mb-6 break-inside-avoid"
           >
             <img src={photos.about3.url} alt={photos.about3.alt} className="w-full h-full object-cover" />
           </motion.div>
