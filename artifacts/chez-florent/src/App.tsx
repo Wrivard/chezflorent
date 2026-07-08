@@ -572,7 +572,7 @@ function Hero() {
           </div>
 
           {/* Broken Type Headline */}
-          <h1 className="font-serif font-light text-cream leading-[1.08] pb-[0.18em] text-[clamp(2rem,11vw,11rem)] mb-16 w-full">
+          <h1 className="font-serif font-light text-cream leading-[1.08] pb-[0.18em] text-[13.5vw] md:text-[clamp(2rem,11vw,11rem)] mb-16 w-full">
             <motion.div variants={lineVariants} className="block italic">
               Une cuisine
             </motion.div>
