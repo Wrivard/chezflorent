@@ -331,6 +331,15 @@ export function Navbar({
 
   const closeMenu = () => setMobileMenuOpen(false);
 
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [mobileMenuOpen]);
+
   return (
     <>
       <nav
@@ -452,16 +461,20 @@ export function Navbar({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: EASE_SMOOTH }}
-            className="fixed inset-0 z-50 bg-bg-primary pt-32 px-6 pb-6 flex flex-col"
+            data-lenis-prevent
+            className="fixed inset-0 z-50 bg-bg-primary flex flex-col overflow-hidden"
           >
-            <div className="flex justify-end mb-8">
-              <button onClick={closeMenu} className="text-cream p-2">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <div className="flex items-center justify-between px-6 py-4 shrink-0">
+              <a href={homeHref} onClick={closeMenu} aria-label="Chez Florent — Accueil" className="flex items-center">
+                <img src="/logo.png" alt="Chez Florent logo" className="h-20 object-contain" />
+              </a>
+              <button onClick={closeMenu} aria-label="Fermer le menu" className="text-cream p-2">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
-            <div className="flex flex-col gap-8 text-3xl font-serif text-cream">
+            <div className="flex-1 overflow-y-auto overscroll-contain px-6 pb-10 pt-2 flex flex-col gap-7 text-[1.65rem] leading-tight font-serif text-cream">
               <a href={homeHref} onClick={closeMenu} className="hover:text-orange transition-colors">Accueil</a>
               <a href={aboutHref} onClick={closeMenu} className="hover:text-orange transition-colors">À propos</a>
               <a href={menuHref} onClick={closeMenu} className="hover:text-orange transition-colors">L'ardoise</a>
