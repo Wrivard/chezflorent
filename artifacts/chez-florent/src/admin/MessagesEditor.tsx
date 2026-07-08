@@ -95,8 +95,12 @@ export default function MessagesEditor() {
             <Card key={m.id} className={m.handled ? "opacity-60" : ""}>
               <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge tone={m.kind === "fournisseur" ? "orange" : "neutral"}>
-                    {m.kind === "fournisseur" ? "Fournisseur" : "Question"}
+                  <Badge tone={m.kind === "question" ? "neutral" : "orange"}>
+                    {m.kind === "fournisseur"
+                      ? "Fournisseur"
+                      : m.kind === "groupe"
+                        ? "Groupe"
+                        : "Question"}
                   </Badge>
                   {!m.handled && <Badge tone="danger">Non lu</Badge>}
                   <span className="text-xs text-cream-soft/40">

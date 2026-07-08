@@ -375,7 +375,7 @@ export function Navbar({
               <a href={homeHref} className={`link-underline hover:text-cream transition-colors ${!onSubPage && activeSection === "accueil" ? "active text-cream" : ""}`}>Accueil</a>
               <a href={menuHref} className={`link-underline hover:text-cream transition-colors ${onMenuPage ? "active text-cream" : ""}`}>Menu</a>
 
-              {/* Le bistro — dropdown grouping secondary pages */}
+              {/* Le restaurant — dropdown grouping secondary pages */}
               <div
                 ref={bistroRef}
                 className="relative"
@@ -389,7 +389,7 @@ export function Navbar({
                   aria-haspopup="true"
                   className={`link-underline inline-flex items-center gap-1.5 uppercase tracking-[0.2em] hover:text-cream transition-colors ${bistroActive ? "active text-cream" : ""}`}
                 >
-                  Le bistro
+                  Le restaurant
                   <svg
                     width="10"
                     height="10"
@@ -547,7 +547,7 @@ function Hero() {
           {/* Eyebrows */}
           <div className="flex justify-between items-start mb-16">
             <motion.div variants={fadeVariants} className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-cream-soft">
-              <span aria-hidden="true" className="text-cream-soft/45 mr-3">✶</span>BISTRO — SOREL-TRACY / DEPUIS 2026
+              <span aria-hidden="true" className="text-cream-soft/45 mr-3">✶</span>RESTAURANT — SOREL-TRACY / DEPUIS 2026
             </motion.div>
             
             <motion.div variants={fadeVariants} className="hidden md:flex flex-col gap-2 text-[0.65rem] font-medium tracking-[0.3em] uppercase text-cream-soft text-right">
@@ -592,7 +592,7 @@ function Hero() {
                 « L'ardoise change selon les humeurs du chef et les arrivages du marché. »
               </p>
               <p className="font-sans text-[0.95rem] leading-[1.6] text-cream/80 mb-4">
-                Bistro du quartier, 75 places assises, 7 jours sur 7.
+                Restaurant de quartier, 75 places assises, 7 jours sur 7.
               </p>
             </motion.div>
 
@@ -681,18 +681,19 @@ function About() {
           L'endroit idéal pour sortir de la maison sans avoir à se mettre sur son 31 — une ambiance conviviale, familiale et décontractée. Viens prendre un verre.
         </motion.p>
 
-        {/* Asymmetric Image Stack — clean stack on mobile, editorial triptych on md+ */}
-        <div className="relative mb-24 md:mb-32 md:min-h-[125vh] lg:min-h-[100vh] flex flex-col gap-6 md:block md:gap-0">
-          <motion.div 
+        {/* Asymmetric Image Stack — 2-col collage on mobile, dense overlapping
+            editorial collage of 8 smaller photos on md+ */}
+        <div className="relative mb-24 md:mb-32 md:min-h-[150vh] lg:min-h-[135vh] grid grid-cols-2 gap-4 md:block md:gap-0">
+          <motion.div
             style={{ y: ySlow }}
-            className="w-[88%] md:w-[48%] lg:w-[50%] aspect-[4/3] overflow-hidden relative md:z-10 ring-1 ring-bg-primary/10"
+            className="col-span-2 aspect-[4/3] md:w-[38%] lg:w-[36%] overflow-hidden relative md:absolute md:top-0 md:left-0 md:z-10 ring-1 ring-bg-primary/10"
           >
             <img src={photos.about1.url} alt={photos.about1.alt} className="w-full h-full object-cover" />
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             style={{ y: yFast }}
-            className="w-[68%] md:w-[34%] lg:w-[30%] aspect-[3/4] overflow-hidden relative md:absolute md:top-[8%] lg:top-[18%] md:right-0 md:z-20 self-end md:self-auto md:mt-0 ring-1 ring-bg-primary/10"
+            className="aspect-[3/4] md:w-[24%] lg:w-[22%] overflow-hidden relative md:absolute md:top-[6%] md:left-[42%] md:z-20 ring-1 ring-bg-primary/10 md:outline md:outline-[6px] md:outline-cream-soft"
           >
             <img src={photos.about2.url} alt={photos.about2.alt} className="w-full h-full object-cover" />
           </motion.div>
@@ -701,8 +702,52 @@ function About() {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
+            className="aspect-[3/4] md:w-[27%] lg:w-[25%] overflow-hidden relative md:absolute md:top-[2%] md:right-0 md:z-[15] ring-1 ring-bg-primary/10"
+          >
+            <img src={photos.about8.url} alt={photos.about8.alt} className="w-full h-full object-cover" />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.15 }}
-            className="w-[78%] md:w-[42%] lg:w-[38%] aspect-[5/4] overflow-hidden relative md:absolute md:bottom-0 md:left-[34%] lg:left-[26%] md:z-[15] ml-[8%] md:ml-0 ring-1 ring-bg-primary/10"
+            className="col-span-2 aspect-[4/3] md:w-[34%] lg:w-[32%] overflow-hidden relative md:absolute md:top-[30%] md:left-[8%] md:z-[18] ring-1 ring-bg-primary/10 md:outline md:outline-[6px] md:outline-cream-soft"
+          >
+            <img src={photos.about4.url} alt={photos.about4.alt} className="w-full h-full object-cover" />
+          </motion.div>
+
+          <motion.div
+            style={{ y: yFast }}
+            className="aspect-[3/4] md:w-[23%] lg:w-[21%] overflow-hidden relative md:absolute md:top-[34%] md:right-[14%] md:z-20 ring-1 ring-bg-primary/10"
+          >
+            <img src={photos.about5.url} alt={photos.about5.alt} className="w-full h-full object-cover" />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
+            className="aspect-[4/3] md:w-[30%] lg:w-[28%] overflow-hidden relative md:absolute md:bottom-[4%] md:left-0 md:z-10 ring-1 ring-bg-primary/10"
+          >
+            <img src={photos.about6.url} alt={photos.about6.alt} className="w-full h-full object-cover" />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.9, ease: EASE, delay: 0.2 }}
+            className="aspect-[4/3] md:w-[34%] lg:w-[32%] overflow-hidden relative md:absolute md:bottom-0 md:left-[33%] md:z-[15] ring-1 ring-bg-primary/10 md:outline md:outline-[6px] md:outline-cream-soft"
+          >
+            <img src={photos.about7.url} alt={photos.about7.alt} className="w-full h-full object-cover" />
+          </motion.div>
+
+          <motion.div
+            style={{ y: ySlow }}
+            className="col-span-2 aspect-[5/4] md:w-[28%] lg:w-[26%] overflow-hidden relative md:absolute md:bottom-[8%] md:right-0 md:z-20 ring-1 ring-bg-primary/10"
           >
             <img src={photos.about3.url} alt={photos.about3.alt} className="w-full h-full object-cover" />
           </motion.div>
@@ -1131,7 +1176,7 @@ function Menu() {
 
           <div className="mt-16 text-center">
             <p className="font-sans italic text-cream-soft/85 text-sm">
-              « L'ardoise change chaque semaine — au gré du chef et des arrivages. »
+              « L'ardoise change chaque mois — au gré du chef et des arrivages. »
             </p>
           </div>
         </div>
@@ -1153,8 +1198,8 @@ const RENDEZVOUS: RendezvousItem[] = [
     slot: "voice1",
   },
   {
-    title: "Soirée hipster",
-    desc: "Vinyles, vins nature et bouchées de l'ardoise — la soirée où le quartier au complet se donne rendez-vous.",
+    title: "Soirée Hitster",
+    desc: "Vinyles, vins nature et bouchées de l'ardoise — la soirée où on se donne rendez-vous.",
     slot: "press",
   },
   {
@@ -1466,6 +1511,11 @@ const PHOTO_FALLBACK: PhotoMap = {
   about1: { url: "/images/proprietaires-dos.jpg", alt: "Florent et ses associés, de dos, au comptoir" },
   about2: { url: "/images/trio-biere.jpg", alt: "Trio de bières de microbrasserie québécoises" },
   about3: { url: "/images/pizza-planche.jpg", alt: "Pizza du four à bois servie sur planche" },
+  about4: { url: "/images/maison-plats.jpg", alt: "Plats de la maison et pinte partagée" },
+  about5: { url: "/images/maison-pizza-biere.jpg", alt: "Pointe de pizza et pinte Florent" },
+  about6: { url: "/images/maison-vin.jpg", alt: "Vin québécois versé au verre" },
+  about7: { url: "/images/maison-pizza-four.jpg", alt: "Pizza qui sort du four à bois" },
+  about8: { url: "/images/maison-four.jpg", alt: "Le four à bois de la maison" },
   press: { url: "/images/interior-bar.jpg", alt: "Salle à manger de Chez Florent" },
   voice1: { url: "/images/jeux-societe.jpg", alt: "Un jeu de société sur une table Chez Florent" },
   voice2: { url: "/images/run-club.png", alt: "Groupe de coureurs réunis après le run club Chez Florent" },
@@ -1474,7 +1524,6 @@ const PHOTO_FALLBACK: PhotoMap = {
   "grp-formule-1": { url: "/images/tap-pour.jpg", alt: "Formule — service au comptoir" },
   "grp-formule-2": { url: "/images/bread-tearing.png", alt: "Formule — pain partagé" },
   "grp-formule-3": { url: "/images/dish-charcuterie.png", alt: "Formule — planche de charcuterie" },
-  "grp-formule-4": { url: "/images/ambiance-smoke.png", alt: "Formule — ambiance du bistro" },
   "grp-occasion-1": { url: "/images/interior-bar.jpg", alt: "Occasion — la salle Chez Florent" },
   "grp-occasion-2": { url: "/images/tap-pour.jpg", alt: "Occasion — au comptoir" },
   "grp-occasion-3": { url: "/images/florent-glass.jpg", alt: "Occasion — verre signature" },
@@ -1483,25 +1532,26 @@ const PHOTO_FALLBACK: PhotoMap = {
   "apropos-2": { url: "/images/equipe-bar.jpg", alt: "L'équipe au bar" },
   "apropos-3": { url: "/images/chef-four-a-bois.jpg", alt: "Le chef au four à bois" },
   "apropos-chef": { url: "/images/chef-four-a-bois.jpg", alt: "Portrait du chef" },
-  gallery1: { url: "/images/g-photo-01.jpg", alt: "Ambiance Chez Florent" },
-  gallery2: { url: "/images/g-photo-02.jpg", alt: "Un soir Chez Florent" },
-  gallery3: { url: "/images/g-photo-03.jpg", alt: "La salle Chez Florent" },
-  gallery4: { url: "/images/g-photo-04.jpg", alt: "Le bar Chez Florent" },
-  gallery5: { url: "/images/g-photo-05.jpg", alt: "Autour de la table Chez Florent" },
-  gallery6: { url: "/images/g-photo-06.jpg", alt: "Bouchées et verres partagés" },
-  gallery7: { url: "/images/g-photo-07.jpg", alt: "Ambiance de quartier Chez Florent" },
-  gallery8: { url: "/images/g-photo-08.jpg", alt: "Verres et bonne compagnie" },
-  gallery9: { url: "/images/g-photo-09.jpg", alt: "Détail de service Chez Florent" },
-  gallery10: { url: "/images/g-photo-10.jpg", alt: "Convives attablés Chez Florent" },
-  gallery11: { url: "/images/g-photo-11.jpg", alt: "La salle à manger Chez Florent" },
-  gallery12: { url: "/images/g-photo-12.jpg", alt: "L'ardoise et les verres" },
-  gallery13: { url: "/images/g-photo-13.jpg", alt: "Moment de partage Chez Florent" },
-  gallery14: { url: "/images/g-photo-14.jpg", alt: "Le comptoir Chez Florent" },
-  gallery15: { url: "/images/g-photo-15.jpg", alt: "Soirée animée Chez Florent" },
-  gallery16: { url: "/images/g-photo-16.jpg", alt: "Fragment d'un soir Chez Florent" },
+  // Ordre alterné bouffe → alcool → resto (note cliente), photo de salle en
+  // double retirée (ancienne g-photo-12).
+  gallery1: { url: "/images/g-photo-02.jpg", alt: "Pizzas du four à bois et verres" },
+  gallery2: { url: "/images/g-photo-01.jpg", alt: "Vin blanc versé au comptoir" },
+  gallery3: { url: "/images/g-photo-10.jpg", alt: "La salle à manger Chez Florent" },
+  gallery4: { url: "/images/g-photo-03.jpg", alt: "Pizza pour emporter" },
+  gallery5: { url: "/images/g-photo-05.jpg", alt: "Bières de microbrasserie québécoises" },
+  gallery6: { url: "/images/g-photo-11.jpg", alt: "La salle et le bar Chez Florent" },
+  gallery7: { url: "/images/g-photo-04.jpg", alt: "Pizza au four à bois" },
+  gallery8: { url: "/images/g-photo-07.jpg", alt: "Spiritueux québécois au bar" },
+  gallery9: { url: "/images/g-photo-13.jpg", alt: "Le comptoir et les pompes à bière" },
+  gallery10: { url: "/images/g-photo-06.jpg", alt: "Burger généreux Chez Florent" },
+  gallery11: { url: "/images/g-photo-08.jpg", alt: "Casquettes Florent" },
+  gallery12: { url: "/images/g-photo-09.jpg", alt: "Plats et pinte partagés" },
+  gallery13: { url: "/images/g-photo-14.jpg", alt: "Assiette de l'ardoise" },
+  gallery14: { url: "/images/g-photo-15.jpg", alt: "Pizza fromagée et pinte Florent" },
+  gallery15: { url: "/images/g-photo-16.jpg", alt: "Bouchées gratinées" },
 };
 
-const GALLERY_SLOTS = Array.from({ length: 16 }, (_, i) => `gallery${i + 1}`);
+const GALLERY_SLOTS = Array.from({ length: 15 }, (_, i) => `gallery${i + 1}`);
 
 export function usePhotos(): PhotoMap {
   const { data } = useListPhotos();
@@ -1751,7 +1801,7 @@ function Reservation() {
           >
             {[
               { n: "01", title: "Choisissez", body: "Date, heure, nombre de couverts — les disponibilités sont en temps réel." },
-              { n: "02", title: "Confirmation immédiate", body: "Votre table est confirmée sur-le-champ, avec un courriel de confirmation." },
+              { n: "02", title: "Confirmation immédiate", body: "Votre table est confirmée sur-le-champ." },
               { n: "03", title: "À ce soir", body: "Une table près du four — sauf si vous nous demandez le coin tranquille." },
             ].map((s, i) => (
               <div key={s.n} className="flex flex-col gap-2 relative md:pl-6">
@@ -1814,8 +1864,7 @@ function Reservation() {
               <ul className="space-y-3 pl-1">
                 {[
                   "Disponibilités et confirmation en temps réel",
-                  "Courriel de confirmation automatique",
-                  "Groupes de 9 et plus : appelez-nous directement",
+                  "Groupes de 8 et plus : appelez-nous directement",
                 ].map((line, i) => (
                   <li key={i} className="flex items-start gap-3 font-sans text-[0.95rem] text-cream-soft/85">
                     <span aria-hidden="true" className="text-cream-soft/45 leading-none pt-[0.35rem]">✶</span>
@@ -1900,7 +1949,7 @@ function FAQ() {
       q: "Réservation de groupe",
       a: (
         <>
-          Party de bureau, anniversaire, ou envie de privatiser le bistro au
+          Party de bureau, anniversaire, ou envie de privatiser le restaurant au
           complet — on s'occupe de tout. Écris-nous ou appelle au{" "}
           <a href="tel:+14507431448" className="text-orange link-underline">450 743-1448</a>{" "}
           et jette un œil à notre{" "}
@@ -1923,7 +1972,7 @@ function FAQ() {
       q: "Mobilité et accessibilité",
       a: (
         <>
-          Le bistro est accessible de plain-pied. Pour toute question
+          Le restaurant est accessible de plain-pied. Pour toute question
           d'accessibilité ou pour qu'on te réserve la place la plus pratique,
           appelle-nous avant ta visite au{" "}
           <a href="tel:+14507431448" className="text-orange link-underline">450 743-1448</a>.
@@ -1934,7 +1983,7 @@ function FAQ() {
       q: "Stationnement",
       a: (
         <>
-          Du stationnement sur rue est disponible autour du bistro, et les
+          Du stationnement sur rue est disponible autour du restaurant, et les
           stationnements publics du centre-ville sont à quelques pas. Les soirs
           d'événement, prévois un petit délai.
         </>
@@ -2762,7 +2811,7 @@ export function Footer({ hideMap = false }: { hideMap?: boolean } = {}) {
       <div className="w-full px-6 md:px-12">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-10 pb-12">
           <div>
-            <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85 mb-4">Le bistro</div>
+            <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85 mb-4">Le restaurant</div>
             <address className="not-italic font-serif text-cream text-base leading-relaxed">
               57 Rue du Roi<br />
               Sorel-Tracy (QC)<br />

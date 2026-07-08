@@ -131,7 +131,7 @@ export const ListMessagesResponse = zod.array(ListMessagesResponseItem);
  */
 
 export const CreateMessageBody = zod.object({
-  kind: zod.enum(["question", "fournisseur"]),
+  kind: zod.enum(["question", "fournisseur", "groupe"]),
   name: zod.string().min(1),
   email: zod.string().min(1),
   phone: zod.string().optional(),

@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
+  useCreateMessage,
   useGetGroupContent,
   type GroupContent,
 } from "@workspace/api-client-react";
@@ -57,13 +59,13 @@ function RevealHeading({
 const DEFAULT_GROUP_CONTENT: GroupContent = {
   texts: {
     heroMarker: "01 — Groupes & privatisation",
-    heroTitle: "Réunir vos gens",
+    heroTitle: "Un anniversaire, une célébration importante",
     heroLede:
-      "Un party de bureau, un anniversaire, un mariage intime ou une envie de privatiser le bistro au complet — on s'occupe de tout.",
+      "Un party de bureau, un anniversaire, un mariage intime ou une envie de privatiser le restaurant au complet — on s'occupe de tout.",
     manifestoMarker: "02 — Le mot de Florent",
     manifestoTitle: "« Vos gens, notre maison. »",
     manifestoBody:
-      "Que vous soyez une dizaine autour d'une grande tablée ou que vous preniez la place au complet, on prépare votre soirée comme si c'était la nôtre — le menu, le vin, le rythme du service. Vous n'avez qu'à réunir vos gens.",
+      "Vous recevez vos beaux-parents et vous n'avez pas envie de passer la soirée dans la cuisine ? Venez célébrer chez nous : amenez vos décorations, on s'occupe du reste — la table, le menu, le service.",
     manifestoQuote:
       "« On ne reçoit pas un groupe comme une réservation de plus. On le reçoit comme on reçoit chez nous. »",
     signatureName: "Florent",
@@ -71,45 +73,38 @@ const DEFAULT_GROUP_CONTENT: GroupContent = {
     formulesMarker: "03 — Les formules",
     formulesTitle: "L'art de recevoir",
     formulesLede:
-      "Quatre façons de réunir vos gens — chacune s'ajuste au nombre, à l'occasion et au budget. Les tarifs sont à confirmer.",
+      "Trois façons de réunir vos gens — chacune s'ajuste au nombre, à l'occasion et au budget.",
     occasionsMarker: "04 — Pour toutes les occasions",
     occasionsTitle: "On célèbre quoi ?",
     stepsMarker: "05 — Comment ça se passe",
     stepsTitle: "Simple, comme à la maison",
     essentialTitle: "L'essentiel",
-    essentialFootnote: "Valeurs à confirmer avec Florent.",
+    essentialFootnote:
+      "Chaque soirée se planifie avec Florent — appelez-nous pour les détails.",
   },
   formules: [
     {
-      name: "Le 5 à 7",
-      kind: "Apéro · format debout",
-      desc: "Planches à partager, bouchées chaudes et une consommation de bienvenue — pour trinquer entre collègues ou amis, sans cérémonie.",
-      price: "à p. de 00 $",
-      unit: "/ pers.",
+      name: "L'apéro",
+      kind: "Format debout · autour du bar",
+      desc: "Jusqu'à une trentaine de personnes debout autour du bar, bouchées à discuter selon l'occasion — parfait pour un 5 à 7 de départ à la retraite ou un lancement.",
+      price: "À discuter",
+      unit: "",
       image: "tap-pour.jpg",
     },
     {
       name: "La grande tablée",
       kind: "Repas attablé",
-      desc: "Entrée à partager, plat au choix, dessert maison. L'ardoise revisitée pour votre groupe, servie au cœur de la salle.",
-      price: "à p. de 00 $",
-      unit: "/ pers.",
+      desc: "Le coin des cinq banquettes accueille de 30 à 35 personnes, le côté tables de 20 à 22 — ou 26 en ajoutant les tables hautes. Un dépôt de 200 $ est demandé à la réservation.",
+      price: "Dépôt de 200 $",
+      unit: "· appliqué à la facture",
       image: "bread-tearing.png",
     },
     {
-      name: "Le cocktail dînatoire",
-      kind: "Réception debout",
-      desc: "Stations et bouchées qui circulent, bar ouvert. Pour un groupe qui aime se mêler, verre à la main.",
-      price: "à p. de 00 $",
-      unit: "/ pers.",
-      image: "dish-charcuterie.png",
-    },
-    {
-      name: "Le bistro, rien qu'à vous",
-      kind: "Privatisation complète",
-      desc: "On ferme les portes pour votre soirée : salle entière, bar et service dédiés, menu bâti de A à Z avec le chef.",
-      price: "Sur mesure",
-      unit: "",
+      name: "Le restaurant, rien qu'à vous",
+      kind: "Privatisation complète · jeudi au samedi",
+      desc: "On ferme les portes pour votre soirée : sans frais dès 60 convives, 500 $ pour 50, 1 000 $ pour 40, 1 500 $ pour 30. Dimanche, lundi ou mardi ? On en discute.",
+      price: "Sans frais",
+      unit: "dès 60 convives",
       image: "ambiance-smoke.png",
     },
   ],
@@ -148,11 +143,11 @@ const DEFAULT_GROUP_CONTENT: GroupContent = {
     },
   ],
   details: [
-    { label: "Réservation de groupe", value: "dès 00 pers." },
-    { label: "Privatisation complète", value: "dès 00 pers." },
-    { label: "Durée typique", value: "00 h" },
-    { label: "Acompte", value: "00 $ · appliqué à la facture" },
-    { label: "Délai conseillé", value: "00 jours à l'avance" },
+    { label: "Réservation de groupe", value: "dès 8 pers." },
+    { label: "Grande tablée", value: "dépôt de 200 $ · appliqué à la facture" },
+    { label: "Privatisation (jeudi–samedi)", value: "sans frais dès 60 pers." },
+    { label: "Privatisation 50 / 40 / 30 pers.", value: "500 $ / 1 000 $ / 1 500 $" },
+    { label: "Dimanche au mardi", value: "à discuter" },
     { label: "Menu", value: "bâti avec le chef" },
   ],
 };
@@ -162,21 +157,227 @@ type Faq = { q: string; a: string };
 const FAQS: Faq[] = [
   {
     q: "Combien de personnes pour réserver un groupe ?",
-    a: "À partir de 00 personnes pour une réservation de groupe, et 00 personnes pour la privatisation complète du bistro. — À confirmer.",
+    a: "Dès 8 personnes pour une réservation de groupe. Pour la privatisation complète du restaurant, comptez une trentaine de convives et plus — sans frais dès 60.",
   },
   {
     q: "Faut-il un dépôt pour confirmer ?",
-    a: "Un acompte est demandé à la réservation et appliqué à votre facture finale. Le montant exact sera confirmé avec Florent.",
+    a: "Pour la grande tablée, un dépôt de 200 $ est demandé à la réservation et appliqué à votre facture finale.",
   },
   {
     q: "Peut-on adapter le menu aux allergies et restrictions ?",
     a: "Oui. Le chef adapte les formules pour les allergies, les régimes végétariens et autres besoins — indiquez-le à la réservation.",
   },
   {
-    q: "Jusqu'à quand peut-on rester ?",
-    a: "La durée et l'heure de fin sont convenues à l'avance selon votre formule. Détails à confirmer.",
+    q: "Peut-on privatiser un dimanche, un lundi ou un mardi ?",
+    a: "La privatisation sans frais dès 60 convives s'applique du jeudi au samedi. Pour les autres soirs, appelez-nous — on trouve une formule ensemble.",
   },
 ];
+
+const FORMULE_OPTIONS = [
+  "L'apéro (format debout)",
+  "La grande tablée (repas attablé)",
+  "Le restaurant au complet (privatisation)",
+  "Je ne sais pas encore",
+];
+
+function GroupRequestForm() {
+  const [form, setForm] = useState({
+    people: "",
+    formule: FORMULE_OPTIONS[0] as string,
+    name: "",
+    email: "",
+    phone: "",
+    details: "",
+  });
+  const [done, setDone] = useState(false);
+
+  const create = useCreateMessage({
+    mutation: {
+      onSuccess: () => {
+        setDone(true);
+        setForm({
+          people: "",
+          formule: FORMULE_OPTIONS[0] as string,
+          name: "",
+          email: "",
+          phone: "",
+          details: "",
+        });
+      },
+    },
+  });
+
+  const set =
+    (k: keyof typeof form) =>
+    (
+      e: React.ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >,
+    ) =>
+      setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  const canSubmit =
+    form.name.trim() !== "" &&
+    form.email.trim() !== "" &&
+    form.people.trim() !== "";
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!canSubmit || create.isPending) return;
+    create.mutate({
+      data: {
+        kind: "groupe",
+        name: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        company: "",
+        supplyType: "",
+        subject: `${form.formule} · ${form.people.trim()} personnes`,
+        message: form.details.trim(),
+      },
+    });
+  };
+
+  const inputCls =
+    "w-full bg-transparent border border-bg-primary/25 px-4 py-3 text-bg-primary placeholder:text-bg-primary/40 rounded-[2px] focus:border-orange focus:outline-none transition-colors";
+  const labelCls =
+    "block text-[0.7rem] font-medium uppercase tracking-[0.18em] text-bg-primary/60 mb-2";
+
+  if (done) {
+    return (
+      <div className="border border-bg-primary/20 bg-bg-primary/[0.03] p-8 md:p-10 text-center rounded-[2px]">
+        <div className="text-[0.7rem] font-medium tracking-[0.22em] uppercase text-orange mb-3">
+          <span aria-hidden="true">✶ </span>Demande envoyée
+        </div>
+        <h3 className="font-serif text-[1.6rem] text-bg-primary mb-3">
+          Merci, on vous revient bientôt.
+        </h3>
+        <p className="font-sans text-bg-primary/70 mb-6 max-w-md mx-auto">
+          Votre demande a bien été reçue. On vous rappelle pour bâtir votre
+          soirée. Pressé ? Appelez-nous au {RESTO_PHONE}.
+        </p>
+        <button
+          type="button"
+          onClick={() => setDone(false)}
+          className="inline-flex items-center gap-2 px-6 py-3 border border-bg-primary/30 text-bg-primary text-[0.72rem] font-medium tracking-[0.18em] uppercase rounded-[2px] hover:bg-bg-primary hover:text-cream transition-all duration-300"
+        >
+          Envoyer une autre demande
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={submit} className="grid gap-6" noValidate>
+      <div className="grid md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="grp-people" className={labelCls}>
+            Nombre de personnes *
+          </label>
+          <input
+            id="grp-people"
+            type="number"
+            min={1}
+            inputMode="numeric"
+            value={form.people}
+            onChange={set("people")}
+            placeholder="Ex. 25"
+            className={inputCls}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="grp-formule" className={labelCls}>
+            Formule souhaitée
+          </label>
+          <select
+            id="grp-formule"
+            value={form.formule}
+            onChange={set("formule")}
+            className={`${inputCls} appearance-none bg-cream-soft`}
+          >
+            {FORMULE_OPTIONS.map((o) => (
+              <option key={o} value={o}>
+                {o}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      <div className="grid md:grid-cols-3 gap-6">
+        <div>
+          <label htmlFor="grp-name" className={labelCls}>
+            Votre nom *
+          </label>
+          <input
+            id="grp-name"
+            type="text"
+            value={form.name}
+            onChange={set("name")}
+            placeholder="Prénom et nom"
+            className={inputCls}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="grp-email" className={labelCls}>
+            Courriel *
+          </label>
+          <input
+            id="grp-email"
+            type="email"
+            value={form.email}
+            onChange={set("email")}
+            placeholder="vous@exemple.ca"
+            className={inputCls}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="grp-phone" className={labelCls}>
+            Téléphone
+          </label>
+          <input
+            id="grp-phone"
+            type="tel"
+            value={form.phone}
+            onChange={set("phone")}
+            placeholder="450 000-0000"
+            className={inputCls}
+          />
+        </div>
+      </div>
+      <div>
+        <label htmlFor="grp-details" className={labelCls}>
+          Parlez-nous de votre soirée
+        </label>
+        <textarea
+          id="grp-details"
+          value={form.details}
+          onChange={set("details")}
+          rows={5}
+          placeholder="La date envisagée, l'occasion, les allergies, vos idées…"
+          className={`${inputCls} resize-y`}
+        />
+      </div>
+      {create.isError && (
+        <p className="font-sans text-sm text-red-700">
+          Une erreur est survenue. Réessayez, ou appelez-nous au {RESTO_PHONE}.
+        </p>
+      )}
+      <div>
+        <button
+          type="submit"
+          disabled={!canSubmit || create.isPending}
+          className="inline-flex items-center gap-2 px-8 py-4 bg-orange text-bg-primary text-[0.75rem] font-medium tracking-[0.2em] uppercase hover:bg-orange/85 transition-all duration-300 rounded-[2px] disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {create.isPending ? "Envoi en cours…" : "Envoyer ma demande"}
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </form>
+  );
+}
 
 export default function GroupReservationPage() {
   const { data } = useGetGroupContent();
@@ -476,15 +677,12 @@ export default function GroupReservationPage() {
 
               <div className="mt-20 md:mt-28 flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-border pt-10">
                 <a
-                  href={RESTO_PHONE_HREF}
+                  href="#demande"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-orange text-bg-primary text-[0.72rem] font-medium tracking-[0.2em] uppercase hover:bg-orange/85 transition-all duration-300 rounded-[2px]"
                 >
                   Demander une proposition
                   <span aria-hidden="true">→</span>
                 </a>
-                <p className="font-serif italic text-cream-soft/55 text-sm">
-                  Menu final bâti avec le chef. Taxes et service en sus.
-                </p>
               </div>
             </div>
           </section>
@@ -693,6 +891,35 @@ export default function GroupReservationPage() {
           </section>
 
           {/* ============================================================
+              DEMANDE — group request form. Stored in the admin inbox and
+              emailed via Resend once a key is configured.
+          ============================================================ */}
+          <section
+            id="demande"
+            className="bg-cream-soft pt-24 md:pt-28 pb-24 md:pb-28 px-6 md:px-12 relative scroll-mt-28 md:scroll-mt-36"
+          >
+            <SectionMarker number="07" tone="light" />
+            <div className="max-w-3xl mx-auto relative z-10">
+              <div className="text-[0.75rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mb-6">
+                <span aria-hidden="true">✶ </span>07 — Votre demande
+              </div>
+              <RevealHeading
+                text="Parlez-nous de vos gens"
+                className="font-display text-bg-primary text-[clamp(1.75rem,6vw,4.5rem)] leading-[1.05] pb-[0.08em] mb-6 flex flex-wrap"
+              />
+              <p className="font-sans font-light text-bg-primary/70 text-base md:text-lg leading-relaxed mb-10 max-w-xl">
+                Quelques détails et on vous revient rapidement avec une
+                proposition. Si c'est plus simple, appelez-nous au{" "}
+                <a href={RESTO_PHONE_HREF} className="underline underline-offset-4 decoration-orange/50 hover:text-orange transition-colors">
+                  {RESTO_PHONE}
+                </a>
+                .
+              </p>
+              <GroupRequestForm />
+            </div>
+          </section>
+
+          {/* ============================================================
               CLOSING INVITATION — cinematic photo bookend (closing). Kept.
           ============================================================ */}
           <section className="relative bg-bg-primary px-6 md:px-12 py-32 md:py-44 overflow-hidden">
@@ -728,8 +955,8 @@ export default function GroupReservationPage() {
               >
                 <span aria-hidden="true">✶ </span>On planifie ensemble
               </motion.div>
-              <h2 className="font-display text-cream text-[clamp(1.75rem,9vw,8.5rem)] leading-[1.02] pb-[0.08em] mb-8">
-                Écrivons votre soirée
+              <h2 className="font-display text-cream text-[clamp(1.75rem,7vw,6.5rem)] leading-[1.02] pb-[0.08em] mb-8">
+                Si c'est plus simple pour vous, appelez-nous !
               </h2>
               <p className="font-serif italic text-cream-soft/90 text-lg md:text-2xl leading-snug max-w-2xl mx-auto mb-12">
                 Donnez-nous la date, le nombre de convives et l'occasion — on

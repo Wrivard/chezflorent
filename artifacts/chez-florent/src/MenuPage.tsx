@@ -403,7 +403,7 @@ export default function MenuPage() {
 
             <div className="max-w-7xl mx-auto mt-16 text-center relative z-10">
               <p className="font-sans italic text-cream-soft/85 text-sm">
-                « L'ardoise change chaque semaine — les spéciaux du chef, au gré des arrivages. »
+                « L'ardoise change chaque mois — les spéciaux du chef, au gré des arrivages. »
               </p>
             </div>
           </section>

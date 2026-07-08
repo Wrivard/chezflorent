@@ -801,7 +801,7 @@ components:
       properties:
         kind:
           type: string
-          enum: [question, fournisseur]
+          enum: [question, fournisseur, groupe]
         name:
           type: string
           minLength: 1

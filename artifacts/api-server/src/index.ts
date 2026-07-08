@@ -4,6 +4,8 @@ import { ensureAdminSeed } from "./lib/ensureAdmin";
 import { importContentSnapshot } from "./lib/importSnapshot";
 import { ensureGalleryPhotos } from "./lib/ensureGalleryPhotos";
 import { ensureGroupAboutPhotos } from "./lib/ensureGroupAboutPhotos";
+import { ensureMaisonPhotos } from "./lib/ensureMaisonPhotos";
+import { ensureGroupContent } from "./lib/groupContent";
 import { ensureArdoiseMenu } from "./lib/ensureArdoiseMenu";
 
 const rawPort = process.env["PORT"];
@@ -45,6 +47,8 @@ app.listen(port, (err) => {
     if (ready) {
       void ensureGalleryPhotos();
       void ensureGroupAboutPhotos();
+      void ensureMaisonPhotos();
+      void ensureGroupContent();
       void ensureArdoiseMenu();
     }
   });

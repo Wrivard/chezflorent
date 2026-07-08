@@ -79,7 +79,7 @@ const SECTIONS: Section[] = [
   {
     heading: "8. Témoins (cookies) et site Web",
     paragraphs: [
-      "Notre site Web vise principalement à présenter le bistro, son menu et ses coordonnées. Il n'utilise pas de témoins de suivi publicitaire. Certains témoins strictement nécessaires peuvent être utilisés pour assurer le bon fonctionnement du site.",
+      "Notre site Web vise principalement à présenter le restaurant, son menu et ses coordonnées. Il n'utilise pas de témoins de suivi publicitaire. Certains témoins strictement nécessaires peuvent être utilisés pour assurer le bon fonctionnement du site.",
     ],
   },
   {

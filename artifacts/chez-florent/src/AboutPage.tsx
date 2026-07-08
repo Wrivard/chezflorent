@@ -17,7 +17,7 @@ const DEFAULT_ABOUT_CONTENT: AboutContent = {
     heroMarker: "01 — La maison",
     heroTitle: "La maison",
     heroLede:
-      "Un bistro de quartier, une certaine idée du temps qui passe — et des gens qui le font vivre.",
+      "Un restaurant de quartier, une certaine idée du temps qui passe — et des gens qui le font vivre.",
     quote: "Quand nous allons Chez Florent, chez qui allons-nous ?",
     storyP1:
       "Florent était le grand-père de Marie-Laurence, copropriétaire de l'établissement. Afin de souligner son parcours entrepreneurial marquant avec la cantine Nic et Flo, qu'il a fondée dans les années 1970 avec sa douce moitié, Nicole, Maxime et Marie-Laurence ont choisi d'unir distinction et racines soreloises en dédiant cet établissement à cet homme grand, jovial et profondément apprécié, qui nous a quittés beaucoup trop tôt.",
@@ -32,7 +32,7 @@ const DEFAULT_ABOUT_CONTENT: AboutContent = {
   voices: [
     {
       quote:
-        "« Florent n'est pas seulement un nom au-dessus de la porte. C'est une certaine idée du bistro : celle où l'on s'attable sans cérémonie, où le vin se verse au pichet, et où la cuisine ne triche jamais avec ses produits. »",
+        "« Florent n'est pas seulement un nom au-dessus de la porte. C'est une certaine idée du restaurant : celle où l'on s'attable sans cérémonie, où le vin se verse au pichet, et où la cuisine ne triche jamais avec ses produits. »",
       name: "Florent Tremblay",
       role: "Propriétaire",
     },

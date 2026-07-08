@@ -31,6 +31,11 @@ export const PHOTO_LABELS: Record<string, string> = {
   about1: "Section « À propos » — photo 1",
   about2: "Section « À propos » — photo 2",
   about3: "Section « À propos » — photo 3",
+  about4: "Section « À propos » — photo 4",
+  about5: "Section « À propos » — photo 5",
+  about6: "Section « À propos » — photo 6",
+  about7: "Section « À propos » — photo 7",
+  about8: "Section « À propos » — photo 8",
   press: "Critique de presse — photo",
   voice1: "Témoignage client — photo 1",
   voice2: "Témoignage client — photo 2",
@@ -61,11 +66,16 @@ export const PHOTO_GROUPS: PhotoGroup[] = [
   },
   {
     title: "À propos",
-    description: "Les trois photos de la section « À propos ».",
+    description: "Les huit photos superposées de la section « La maison ».",
     slots: [
       { slot: "about1", label: "À propos — photo 1", ratio: "4/3" },
-      { slot: "about2", label: "À propos — photo 2", ratio: "4/3" },
-      { slot: "about3", label: "À propos — photo 3", ratio: "4/3" },
+      { slot: "about2", label: "À propos — photo 2", ratio: "3/4" },
+      { slot: "about3", label: "À propos — photo 3", ratio: "5/4" },
+      { slot: "about4", label: "À propos — photo 4", ratio: "4/3" },
+      { slot: "about5", label: "À propos — photo 5", ratio: "3/4" },
+      { slot: "about6", label: "À propos — photo 6", ratio: "4/3" },
+      { slot: "about7", label: "À propos — photo 7", ratio: "4/3" },
+      { slot: "about8", label: "À propos — photo 8", ratio: "3/4" },
     ],
   },
   {
@@ -95,7 +105,6 @@ export const PHOTO_GROUPS: PhotoGroup[] = [
       { slot: "grp-formule-1", label: "Formule 1 — photo", ratio: "4/3" },
       { slot: "grp-formule-2", label: "Formule 2 — photo", ratio: "4/3" },
       { slot: "grp-formule-3", label: "Formule 3 — photo", ratio: "4/3" },
-      { slot: "grp-formule-4", label: "Formule 4 — photo", ratio: "4/3" },
     ],
   },
   {
@@ -123,8 +132,8 @@ export const PHOTO_GROUPS: PhotoGroup[] = [
   {
     title: "Galerie « Un soir chez Florent »",
     description:
-      "Les seize photos du carrousel d'ambiance sur la page d'accueil.",
-    slots: Array.from({ length: 16 }, (_, i) => ({
+      "Les quinze photos du carrousel d'ambiance sur la page d'accueil.",
+    slots: Array.from({ length: 15 }, (_, i) => ({
       slot: `gallery${i + 1}`,
       label: `Galerie — photo ${i + 1}`,
       ratio: "3/4",

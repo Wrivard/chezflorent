@@ -12,4 +12,5 @@ export type MessageInputKind =
 export const MessageInputKind = {
   question: "question",
   fournisseur: "fournisseur",
+  groupe: "groupe",
 } as const;
