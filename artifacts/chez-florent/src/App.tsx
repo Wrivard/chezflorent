@@ -640,6 +640,15 @@ function Hero() {
 function About() {
   const photos = usePhotos();
 
+  const sliderRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = sliderRef.current;
+    if (!el) return;
+    const slide = el.querySelector<HTMLElement>("[data-center-slide]");
+    if (!slide) return;
+    el.scrollLeft = slide.offsetLeft - (el.clientWidth - slide.clientWidth) / 2;
+  }, []);
+
   const quoteWords = "« On vient ici pour rester. »".split(" ");
 
   return (
@@ -679,9 +688,9 @@ function About() {
 
         {/* Mobile-only horizontal slider: swipe left-right through the
             7 collage photos. Hidden on md+ where the 5-column collage shows. */}
-        <div className="md:hidden mb-24 -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {(["about6", "about1", "about2", "about4", "about8", "about5", "about3"] as const).map((slot) => (
-            <div key={slot} className="w-[78%] shrink-0 snap-center aspect-[4/5] overflow-hidden ring-1 ring-bg-primary/10">
+        <div ref={sliderRef} className="md:hidden mb-24 -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {(["about6", "about1", "about2", "about4", "about8", "about5", "about3"] as const).map((slot, i) => (
+            <div key={slot} data-center-slide={i === 3 || undefined} className="w-[78%] shrink-0 snap-center aspect-[4/5] overflow-hidden ring-1 ring-bg-primary/10">
               <img src={photos[slot].url} alt={photos[slot].alt} className="w-full h-full object-cover" />
             </div>
           ))}
