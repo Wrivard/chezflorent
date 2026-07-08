@@ -662,6 +662,71 @@ function About() {
     el.scrollLeft = slide.offsetLeft - (el.clientWidth - slide.clientWidth) / 2;
   }, []);
 
+  // Mouse drag-to-scroll for the mobile slider (touch swipe works natively)
+  useEffect(() => {
+    const el = sliderRef.current;
+    if (!el) return;
+    let isDown = false;
+    let dragged = false;
+    let startX = 0;
+    let startScroll = 0;
+
+    const onDown = (e: MouseEvent) => {
+      isDown = true;
+      dragged = false;
+      startX = e.clientX;
+      startScroll = el.scrollLeft;
+      el.style.scrollSnapType = "none";
+      el.style.cursor = "grabbing";
+    };
+    const onMove = (e: MouseEvent) => {
+      if (!isDown) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 5) dragged = true;
+      el.scrollLeft = startScroll - dx;
+    };
+    const endDrag = () => {
+      if (!isDown) return;
+      isDown = false;
+      el.style.cursor = "";
+      // Snap to the nearest slide, then restore CSS snapping
+      const slides = Array.from(el.children) as HTMLElement[];
+      if (slides.length) {
+        const target = el.scrollLeft + el.clientWidth / 2;
+        const nearest = slides.reduce((best, s) => {
+          const c = s.offsetLeft + s.clientWidth / 2;
+          const bc = best.offsetLeft + best.clientWidth / 2;
+          return Math.abs(c - target) < Math.abs(bc - target) ? s : best;
+        });
+        el.scrollTo({
+          left: nearest.offsetLeft - (el.clientWidth - nearest.clientWidth) / 2,
+          behavior: "smooth",
+        });
+      }
+      window.setTimeout(() => {
+        el.style.scrollSnapType = "";
+      }, 400);
+    };
+    const onClick = (e: Event) => {
+      if (dragged) {
+        e.preventDefault();
+        e.stopPropagation();
+        dragged = false;
+      }
+    };
+
+    el.addEventListener("mousedown", onDown);
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", endDrag);
+    el.addEventListener("click", onClick, true);
+    return () => {
+      el.removeEventListener("mousedown", onDown);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", endDrag);
+      el.removeEventListener("click", onClick, true);
+    };
+  }, []);
+
   const quoteWords = "« On vient ici pour rester. »".split(" ");
 
   return (
@@ -701,10 +766,10 @@ function About() {
 
         {/* Mobile-only horizontal slider: swipe left-right through the
             7 collage photos. Hidden on md+ where the 5-column collage shows. */}
-        <div ref={sliderRef} className="md:hidden mb-24 -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div ref={sliderRef} data-lenis-prevent className="md:hidden mb-24 -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory cursor-grab select-none [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {(["about6", "about1", "about2", "about4", "about8", "about5", "about3"] as const).map((slot, i) => (
             <div key={slot} data-center-slide={i === 3 || undefined} className="w-[78%] shrink-0 snap-center aspect-[4/5] overflow-hidden ring-1 ring-bg-primary/10">
-              <img src={photos[slot].url} alt={photos[slot].alt} className="w-full h-full object-cover" />
+              <img src={photos[slot].url} alt={photos[slot].alt} draggable={false} className="w-full h-full object-cover" />
             </div>
           ))}
         </div>
