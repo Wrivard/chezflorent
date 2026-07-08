@@ -336,58 +336,59 @@ export const MENU_SEED = [
     tagline: "Les spéciaux du chef — au gré des arrivages du marché.",
     items: [
       {
-        name: "Trempette de poireaux bacon",
-        price: "16,95 $",
-        description: "Servi avec pain plat gratiné.",
-        image: "/images/naan-dip.jpg",
-      },
-      {
         name: "Grilled cheese sur baguette",
-        price: "5,95 $ / 11,95 $",
+        price: "6,95 $ / 12,95 $",
         description: "Provolone, mozzarella, fromage jaune, beurre à l'ail.",
         image: "/images/dish-sandwich.png",
       },
       {
-        name: "Focaccia",
-        price: "19,95 $",
+        name: "HoagieDog",
+        price: "22,95 $",
         description:
-          "Focaccia maison, miel, huile épicée, huile d'olive (Esporao), mélange de fromages ricotta et chèvre, prosciutto, tomates, glaze balsamique, poivre moulu, basilic frais.",
-        image: "/images/bread-tearing.png",
+          "Hoagie (pâte à pizza pliée), saucisse mangue-coriandre (Ferme J.N Beauchemin), salade de choux crémeuse, sauce aïoli à la lime.",
+        image: null,
       },
       {
-        name: "Bufarella ananananas",
+        name: "Pas une poutine",
+        price: "15,95 $",
+        description:
+          "Focaccia maison en cube, sauce à poutine, fromage en grain, oignons verts. Extra saucisse hot-dog : 2,50 $.",
+        image: null,
+      },
+      {
+        name: "Bufarella « Terre promise »",
         price: "17,95 $",
         description:
-          "Boule de fromage bufarella (Fromagerie Fuoco) accompagnée d'une compote d'ananas, mayonnaise chili épicée maison, crumble d'amandes, de sucre et de coconut, zeste de lime. Servi avec pains naan grillés.",
+          "Boule de fromage bufarella (Fromagerie Fuoco) accompagnée d'une purée d'haricots noirs, maïs poêlé épicé, mayonnaise avocat-coriandre, calabrese séchée émiettée, oignons blancs marinés, tomates en dés. Servi avec pain brioché.",
         image: "/images/bufarella-mint.jpg",
       },
       {
-        name: "Le « Choux-Choux »",
-        price: "21,95 $",
+        name: "Salade « Embarque ma belle »",
+        price: "12,25 $ / 20,50 $",
         description:
-          "Pain ciabatta, dinde fumée, salade de choux rouge crémeuse, gelée de betteraves jaunes, roquette.",
-        image: "/images/tower-sandwich.jpg",
+          "Mélange printanier, menthe, feta, melon d'eau, vinaigrette menthe et Limoncello (Distillerie 3 Lacs), jus de citron, amandes grillées. Contient de l'alcool.",
+        image: null,
       },
       {
-        name: "« Messieurs patates »",
-        price: "9,95 $",
-        description:
-          "Bouchées de pommes de terre frits, parmesan, huile de truffe, beurre à l'ail confit maison, poivre moulu, sirop d'érable. Servi avec sauce marinara.",
-        image: "/images/dish-tasting.png",
-      },
-      {
-        name: "Pizza « Bimi »",
+        name: "Pizza « Salut, Cowboy »",
         price: "25,95 $",
         description:
-          "Sauce au fromage (Île-aux-Grues, cheddar vieilli 2 ans), broccolini, jambon (Charcuterie Porc Épique), coulis de moutarde et miel, huile d'olive.",
+          "Purée de fraise au basilic, bufarella (Fromagerie Fuoco), noix de Grenoble, tomates séchées, huile d'olive.",
         image: "/images/pizza-oven.jpg",
       },
       {
-        name: "Assiette de charcuterie",
-        price: "35,95 $",
+        name: "Pizza Box",
+        price: "32,95 $ / 35,95 $ la boîte",
         description:
-          "Calabrese, prosciutto, saucissons secs, olives méli-mélo, fromages du moment, pickle d'onions rouges, petits cornichons. Servi avec pain et croutons.",
-        image: "/images/dish-charcuterie.png",
+          "2 pains plats par boîte pour faire 4 petites pizzas. Boîte végé (32,95 $) : Margherita, 4 Fromages, Pesto Courgette, la Végé. Boîte viande (35,95 $) : Québécoise, Sweet Lou, Prosciutto, Pepperoni.",
+        image: null,
+      },
+      {
+        name: "« Messieurs patates »",
+        price: "10,95 $",
+        description:
+          "Bouchées de pommes de terre frits, parmesan, huile de truffe, beurre à l'ail confit maison, poivre moulu, sirop d'érable. Servi avec sauce marinara.",
+        image: "/images/dish-tasting.png",
       },
       {
         name: "« Philly T »",
