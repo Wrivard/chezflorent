@@ -1,6 +1,30 @@
 <!DOCTYPE html>
 <html lang="fr-CA">
   <head>
+    <script>
+    if (window.location.hostname !== 'localhost' && !window.location.hostname.includes('replit')) {
+      // --- COOKIEBOT ---
+      var cb = document.createElement('script');
+      cb.id = 'Cookiebot';
+      cb.src = 'https://consent.cookiebot.com/uc.js';
+      cb.setAttribute('data-cbid', '190a6d99-642c-4848-99d3-d320cdd255ce');
+      cb.setAttribute('data-blockingmode', 'auto');
+      cb.type = 'text/javascript';
+      document.head.appendChild(cb);
+      var cd = document.createElement('script');
+      cd.id = 'CookieDeclaration';
+      cd.src = 'https://consent.cookiebot.com/190a6d99-642c-4848-99d3-d320cdd255ce/cd.js';
+      cd.type = 'text/javascript';
+      cd.async = true;
+      document.head.appendChild(cd);
+      // --- GOOGLE TAG MANAGER ---
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-NTDB8SHV');
+    }
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
     <title>Chez Florent — Restaurant à Sorel-Tracy</title>
@@ -71,6 +95,10 @@
     </script>
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTDB8SHV"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
