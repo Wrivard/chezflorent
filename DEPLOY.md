@@ -10,8 +10,13 @@ In production everything runs on **Vercel's free Hobby plan**:
 
 - The website is served as static files.
 - The API runs as a single **Vercel Serverless Function**
-  (`api/[...path].ts`), which wraps the Express app. The catch-all filename
-  makes Vercel route every `/api/*` request to it automatically.
+  (`api/[...path].mjs`), which imports the esbuild bundle of the Express app
+  (`artifacts/api-server/dist/app.mjs`, built by the `buildCommand` in
+  `vercel.json`). The catch-all filename makes Vercel route every `/api/*`
+  request to it automatically.
+- **Never commit the `.vercel/` directory.** If a prebuilt `.vercel/output`
+  is present in the repo, Vercel skips the build entirely and deploys that
+  stale, static-only output (no API function, no rewrites).
 - The database is **Neon Postgres** (free tier).
 - Photo uploads are stored in **Vercel Blob** (free tier).
 

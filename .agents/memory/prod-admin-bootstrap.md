@@ -35,3 +35,7 @@ Same root problem, bigger scope: when the user wants the published site to show 
 **Why a single transaction matters (hard-won):** wrap the WHOLE import in one `db.transaction`. Per-step, non-transactional inserts gated only on "table has any row" are unsafe — a mid-run failure leaves the table half-populated but permanently "skipped", and two autoscale instances racing on an empty DB can partially double-insert / hit unique violations. One transaction makes it atomic (failure rolls back → next boot retries) AND race-safe (the losing instance hits a unique-key conflict on natural keys like category.slug / hours.dayOfWeek / photos.slot and rolls back entirely, leaving the winner's complete copy).
 
 **Snapshot is a frozen copy, not a live mirror:** future dev edits do NOT propagate; after first publish, prod is managed independently through the CMS. Re-exporting the snapshot only re-seeds a prod table that is still empty.
+
+## Vercel serverless caveat
+
+The startup bootstrap lives in `index.ts` (runs after `app.listen`). On Vercel the serverless function imports **only the app bundle** (`dist/app.mjs`), so `index.ts` never executes → NO admin seed, NO snapshot import in that hosting model. The Neon prod DB was instead populated once by a manual `pg_dump` of the dev DB piped into Neon. If prod ever needs re-seeding on Vercel, it must be done externally (psql/pg_dump against Neon), not via server startup.

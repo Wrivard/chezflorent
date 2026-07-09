@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="CF — Chez Florent">
-  <rect width="64" height="64" rx="8" fill="#0E1F1C"/>
-  <text x="32" y="46" text-anchor="middle"
-        font-family="'Bodoni Moda', 'Didot', 'Bodoni 72', Garamond, serif"
-        font-style="italic" font-weight="700" font-size="42"
-        letter-spacing="-2"
-        fill="#F4C9A0">CF</text>
-  <circle cx="32" cy="56" r="1.5" fill="#D85A2C"/>
-</svg>

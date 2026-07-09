@@ -10,11 +10,31 @@ deploys to Vercel's free Hobby plan as: static frontend + one serverless
 function wrapping the Express app + Neon Postgres + Vercel Blob.
 
 ## Serverless routing (the non-obvious part)
-- Use a **catch-all function file** `api/[...path].ts` that does
-  `import app from "../artifacts/api-server/src/app"; export default app;`.
+- Use a **catch-all function file** `api/[...path].mjs` (plain JS!) that does
+  `import app from "../artifacts/api-server/dist/app.mjs"; export default app;`.
   The `[...path]` filename makes Vercel route every `/api/*` request to it via
   filesystem routing, preserving the original URL so Express `app.use("/api", …)`
   resolves correctly.
+- **Never point the function at the TypeScript source.** @vercel/node
+  type-checks every traced `.ts` file, and because the packages are
+  `"type": "module"` it forces nodenext resolution → every extensionless
+  relative import in api-server fails with TS2835 and the build dies. Instead:
+  `build.mjs` bundles BOTH `src/index.ts` (listening server) and `src/app.ts`
+  (pure app export) → `dist/app.mjs`; the function imports the bundle.
+  `buildCommand` must run `pnpm --filter @workspace/api-server build` BEFORE the
+  web build (buildCommand runs before function bundling — verified with local
+  `npx vercel build`).
+- **Never commit `.vercel/`** (it's in .gitignore now). A committed
+  `.vercel/output` makes Vercel SKIP the build and deploy that stale prebuilt
+  output verbatim — symptom: static pages load but every `/api/*` and SPA
+  fallback returns Vercel's platform NOT_FOUND, and vercel.json is ignored.
+- Local repro/verification without deploying: create a synthetic
+  `.vercel/project.json` (`{"projectId":"prj_local","orgId":"team_local","settings":{"framework":null}}`)
+  and run `npx vercel@latest build --yes`; inspect `.vercel/output/functions`
+  and `config.json` routes, then delete `.vercel/`.
+- Vercel serverless never runs `index.ts`, so its startup seeding/bootstrap is
+  dead code there — prod data must be migrated externally (see
+  prod-admin-bootstrap.md).
 - **Do not** use a `{ source: "/api/(.*)", destination: "/api/index" }` rewrite —
   the wildcard segment is not passed and behavior is ambiguous. The catch-all
   filename avoids rewrites for the API entirely.
@@ -24,14 +44,20 @@ function wrapping the Express app + Neon Postgres + Vercel Blob.
 - `vercel.json` only needs an SPA fallback rewrite, and it **must exclude `/api`**:
   `{ "source": "/((?!api/).*)", "destination": "/index.html" }`. Vercel serves
   existing static assets before applying rewrites, so this doesn't clobber JS/CSS.
-- `buildCommand` builds only the web artifact; `outputDirectory` is the web
-  artifact's `dist/public`. `maxDuration: 10` is free-tier safe.
+- `buildCommand` builds api-server (bundle) then the web artifact;
+  `outputDirectory` is the web artifact's `dist/public`. `maxDuration: 10` is
+  free-tier safe.
 - **Root Directory gotcha:** the user's Vercel project has Root Directory set to
   `artifacts/chez-florent` (log tell: build cwd is that dir, pnpm shows `../..`).
   Vercel then ignores the repo-root vercel.json entirely. Fallback shipped: a
   mirror `artifacts/chez-florent/vercel.json` (outputDirectory `dist/public`) plus
-  `artifacts/chez-florent/api/[...path].ts` re-exporting the Express app, so the
-  deploy works with either Root Directory setting. Keep both configs in sync.
+  `artifacts/chez-florent/api/[...path].mjs` re-exporting the bundled Express
+  app, so the deploy works with either Root Directory setting. Keep both configs
+  in sync.
+- **Custom domain gotcha:** `www.chezflorent.ca` CNAMEs to vercel-dns (works),
+  but the apex `chezflorent.ca` A record pointed at the old WHC host
+  (149.56.225.6, whc.ca cert) → visitors on the apex saw the OLD site. Apex must
+  be repointed at the DNS provider per Vercel → Settings → Domains.
 
 ## Build-time env
 **Why:** `vite.config.ts` in the scaffold throws if `PORT`/`BASE_PATH` are

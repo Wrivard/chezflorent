@@ -2,10 +2,10 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "installCommand": "pnpm install --no-frozen-lockfile",
-  "buildCommand": "pnpm --filter @workspace/chez-florent build",
+  "buildCommand": "pnpm --filter @workspace/api-server build && pnpm --filter @workspace/chez-florent build",
   "outputDirectory": "artifacts/chez-florent/dist/public",
   "functions": {
-    "api/[...path].ts": {
+    "api/[...path].mjs": {
       "maxDuration": 10
     }
   },
