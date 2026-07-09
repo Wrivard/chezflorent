@@ -894,7 +894,7 @@ export type MenuCategory = { id: string; label: string; tagline: string; dishes:
 
 // Categories shown on the homepage menu tabs (with photos). The Menu page shows
 // a broader set — see MENU_SLUGS.
-export const FOOD_SLUGS = ["encas", "salades", "pizzas", "hoagies"];
+export const FOOD_SLUGS = ["ardoise", "encas", "salades", "pizzas", "hoagies"];
 
 // All site-owned fixed printed-menu categories (never imported from Untappd).
 // Used to separate the fixed menu from imported drinks on the Menu page, and
@@ -1054,7 +1054,10 @@ const menuCategories: MenuCategory[] = [
 function Menu() {
   const allCategories = useMenuCategoriesData();
   const suppliers = useMenuSuppliers();
-  const categories = allCategories.filter((c) => FOOD_SLUGS.includes(c.id));
+  // Order tabs to follow FOOD_SLUGS so "L'ardoise" leads, like the Menu page.
+  const categories = FOOD_SLUGS.map((slug) =>
+    allCategories.find((c) => c.id === slug),
+  ).filter((c): c is MenuCategory => Boolean(c));
   const [activeCategoryId, setActiveCategoryId] = useState<string>(categories[0]?.id ?? "");
   const [activeIndex, setActiveIndex] = useState(0);
   const activeCategory = categories.find((c) => c.id === activeCategoryId) ?? categories[0];
@@ -1111,7 +1114,7 @@ function Menu() {
               href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/menu`}
               className="inline-flex items-center gap-2 mt-8 px-5 py-2.5 border border-orange text-orange text-[0.75rem] font-medium tracking-[0.2em] uppercase hover:bg-orange hover:text-bg-primary transition-all duration-300 rounded-[2px]"
             >
-              Voir l'ardoise
+              Voir le menu complet
               <span aria-hidden="true">→</span>
             </a>
           </div>
