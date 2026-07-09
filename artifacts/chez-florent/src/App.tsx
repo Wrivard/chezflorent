@@ -1575,6 +1575,38 @@ export function useHoursItems(): string[] {
   });
 }
 
+// Builds the "Passez nous voir" hours table rows from the CMS schedule,
+// grouping consecutive days that share the same hours (Mon → Sun).
+export function useHoursRows(): { label: string; value: string; closed: boolean }[] {
+  const schedule = useScheduleData();
+  const order = [1, 2, 3, 4, 5, 6, 0]; // Mon → Sun
+  const groups: { days: number[]; band: { open: number; close: number } | null }[] = [];
+  for (const day of order) {
+    const band = schedule[day] ?? null;
+    const last = groups[groups.length - 1];
+    const same =
+      last &&
+      ((last.band === null && band === null) ||
+        (!!last.band &&
+          !!band &&
+          last.band.open === band.open &&
+          last.band.close === band.close));
+    if (same) last.days.push(day);
+    else groups.push({ days: [day], band });
+  }
+  return groups.map((g) => {
+    const first = DAY_SHORT_FR[g.days[0]]!.toUpperCase();
+    const lastD = DAY_SHORT_FR[g.days[g.days.length - 1]]!.toUpperCase();
+    const label = g.days.length === 1 ? first : `${first} — ${lastD}`;
+    if (!g.band) return { label, value: "Fermé", closed: true };
+    return {
+      label,
+      value: `${formatHour(g.band.open)} → ${formatHour(g.band.close)}`,
+      closed: false,
+    };
+  });
+}
+
 // Returns the open-days range derived from the CMS schedule.
 // e.g. { short: "Mar–Dim", long: "mardi au dimanche" }
 export function useOpenDaysLabel(): { short: string; long: string } {
@@ -2624,6 +2656,7 @@ export function ContactForm() {
 
 function Contact() {
   const daysLabel = useOpenDaysLabel();
+  const hoursRows = useHoursRows();
   return (
     <section id="contact" className="bg-cream-soft py-32 px-6 md:px-12 relative overflow-hidden">
       <SectionMarker number="05" tone="light" />
@@ -2665,22 +2698,16 @@ function Contact() {
 
               <table className="w-full max-w-[400px] text-bg-primary/85 font-sans mb-16 border-collapse text-lg">
                 <tbody>
-                  <tr className="border-b border-bg-primary/20">
-                    <td className="py-4 font-medium tracking-wider text-sm">LUN</td>
-                    <td className="py-4 text-right italic text-bg-primary/70">Fermé</td>
-                  </tr>
-                  <tr className="border-b border-bg-primary/20">
-                    <td className="py-4 font-medium tracking-wider text-sm">MAR — JEU</td>
-                    <td className="py-4 text-right">17h00 → 22h00</td>
-                  </tr>
-                  <tr className="border-b border-bg-primary/20">
-                    <td className="py-4 font-medium tracking-wider text-sm">VEN — SAM</td>
-                    <td className="py-4 text-right">17h00 → 23h00</td>
-                  </tr>
-                  <tr className="border-b border-bg-primary/20">
-                    <td className="py-4 font-medium tracking-wider text-sm">DIM</td>
-                    <td className="py-4 text-right">17h00 → 21h00</td>
-                  </tr>
+                  {hoursRows.map((row) => (
+                    <tr key={row.label} className="border-b border-bg-primary/20">
+                      <td className="py-4 font-medium tracking-wider text-sm">{row.label}</td>
+                      {row.closed ? (
+                        <td className="py-4 text-right italic text-bg-primary/70">{row.value}</td>
+                      ) : (
+                        <td className="py-4 text-right">{row.value}</td>
+                      )}
+                    </tr>
+                  ))}
                 </tbody>
               </table>
 
