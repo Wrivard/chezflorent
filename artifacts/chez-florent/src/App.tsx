@@ -2657,7 +2657,6 @@ export function ContactForm() {
 }
 
 function Contact() {
-  const daysLabel = useOpenDaysLabel();
   const hoursRows = useHoursRows();
   return (
     <section id="contact" className="bg-cream-soft py-32 px-6 md:px-12 relative overflow-hidden">
@@ -2677,7 +2676,7 @@ function Contact() {
             Passez nous voir
           </h2>
           <p className="font-sans italic text-bg-primary/70 max-w-xl text-base md:text-lg">
-            À deux pas du marché — la porte est ouverte du {daysLabel.long}.
+            À deux pas du marché — la porte est ouverte toute la semaine.
           </p>
         </motion.div>
 
