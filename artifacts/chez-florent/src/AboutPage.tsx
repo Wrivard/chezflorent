@@ -226,6 +226,8 @@ export default function AboutPage() {
                   className="md:col-span-6 aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10"
                 >
                   <img
+              loading="lazy"
+              decoding="async"
                     src={photos["apropos-1"]?.url || imgSrc(images.story1)}
                     alt=""
                     className="w-full h-full object-cover"
@@ -239,6 +241,8 @@ export default function AboutPage() {
                   className="md:col-span-3 aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10"
                 >
                   <img
+              loading="lazy"
+              decoding="async"
                     src={photos["apropos-2"]?.url || imgSrc(images.story2)}
                     alt=""
                     className="w-full h-full object-cover"
@@ -252,6 +256,8 @@ export default function AboutPage() {
                   className="md:col-span-3 aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10"
                 >
                   <img
+              loading="lazy"
+              decoding="async"
                     src={photos["apropos-3"]?.url || imgSrc(images.story3)}
                     alt=""
                     className="w-full h-full object-cover"
@@ -278,6 +284,8 @@ export default function AboutPage() {
                 >
                   <div className="aspect-[3/4] overflow-hidden ring-1 ring-cream/10">
                     <img
+              loading="lazy"
+              decoding="async"
                       src={photos["apropos-chef"]?.url || imgSrc(chef.image)}
                       alt={chef.name}
                       className="w-full h-full object-cover"

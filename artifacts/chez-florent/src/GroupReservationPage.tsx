@@ -531,6 +531,8 @@ export default function GroupReservationPage() {
                     </blockquote>
                     <div className="mt-6 mb-2">
                       <img
+              loading="lazy"
+              decoding="async"
                         src="/logo.png"
                         alt="Chez Florent"
                         className="h-14 w-auto opacity-80"
@@ -550,6 +552,8 @@ export default function GroupReservationPage() {
                   >
                     <div className="group aspect-[4/5] overflow-hidden ring-1 ring-bg-primary/10">
                       <img
+              loading="lazy"
+              decoding="async"
                         src={imgSrc("about-hands.png")}
                         alt="Service à table Chez Florent"
                         className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
@@ -563,6 +567,8 @@ export default function GroupReservationPage() {
                       className="hidden md:block group absolute bottom-0 left-0 w-[52%] aspect-[4/3] overflow-hidden ring-1 ring-bg-primary/10 outline outline-[6px] outline-cream-soft"
                     >
                       <img
+              loading="lazy"
+              decoding="async"
                         src={imgSrc("florent-glass.jpg")}
                         alt="Verre servi au bar"
                         className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
@@ -626,6 +632,8 @@ export default function GroupReservationPage() {
                       >
                         <div className="aspect-[4/3] overflow-hidden ring-1 ring-cream/10">
                           <img
+              loading="lazy"
+              decoding="async"
                             src={photos[`grp-formule-${i + 1}`]?.url || imgSrc(f.image)}
                             alt={f.name}
                             className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
@@ -717,6 +725,8 @@ export default function GroupReservationPage() {
                   >
                     <div className="relative aspect-[4/5] overflow-hidden ring-1 ring-bg-primary/15 mb-6">
                       <img
+              loading="lazy"
+              decoding="async"
                         src={photos[`grp-occasion-${i + 1}`]?.url || imgSrc(occ.image)}
                         alt=""
                         aria-hidden="true"
@@ -924,6 +934,8 @@ export default function GroupReservationPage() {
           ============================================================ */}
           <section className="relative bg-bg-primary px-6 md:px-12 py-32 md:py-44 overflow-hidden">
             <img
+              loading="lazy"
+              decoding="async"
               src={imgSrc("interior-bar.jpg")}
               alt=""
               aria-hidden="true"

@@ -759,7 +759,7 @@ function About() {
         <div ref={sliderRef} data-lenis-prevent className="md:hidden mb-24 -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory cursor-grab select-none [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {(["about6", "about1", "about2", "about4", "about8", "about5", "about3"] as const).map((slot, i) => (
             <div key={slot} data-center-slide={i === 3 || undefined} className="w-[78%] shrink-0 snap-center aspect-[4/5] overflow-hidden ring-1 ring-bg-primary/10">
-              <img src={photos[slot].url} alt={photos[slot].alt} draggable={false} className="w-full h-full object-cover" />
+              <img loading="lazy" decoding="async" src={photos[slot].url} alt={photos[slot].alt} draggable={false} className="w-full h-full object-cover" />
             </div>
           ))}
         </div>
@@ -776,7 +776,7 @@ function About() {
             transition={{ duration: 0.9, ease: EASE, delay: 0 }}
             className="aspect-[4/3] md:aspect-[9/16] overflow-hidden ring-1 ring-bg-primary/10"
           >
-            <img src={photos.about6.url} alt={photos.about6.alt} className="w-full h-full object-cover" />
+            <img loading="lazy" decoding="async" src={photos.about6.url} alt={photos.about6.alt} className="w-full h-full object-cover" />
           </motion.div>
           </div>
 
@@ -788,7 +788,7 @@ function About() {
             transition={{ duration: 0.9, ease: EASE, delay: 0.08 }}
             className="aspect-square overflow-hidden ring-1 ring-bg-primary/10"
           >
-            <img src={photos.about1.url} alt={photos.about1.alt} className="w-full h-full object-cover" />
+            <img loading="lazy" decoding="async" src={photos.about1.url} alt={photos.about1.alt} className="w-full h-full object-cover" />
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -797,7 +797,7 @@ function About() {
             transition={{ duration: 0.9, ease: EASE, delay: 0.14 }}
             className="aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10"
           >
-            <img src={photos.about2.url} alt={photos.about2.alt} className="w-full h-full object-cover" />
+            <img loading="lazy" decoding="async" src={photos.about2.url} alt={photos.about2.alt} className="w-full h-full object-cover" />
           </motion.div>
           </div>
 
@@ -809,7 +809,7 @@ function About() {
             transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
             className="aspect-[4/3] md:aspect-[4/5] overflow-hidden ring-1 ring-bg-primary/10"
           >
-            <img src={photos.about4.url} alt={photos.about4.alt} className="w-full h-full object-cover" />
+            <img loading="lazy" decoding="async" src={photos.about4.url} alt={photos.about4.alt} className="w-full h-full object-cover" />
           </motion.div>
           </div>
 
@@ -821,7 +821,7 @@ function About() {
             transition={{ duration: 0.9, ease: EASE, delay: 0.16 }}
             className="aspect-[3/4] overflow-hidden ring-1 ring-bg-primary/10"
           >
-            <img src={photos.about8.url} alt={photos.about8.alt} className="w-full h-full object-cover" />
+            <img loading="lazy" decoding="async" src={photos.about8.url} alt={photos.about8.alt} className="w-full h-full object-cover" />
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -830,7 +830,7 @@ function About() {
             transition={{ duration: 0.9, ease: EASE, delay: 0.22 }}
             className="aspect-square overflow-hidden ring-1 ring-bg-primary/10"
           >
-            <img src={photos.about5.url} alt={photos.about5.alt} className="w-full h-full object-cover" />
+            <img loading="lazy" decoding="async" src={photos.about5.url} alt={photos.about5.alt} className="w-full h-full object-cover" />
           </motion.div>
           </div>
 
@@ -842,7 +842,7 @@ function About() {
             transition={{ duration: 0.9, ease: EASE, delay: 0.12 }}
             className="aspect-[4/3] md:aspect-[9/16] overflow-hidden ring-1 ring-bg-primary/10"
           >
-            <img src={photos.about3.url} alt={photos.about3.alt} className="w-full h-full object-cover" />
+            <img loading="lazy" decoding="async" src={photos.about3.url} alt={photos.about3.alt} className="w-full h-full object-cover" />
           </motion.div>
           </div>
         </div>
@@ -3025,7 +3025,7 @@ export function Footer({ hideMap = false }: { hideMap?: boolean } = {}) {
           <div>© {year} Chez Florent</div>
           <div className="flex items-center gap-2">
             <span>Conçu avec <span aria-hidden="true">♥</span><span className="sr-only">amour</span> à Sorel-Tracy par</span>
-            <a href="https://kua.quebec" target="_blank" rel="noopener noreferrer"><img src="/images/kua-logo.png" alt="küa" className="h-[17.5px] w-auto" /></a>
+            <a href="https://kua.quebec" target="_blank" rel="noopener noreferrer"><img loading="lazy" decoding="async" src="/images/kua-logo.png" alt="küa" className="h-[17.5px] w-auto" /></a>
           </div>
           <a href={`${base}/confidentialite`} className="hover:text-cream transition-colors">Confidentialité</a>
         </div>

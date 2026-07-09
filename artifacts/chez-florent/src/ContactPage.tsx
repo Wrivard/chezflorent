@@ -169,6 +169,8 @@ export default function ContactPage() {
                 >
                   <div className="bg-bg-primary aspect-[4/5] overflow-hidden group ring-1 ring-bg-primary/15">
                     <img
+              loading="lazy"
+              decoding="async"
                       src={photos.facade.url}
                       alt={photos.facade.alt}
                       className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"

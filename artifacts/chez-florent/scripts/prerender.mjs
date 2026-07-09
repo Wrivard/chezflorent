@@ -512,7 +512,8 @@ console.log("[prerender] Patched dist/public/index.html (home static content)");
 
 // Generate per-route HTML files
 for (const route of ROUTES) {
-  const url = `${BASE}/${route.path}/`;
+  // No trailing slash: must match sitemap.xml <loc> entries and internal links.
+  const url = `${BASE}/${route.path}`;
   let html = template;
 
   html = setTitle(html, route.title);
