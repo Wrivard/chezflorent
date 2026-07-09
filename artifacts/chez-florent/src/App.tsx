@@ -1621,7 +1621,7 @@ const PHOTO_FALLBACK: PhotoMap = {
   about8: { url: "/images/maison-four.jpg", alt: "Le four à bois de la maison" },
   press: { url: "/images/interior-bar.jpg", alt: "Salle à manger de Chez Florent" },
   voice1: { url: "/images/jeux-societe.jpg", alt: "Un jeu de société sur une table Chez Florent" },
-  voice2: { url: "/images/run-club.png", alt: "Groupe de coureurs réunis après le run club Chez Florent" },
+  voice2: { url: "/images/run-club.png", alt: "Coureuse accompagnée de son chien sur la piste cyclable — run club Chez Florent" },
   voice3: { url: "/images/quiz-gagnant.jpg", alt: "Une carte-cadeau gagnée lors d'un quiz Chez Florent" },
   facade: { url: "/images/facade-pizza.jpg", alt: "Devanture de Chez Florent, 57 rue du Roi à Sorel-Tracy" },
   "grp-formule-1": { url: "/images/tap-pour.jpg", alt: "Formule — service au comptoir" },

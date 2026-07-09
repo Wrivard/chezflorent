@@ -228,7 +228,7 @@ async function seedPhotos(): Promise<void> {
     {
       slot: "voice2",
       url: "/images/run-club.png",
-      alt: "Groupe de coureurs réunis après le run club Chez Florent",
+      alt: "Coureuse accompagnée de son chien sur la piste cyclable — run club Chez Florent",
     },
     {
       slot: "voice3",
