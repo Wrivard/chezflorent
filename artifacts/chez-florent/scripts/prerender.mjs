@@ -293,7 +293,7 @@ const ROUTES = [
     </ol>
     <p style="margin-top:1rem">
       Téléphone : <a href="tel:+14507431448" style="color:#d85a2c">450&nbsp;743-1448</a><br>
-      Courriel : <a href="mailto:groupes@chezflorent.ca" style="color:#d85a2c">groupes@chezflorent.ca</a><br>
+      Courriel : <a href="mailto:chezflorent@outlook.com" style="color:#d85a2c">chezflorent@outlook.com</a><br>
       57 Rue du Roi, Sorel-Tracy (QC) J3P&nbsp;4M6
     </p>
   </section>

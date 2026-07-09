@@ -33,7 +33,7 @@ export async function notifyContactMessage(
   const ownerTo =
     process.env["RECIPIENT_EMAIL"] ||
     process.env["GROUP_NOTIFY_EMAIL"] ||
-    "groupes@chezflorent.ca";
+    "chezflorent@outlook.com";
   const rawFrom =
     process.env["RESEND_FROM_EMAIL"] ||
     process.env["RESEND_FROM"] ||

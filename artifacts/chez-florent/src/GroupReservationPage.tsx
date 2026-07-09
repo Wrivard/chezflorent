@@ -18,8 +18,8 @@ import {
 
 const RESTO_PHONE = "450 743-1448";
 const RESTO_PHONE_HREF = "tel:+14507431448";
-const RESTO_EMAIL = "groupes@chezflorent.ca";
-const RESTO_EMAIL_HREF = "mailto:groupes@chezflorent.ca";
+const RESTO_EMAIL = "chezflorent@outlook.com";
+const RESTO_EMAIL_HREF = "mailto:chezflorent@outlook.com";
 
 // -----------------------------------------------------------------------------
 // PLACEHOLDER CONTENT
