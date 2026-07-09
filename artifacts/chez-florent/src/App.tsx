@@ -78,16 +78,6 @@ function Preloader({ onComplete }: { onComplete: () => void }) {
         />
       ))}
 
-      {/* Editorial tagline in serif italic */}
-      <motion.div
-        className="mt-8 md:mt-10 font-serif italic text-cream/90 text-lg md:text-2xl text-center px-8 max-w-md leading-snug"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 1.7, ease: EASE_SMOOTH }}
-      >
-        Cuisine généreuse, vins vivants.
-      </motion.div>
-
       {/* Bottom location strip */}
       <motion.div
         className="absolute bottom-12 md:bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-3 text-[0.62rem] md:text-[0.7rem] tracking-[0.32em] uppercase text-cream-soft/55 font-sans whitespace-nowrap"
