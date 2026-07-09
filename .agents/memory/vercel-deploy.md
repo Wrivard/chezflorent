@@ -18,6 +18,9 @@ function wrapping the Express app + Neon Postgres + Vercel Blob.
 - **Do not** use a `{ source: "/api/(.*)", destination: "/api/index" }` rewrite —
   the wildcard segment is not passed and behavior is ambiguous. The catch-all
   filename avoids rewrites for the API entirely.
+- **Never use the legacy `routes` key** in vercel.json: its presence makes Vercel
+  silently ignore `outputDirectory` → build fails with «No Output Directory named
+  "public" found» even though the build succeeded. Use `rewrites` only.
 - `vercel.json` only needs an SPA fallback rewrite, and it **must exclude `/api`**:
   `{ "source": "/((?!api/).*)", "destination": "/index.html" }`. Vercel serves
   existing static assets before applying rewrites, so this doesn't clobber JS/CSS.

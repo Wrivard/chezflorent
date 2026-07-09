@@ -9,17 +9,13 @@
       "maxDuration": 10
     }
   },
-  "routes": [
-    { "src": "^/api/(.*)", "dest": "/api/$1" },
-    { "handle": "filesystem" },
-    { "src": "^/?$", "dest": "/index.html" },
-    { "src": "^/menu/?$", "dest": "/menu/index.html" },
-    { "src": "^/a-propos/?$", "dest": "/a-propos/index.html" },
-    { "src": "^/contact/?$", "dest": "/contact/index.html" },
-    { "src": "^/evenements/?$", "dest": "/evenements/index.html" },
-    { "src": "^/groupes/?$", "dest": "/groupes/index.html" },
-    { "src": "^/confidentialite/?$", "dest": "/confidentialite/index.html" },
-    { "src": "^/admin(/.*)?$", "dest": "/index.html" },
-    { "src": "/(.*)", "status": 404, "dest": "/404.html" }
+  "rewrites": [
+    { "source": "/menu", "destination": "/menu/index.html" },
+    { "source": "/a-propos", "destination": "/a-propos/index.html" },
+    { "source": "/contact", "destination": "/contact/index.html" },
+    { "source": "/evenements", "destination": "/evenements/index.html" },
+    { "source": "/groupes", "destination": "/groupes/index.html" },
+    { "source": "/confidentialite", "destination": "/confidentialite/index.html" },
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }
