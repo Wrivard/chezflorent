@@ -9,7 +9,17 @@
       "maxDuration": 10
     }
   },
-  "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+  "routes": [
+    { "src": "^/api/(.*)", "dest": "/api/$1" },
+    { "handle": "filesystem" },
+    { "src": "^/?$", "dest": "/index.html" },
+    { "src": "^/menu/?$", "dest": "/menu/index.html" },
+    { "src": "^/a-propos/?$", "dest": "/a-propos/index.html" },
+    { "src": "^/contact/?$", "dest": "/contact/index.html" },
+    { "src": "^/evenements/?$", "dest": "/evenements/index.html" },
+    { "src": "^/groupes/?$", "dest": "/groupes/index.html" },
+    { "src": "^/confidentialite/?$", "dest": "/confidentialite/index.html" },
+    { "src": "^/admin(/.*)?$", "dest": "/index.html" },
+    { "src": "/(.*)", "status": 404, "dest": "/404.html" }
   ]
 }
