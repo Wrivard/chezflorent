@@ -26,3 +26,16 @@ menu/events because the content is fixed-shape and one-of-a-kind.
   the document just because it's nearby.
 - Derive ordinal display (step numbers "01/02") from array order, not a stored
   field, so add/remove "just works" without renumbering.
+
+## Default-migration legacy list must include the very FIRST prod seed
+The boot migration (`ensureGroupContent`) overwrites the stored row only when it
+exactly stableStringify-matches a known legacy default. Prod was seeded by the
+very first deploy with a pre-V1 variant ("07 — " section markers), which was
+missing from the list — so dev CMS/default updates silently never reached the
+published site.
+**Why:** prod DB is separate and write-locked for the agent; the exact-match
+legacy list is the only channel to update an unedited prod singleton.
+**How to apply:** whenever the default document changes, freeze the outgoing
+version into the legacy list — and verify against a read-only prod query
+(`environment:"production"`) that the stored row matches one of the listed
+versions, not just the dev row.

@@ -189,6 +189,21 @@ const GROUP_CONTENT_V1: GroupContent = {
   ],
 };
 
+// Original (v0) default document: identical to v1 except every section marker
+// used the "07 — " prefix. This is what the very first production deploy
+// seeded, so it must be in the legacy list for prod to migrate.
+const GROUP_CONTENT_V0: GroupContent = {
+  ...GROUP_CONTENT_V1,
+  texts: {
+    ...GROUP_CONTENT_V1.texts,
+    heroMarker: "07 — Groupes & privatisation",
+    manifestoMarker: "07 — Le mot de Florent",
+    formulesMarker: "07 — Les formules",
+    occasionsMarker: "07 — Pour toutes les occasions",
+    stepsMarker: "07 — Comment ça se passe",
+  },
+};
+
 // Key-order-independent serialization: Postgres jsonb does not preserve key
 // order, so plain JSON.stringify comparison would never match.
 function stableStringify(value: unknown): string {
@@ -217,7 +232,11 @@ export async function ensureGroupContent(): Promise<void> {
       .where(eq(groupContentTable.id, GROUP_CONTENT_ID));
     if (!row) return; // GET falls back to the new default — nothing to do.
     const stored = stableStringify(row.data);
-    const isKnownOldDefault = [GROUP_CONTENT_V1, GROUP_CONTENT_V2].some(
+    const isKnownOldDefault = [
+      GROUP_CONTENT_V0,
+      GROUP_CONTENT_V1,
+      GROUP_CONTENT_V2,
+    ].some(
       (v) => stored === stableStringify(v),
     );
     if (isKnownOldDefault) {
