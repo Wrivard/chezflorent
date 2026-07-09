@@ -10,7 +10,7 @@ import {
   DeleteMessageParams,
 } from "@workspace/api-zod";
 import { requireAuth } from "../middlewares/requireAuth";
-import { notifyGroupRequest } from "../lib/notifyGroupRequest";
+import { notifyContactMessage } from "../lib/notifyContactMessage";
 
 const router: IRouter = Router();
 
@@ -41,15 +41,16 @@ router.post("/messages", async (req, res): Promise<void> => {
     return;
   }
   const [row] = await db.insert(messagesTable).values(parsed.data).returning();
-  if (row.kind === "groupe") {
-    void notifyGroupRequest({
-      name: row.name,
-      email: row.email,
-      phone: row.phone,
-      subject: row.subject,
-      message: row.message,
-    });
-  }
+  void notifyContactMessage({
+    kind: row.kind,
+    name: row.name,
+    email: row.email,
+    phone: row.phone,
+    company: row.company,
+    supplyType: row.supplyType,
+    subject: row.subject,
+    message: row.message,
+  });
   res.status(201).json(UpdateMessageResponse.parse(serialize(row)));
 });
 

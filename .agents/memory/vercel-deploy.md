@@ -50,3 +50,9 @@ take precedence. Verify a Vercel build locally with
   client MIME header.
 - The generated api-client uses **relative `/api/...` paths** (no `setBaseUrl`),
   so the same code works behind the Replit dev proxy and the Vercel rewrite.
+
+## Courriels de contact via Resend
+All three public forms POST `/api/messages`; the server fire-and-forgets a
+Resend notification for every kind. Env on Vercel: `RESEND_API_KEY`,
+`RESEND_FROM_EMAIL` (bonjour@kua.quebec, must be a Resend-verified sender),
+`RECIPIENT_EMAIL`. No key → message is stored and email skipped (dev-safe).
