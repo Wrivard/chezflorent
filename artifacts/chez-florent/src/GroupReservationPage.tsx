@@ -914,7 +914,7 @@ export default function GroupReservationPage() {
                 <span aria-hidden="true">✶ </span>07 — Votre demande
               </div>
               <RevealHeading
-                text="Parlez-nous de vos gens"
+                text="Parlez-nous de votre soirée"
                 className="font-display text-bg-primary text-[clamp(1.75rem,6vw,4.5rem)] leading-[1.05] pb-[0.08em] mb-6 flex flex-wrap"
               />
               <p className="font-sans font-light text-bg-primary/70 text-base md:text-lg leading-relaxed mb-10 max-w-xl">
