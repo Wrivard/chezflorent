@@ -196,11 +196,13 @@ export function Modal({
   onClose,
   title,
   children,
+  layer = "base",
 }: {
   open: boolean;
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  layer?: "base" | "top";
 }) {
   useEffect(() => {
     if (!open) return;
@@ -219,7 +221,7 @@ export function Modal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-bg-primary/80 px-4 py-8 backdrop-blur-sm"
+      className={`fixed inset-0 ${layer === "top" ? "z-[70]" : "z-50"} flex items-start justify-center overflow-y-auto bg-bg-primary/80 px-4 py-8 backdrop-blur-sm`}
       onClick={onClose}
     >
       <div
@@ -327,7 +329,7 @@ export function ConfirmModal({
   onClose: () => void;
 }) {
   return (
-    <Modal open={open} onClose={onClose} title={title}>
+    <Modal open={open} onClose={onClose} title={title} layer="top">
       <p className="text-sm text-cream-soft/80">{message}</p>
       <div className="mt-6 flex items-center gap-3">
         <Button
