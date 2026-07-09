@@ -128,6 +128,20 @@ export const PHOTO_GROUPS: PhotoGroup[] = [
     ],
   },
   {
+    title: "Page Événements",
+    description: "L'image de fond de l'en-tête de la page « Événements ».",
+    slots: [
+      { slot: "evenements-hero", label: "En-tête (image de fond)", ratio: "16/9" },
+    ],
+  },
+  {
+    title: "Page Contact",
+    description: "L'image de fond de l'en-tête de la page « Contact ».",
+    slots: [
+      { slot: "contact-hero", label: "En-tête (image de fond)", ratio: "16/9" },
+    ],
+  },
+  {
     title: "Galerie « Un soir chez Florent »",
     description:
       "Les quinze photos du carrousel d'ambiance sur la page d'accueil.",

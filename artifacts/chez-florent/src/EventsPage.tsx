@@ -7,6 +7,7 @@ import {
   ScrollProgress,
   SectionMarker,
   useAgendaEventsData,
+  usePhotos,
   imgSrc,
   EASE,
   EASE_SMOOTH,
@@ -469,6 +470,7 @@ function DayModal({
 // -----------------------------------------------------------------------------
 export default function EventsPage() {
   const events = useAgendaEventsData();
+  const photos = usePhotos();
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   useEffect(() => {
@@ -547,7 +549,7 @@ export default function EventsPage() {
           <section className="relative bg-bg-primary pt-40 md:pt-52 pb-20 md:pb-28 px-6 md:px-12 overflow-hidden">
             {/* Background photo */}
             <img
-              src={imgSrc("ambiance-smoke.png")}
+              src={photos["evenements-hero"]?.url || imgSrc("jeu-cribbage.jpg")}
               alt=""
               aria-hidden="true"
               className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"

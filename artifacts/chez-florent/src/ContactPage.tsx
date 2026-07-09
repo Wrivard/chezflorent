@@ -36,7 +36,7 @@ export default function ContactPage() {
           <section className="relative bg-bg-primary pt-40 md:pt-52 pb-16 md:pb-20 px-6 md:px-12 overflow-hidden">
             {/* Background photo */}
             <img
-              src={imgSrc("exterior-dusk.png")}
+              src={photos["contact-hero"]?.url || imgSrc("salle-rouge.jpg")}
               alt=""
               aria-hidden="true"
               className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"

@@ -30,3 +30,10 @@ the CMS shows an un-editable/missing photo:
    PhotoCard is enabled (it disables save when the slot has no DB row),
 4. `seed.ts` defaults + `contentSnapshot.json` sitePhotos — for fresh/empty DBs.
 The public page must also read the slot and keep its baked fallback in sync.
+
+**Changing a slot's default photo later:** insert-missing seeding never touches
+existing rows, so already-seeded DBs (incl. prod) keep the old image. Use the
+`DEFAULT_SWAPS` list in `ensureGroupAboutPhotos.ts`: it updates a slot's row only
+when the URL still equals the OLD default — idempotent, never clobbers CMS edits.
+Page-header bg slots now exist for À propos (`apropos-hero`), Événements
+(`evenements-hero`) and Contact (`contact-hero`).
