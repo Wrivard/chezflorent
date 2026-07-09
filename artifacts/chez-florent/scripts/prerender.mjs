@@ -485,11 +485,19 @@ function setHreflang(html, frHref, defaultHref) {
     );
 }
 
+// The static SEO content must stay in the DOM for non-JS crawlers, but must
+// never flash on screen for real visitors. An inline script adds a `js` class
+// to <html> as soon as the parser reaches it (before the body is painted),
+// and a style rule hides the prerendered block whenever that class is present.
+const HIDE_PRERENDER_HEAD = `<script>document.documentElement.classList.add("js")</script><style>html.js .seo-prerender{display:none}</style>`;
+
 function setStaticContent(html, staticHtml) {
-  return html.replace(
-    /<div id="root"><\/div>/,
-    `<div id="root">${staticHtml}\n</div>`
-  );
+  return html
+    .replace(
+      /<div id="root"><\/div>/,
+      `<div id="root"><div class="seo-prerender">${staticHtml}\n</div></div>`
+    )
+    .replace(/<\/head>/i, `${HIDE_PRERENDER_HEAD}\n</head>`);
 }
 
 // ---------------------------------------------------------------------------
