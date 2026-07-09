@@ -1,0 +1,21 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "pnpm install --no-frozen-lockfile",
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "dist/public",
+  "functions": {
+    "api/[...path].ts": {
+      "maxDuration": 10
+    }
+  },
+  "rewrites": [
+    { "source": "/menu", "destination": "/menu/index.html" },
+    { "source": "/a-propos", "destination": "/a-propos/index.html" },
+    { "source": "/contact", "destination": "/contact/index.html" },
+    { "source": "/evenements", "destination": "/evenements/index.html" },
+    { "source": "/groupes", "destination": "/groupes/index.html" },
+    { "source": "/confidentialite", "destination": "/confidentialite/index.html" },
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
+  ]
+}

@@ -26,6 +26,12 @@ function wrapping the Express app + Neon Postgres + Vercel Blob.
   existing static assets before applying rewrites, so this doesn't clobber JS/CSS.
 - `buildCommand` builds only the web artifact; `outputDirectory` is the web
   artifact's `dist/public`. `maxDuration: 10` is free-tier safe.
+- **Root Directory gotcha:** the user's Vercel project has Root Directory set to
+  `artifacts/chez-florent` (log tell: build cwd is that dir, pnpm shows `../..`).
+  Vercel then ignores the repo-root vercel.json entirely. Fallback shipped: a
+  mirror `artifacts/chez-florent/vercel.json` (outputDirectory `dist/public`) plus
+  `artifacts/chez-florent/api/[...path].ts` re-exporting the Express app, so the
+  deploy works with either Root Directory setting. Keep both configs in sync.
 
 ## Build-time env
 **Why:** `vite.config.ts` in the scaffold throws if `PORT`/`BASE_PATH` are
