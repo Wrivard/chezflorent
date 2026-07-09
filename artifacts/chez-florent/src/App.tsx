@@ -2999,9 +2999,6 @@ function Gallery() {
 export function Footer({ hideMap = false }: { hideMap?: boolean } = {}) {
   const year = new Date().getFullYear();
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-  const daysLabel = useOpenDaysLabel();
-  const openHour = useEarliestOpenHour();
-
   return (
     <>
       {!hideMap && <MapSection />}
@@ -3020,7 +3017,10 @@ export function Footer({ hideMap = false }: { hideMap?: boolean } = {}) {
           <div>
             <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85 mb-4">Contact</div>
             <a href="tel:+14507431448" className="block font-display text-cream text-2xl hover:text-orange transition-colors">450 743-1448</a>
-            <div className="font-sans text-sm text-cream-soft/85 mt-2">{daysLabel.short} · dès {openHour}</div>
+            <div className="font-sans text-sm text-cream-soft/85 mt-2">
+              Lundi–Vendredi · dès 11h30<br />
+              Samedi–Dimanche · dès 17h
+            </div>
           </div>
           <nav aria-label="Navigation rapide">
             <div className="text-[0.7rem] tracking-[0.22em] uppercase text-cream-soft/85 mb-4">Visiter</div>
