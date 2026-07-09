@@ -471,6 +471,57 @@ export default function EventsPage() {
   const events = useAgendaEventsData();
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (events.length === 0) return;
+
+    const eventSchemas = events.map((e) => ({
+      "@type": "Event",
+      name: e.title,
+      description: e.desc,
+      startDate: e.isoDate,
+      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      eventStatus: e.soldOut
+        ? "https://schema.org/EventSoldOut"
+        : "https://schema.org/EventScheduled",
+      location: {
+        "@type": "Place",
+        name: "Chez Florent",
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "57 Rue du Roi",
+          addressLocality: "Sorel-Tracy",
+          addressRegion: "QC",
+          postalCode: "J3P 4M6",
+          addressCountry: "CA",
+        },
+      },
+      organizer: {
+        "@type": "Restaurant",
+        name: "Chez Florent",
+        url: "https://chezflorent.ca/",
+      },
+    }));
+
+    const schema = {
+      "@context": "https://schema.org",
+      "@graph": eventSchemas,
+    };
+
+    let el = document.getElementById("events-schema") as HTMLScriptElement | null;
+    if (!el) {
+      el = document.createElement("script");
+      el.id = "events-schema";
+      el.type = "application/ld+json";
+      document.head.appendChild(el);
+    }
+    el.textContent = JSON.stringify(schema);
+
+    return () => {
+      const existing = document.getElementById("events-schema");
+      if (existing) existing.remove();
+    };
+  }, [events]);
+
   const byDate = useMemo(() => {
     const map = new Map<string, AgendaEvent[]>();
     for (const e of events) {

@@ -1599,6 +1599,81 @@ export function useEarliestOpenHour(): string | null {
   return hours.length > 0 ? formatHour(Math.min(...hours)) : null;
 }
 
+// Canonical social profile links — single source of truth used by both the UI
+// and the Restaurant JSON-LD structured data.
+export const CANONICAL_SOCIAL_LINKS = [
+  "https://www.instagram.com/chez.florent",
+  "https://www.facebook.com/p/Chez-Florent-61558102300719/",
+];
+
+// schema.org day names indexed by JS getDay() (0 = Sunday).
+const SCHEMA_DAY_NAMES = [
+  "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
+];
+
+// Converts a decimal hour (17, 11.5) to a schema.org-compatible "HH:MM" string.
+function toSchemaTime(h: number): string {
+  const hrs = Math.floor(h);
+  const mins = Math.round((h - hrs) * 60);
+  return `${String(hrs).padStart(2, "0")}:${String(mins).padStart(2, "0")}`;
+}
+
+// Keeps the Restaurant JSON-LD in <head> in sync with the live hours from the API.
+// Patches the static baseline in index.html (id="restaurant-schema") so the
+// openingHoursSpecification always reflects the admin-editable schedule.
+export function useRestaurantSchema() {
+  const schedule = useScheduleData();
+
+  useEffect(() => {
+    const openingHoursSpecification = Object.entries(schedule)
+      .filter(([, slot]) => slot != null)
+      .map(([day, slot]) => ({
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: SCHEMA_DAY_NAMES[Number(day)],
+        opens: toSchemaTime((slot as { open: number; close: number }).open),
+        closes: toSchemaTime((slot as { open: number; close: number }).close),
+      }));
+
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      name: "Chez Florent",
+      url: "https://chezflorent.ca/",
+      image: "https://chezflorent.ca/opengraph.jpg",
+      description:
+        "Restaurant de quartier à Sorel-Tracy. L'ardoise change selon les humeurs du chef et les arrivages du marché.",
+      telephone: "+1-450-743-1448",
+      priceRange: "$$",
+      servesCuisine: ["Cuisine française", "Cuisine québécoise"],
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "57 Rue du Roi",
+        addressLocality: "Sorel-Tracy",
+        addressRegion: "QC",
+        postalCode: "J3P 4M6",
+        addressCountry: "CA",
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: 46.0419,
+        longitude: -73.1163,
+      },
+      openingHoursSpecification,
+      acceptsReservations: "True",
+      sameAs: CANONICAL_SOCIAL_LINKS,
+    };
+
+    let el = document.getElementById("restaurant-schema") as HTMLScriptElement | null;
+    if (!el) {
+      el = document.createElement("script");
+      el.id = "restaurant-schema";
+      el.type = "application/ld+json";
+      document.head.appendChild(el);
+    }
+    el.textContent = JSON.stringify(schema);
+  }, [schedule]);
+}
+
 type PhotoMap = Record<string, { url: string; alt: string }>;
 const PHOTO_FALLBACK: PhotoMap = {
   hero: { url: "/images/salle-manger.webp", alt: "Salle à manger de Chez Florent" },
@@ -3010,6 +3085,7 @@ export function FilmGrain() {
 }
 
 export default function App() {
+  useRestaurantSchema();
   const activeSection = useActiveSection();
   // Preview mode: the admin embeds the public site in an iframe with
   // `?preview=<sectionId>` to show a live preview of a section. In this mode we
