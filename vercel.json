@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "installCommand": "pnpm install --no-frozen-lockfile",
-  "buildCommand": "pnpm --filter @workspace/api-server build && pnpm --filter @workspace/chez-florent build && if [ -f scripts/vercel-output.sh ]; then sh scripts/vercel-output.sh; else sh ../../scripts/vercel-output.sh; fi",
+  "buildCommand": "pnpm --filter @workspace/api-server build && pnpm --filter @workspace/chez-florent build && if [ -f scripts/vercel-output.sh ]; then sh scripts/vercel-output.sh; elif [ -f ../scripts/vercel-output.sh ]; then sh ../scripts/vercel-output.sh; elif [ -f ../../scripts/vercel-output.sh ]; then sh ../../scripts/vercel-output.sh; else sh ../../../scripts/vercel-output.sh; fi",
   "outputDirectory": "public",
   "functions": {
     "api/[...path].mjs": {

@@ -55,20 +55,24 @@ function wrapping the Express app + Neon Postgres + Vercel Blob.
   app, so the deploy works with either Root Directory setting. Keep both configs
   in sync.
 - **Output Directory failure — CONFIRMED mechanism (from real build logs):**
-  with Root Directory = artifacts/chez-florent, Vercel read the REPO-ROOT
-  vercel.json (its buildCommand was echoed verbatim in the failing log), but
-  ran the command with cwd = the Root Directory (a `cp` using repo-root-
-  relative paths failed with "cannot stat"). The output-dir check used
-  "public" (dashboard Override) resolved at the REPO ROOT — it failed even
-  though artifacts/chez-florent/public (vite source assets) existed in the
-  clone. Fix: `scripts/vercel-output.sh` (repo root) copies dist/public into
-  `public/` at BOTH the repo root and the app dir, cwd-agnostic; both
-  vercel.json buildCommands are identical and call it via
-  `if [ -f scripts/vercel-output.sh ]; then sh …; else sh ../../scripts/…; fi`.
-  Guard inside the script is `-d /vercel` (real machines clone to
-  /vercel/path0), NOT `$VERCEL` — local `vercel build` also sets VERCEL=1 and
-  once polluted the SOURCE `public/` (vite publicDir) with built files.
-  `FORCE_VERCEL_OUTPUT=1` lets you sandbox-test the script locally.
+  Vercel reads the REPO-ROOT vercel.json (its buildCommand was echoed verbatim
+  in failing logs) but executes it in an UNKNOWN cwd that is 2 levels below
+  the repo root (pnpm install shows root as `../..`) and is NOT
+  artifacts/chez-florent (both `dist/public` and
+  `artifacts/chez-florent/dist/public` were "cannot stat"/introuvable from
+  there — likely Root Directory points at another workspace dir, e.g.
+  artifacts/api-server). The output-dir check ("public", dashboard Override)
+  also failed while artifacts/chez-florent/public existed → checked elsewhere
+  (repo root or that cwd). NEVER assume the buildCommand cwd. Fix:
+  `scripts/vercel-output.sh` locates itself via `$0` → derives the repo root
+  absolutely → copies dist/public into `public/` at the repo root, the app
+  dir, AND `$(pwd)`; buildCommand finds the script via an if/elif chain
+  trying `scripts/`, `../scripts/`, `../../scripts/`, `../../../scripts/`.
+  Script prints cwd for future log forensics. Guard inside the script is
+  `-d /vercel` (real machines clone to /vercel/path0), NOT `$VERCEL` — local
+  `vercel build` also sets VERCEL=1 and once polluted the SOURCE `public/`
+  (vite publicDir) with built files. `FORCE_VERCEL_OUTPUT=1` lets you
+  sandbox-test the script locally.
 - **Custom domain gotcha:** `www.chezflorent.ca` CNAMEs to vercel-dns (works),
   but the apex `chezflorent.ca` A record pointed at the old WHC host
   (149.56.225.6, whc.ca cert) → visitors on the apex saw the OLD site. Apex must
