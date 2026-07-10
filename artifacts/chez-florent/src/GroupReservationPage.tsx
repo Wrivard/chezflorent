@@ -554,8 +554,8 @@ export default function GroupReservationPage() {
                       <img
               loading="lazy"
               decoding="async"
-                        src={imgSrc("about-hands.png")}
-                        alt="Service à table Chez Florent"
+                        src={imgSrc("pizza-boite.jpg")}
+                        alt="Pizza du four à bois dans sa boîte Chez Florent"
                         className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
                       />
                     </div>
