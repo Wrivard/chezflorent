@@ -96,9 +96,15 @@ router.post(
         res.status(503).json({ error: err.message });
         return;
       }
+      // This route is admin-only (requireAuth), so surfacing the underlying
+      // storage error message is safe and makes production issues (e.g. a
+      // misconfigured Blob store) diagnosable from the admin UI directly.
+      const detail =
+        err instanceof Error && err.message
+          ? ` Détail technique : ${err.message.slice(0, 300)}`
+          : "";
       res.status(500).json({
-        error:
-          "Échec du téléversement — le stockage de photos a refusé le fichier. Réessayez ou contactez le support.",
+        error: `Échec du téléversement — le stockage de photos a refusé le fichier.${detail}`,
       });
     }
   },
