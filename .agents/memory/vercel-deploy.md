@@ -88,12 +88,14 @@ function wrapping the Express app + Neon Postgres + Vercel Blob.
   function still receives the ORIGINAL url (Express routes under /api match).
   Verify routing with local `vercel build` then inspect
   `.vercel/output/config.json` routes — that is the ground truth.
-- **Photo upload 500 in prod = missing BLOB_READ_WRITE_TOKEN.** Vercel's
-  serverless FS is read-only, so the local-disk fallback throws EROFS →
-  HTML 500. saveUpload now fail-fasts with StorageNotConfiguredError (503 +
-  French message) when `VERCEL` is set without the token, and app.ts has a
-  global JSON error handler so API errors are never HTML. Fix for the user:
-  Vercel dashboard → Storage → Create → Blob (token is auto-added), redeploy.
+- **Photo upload 500 in prod — two distinct causes seen live.** (1) Missing
+  BLOB_READ_WRITE_TOKEN → local-disk fallback throws EROFS on Vercel's
+  read-only FS. (2) Token present but the Blob store was created with
+  PRIVATE access → `put(..., { access: "public" })` throws «Cannot use
+  public access on a private store». Store access mode is fixed at creation;
+  the user must delete the store and create a new PUBLIC one, then redeploy.
+  Surfacing the underlying storage error in the admin-only upload route's
+  JSON response is what made this diagnosable from a screenshot.
 - **Prod CMS smoke-test procedure that works:** curl login with the
   ADMIN_EMAIL/ADMIN_PASSWORD secrets (cookie jar), then GET public endpoints,
   a no-op PATCH (e.g. /api/hours/:day with identical payload), and POST

@@ -37,7 +37,13 @@ No paid backend is required.
 ## 2. Create a Blob store (Vercel — free)
 
 1. In your Vercel dashboard: **Storage → Create → Blob**.
-2. After creating it, copy the **`BLOB_READ_WRITE_TOKEN`**.
+2. **Choose PUBLIC access when creating the store.** The site serves photo
+   URLs directly to visitors, so blobs must be publicly readable. A store
+   created with *private* access makes every upload fail with
+   «Vercel Blob: Cannot use public access on a private store» — and the
+   access mode cannot be changed after creation; you would have to delete
+   the store and create a new public one.
+3. After creating it, copy the **`BLOB_READ_WRITE_TOKEN`**.
 
 ## 3. Import the repo into Vercel
 
