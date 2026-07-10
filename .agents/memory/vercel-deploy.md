@@ -68,7 +68,10 @@ function wrapping the Express app + Neon Postgres + Vercel Blob.
   absolutely → copies dist/public into `public/` at the repo root, the app
   dir, AND `$(pwd)`; buildCommand finds the script via an if/elif chain
   trying `scripts/`, `../scripts/`, `../../scripts/`, `../../../scripts/`.
-  Script prints cwd for future log forensics. Guard inside the script is
+  Script prints cwd for future log forensics. NOTE: vercel.json schema caps
+  `buildCommand` at 256 chars — long shell chains must live in a root
+  package.json script invoked via `pnpm -w run vercel-build` (`-w` runs from
+  the workspace root regardless of cwd). Guard inside the script is
   `-d /vercel` (real machines clone to /vercel/path0), NOT `$VERCEL` — local
   `vercel build` also sets VERCEL=1 and once polluted the SOURCE `public/`
   (vite publicDir) with built files. `FORCE_VERCEL_OUTPUT=1` lets you
