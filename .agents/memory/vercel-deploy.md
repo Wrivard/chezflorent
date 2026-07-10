@@ -88,6 +88,16 @@ function wrapping the Express app + Neon Postgres + Vercel Blob.
   function still receives the ORIGINAL url (Express routes under /api match).
   Verify routing with local `vercel build` then inspect
   `.vercel/output/config.json` routes — that is the ground truth.
+- **Photo upload 500 in prod = missing BLOB_READ_WRITE_TOKEN.** Vercel's
+  serverless FS is read-only, so the local-disk fallback throws EROFS →
+  HTML 500. saveUpload now fail-fasts with StorageNotConfiguredError (503 +
+  French message) when `VERCEL` is set without the token, and app.ts has a
+  global JSON error handler so API errors are never HTML. Fix for the user:
+  Vercel dashboard → Storage → Create → Blob (token is auto-added), redeploy.
+- **Prod CMS smoke-test procedure that works:** curl login with the
+  ADMIN_EMAIL/ADMIN_PASSWORD secrets (cookie jar), then GET public endpoints,
+  a no-op PATCH (e.g. /api/hours/:day with identical payload), and POST
+  /api/upload with a tiny generated PNG. Verifies auth/DB/storage separately.
 - **Custom domain gotcha:** `www.chezflorent.ca` CNAMEs to vercel-dns (works),
   but the apex `chezflorent.ca` A record pointed at the old WHC host
   (149.56.225.6, whc.ca cert) → visitors on the apex saw the OLD site. Apex must

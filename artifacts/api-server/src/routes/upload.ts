@@ -1,13 +1,17 @@
 import { Router, type IRouter } from "express";
 import multer from "multer";
 import { requireAuth } from "../middlewares/requireAuth";
-import { saveUpload } from "../lib/storage";
+import { saveUpload, StorageNotConfiguredError } from "../lib/storage";
 
 const router: IRouter = Router();
 
+// 4 MB cap: Vercel rejects request bodies over ~4.5 MB at the platform level
+// (FUNCTION_PAYLOAD_TOO_LARGE) before Express ever sees them, so a higher
+// multer limit would be unreachable in production. Keeping the limit below
+// the platform cap means the user always gets our clear French 413 message.
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 8 * 1024 * 1024 },
+  limits: { fileSize: 4 * 1024 * 1024 },
 });
 
 /**
@@ -54,7 +58,18 @@ function detectImageType(buf: Buffer): string | null {
 router.post(
   "/upload",
   requireAuth,
-  upload.single("file"),
+  (req, res, next) => {
+    upload.single("file")(req, res, (err?: unknown) => {
+      if (err instanceof multer.MulterError && err.code === "LIMIT_FILE_SIZE") {
+        res.status(413).json({
+          error:
+            "L'image dépasse la taille maximale de 4 Mo. Réduisez-la (ou prenez une photo en plus basse résolution) puis réessayez.",
+        });
+        return;
+      }
+      next(err);
+    });
+  },
   async (req, res): Promise<void> => {
     if (!req.file) {
       res.status(400).json({ error: "Aucun fichier reçu." });
@@ -67,13 +82,25 @@ router.post(
       });
       return;
     }
-    const url = await saveUpload(
-      req.file.buffer,
-      req.file.originalname,
-      detectedType,
-    );
-    req.log.info({ url }, "Image uploaded");
-    res.status(201).json({ url });
+    try {
+      const url = await saveUpload(
+        req.file.buffer,
+        req.file.originalname,
+        detectedType,
+      );
+      req.log.info({ url }, "Image uploaded");
+      res.status(201).json({ url });
+    } catch (err) {
+      req.log.error({ err }, "Image upload failed");
+      if (err instanceof StorageNotConfiguredError) {
+        res.status(503).json({ error: err.message });
+        return;
+      }
+      res.status(500).json({
+        error:
+          "Échec du téléversement — le stockage de photos a refusé le fichier. Réessayez ou contactez le support.",
+      });
+    }
   },
 );
 

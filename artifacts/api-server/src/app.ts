@@ -1,4 +1,9 @@
-import express, { type Express } from "express";
+import express, {
+  type Express,
+  type NextFunction,
+  type Request,
+  type Response,
+} from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import pinoHttp from "pino-http";
@@ -37,5 +42,28 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/uploads", express.static(uploadsDir()));
 
 app.use("/api", router);
+
+// Global JSON error handler: any uncaught route error (sync or async —
+// Express 5 forwards rejected promises here) returns JSON instead of the
+// default HTML error page, so the admin UI can show a real message.
+app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {
+  req.log?.error({ err }, "Unhandled route error");
+  if (res.headersSent) {
+    return;
+  }
+  const status =
+    typeof err === "object" &&
+    err !== null &&
+    "status" in err &&
+    typeof (err as { status?: unknown }).status === "number"
+      ? (err as { status: number }).status
+      : 500;
+  res.status(status).json({
+    error:
+      status >= 500
+        ? "Erreur interne du serveur. Réessayez plus tard."
+        : (err instanceof Error && err.message) || "Requête invalide.",
+  });
+});
 
 export default app;

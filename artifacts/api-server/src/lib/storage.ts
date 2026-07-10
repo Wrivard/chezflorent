@@ -16,9 +16,27 @@ function safeExt(originalName: string): string {
 }
 
 /**
+ * Thrown when photo storage is not configured for the current environment
+ * (e.g. running on Vercel without a BLOB_READ_WRITE_TOKEN). The upload route
+ * turns this into a clear JSON error for the admin UI.
+ */
+export class StorageNotConfiguredError extends Error {
+  constructor() {
+    super(
+      "Le stockage de photos n'est pas configuré sur le serveur " +
+        "(BLOB_READ_WRITE_TOKEN manquant). Créez un magasin Blob dans " +
+        "Vercel (Storage → Create → Blob) et redéployez.",
+    );
+    this.name = "StorageNotConfiguredError";
+  }
+}
+
+/**
  * Persist an uploaded image and return a public URL.
  *
  * - Production (Vercel): uses Vercel Blob when BLOB_READ_WRITE_TOKEN is set.
+ *   Without the token the serverless filesystem is read-only, so we fail
+ *   fast with an explicit error instead of a cryptic EROFS 500.
  * - Development / self-hosted: writes to a local uploads directory served at
  *   `/api/uploads/<file>`.
  */
@@ -38,6 +56,10 @@ export async function saveUpload(
       addRandomSuffix: false,
     });
     return blob.url;
+  }
+
+  if (process.env.VERCEL) {
+    throw new StorageNotConfiguredError();
   }
 
   const dir = uploadsDir();
