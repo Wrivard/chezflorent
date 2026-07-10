@@ -1,10 +1,12 @@
 // Vercel Serverless Function entry point (catch-all) — used when the Vercel
 // project's Root Directory is set to `artifacts/chez-florent`.
 //
-// Mirror of the repo-root `api/[...path].mjs`: the `[...path]` filename makes
-// Vercel route every `/api/*` request to this single function automatically,
-// preserving the original URL. The Express app mounts every route under
-// `/api`, so the original path resolves correctly.
+// Mirror of the repo-root `api/index.mjs`: the vercel.json rewrite
+// `{ "source": "/api/:path*", "destination": "/api" }` routes every `/api/*`
+// request to this single function while preserving the original URL. The
+// Express app mounts every route under `/api`, so the original path resolves
+// correctly. (A `[...path].mjs` catch-all filename does NOT work: Vercel only
+// generated a single-segment route for it → nested paths returned 404.)
 //
 // This file is plain JavaScript and imports the esbuild bundle produced by
 // `pnpm --filter @workspace/api-server build` (see vercel.json buildCommand).

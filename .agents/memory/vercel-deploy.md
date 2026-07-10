@@ -10,11 +10,12 @@ deploys to Vercel's free Hobby plan as: static frontend + one serverless
 function wrapping the Express app + Neon Postgres + Vercel Blob.
 
 ## Serverless routing (the non-obvious part)
-- Use a **catch-all function file** `api/[...path].mjs` (plain JS!) that does
-  `import app from "../artifacts/api-server/dist/app.mjs"; export default app;`.
-  The `[...path]` filename makes Vercel route every `/api/*` request to it via
-  filesystem routing, preserving the original URL so Express `app.use("/api", …)`
-  resolves correctly.
+- Use a **single function file** `api/index.mjs` (plain JS!) that does
+  `import app from "../artifacts/api-server/dist/app.mjs"; export default app;`,
+  plus the vercel.json rewrite `{ "source": "/api/:path*", "destination": "/api" }`
+  as the FIRST rewrite. The rewrite preserves the original URL so Express
+  `app.use("/api", …)` resolves correctly. Do NOT use a `[...path].mjs`
+  catch-all filename (see bullet further down — it breaks nested paths).
 - **Never point the function at the TypeScript source.** @vercel/node
   type-checks every traced `.ts` file, and because the packages are
   `"type": "module"` it forces nodenext resolution → every extensionless
@@ -35,13 +36,14 @@ function wrapping the Express app + Neon Postgres + Vercel Blob.
 - Vercel serverless never runs `index.ts`, so its startup seeding/bootstrap is
   dead code there — prod data must be migrated externally (see
   prod-admin-bootstrap.md).
-- **Do not** use a `{ source: "/api/(.*)", destination: "/api/index" }` rewrite —
-  the wildcard segment is not passed and behavior is ambiguous. The catch-all
-  filename avoids rewrites for the API entirely.
+- The API rewrite destination must be `"/api"` (resolves to `api/index.mjs`),
+  NOT `"/api/index"`; the original URL is preserved through the rewrite so no
+  path segment needs forwarding.
 - **Never use the legacy `routes` key** in vercel.json: its presence makes Vercel
   silently ignore `outputDirectory` → build fails with «No Output Directory named
   "public" found» even though the build succeeded. Use `rewrites` only.
-- `vercel.json` only needs an SPA fallback rewrite, and it **must exclude `/api`**:
+- `vercel.json` rewrites: the `/api/:path*` → `/api` rewrite first, prerendered
+  page rewrites next, SPA fallback last — and the fallback **must exclude `/api`**:
   `{ "source": "/((?!api/).*)", "destination": "/index.html" }`. Vercel serves
   existing static assets before applying rewrites, so this doesn't clobber JS/CSS.
 - `buildCommand` builds api-server (bundle) then the web artifact;
@@ -51,7 +53,7 @@ function wrapping the Express app + Neon Postgres + Vercel Blob.
   `artifacts/chez-florent` (log tell: build cwd is that dir, pnpm shows `../..`).
   Vercel then ignores the repo-root vercel.json entirely. Fallback shipped: a
   mirror `artifacts/chez-florent/vercel.json` (outputDirectory `dist/public`) plus
-  `artifacts/chez-florent/api/[...path].mjs` re-exporting the bundled Express
+  `artifacts/chez-florent/api/index.mjs` re-exporting the bundled Express
   app, so the deploy works with either Root Directory setting. Keep both configs
   in sync.
 - **Output Directory failure — CONFIRMED mechanism (from real build logs):**
@@ -76,6 +78,16 @@ function wrapping the Express app + Neon Postgres + Vercel Blob.
   `vercel build` also sets VERCEL=1 and once polluted the SOURCE `public/`
   (vite publicDir) with built files. `FORCE_VERCEL_OUTPUT=1` lets you
   sandbox-test the script locally.
+- **`[...path].mjs` catch-all DOES NOT WORK on Vercel:** in production it only
+  generated the single-segment route `^/api/([^/]+)$` (param literally named
+  `...path`), so `/api/healthz` worked but `/api/auth/me` returned Vercel
+  NOT_FOUND. Use the canonical Express pattern instead: function file
+  `api/index.mjs` + vercel.json rewrite
+  `{ "source": "/api/:path*", "destination": "/api" }` → generates
+  `^/api(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?$` which matches all depths; the
+  function still receives the ORIGINAL url (Express routes under /api match).
+  Verify routing with local `vercel build` then inspect
+  `.vercel/output/config.json` routes — that is the ground truth.
 - **Custom domain gotcha:** `www.chezflorent.ca` CNAMEs to vercel-dns (works),
   but the apex `chezflorent.ca` A record pointed at the old WHC host
   (149.56.225.6, whc.ca cert) → visitors on the apex saw the OLD site. Apex must

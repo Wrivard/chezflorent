@@ -1,9 +1,12 @@
 // Vercel Serverless Function entry point (catch-all).
 //
-// The `[...path]` filename makes Vercel route every `/api/*` request to this
-// single function automatically (no rewrite needed), preserving the original
-// URL. The function hands the request to the Express app, which mounts every
-// route under `/api`, so the original path resolves correctly.
+// The vercel.json rewrite `{ "source": "/api/:path*", "destination": "/api" }`
+// routes every `/api/*` request to this single `api/index.mjs` function while
+// preserving the original URL. The function hands the request to the Express
+// app, which mounts every route under `/api`, so the original path resolves
+// correctly. (A `[...path].mjs` catch-all filename does NOT work here: Vercel
+// only generated a single-segment route `^/api/([^/]+)$` for it, so nested
+// paths like /api/auth/me returned 404.)
 //
 // This file is plain JavaScript and imports the esbuild bundle produced by
 // `pnpm --filter @workspace/api-server build` (see vercel.json buildCommand).

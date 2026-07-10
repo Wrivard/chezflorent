@@ -1,4 +1,4 @@
-- [Vercel deploy of pnpm-monorepo scaffold](vercel-deploy.md) — catch-all `api/[...path].mjs` imports the esbuild bundle (never .ts source); never commit `.vercel/`; SPA fallback must exclude `/api`.
+- [Vercel deploy of pnpm-monorepo scaffold](vercel-deploy.md) — `api/index.mjs` + rewrite `/api/:path*`→`/api` (NEVER `[...path].mjs`: single-segment only); never commit `.vercel/`; SPA fallback excludes `/api`.
 - [Testing setup (Vitest + Supertest)](testing-setup.md) — api-server integration tests hit the real Express app + real DB; devDeps go in the sub-package, tests in `test/`, silence pino, clean up + `pool.end()`.
 - [Seed scripts](seed-scripts.md) — seed.ts self-runs main()+process.exit on import; reuse seed data only via side-effect-free menuSeed.ts; keep App.tsx menu fallback in sync.
 - [Singleton-document CMS pages](singleton-cms-document.md) — bespoke one-off pages use one jsonb row + public GET/auth PUT; public page must mirror server DEFAULT_* by hand or it drifts.

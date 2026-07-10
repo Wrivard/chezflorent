@@ -10,10 +10,13 @@ In production everything runs on **Vercel's free Hobby plan**:
 
 - The website is served as static files.
 - The API runs as a single **Vercel Serverless Function**
-  (`api/[...path].mjs`), which imports the esbuild bundle of the Express app
+  (`api/index.mjs`), which imports the esbuild bundle of the Express app
   (`artifacts/api-server/dist/app.mjs`, built by the `buildCommand` in
-  `vercel.json`). The catch-all filename makes Vercel route every `/api/*`
-  request to it automatically.
+  `vercel.json`). The vercel.json rewrite
+  `{ "source": "/api/:path*", "destination": "/api" }` routes every `/api/*`
+  request to it while preserving the original URL. (Do NOT use a
+  `[...path].mjs` catch-all filename instead: Vercel only generates a
+  single-segment route for it, so nested paths like `/api/auth/me` 404.)
 - **Never commit the `.vercel/` directory.** If a prebuilt `.vercel/output`
   is present in the repo, Vercel skips the build entirely and deploys that
   stale, static-only output (no API function, no rewrites).

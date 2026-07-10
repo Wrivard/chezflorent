@@ -17,7 +17,7 @@ async function buildAll() {
   await esbuild({
     // index.ts → dist/index.mjs (dev/prod server that listens on PORT)
     // app.ts   → dist/app.mjs   (pure Express app export, used by the Vercel
-    //                            serverless function api/[...path].mjs)
+    //                            serverless function api/index.mjs)
     entryPoints: [
       path.resolve(artifactDir, "src/index.ts"),
       path.resolve(artifactDir, "src/app.ts"),
