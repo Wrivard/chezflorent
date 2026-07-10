@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "installCommand": "pnpm install --no-frozen-lockfile",
-  "buildCommand": "pnpm --filter @workspace/api-server build && pnpm --filter @workspace/chez-florent build",
+  "buildCommand": "pnpm --filter @workspace/api-server build && pnpm --filter @workspace/chez-florent build && if [ -d /vercel ]; then mkdir -p public && cp -r artifacts/chez-florent/dist/public/. public/; fi",
   "outputDirectory": "artifacts/chez-florent/dist/public",
   "functions": {
     "api/[...path].mjs": {

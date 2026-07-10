@@ -54,6 +54,18 @@ function wrapping the Express app + Neon Postgres + Vercel Blob.
   `artifacts/chez-florent/api/[...path].mjs` re-exporting the bundled Express
   app, so the deploy works with either Root Directory setting. Keep both configs
   in sync.
+- **Dashboard Output Directory override gotcha (suspected mechanism):** deploys
+  failed with «No Output Directory named "public" found» right after a
+  successful build, even though vercel.json sets outputDirectory. Leading
+  suspect: dashboard Override toggles (Build Command and/or Output Directory)
+  from earlier debugging — a dashboard Build Command override would explain
+  both "build ran" and "outputDirectory ignored". Unconfirmed; check the next
+  deploy log. Belt-and-suspenders fix shipped: buildCommand ends with
+  `if [ -d /vercel ]; then mkdir -p public && cp -r <dist/public>/. public/; fi`
+  so the framework-default `public` dir exists either way. Guard on `-d /vercel`
+  (real build machines clone into /vercel/path0), NOT `$VERCEL` — local
+  `vercel build` also sets VERCEL=1 and would pollute the SOURCE `public/`
+  (vite publicDir) with built files.
 - **Custom domain gotcha:** `www.chezflorent.ca` CNAMEs to vercel-dns (works),
   but the apex `chezflorent.ca` A record pointed at the old WHC host
   (149.56.225.6, whc.ca cert) → visitors on the apex saw the OLD site. Apex must
