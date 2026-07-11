@@ -6,7 +6,7 @@
   "outputDirectory": "public",
   "functions": {
     "api/index.mjs": {
-      "maxDuration": 10
+      "maxDuration": 30
     }
   },
   "rewrites": [

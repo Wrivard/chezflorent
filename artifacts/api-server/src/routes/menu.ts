@@ -20,6 +20,7 @@ import {
   DeleteMenuItemParams,
 } from "@workspace/api-zod";
 import { requireAuth } from "../middlewares/requireAuth";
+import { autoSyncUntappdMenu, syncUntappdMenu } from "../lib/untappdSync";
 
 const router: IRouter = Router();
 
@@ -32,7 +33,7 @@ function isUniqueViolation(err: unknown): boolean {
   );
 }
 
-router.get("/menu", async (_req, res): Promise<void> => {
+async function loadMenu() {
   const categories = await db
     .select()
     .from(menuCategoriesTable)
@@ -49,11 +50,35 @@ router.get("/menu", async (_req, res): Promise<void> => {
     byCategory.set(item.categoryId, list);
   }
 
-  const result = categories.map((category) => ({
+  return categories.map((category) => ({
     ...category,
     items: byCategory.get(category.id) ?? [],
   }));
+}
+
+router.get("/menu", async (_req, res): Promise<void> => {
+  let result = await loadMenu();
+  // Keep the drinks in step with the owner's Untappd edits: when the imported
+  // categories are older than the TTL, re-pull before answering. Never throws;
+  // on upstream failure the current menu is served as-is.
+  if (await autoSyncUntappdMenu(result)) {
+    result = await loadMenu();
+  }
   res.json(GetMenuResponse.parse(result));
+});
+
+// Manual "refresh the bar now" trigger for the admin CMS.
+router.post("/menu/untappd-sync", requireAuth, async (req, res): Promise<void> => {
+  try {
+    const result = await syncUntappdMenu();
+    res.json({ categories: result.categories, items: result.items });
+  } catch (err) {
+    req.log?.error({ err }, "Manual Untappd sync failed");
+    res.status(502).json({
+      error:
+        "Impossible de récupérer le menu Untappd pour le moment. Réessayez dans quelques minutes.",
+    });
+  }
 });
 
 // --- Categories ---

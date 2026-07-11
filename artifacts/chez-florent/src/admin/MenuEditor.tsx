@@ -11,6 +11,7 @@ import {
   useGetMenuMarquee,
   useUpdateMenuMarquee,
   getGetMenuMarqueeQueryKey,
+  useSyncUntappdMenu,
 } from "@workspace/api-client-react";
 import type { MenuCategory, MenuItem } from "@workspace/api-client-react";
 import {
@@ -575,6 +576,38 @@ const FIXED_MENU_SLUGS = [
 // but not edited here.
 const HIDDEN_EDITOR_SLUGS = ["alcools"];
 
+function UntappdSyncButton() {
+  const invalidate = useMenuInvalidate();
+  const sync = useSyncUntappdMenu({
+    mutation: {
+      onSuccess: () => {
+        invalidate();
+      },
+    },
+  });
+
+  return (
+    <div className="flex flex-col items-end gap-1">
+      <Button
+        variant="subtle"
+        onClick={() => sync.mutate()}
+        disabled={sync.isPending}
+      >
+        {sync.isPending ? "Actualisation…" : "Actualiser le bar (Untappd)"}
+      </Button>
+      {sync.isSuccess && !sync.isPending && (
+        <span className="text-xs text-orange">
+          ✓ Bar mis à jour ({sync.data.items} produits)
+        </span>
+      )}
+      {sync.isError && !sync.isPending && <ErrorText error={sync.error} />}
+      <span className="text-[0.65rem] text-cream-soft/50">
+        Les boissons se mettent aussi à jour automatiquement (délai max. ~15 min).
+      </span>
+    </div>
+  );
+}
+
 export default function MenuEditor() {
   const { data: menu, isLoading, isError, error } = useGetMenu();
 
@@ -595,7 +628,8 @@ export default function MenuEditor() {
       <SectionHeading
         eyebrow="L'ardoise"
         title="Menu du restaurant"
-        description="Chaque catégorie a son tableau. Modifiez les plats directement dans la bonne section. Les boissons sont gérées via Untappd."
+        description="Chaque catégorie a son tableau. Modifiez les plats directement dans la bonne section. Les boissons sont gérées via Untappd et se synchronisent automatiquement sur le site."
+        action={<UntappdSyncButton />}
       />
       <div className="mb-6">
         <SupplierBandEditor />

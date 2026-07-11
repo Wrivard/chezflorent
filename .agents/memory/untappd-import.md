@@ -16,7 +16,14 @@ Untappd. They coexist: the importer only ever touches non-fixed categories.
 
 **Why:** the API auth wall cost real time; the public theme JS is the reliable read path.
 
-## Importer safety model (`scripts/importUntappdMenu.ts`)
+## Auto-sync (no manual step anymore)
+- Drinks refresh on the request path: a stale GET /api/menu (imported categories older than the TTL) re-pulls inline then re-reads; failures are caught and the current menu is served. No timers/cron — Vercel serverless has none available here.
+- Staleness is DERIVED from `created_at` of non-protected categories (reinsert refreshes it). **Why:** a state table would need a prod schema push the non-technical user can't run.
+- Stampede/outage control: `pg_try_advisory_xact_lock` inside the import transaction — xact-scoped locks are the ONLY advisory kind safe under Neon pooled/pgbouncer transaction pooling — plus a per-instance in-memory attempt cooldown so an Untappd outage can't slow every request. Upstream fetch must keep an AbortSignal timeout.
+- A manual authed sync endpoint + admin button exist for instant re-pull; keep Vercel `maxDuration` ≥ 30 s so the inline sync fits.
+- **Why:** the owner edits beers in the Untappd app and expects the site to follow automatically; the old manual-script-only flow silently never updated prod.
+
+## Importer safety model (`lib/untappdSync.ts`)
 - This is a ONE-WAY pull (Untappd → CMS). Never write back to Untappd.
 - `PROTECTED_SLUGS` is the allowlist of FIXED printed-menu categories that the importer must NEVER touch. It MUST stay in sync with `FIXED_MENU_SLUGS` in the frontend `App.tsx` (currently: ardoise, encas, salades, pizzas, hoagies, desserts, cafes-thes, alcools, extras). EVERY other category is considered importer-owned (Untappd drinks) and is deleted+reinserted wholesale each run (`notInArray(slug, PROTECTED_SLUGS)`).
   - **Why this model:** makes reruns idempotent even when Untappd renames a section (no orphan categories), and the fixed menu can never be wiped even if an Untappd heading slugifies to a fixed slug. Parsed slugs are also de-duped against the protected set so a collision gets a `-2` suffix instead of a unique-constraint crash.

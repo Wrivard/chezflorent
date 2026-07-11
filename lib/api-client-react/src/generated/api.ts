@@ -42,6 +42,7 @@ import type {
   MessageUpdate,
   SitePhoto,
   SitePhotoUpdate,
+  SyncUntappdMenu200,
 } from "./api.schemas";
 
 import { customFetch } from "../custom-fetch";
@@ -1439,6 +1440,87 @@ export const useDeleteMenuCategory = <
   TContext
 > => {
   return useMutation(getDeleteMenuCategoryMutationOptions(options));
+};
+
+/**
+ * @summary Re-import the drinks menu from Untappd immediately
+ */
+export const getSyncUntappdMenuUrl = () => {
+  return `/api/menu/untappd-sync`;
+};
+
+export const syncUntappdMenu = async (
+  options?: RequestInit,
+): Promise<SyncUntappdMenu200> => {
+  return customFetch<SyncUntappdMenu200>(getSyncUntappdMenuUrl(), {
+    ...options,
+    method: "POST",
+  });
+};
+
+export const getSyncUntappdMenuMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof syncUntappdMenu>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof syncUntappdMenu>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["syncUntappdMenu"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof syncUntappdMenu>>,
+    void
+  > = () => {
+    return syncUntappdMenu(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type SyncUntappdMenuMutationResult = NonNullable<
+  Awaited<ReturnType<typeof syncUntappdMenu>>
+>;
+
+export type SyncUntappdMenuMutationError = ErrorType<Error>;
+
+/**
+ * @summary Re-import the drinks menu from Untappd immediately
+ */
+export const useSyncUntappdMenu = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof syncUntappdMenu>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof syncUntappdMenu>>,
+  TError,
+  void,
+  TContext
+> => {
+  return useMutation(getSyncUntappdMenuMutationOptions(options));
 };
 
 /**

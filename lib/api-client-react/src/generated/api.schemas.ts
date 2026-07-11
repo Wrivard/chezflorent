@@ -309,3 +309,8 @@ export interface AboutContent {
   images: AboutImages;
   chef: AboutChef;
 }
+
+export type SyncUntappdMenu200 = {
+  categories: number;
+  items: number;
+};

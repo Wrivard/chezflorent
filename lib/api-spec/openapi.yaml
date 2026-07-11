@@ -381,6 +381,36 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /menu/untappd-sync:
+    post:
+      operationId: syncUntappdMenu
+      tags: [menu]
+      summary: Re-import the drinks menu from Untappd immediately
+      responses:
+        "200":
+          description: Sync result
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [categories, items]
+                properties:
+                  categories:
+                    type: integer
+                  items:
+                    type: integer
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "502":
+          description: Untappd unreachable or unparseable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /menu/items:
     post:
       operationId: createMenuItem

@@ -42,3 +42,4 @@ export * from "./messageInputKind";
 export * from "./messageUpdate";
 export * from "./sitePhoto";
 export * from "./sitePhotoUpdate";
+export * from "./syncUntappdMenu200";

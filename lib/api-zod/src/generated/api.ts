@@ -237,6 +237,14 @@ export const DeleteMenuCategoryParams = zod.object({
 });
 
 /**
+ * @summary Re-import the drinks menu from Untappd immediately
+ */
+export const SyncUntappdMenuResponse = zod.object({
+  categories: zod.number(),
+  items: zod.number(),
+});
+
+/**
  * @summary Create a menu item
  */
 
