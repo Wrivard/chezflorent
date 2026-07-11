@@ -467,7 +467,7 @@ export function Navbar({
             <div className="flex-1 overflow-y-auto overscroll-contain px-6 pb-10 pt-2 flex flex-col gap-7 text-[1.65rem] leading-tight font-serif text-cream">
               <a href={homeHref} onClick={closeMenu} className="hover:text-orange transition-colors">Accueil</a>
               <a href={aboutHref} onClick={closeMenu} className="hover:text-orange transition-colors">À propos</a>
-              <a href={menuHref} onClick={closeMenu} className="hover:text-orange transition-colors">L'ardoise</a>
+              <a href={menuHref} onClick={closeMenu} className="hover:text-orange transition-colors">Menu</a>
               <a href={eventsHref} onClick={closeMenu} className="hover:text-orange transition-colors">Agenda</a>
               <a href={groupsHref} onClick={closeMenu} className="hover:text-orange transition-colors">Groupes & privatisation</a>
               <a href={contactHref} onClick={closeMenu} className="hover:text-orange transition-colors">Nous trouver</a>
@@ -1123,7 +1123,8 @@ function Menu() {
           <div
             role="tablist"
             aria-label="Catégories du menu"
-            className="flex gap-1 md:gap-3 mb-12 border-b border-border overflow-x-auto no-scrollbar"
+            data-lenis-prevent
+            className="flex gap-1 md:gap-3 mb-12 border-b border-border overflow-x-auto overflow-y-hidden overscroll-x-contain no-scrollbar [-webkit-overflow-scrolling:touch]"
           >
             {categories.map((c) => {
               const isActive = c.id === activeCategoryId;
@@ -1135,7 +1136,7 @@ function Menu() {
                   aria-controls={`menu-panel-${c.id}`}
                   id={`menu-tab-${c.id}`}
                   onClick={() => handleCategoryChange(c.id)}
-                  className={`relative px-4 md:px-6 py-4 text-[0.85rem] font-medium tracking-[0.18em] uppercase transition-colors whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset ${
+                  className={`relative shrink-0 px-4 md:px-6 py-4 text-[0.85rem] font-medium tracking-[0.18em] uppercase transition-colors whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset ${
                     isActive ? "text-cream" : "text-cream-soft/75 hover:text-cream"
                   }`}
                 >
@@ -1148,7 +1149,7 @@ function Menu() {
                   {isActive && (
                     <motion.div
                       layoutId="menu-tab-underline"
-                      className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-orange"
+                      className="absolute bottom-0 left-0 right-0 h-[2px] bg-orange"
                       transition={{ duration: 0.4, ease: EASE_SMOOTH }}
                     />
                   )}

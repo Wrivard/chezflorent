@@ -192,7 +192,8 @@ function MenuBoard({
       <div
         role="tablist"
         aria-label="Catégories du menu"
-        className="flex gap-1 md:gap-3 mb-12 border-b border-border overflow-x-auto no-scrollbar"
+        data-lenis-prevent
+        className="flex gap-1 md:gap-3 mb-12 border-b border-border overflow-x-auto overflow-y-hidden overscroll-x-contain no-scrollbar [-webkit-overflow-scrolling:touch]"
       >
         {categories.map((c) => {
           const isActive = c.id === activeCategoryId;
@@ -204,7 +205,7 @@ function MenuBoard({
               aria-controls={`menu-panel-${c.id}`}
               id={`menu-tab-${c.id}`}
               onClick={() => handleCategoryChange(c.id)}
-              className={`relative px-4 md:px-6 py-4 text-[0.85rem] font-medium tracking-[0.18em] uppercase transition-colors whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset ${
+              className={`relative shrink-0 px-4 md:px-6 py-4 text-[0.85rem] font-medium tracking-[0.18em] uppercase transition-colors whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset ${
                 isActive ? "text-cream" : "text-cream-soft/75 hover:text-cream"
               }`}
             >
@@ -221,7 +222,7 @@ function MenuBoard({
               {isActive && (
                 <motion.div
                   layoutId={`menu-page-tab-underline-${boardId}`}
-                  className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-orange"
+                  className="absolute bottom-0 left-0 right-0 h-[2px] bg-orange"
                   transition={{ duration: 0.4, ease: EASE_SMOOTH }}
                 />
               )}
