@@ -9,6 +9,7 @@ import {
   useGetMenuMarquee,
   useCreateMessage,
 } from "@workspace/api-client-react";
+import { isClosureTag } from "./lib/closure";
 
 export const EASE: [number, number, number, number] = [0.65, 0, 0.35, 1];
 export const EASE_SMOOTH: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -1405,6 +1406,8 @@ export type AgendaEvent = {
   desc: string;
   tag: string;
   soldOut?: boolean;
+  /** Fermeture du resto (étiquette réservée en base) — affichage distinct, pas de réservation. */
+  closed?: boolean;
 };
 
 const agendaEvents: AgendaEvent[] = [
@@ -1471,8 +1474,9 @@ export function useAgendaEventsData(): AgendaEvent[] {
             isoDate: e.isoDate,
             title: e.title,
             desc: e.description,
-            tag: e.tag,
+            tag: isClosureTag(e.tag) ? "" : e.tag,
             soldOut: e.soldOut,
+            closed: isClosureTag(e.tag),
           };
         });
 
@@ -1805,15 +1809,17 @@ function Agenda() {
               transition: { duration: 0.6, ease: EASE, delay: i * 0.05 },
               onMouseEnter: () => setActiveIdx(i),
               onFocus: () => setActiveIdx(i),
-              "aria-label": event.soldOut
-                ? `${event.date.day} ${event.date.month} · ${event.title} — complet`
-                : `${event.date.day} ${event.date.month} · ${event.title} — réserver par téléphone`,
-              className: `group grid grid-cols-[64px_1fr_auto] md:grid-cols-[120px_1fr_auto] gap-4 md:gap-12 py-8 md:py-10 border-b border-bg-primary/15 transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset ${event.soldOut ? 'opacity-60 cursor-not-allowed' : isActive ? 'bg-bg-primary/[0.06]' : 'hover:bg-bg-primary/[0.04]'} px-3 md:px-6`,
+              "aria-label": event.closed
+                ? `${event.date.day} ${event.date.month} · ${event.title} — restaurant fermé`
+                : event.soldOut
+                  ? `${event.date.day} ${event.date.month} · ${event.title} — complet`
+                  : `${event.date.day} ${event.date.month} · ${event.title} — réserver par téléphone`,
+              className: `group grid grid-cols-[64px_1fr_auto] md:grid-cols-[120px_1fr_auto] gap-4 md:gap-12 py-8 md:py-10 border-b border-bg-primary/15 transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset ${event.closed ? 'opacity-60 cursor-default' : event.soldOut ? 'opacity-60 cursor-not-allowed' : isActive ? 'bg-bg-primary/[0.06]' : 'hover:bg-bg-primary/[0.04]'} px-3 md:px-6`,
             } as const;
             const inner = (
               <>
                 <div className="flex flex-col">
-                  <div className={`font-serif italic font-light text-[2rem] md:text-[2.75rem] leading-none transition-colors ${isActive && !event.soldOut ? 'text-orange' : 'text-bg-primary'}`}>
+                  <div className={`font-serif italic font-light text-[2rem] md:text-[2.75rem] leading-none transition-colors ${isActive && !event.soldOut && !event.closed ? 'text-orange' : 'text-bg-primary'}`}>
                     {event.date.day}
                   </div>
                   <div className="text-[0.7rem] font-medium tracking-[0.2em] uppercase text-bg-primary/60 mt-1">
@@ -1821,7 +1827,7 @@ function Agenda() {
                   </div>
                 </div>
                 <motion.div
-                  animate={{ x: isActive && !event.soldOut ? 12 : 0 }}
+                  animate={{ x: isActive && !event.soldOut && !event.closed ? 12 : 0 }}
                   transition={{ duration: 0.3, ease: 'easeOut' }}
                   className="flex flex-col gap-1"
                 >
@@ -1833,11 +1839,13 @@ function Agenda() {
                   </p>
                 </motion.div>
                 <div className="flex flex-col items-end justify-between gap-2 pt-1">
-                  <span className={`text-[0.7rem] font-medium tracking-[0.2em] uppercase whitespace-nowrap ${event.soldOut ? 'text-bg-primary/70' : 'text-orange'}`}>
-                    {event.tag}
+                  <span className={`text-[0.7rem] font-medium tracking-[0.2em] uppercase whitespace-nowrap ${event.closed || event.soldOut ? 'text-bg-primary/70' : 'text-orange'}`}>
+                    {event.closed ? 'Fermeture' : event.tag}
                   </span>
                   <span className="hidden md:inline-block text-[0.7rem] font-sans tracking-[0.15em] uppercase whitespace-nowrap">
-                    {event.soldOut ? (
+                    {event.closed ? (
+                      <span className="text-bg-primary/70">— Fermé</span>
+                    ) : event.soldOut ? (
                       <span className="text-bg-primary/70">— Complet</span>
                     ) : (
                       <span className="text-bg-primary/75 group-hover:text-bg-primary transition-colors">Réserver par tél. →</span>
@@ -1846,7 +1854,7 @@ function Agenda() {
                 </div>
               </>
             );
-            if (event.soldOut) {
+            if (event.soldOut || event.closed) {
               return (
                 <motion.div key={event.id} {...sharedProps} aria-disabled="true">
                   {inner}
@@ -2319,7 +2327,7 @@ function TodayEventPopup() {
   const matchId =
     [...events]
       .filter(
-        (e) => !e.soldOut && e.isoDate >= todayIso && e.isoDate <= horizonIso,
+        (e) => !e.soldOut && !e.closed && e.isoDate >= todayIso && e.isoDate <= horizonIso,
       )
       .sort((a, b) => a.isoDate.localeCompare(b.isoDate))[0]?.id ?? null;
 

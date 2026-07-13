@@ -204,12 +204,20 @@ function EventsCalendar({
                   >
                     <span
                       className={`block text-[0.72rem] font-semibold leading-snug line-clamp-2 ${
-                        e.soldOut ? "text-cream-soft/45 line-through" : "text-cream"
+                        e.closed
+                          ? "text-cream-soft/70"
+                          : e.soldOut
+                            ? "text-cream-soft/45 line-through"
+                            : "text-cream"
                       }`}
                     >
                       {e.title}
                     </span>
-                    {e.soldOut ? (
+                    {e.closed ? (
+                      <span className="inline-block mt-1.5 text-[0.5rem] font-bold tracking-[0.18em] uppercase text-red-300/90 border border-red-300/40 px-1.5 py-0.5 rounded-[2px]">
+                        Fermé
+                      </span>
+                    ) : e.soldOut ? (
                       <span className="inline-block mt-1.5 text-[0.5rem] font-bold tracking-[0.18em] uppercase text-cream-soft/80 border border-cream-soft/35 px-1.5 py-0.5 rounded-[2px]">
                         Complet
                       </span>
@@ -233,7 +241,11 @@ function EventsCalendar({
                   <span
                     key={e.id}
                     className={`w-2 h-2 rounded-full ${
-                      e.soldOut ? "bg-cream-soft/40" : "bg-orange"
+                      e.closed
+                        ? "bg-red-400/80"
+                        : e.soldOut
+                          ? "bg-cream-soft/40"
+                          : "bg-orange"
                     }`}
                   />
                 ))}
@@ -260,6 +272,12 @@ function EventsCalendar({
             Complet
           </span>
           Soirée complète
+        </span>
+        <span className="inline-flex items-center gap-2.5">
+          <span className="text-[0.5rem] font-bold tracking-[0.18em] uppercase text-red-300/90 bg-bg-primary border border-red-300/40 px-1.5 py-0.5 rounded-[2px]">
+            Fermé
+          </span>
+          Restaurant fermé
         </span>
         <span className="hidden sm:inline text-bg-primary/45 italic font-sans">
           Cliquez sur une date pour les détails
@@ -319,7 +337,11 @@ function UpcomingList({
               </span>
             </div>
             <div className="flex items-center">
-              {event.soldOut ? (
+              {event.closed ? (
+                <span className="text-[0.62rem] font-bold tracking-[0.16em] uppercase whitespace-nowrap border border-bg-primary/40 text-bg-primary/75 px-2.5 py-1 rounded-[2px]">
+                  Fermé
+                </span>
+              ) : event.soldOut ? (
                 <span className="text-[0.62rem] font-bold tracking-[0.16em] uppercase whitespace-nowrap bg-bg-primary text-cream px-2.5 py-1 rounded-[2px]">
                   Complet
                 </span>
@@ -415,10 +437,14 @@ function DayModal({
             >
               <div
                 className={`text-[0.65rem] font-medium tracking-[0.2em] uppercase mb-3 ${
-                  event.soldOut ? "text-cream-soft/60" : "text-orange"
+                  event.closed
+                    ? "text-red-300/90"
+                    : event.soldOut
+                      ? "text-cream-soft/60"
+                      : "text-orange"
                 }`}
               >
-                {event.soldOut ? "Complet" : event.tag}
+                {event.closed ? "Fermeture" : event.soldOut ? "Complet" : event.tag}
               </div>
               <h4 className="font-serif font-semibold text-cream text-[1.4rem] md:text-[1.6rem] leading-tight mb-3">
                 {event.title}
@@ -426,7 +452,11 @@ function DayModal({
               <p className="font-sans font-light italic text-cream-soft/80 leading-relaxed mb-5">
                 {event.desc}
               </p>
-              {event.soldOut ? (
+              {event.closed ? (
+                <div className="inline-flex items-center gap-2 text-[0.7rem] font-medium tracking-[0.18em] uppercase text-cream-soft/60 border border-border px-5 py-3 rounded-[2px]">
+                  Le restaurant est fermé ce jour-là
+                </div>
+              ) : event.soldOut ? (
                 <div className="inline-flex items-center gap-2 text-[0.7rem] font-medium tracking-[0.18em] uppercase text-cream-soft/60 border border-border px-5 py-3 rounded-[2px]">
                   Soirée complète
                 </div>
@@ -445,7 +475,9 @@ function DayModal({
             </article>
           ))}
 
-          {/* Phone-only reservation notice */}
+          {/* Phone-only reservation notice — inutile si la journée ne compte
+              que des fermetures. */}
+          {!events.every((e) => e.closed) && (
           <div className="flex items-start gap-3 rounded-[3px] border border-orange/40 bg-orange/[0.08] px-4 py-4">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-orange shrink-0 mt-0.5" aria-hidden="true">
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
@@ -459,6 +491,7 @@ function DayModal({
               .
             </p>
           </div>
+          )}
         </div>
       </motion.div>
     </motion.div>
@@ -474,9 +507,12 @@ export default function EventsPage() {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   useEffect(() => {
-    if (events.length === 0) return;
+    // Les fermetures ne sont pas de vrais événements : on les exclut des
+    // données structurées (schema.org) destinées aux moteurs de recherche.
+    const publicEvents = events.filter((e) => !e.closed);
+    if (publicEvents.length === 0) return;
 
-    const eventSchemas = events.map((e) => ({
+    const eventSchemas = publicEvents.map((e) => ({
       "@type": "Event",
       name: e.title,
       description: e.desc,

@@ -7,4 +7,5 @@
 - [Startup seeding order](startup-seeding-order.md) — importContentSnapshot swallows errors and resolves; extra photo seeders must gate on its returned success boolean or they break the empty-table snapshot guard.
 - [Decorative photo slot consolidation](photo-slot-consolidation.md) — all page decor photos edited only in Photos tab via site_photos slots; index-mapped slots force fixed list cardinality (no add/remove); keep 4 seed/fallback places in sync.
 - [SEO prerender via build-time SSR](prerender-ssr.md) — prerender.mjs renders real components (Vite --ssr entry, queries disabled) into #root, not hand-written summaries; cleanSSR strips inline styles + lazies imgs; shows DEFAULT_* not live CMS.
+- [Event closure sentinel](event-closure-sentinel.md) — «Fermeture du resto» = events row with reserved tag `__fermeture__` (no kind column); all event renderers must branch on it.
 - [Untappd menu import](untappd-import.md) — auto-sync on stale GET /menu (created_at TTL, xact advisory lock, pgbouncer-safe); PROTECTED_SLUGS MUST mirror frontend FIXED_MENU_SLUGS; alcools fixed-but-hidden.

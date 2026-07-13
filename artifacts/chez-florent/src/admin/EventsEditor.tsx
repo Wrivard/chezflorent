@@ -24,6 +24,9 @@ import {
   Textarea,
 } from "./ui";
 import { MONTHS_FR, WEEKDAY_SHORT } from "./lib";
+import { CLOSURE_TAG, isClosureTag } from "../lib/closure";
+
+type EventKind = "event" | "closure";
 
 interface Draft {
   isoDate: string;
@@ -42,7 +45,9 @@ function toDraft(e: Event): Draft {
   return {
     isoDate: e.isoDate,
     title: e.title,
-    tag: e.tag,
+    // Une fermeture porte l'étiquette réservée : on ne l'affiche jamais dans
+    // le champ texte (elle est réinjectée à l'enregistrement).
+    tag: isClosureTag(e.tag) ? "" : e.tag,
     description: e.description,
     soldOut: e.soldOut,
     sortOrder: e.sortOrder,
@@ -80,6 +85,7 @@ type ModalState =
 
 function EventForm({
   initial,
+  initialKind,
   onSubmit,
   onCancel,
   onDelete,
@@ -87,6 +93,7 @@ function EventForm({
   error,
 }: {
   initial: Draft;
+  initialKind: EventKind;
   onSubmit: (draft: Draft) => void;
   onCancel: () => void;
   onDelete?: () => void;
@@ -94,8 +101,65 @@ function EventForm({
   error: unknown;
 }) {
   const [draft, setDraft] = useState<Draft>(initial);
+  const [kind, setKind] = useState<EventKind>(initialKind);
+  const isClosure = kind === "closure";
+
+  function switchKind(next: EventKind) {
+    setKind(next);
+    if (next === "closure") {
+      // Titre par défaut pour une fermeture (modifiable).
+      setDraft((d) => ({
+        ...d,
+        title: d.title.trim() === "" ? "Fermé" : d.title,
+        soldOut: false,
+      }));
+    } else {
+      setDraft((d) => ({
+        ...d,
+        title: d.title.trim() === "Fermé" ? "" : d.title,
+      }));
+    }
+  }
+
+  const kindButton = (value: EventKind, label: string, hint: string) => {
+    const active = kind === value;
+    return (
+      <button
+        type="button"
+        onClick={() => switchKind(value)}
+        aria-pressed={active}
+        className={`flex-1 rounded-xl border px-4 py-3 text-left transition-colors ${
+          active
+            ? "border-orange bg-orange/10"
+            : "border-border bg-bg-tertiary/40 hover:border-cream-soft/30"
+        }`}
+      >
+        <span
+          className={`block text-sm font-semibold ${
+            active ? "text-orange" : "text-cream"
+          }`}
+        >
+          {label}
+        </span>
+        <span className="mt-0.5 block text-xs text-cream-soft/60">{hint}</span>
+      </button>
+    );
+  };
+
   return (
     <div>
+      <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:gap-3">
+        {kindButton(
+          "event",
+          "Événement",
+          "Soirée, dégustation, concert…",
+        )}
+        {kindButton(
+          "closure",
+          "Fermeture du resto",
+          "Le restaurant est fermé ce jour-là.",
+        )}
+      </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Date">
           <TextInput
@@ -104,14 +168,19 @@ function EventForm({
             onChange={(e) => setDraft({ ...draft, isoDate: e.target.value })}
           />
         </Field>
-        <Field label="Étiquette" hint="ex. « 5 à 7 · 17h–19h »">
-          <TextInput
-            value={draft.tag}
-            onChange={(e) => setDraft({ ...draft, tag: e.target.value })}
-          />
-        </Field>
+        {!isClosure && (
+          <Field label="Étiquette" hint="ex. « 5 à 7 · 17h–19h »">
+            <TextInput
+              value={draft.tag}
+              onChange={(e) => setDraft({ ...draft, tag: e.target.value })}
+            />
+          </Field>
+        )}
         <div className="sm:col-span-2">
-          <Field label="Titre">
+          <Field
+            label="Titre"
+            hint={isClosure ? "ex. « Fermé pour les vacances »" : undefined}
+          >
             <TextInput
               value={draft.title}
               onChange={(e) => setDraft({ ...draft, title: e.target.value })}
@@ -119,7 +188,10 @@ function EventForm({
           </Field>
         </div>
         <div className="sm:col-span-2">
-          <Field label="Description">
+          <Field
+            label="Description"
+            hint={isClosure ? "Facultatif — ex. « De retour le 12 août ! »" : undefined}
+          >
             <Textarea
               value={draft.description}
               onChange={(e) =>
@@ -128,18 +200,26 @@ function EventForm({
             />
           </Field>
         </div>
-        <div className="flex items-end">
-          <Checkbox
-            label="Complet (sold out)"
-            checked={draft.soldOut}
-            onChange={(e) => setDraft({ ...draft, soldOut: e.target.checked })}
-          />
-        </div>
+        {!isClosure && (
+          <div className="flex items-end">
+            <Checkbox
+              label="Complet (sold out)"
+              checked={draft.soldOut}
+              onChange={(e) => setDraft({ ...draft, soldOut: e.target.checked })}
+            />
+          </div>
+        )}
       </div>
       <div className="mt-6 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <Button
-            onClick={() => onSubmit(draft)}
+            onClick={() =>
+              onSubmit({
+                ...draft,
+                tag: isClosure ? CLOSURE_TAG : draft.tag,
+                soldOut: isClosure ? false : draft.soldOut,
+              })
+            }
             disabled={pending || !draft.title || !draft.isoDate}
           >
             {pending ? "Enregistrement…" : "Enregistrer"}
@@ -243,6 +323,7 @@ export default function EventsEditor() {
 
   const renderCard = (ev: Event, muted = false) => {
     const d = parseISO(ev.isoDate);
+    const closure = isClosureTag(ev.tag);
     return (
       <button
         key={ev.id}
@@ -264,9 +345,10 @@ export default function EventsEditor() {
             <h4 className="truncate font-serif text-base text-cream">
               {ev.title}
             </h4>
-            {ev.soldOut && <Badge tone="danger">Complet</Badge>}
+            {closure && <Badge tone="danger">Fermeture</Badge>}
+            {!closure && ev.soldOut && <Badge tone="danger">Complet</Badge>}
           </div>
-          {ev.tag && (
+          {!closure && ev.tag && (
             <div className="mt-0.5 text-xs text-orange/90">{ev.tag}</div>
           )}
           <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-cream-soft/60">
@@ -377,9 +459,11 @@ export default function EventsEditor() {
                         }
                       }}
                       className={`truncate rounded px-1.5 py-1 text-[0.7rem] font-medium leading-tight transition-colors ${
-                        ev.soldOut
-                          ? "bg-red-500/15 text-red-200 line-through"
-                          : "bg-orange/20 text-cream hover:bg-orange/30"
+                        isClosureTag(ev.tag)
+                          ? "bg-cream-soft/10 text-cream-soft/70 hover:bg-cream-soft/20"
+                          : ev.soldOut
+                            ? "bg-red-500/15 text-red-200 line-through"
+                            : "bg-orange/20 text-cream hover:bg-orange/30"
                       }`}
                       title={ev.title}
                     >
@@ -481,6 +565,7 @@ export default function EventsEditor() {
             </p>
             <EventForm
               initial={emptyDraft(modal.isoDate, nextSortOrder)}
+              initialKind="event"
               onSubmit={(draft) => create.mutate({ data: draft })}
               onCancel={() => setModal({ mode: "closed" })}
               pending={create.isPending}
@@ -499,6 +584,7 @@ export default function EventsEditor() {
           <EventForm
             key={modal.event.id}
             initial={toDraft(modal.event)}
+            initialKind={isClosureTag(modal.event.tag) ? "closure" : "event"}
             onSubmit={(draft) =>
               update.mutate({ id: modal.event.id, data: draft })
             }
