@@ -7,6 +7,7 @@ import {
   SectionMarker,
   usePhotos,
   useHoursItems,
+  useClosureNotices,
   useOpenDaysLabel,
   useEarliestOpenHour,
   imgSrc,
@@ -20,6 +21,7 @@ const RESTO_PHONE_HREF = "tel:+14507431448";
 export default function ContactPage() {
   const photos = usePhotos();
   const hoursItems = useHoursItems();
+  const closureNotices = useClosureNotices();
   const daysLabel = useOpenDaysLabel();
   const openHour = useEarliestOpenHour();
 
@@ -117,6 +119,18 @@ export default function ContactPage() {
                         </li>
                       ))}
                     </ul>
+                    {closureNotices.length > 0 && (
+                      <div className="mt-4 max-w-[440px] space-y-1.5">
+                        {closureNotices.map((notice) => (
+                          <p
+                            key={notice}
+                            className="font-sans italic text-orange text-base leading-snug"
+                          >
+                            ✶ {notice}
+                          </p>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   <div className="font-sans text-bg-primary/85 mb-12">

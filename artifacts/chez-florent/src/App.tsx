@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { motion, useScroll, useTransform, useSpring, useReducedMotion, AnimatePresence, useMotionValue } from "framer-motion";
 import Lenis from 'lenis';
 import {
@@ -228,6 +228,11 @@ function formatHour(h: number): string {
   return mins > 0 ? `${hrs}h${String(mins).padStart(2, "0")}` : `${hrs}h`;
 }
 
+// Local-timezone ISO date (YYYY-MM-DD) — matches how event isoDate is stored.
+function toIsoDate(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
 function useOpenStatus(): { open: boolean; label: string } {
   const [now, setNow] = useState<Date>(() => new Date());
   useEffect(() => {
@@ -236,9 +241,12 @@ function useOpenStatus(): { open: boolean; label: string } {
   }, []);
 
   const schedule = useScheduleData();
+  const closures = useClosureMap();
   const day = now.getDay();
   const totalMinutes = now.getHours() * 60 + now.getMinutes();
-  const today = schedule[day];
+  const closedToday = closures.has(toIsoDate(now));
+  // A closure event overrides the weekly schedule for that day.
+  const today = closedToday ? null : schedule[day];
 
   if (today) {
     if (totalMinutes >= today.open * 60 && totalMinutes < today.close * 60) {
@@ -250,16 +258,24 @@ function useOpenStatus(): { open: boolean; label: string } {
     }
   }
 
-  // After closing time today, or closed all day — find next open day
-  for (let i = 1; i <= 7; i++) {
-    const nextDayIdx = (day + i) % 7;
-    const next = schedule[nextDayIdx];
-    if (next) {
-      const dayLabel = i === 1 ? "demain" : DAY_NAMES_FR[nextDayIdx];
-      return { open: false, label: `Fermé · ouvre ${dayLabel} ${formatHour(next.open)}` };
+  const prefix = closedToday ? "Fermé exceptionnellement" : "Fermé";
+
+  // After closing time today, or closed all day — find the next open day,
+  // skipping days blocked by a closure event.
+  for (let i = 1; i <= 14; i++) {
+    const nextDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
+    const next = schedule[nextDate.getDay()];
+    if (next && !closures.has(toIsoDate(nextDate))) {
+      const dayLabel =
+        i === 1
+          ? "demain"
+          : i <= 6
+            ? DAY_NAMES_FR[nextDate.getDay()]
+            : `le ${formatDayOfMonthFr(nextDate.getDate())} ${MONTHS_LONG_FR[nextDate.getMonth()]}`;
+      return { open: false, label: `${prefix} · ouvre ${dayLabel} ${formatHour(next.open)}` };
     }
   }
-  return { open: false, label: "Fermé" };
+  return { open: false, label: prefix };
 }
 
 export function Navbar({
@@ -1435,6 +1451,15 @@ const MONTHS_FR = [
 const DAY_FULL_FR = [
   "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi",
 ];
+const MONTHS_LONG_FR = [
+  "janvier", "février", "mars", "avril", "mai", "juin",
+  "juillet", "août", "septembre", "octobre", "novembre", "décembre",
+];
+
+// "1er" for the first of the month, plain number otherwise.
+function formatDayOfMonthFr(day: number): string {
+  return day === 1 ? "1er" : String(day);
+}
 
 // Resolve an image reference. Stored values may be full paths ("/images/x.jpg",
 // "/api/uploads/...", "https://...") or bare filenames from the legacy constants.
@@ -1458,6 +1483,38 @@ export function useMenuCategoriesData(): MenuCategory[] {
       image: it.image ?? "",
     })),
   }));
+}
+
+// Map of isoDate → closure-event title for every «Fermeture du resto» entry
+// in the CMS calendar. Used to override the weekly schedule on those days.
+function useClosureMap(): Map<string, string> {
+  const { data } = useListEvents();
+  return useMemo(() => {
+    const map = new Map<string, string>();
+    for (const e of data ?? []) {
+      if (isClosureTag(e.tag)) map.set(e.isoDate, e.title);
+    }
+    return map;
+  }, [data]);
+}
+
+// Human-readable notices for upcoming closures (today included), e.g.
+// «Fermé exceptionnellement le lundi 20 juillet». Shown next to the hours.
+export function useClosureNotices(horizonDays = 21): string[] {
+  const closures = useClosureMap();
+  const now = new Date();
+  const startIso = toIsoDate(now);
+  const endIso = toIsoDate(
+    new Date(now.getFullYear(), now.getMonth(), now.getDate() + horizonDays),
+  );
+  return [...closures.keys()]
+    .filter((iso) => iso >= startIso && iso <= endIso)
+    .sort()
+    .map((iso) => {
+      const [y, m, d] = iso.split("-").map(Number);
+      const date = new Date(y || 0, (m || 1) - 1, d || 1);
+      return `Fermé exceptionnellement le ${DAY_NAMES_FR[date.getDay()]} ${formatDayOfMonthFr(date.getDate())} ${MONTHS_LONG_FR[date.getMonth()]}`;
+    });
 }
 
 export function useAgendaEventsData(): AgendaEvent[] {
@@ -1898,6 +1955,7 @@ function Agenda() {
 function HoursBand() {
   const status = useOpenStatus();
   const hoursItems = useHoursItems();
+  const closureNotices = useClosureNotices();
 
   return (
     <div id="horaires" className="bg-bg-primary text-cream border-y border-border overflow-hidden py-6 md:py-8 relative">
@@ -1919,6 +1977,12 @@ function HoursBand() {
                 <span className="px-8">{item}</span>
               </React.Fragment>
             ))}
+            {closureNotices.map((notice, i) => (
+              <React.Fragment key={`closure-${i}`}>
+                <span aria-hidden="true" className="text-cream-soft/35 px-2">✶</span>
+                <span className="px-8 text-orange">{notice}</span>
+              </React.Fragment>
+            ))}
             <span aria-hidden="true" className="text-cream-soft/35 px-2">✶</span>
             <span className="px-8 inline-flex items-center gap-3">
               Réservez votre table
@@ -1935,7 +1999,10 @@ function HoursBand() {
 // Returns the human-readable hours string for today (e.g. "11h30 – 21h" or "Fermé aujourd'hui").
 function useTodaysHours() {
   const schedule = useScheduleData();
-  const today = schedule[new Date().getDay()];
+  const closures = useClosureMap();
+  const now = new Date();
+  if (closures.has(toIsoDate(now))) return "Fermé exceptionnellement aujourd'hui";
+  const today = schedule[now.getDay()];
   return today ? `${formatHour(today.open)} – ${formatHour(today.close)}` : "Fermé aujourd'hui";
 }
 
@@ -2671,6 +2738,7 @@ export function ContactForm() {
 
 function Contact() {
   const hoursRows = useHoursRows();
+  const closureNotices = useClosureNotices();
   return (
     <section id="contact" className="bg-cream-soft py-32 px-6 md:px-12 relative overflow-hidden">
       <SectionMarker number="05" tone="light" />
@@ -2710,7 +2778,7 @@ function Contact() {
                 J3P 4M6
               </address>
 
-              <table className="w-full max-w-[400px] text-bg-primary/85 font-sans mb-16 border-collapse text-lg">
+              <table className={`w-full max-w-[400px] text-bg-primary/85 font-sans ${closureNotices.length > 0 ? "mb-5" : "mb-16"} border-collapse text-lg`}>
                 <tbody>
                   {hoursRows.map((row) => (
                     <tr key={row.label} className="border-b border-bg-primary/20">
@@ -2724,6 +2792,16 @@ function Contact() {
                   ))}
                 </tbody>
               </table>
+
+              {closureNotices.length > 0 && (
+                <div className="mb-16 max-w-[400px] space-y-1.5">
+                  {closureNotices.map((notice) => (
+                    <p key={notice} className="font-sans italic text-orange text-base leading-snug">
+                      ✶ {notice}
+                    </p>
+                  ))}
+                </div>
+              )}
 
               <div className="font-sans text-bg-primary/85 mb-12">
                 <div className="text-[0.75rem] uppercase tracking-[0.2em] mb-2 opacity-90">Appelez-nous</div>
