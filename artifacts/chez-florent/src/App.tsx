@@ -483,12 +483,12 @@ export function Navbar({
             </div>
             <div className="flex-1 overflow-y-auto overscroll-contain px-6 pb-10 pt-2 flex flex-col gap-7 text-[1.65rem] leading-tight font-serif text-cream">
               <a href={homeHref} onClick={closeMenu} className="hover:text-orange transition-colors">Accueil</a>
+              <a href={sectionHref("reservation")} onClick={closeMenu} className="hover:text-orange transition-colors">Réserver une table</a>
               <a href={aboutHref} onClick={closeMenu} className="hover:text-orange transition-colors">À propos</a>
               <a href={menuHref} onClick={closeMenu} className="hover:text-orange transition-colors">Menu</a>
               <a href={eventsHref} onClick={closeMenu} className="hover:text-orange transition-colors">Agenda</a>
               <a href={groupsHref} onClick={closeMenu} className="hover:text-orange transition-colors">Groupes & privatisation</a>
               <a href={contactHref} onClick={closeMenu} className="hover:text-orange transition-colors">Nous trouver</a>
-              <a href={sectionHref("reservation")} onClick={closeMenu} className="hover:text-orange transition-colors">Réserver une table</a>
             </div>
           </motion.div>
         )}
