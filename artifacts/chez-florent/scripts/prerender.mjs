@@ -30,7 +30,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const distDir = join(__dirname, "..", "dist", "public");
 const templatePath = join(distDir, "index.html");
 
-const BASE = "https://chezflorent.ca";
+const BASE = "https://www.chezflorent.ca";
 const SITE_NAME = "Chez Florent";
 const OG_IMAGE = `${BASE}/opengraph.jpg`;
 

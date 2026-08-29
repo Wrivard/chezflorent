@@ -16,6 +16,10 @@ which this project already has too many of). SSR renders the actual components, 
 the crawlable HTML tracks the components with zero extra copy to maintain.
 
 **How it works / how to apply:**
+- Production's primary Vercel hostname is `www.chezflorent.ca`: all canonical,
+  hreflang, sitemap, robots, Open Graph, and structured-data URLs must use `www`.
+  **Why:** Vercel permanently redirects the apex domain to `www`; declaring the
+  apex as canonical creates a redirect/canonical conflict that can delay indexing.
 - Build script order matters: `vite build` (client → dist/public) THEN
   `vite build --ssr src/prerender-entry.tsx --outDir dist/ssr` THEN
   `node scripts/prerender.mjs`. dist/ssr is a sibling of dist/public; only

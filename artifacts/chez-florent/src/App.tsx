@@ -1739,8 +1739,8 @@ export function useRestaurantSchema() {
       "@context": "https://schema.org",
       "@type": "Restaurant",
       name: "Chez Florent",
-      url: "https://chezflorent.ca/",
-      image: "https://chezflorent.ca/opengraph.jpg",
+      url: "https://www.chezflorent.ca/",
+      image: "https://www.chezflorent.ca/opengraph.jpg",
       description:
         "Restaurant de quartier à Sorel-Tracy. L'ardoise change selon les humeurs du chef et les arrivages du marché.",
       telephone: "+1-450-743-1448",

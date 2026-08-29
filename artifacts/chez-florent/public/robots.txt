@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /api/
 
-Sitemap: https://chezflorent.ca/sitemap.xml
+Sitemap: https://www.chezflorent.ca/sitemap.xml

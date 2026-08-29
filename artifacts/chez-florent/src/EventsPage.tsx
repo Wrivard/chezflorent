@@ -536,7 +536,7 @@ export default function EventsPage() {
       organizer: {
         "@type": "Restaurant",
         name: "Chez Florent",
-        url: "https://chezflorent.ca/",
+        url: "https://www.chezflorent.ca/",
       },
     }));
 
