@@ -2195,15 +2195,18 @@ function Reservation() {
                 </div>
               )}
 
-              {/* The real TableAgent booking widget — light surface on a cream backing
+              {/* Trudy's Table booking widget — light surface on a cream backing
                   so it reads as an intentional inset card inside our dark panel. */}
               <div className="bg-cream-soft p-3 md:p-4">
                 <iframe
                   title="Réserver une table chez Florent"
-                  src="https://tableagent.com/iframe/chez-florent/"
-                  sandbox="allow-forms allow-modals allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
-                  className="w-full min-h-[760px] border-0 block bg-cream-soft"
-                  style={{ minHeight: 760 }}
+                  src="https://book.trudystable.com/chez-florent"
+                  width="100%"
+                  height="880"
+                  frameBorder="0"
+                  allow="payment"
+                  className="w-full border-0 rounded-lg block bg-cream-soft"
+                  style={{ border: "none", borderRadius: 8 }}
                 />
               </div>
 
