@@ -219,7 +219,8 @@ function GroupRequestForm() {
   const canSubmit =
     form.name.trim() !== "" &&
     form.email.trim() !== "" &&
-    form.people.trim() !== "";
+    form.people.trim() !== "" &&
+    form.phone.trim() !== "";
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -335,7 +336,7 @@ function GroupRequestForm() {
         </div>
         <div>
           <label htmlFor="grp-phone" className={labelCls}>
-            Téléphone
+            Téléphone *
           </label>
           <input
             id="grp-phone"
@@ -344,6 +345,8 @@ function GroupRequestForm() {
             onChange={set("phone")}
             placeholder="450 000-0000"
             className={inputCls}
+            autoComplete="tel"
+            required
           />
         </div>
       </div>
