@@ -36,6 +36,21 @@ function wrapping the Express app + Neon Postgres + Vercel Blob.
 - Vercel serverless never runs `index.ts`, so its startup seeding/bootstrap is
   dead code there — prod data must be migrated externally (see
   prod-admin-bootstrap.md).
+
+## Live CMS content is separate from a successful code deploy
+For new CMS content on Vercel, verify the published public API separately from
+the deployed frontend and GitHub/Vercel success status. If an existing Neon
+database lacks an additive record, use the authenticated CMS API or an approved
+data migration to add only missing content; never assume preview data or a
+successful build has populated production.
+
+**Why:** A successful deployment can show new event templates in the frontend
+while the corresponding menu category is still absent from the live database.
+The startup bootstrap does not run in Vercel serverless.
+
+**How to apply:** Read the live public endpoint first, make only the minimal
+idempotent addition through authenticated routes, and read the endpoint again
+to verify persistence. Keep user-edited records untouched.
 - The API rewrite destination must be `"/api"` (resolves to `api/index.mjs`),
   NOT `"/api/index"`; the original URL is preserved through the rewrite so no
   path segment needs forwarding.
