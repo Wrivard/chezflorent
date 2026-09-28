@@ -231,7 +231,7 @@ function CategorySection({ category }: { category: MenuCategory }) {
           <Button variant="subtle" onClick={() => setEditCat((v) => !v)}>
             {editCat ? "Fermer" : "Modifier la catégorie"}
           </Button>
-          <IconButton
+          {category.slug !== "soir-de-match" && <IconButton
             label="Supprimer la catégorie"
             className="border-red-400/30 text-red-300 hover:border-red-400/60"
             onClick={() =>
@@ -244,7 +244,7 @@ function CategorySection({ category }: { category: MenuCategory }) {
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M3 6h18M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
             </svg>
-          </IconButton>
+          </IconButton>}
         </div>
       </div>
 
@@ -255,7 +255,11 @@ function CategorySection({ category }: { category: MenuCategory }) {
               <TextInput value={label} onChange={(e) => setLabel(e.target.value)} />
             </Field>
             <Field label="Identifiant (slug)" hint="lettres minuscules, sans espace">
-              <TextInput value={slug} onChange={(e) => setSlug(e.target.value)} />
+              <TextInput
+                value={slug}
+                disabled={category.slug === "soir-de-match"}
+                onChange={(e) => setSlug(e.target.value)}
+              />
             </Field>
             <div className="sm:col-span-2">
               <Field label="Sous-titre">
@@ -562,6 +566,7 @@ function SupplierBandEditor() {
 // FIXED_MENU_SLUGS in App.tsx and PROTECTED_SLUGS in importUntappdMenu.ts.
 const FIXED_MENU_SLUGS = [
   "ardoise",
+  "soir-de-match",
   "encas",
   "salades",
   "pizzas",

@@ -4,6 +4,15 @@
 // (formerly a downloadable PDF).
 export const MENU_SEED = [
   {
+    slug: "soir-de-match",
+    label: "Soir de match",
+    tagline: "Offres proposées aux dates de match annoncées à l'agenda.",
+    items: [
+      { name: "Burger avec frites garnies", price: "", description: "", image: null },
+      { name: "Pichet et pizza 2 pour 1", price: "", description: "", image: null },
+    ],
+  },
+  {
     slug: "encas",
     label: "Encas",
     tagline: "Petites bouchées pour ouvrir la soirée.",

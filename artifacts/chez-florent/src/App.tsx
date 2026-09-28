@@ -10,6 +10,7 @@ import {
   useCreateMessage,
 } from "@workspace/api-client-react";
 import { isClosureTag } from "./lib/closure";
+import { eventTagLabel, matchLeague, MATCH_MENU_HREF } from "./lib/matchEvent";
 
 export const EASE: [number, number, number, number] = [0.65, 0, 0.35, 1];
 export const EASE_SMOOTH: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -919,6 +920,7 @@ export const FOOD_SLUGS = ["ardoise", "encas", "salades", "pizzas", "hoagies"];
 // so a re-import never deletes them.
 export const FIXED_MENU_SLUGS = [
   "ardoise",
+  "soir-de-match",
   "encas",
   "salades",
   "pizzas",
@@ -937,6 +939,7 @@ export const FIXED_MENU_SLUGS = [
 // page.
 export const MENU_SLUGS = [
   "ardoise",
+  "soir-de-match",
   "encas",
   "salades",
   "pizzas",
@@ -949,6 +952,15 @@ export const MENU_SLUGS = [
 // Static fallback used only when the API returns no menu (DB is the source of
 // truth once seeded). Mirrors MENU_SEED in the api-server.
 const menuCategories: MenuCategory[] = [
+  {
+    id: "soir-de-match",
+    label: "Soir de match",
+    tagline: "Offres proposées aux dates de match annoncées à l'agenda.",
+    dishes: [
+      { name: "Burger avec frites garnies", price: "", desc: "", image: "" },
+      { name: "Pichet et pizza 2 pour 1", price: "", desc: "", image: "" },
+    ],
+  },
   {
     id: "encas",
     label: "Encas",
@@ -1424,6 +1436,7 @@ export type AgendaEvent = {
   soldOut?: boolean;
   /** Fermeture du resto (étiquette réservée en base) — affichage distinct, pas de réservation. */
   closed?: boolean;
+  matchLeague?: "NHL" | "NFL" | null;
 };
 
 const agendaEvents: AgendaEvent[] = [
@@ -1531,9 +1544,10 @@ export function useAgendaEventsData(): AgendaEvent[] {
             isoDate: e.isoDate,
             title: e.title,
             desc: e.description,
-            tag: isClosureTag(e.tag) ? "" : e.tag,
+            tag: isClosureTag(e.tag) ? "" : eventTagLabel(e.tag),
             soldOut: e.soldOut,
             closed: isClosureTag(e.tag),
+            matchLeague: matchLeague(e.tag),
           };
         });
 
@@ -2464,6 +2478,15 @@ function TodayEventPopup() {
             >
               Réserver par tél.
             </a>
+            {event.matchLeague && (
+              <a
+                href={MATCH_MENU_HREF}
+                onClick={dismiss}
+                className="text-[0.65rem] sm:text-[0.72rem] font-medium tracking-[0.12em] uppercase text-orange underline underline-offset-4 hover:text-cream"
+              >
+                Voir les offres Soir de match
+              </a>
+            )}
             <span className="text-[0.62rem] sm:text-[0.7rem] font-medium tracking-[0.16em] sm:tracking-[0.18em] uppercase text-cream-soft/70">
               {event.tag}
             </span>

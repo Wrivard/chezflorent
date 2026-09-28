@@ -122,6 +122,14 @@ router.patch(
       res.status(400).json({ error: parsed.error.message });
       return;
     }
+    const [matchCategory] = await db
+      .select({ slug: menuCategoriesTable.slug })
+      .from(menuCategoriesTable)
+      .where(eq(menuCategoriesTable.id, params.data.id));
+    if (matchCategory?.slug === "soir-de-match" && parsed.data.slug !== undefined && parsed.data.slug !== "soir-de-match") {
+      res.status(400).json({ error: "L'identifiant Soir de match est réservé aux liens de l'agenda." });
+      return;
+    }
     try {
       const [row] = await db
         .update(menuCategoriesTable)
@@ -150,6 +158,14 @@ router.delete(
     const params = DeleteMenuCategoryParams.safeParse(req.params);
     if (!params.success) {
       res.status(400).json({ error: params.error.message });
+      return;
+    }
+    const [matchCategory] = await db
+      .select({ slug: menuCategoriesTable.slug })
+      .from(menuCategoriesTable)
+      .where(eq(menuCategoriesTable.id, params.data.id));
+    if (matchCategory?.slug === "soir-de-match") {
+      res.status(400).json({ error: "La catégorie Soir de match est utilisée par l'agenda." });
       return;
     }
     const [row] = await db

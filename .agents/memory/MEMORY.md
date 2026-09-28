@@ -9,3 +9,4 @@
 - [SEO prerender via build-time SSR](prerender-ssr.md) — prerender.mjs renders real components (Vite --ssr entry, queries disabled) into #root, not hand-written summaries; cleanSSR strips inline styles + lazies imgs; shows DEFAULT_* not live CMS.
 - [Event closure sentinel](event-closure-sentinel.md) — «Fermeture du resto» = events row with reserved tag `__fermeture__` (no kind column); all event renderers must branch on it.
 - [Untappd menu import](untappd-import.md) — auto-sync on stale GET /menu (created_at TTL, xact advisory lock, pgbouncer-safe); PROTECTED_SLUGS MUST mirror frontend FIXED_MENU_SLUGS; alcools fixed-but-hidden.
+- [Match-night promotion scope](match-night-promotions.md) — offers remain CMS-editable in the menu; only manually scheduled NHL/NFL events announce match dates and link to them.

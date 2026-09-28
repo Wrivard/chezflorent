@@ -7,6 +7,7 @@ import { ensureGroupAboutPhotos } from "./lib/ensureGroupAboutPhotos";
 import { ensureMaisonPhotos } from "./lib/ensureMaisonPhotos";
 import { ensureGroupContent } from "./lib/groupContent";
 import { ensureArdoiseMenu } from "./lib/ensureArdoiseMenu";
+import { ensureMatchMenu } from "./lib/ensureMatchMenu";
 
 const rawPort = process.env["PORT"];
 
@@ -50,6 +51,7 @@ app.listen(port, (err) => {
       void ensureMaisonPhotos();
       void ensureGroupContent();
       void ensureArdoiseMenu();
+      void ensureMatchMenu();
     }
   });
 });

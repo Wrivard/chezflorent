@@ -25,8 +25,9 @@ import {
 } from "./ui";
 import { MONTHS_FR, WEEKDAY_SHORT } from "./lib";
 import { CLOSURE_TAG, isClosureTag } from "../lib/closure";
+import { MATCH_TAGS, eventTagLabel, matchLeague } from "../lib/matchEvent";
 
-type EventKind = "event" | "closure";
+type EventKind = "event" | "closure" | "NHL" | "NFL";
 
 interface Draft {
   isoDate: string;
@@ -47,7 +48,7 @@ function toDraft(e: Event): Draft {
     title: e.title,
     // Une fermeture porte l'étiquette réservée : on ne l'affiche jamais dans
     // le champ texte (elle est réinjectée à l'enregistrement).
-    tag: isClosureTag(e.tag) ? "" : e.tag,
+    tag: isClosureTag(e.tag) || matchLeague(e.tag) ? "" : e.tag,
     description: e.description,
     soldOut: e.soldOut,
     sortOrder: e.sortOrder,
@@ -103,6 +104,7 @@ function EventForm({
   const [draft, setDraft] = useState<Draft>(initial);
   const [kind, setKind] = useState<EventKind>(initialKind);
   const isClosure = kind === "closure";
+  const isMatch = kind === "NHL" || kind === "NFL";
 
   function switchKind(next: EventKind) {
     setKind(next);
@@ -113,10 +115,18 @@ function EventForm({
         title: d.title.trim() === "" ? "Fermé" : d.title,
         soldOut: false,
       }));
+    } else if (next === "NHL" || next === "NFL") {
+      setDraft((d) => ({
+        ...d,
+        title: d.title.trim() === "" || d.title === "Fermé" || d.title === `Soir de match ${kind}`
+          ? `Soir de match ${next}`
+          : d.title,
+        soldOut: false,
+      }));
     } else {
       setDraft((d) => ({
         ...d,
-        title: d.title.trim() === "Fermé" ? "" : d.title,
+        title: d.title.trim() === "Fermé" || d.title === `Soir de match ${kind}` ? "" : d.title,
       }));
     }
   }
@@ -160,6 +170,16 @@ function EventForm({
           "Le restaurant est fermé ce jour-là.",
         )}
       </div>
+      <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:gap-3">
+        {kindButton("NHL", "Soir de match NHL", "Ajouter une date de hockey.")}
+        {kindButton("NFL", "Soir de match NFL", "Ajouter une date de football.")}
+      </div>
+      {isMatch && (
+        <p className="mb-5 text-sm text-cream-soft/70">
+          Lien vers les offres « Soir de match » ajouté automatiquement à l'agenda et à l'annonce.
+          Modifiez la date, le titre et la description ci-dessous.
+        </p>
+      )}
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Date">
           <TextInput
@@ -168,7 +188,7 @@ function EventForm({
             onChange={(e) => setDraft({ ...draft, isoDate: e.target.value })}
           />
         </Field>
-        {!isClosure && (
+        {!isClosure && !isMatch && (
           <Field label="Étiquette" hint="ex. « 5 à 7 · 17h–19h »">
             <TextInput
               value={draft.tag}
@@ -216,7 +236,7 @@ function EventForm({
             onClick={() =>
               onSubmit({
                 ...draft,
-                tag: isClosure ? CLOSURE_TAG : draft.tag,
+                tag: isClosure ? CLOSURE_TAG : kind === "NHL" ? MATCH_TAGS.NHL : kind === "NFL" ? MATCH_TAGS.NFL : draft.tag,
                 soldOut: isClosure ? false : draft.soldOut,
               })
             }
@@ -349,7 +369,7 @@ export default function EventsEditor() {
             {!closure && ev.soldOut && <Badge tone="danger">Complet</Badge>}
           </div>
           {!closure && ev.tag && (
-            <div className="mt-0.5 text-xs text-orange/90">{ev.tag}</div>
+            <div className="mt-0.5 text-xs text-orange/90">{eventTagLabel(ev.tag)}</div>
           )}
           <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-cream-soft/60">
             {ev.description}
@@ -584,7 +604,7 @@ export default function EventsEditor() {
           <EventForm
             key={modal.event.id}
             initial={toDraft(modal.event)}
-            initialKind={isClosureTag(modal.event.tag) ? "closure" : "event"}
+            initialKind={isClosureTag(modal.event.tag) ? "closure" : matchLeague(modal.event.tag) ?? "event"}
             onSubmit={(draft) =>
               update.mutate({ id: modal.event.id, data: draft })
             }

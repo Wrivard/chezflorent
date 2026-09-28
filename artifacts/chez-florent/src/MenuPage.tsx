@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Navbar,
@@ -163,7 +163,15 @@ function MenuBoard({
   showPhoto?: boolean;
   boardId?: string;
 }) {
-  const [activeCategoryId, setActiveCategoryId] = useState<string>(categories[0]?.id ?? "");
+  const requestedCategory =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("categorie")
+      : null;
+  const [activeCategoryId, setActiveCategoryId] = useState<string>(
+    boardId === "menu" && requestedCategory && categories.some((c) => c.id === requestedCategory)
+      ? requestedCategory
+      : categories[0]?.id ?? "",
+  );
   const [activeIndex, setActiveIndex] = useState(0);
   const activeCategory = categories.find((c) => c.id === activeCategoryId) ?? categories[0];
   if (!activeCategory) return null;
@@ -322,6 +330,27 @@ export default function MenuPage() {
   ).filter((c): c is (typeof allCategories)[number] => Boolean(c));
   const bar = allCategories.filter((c) => !FIXED_MENU_SLUGS.includes(c.id));
 
+  useEffect(() => {
+    if (
+      window.location.hash !== "#la-cuisine" ||
+      new URLSearchParams(window.location.search).get("categorie") !== "soir-de-match" ||
+      !menu.some((category) => category.id === "soir-de-match")
+    ) return;
+
+    // The anchor does not exist when the browser first parses the Vite HTML.
+    // Scroll after React mounts it, including when the menu comes from the API.
+    const frame = requestAnimationFrame(() => {
+      document.getElementById("la-cuisine")?.scrollIntoView({ block: "start" });
+      const tab = document.getElementById("menu-tab-soir-de-match");
+      if (tab?.parentElement) {
+        tab.parentElement.scrollLeft =
+          tab.offsetLeft - tab.parentElement.offsetLeft -
+          (tab.parentElement.clientWidth - tab.clientWidth) / 2;
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [menu.some((category) => category.id === "soir-de-match")]);
+
   return (
     <div className="min-h-[100dvh] w-full bg-bg-primary text-cream selection:bg-orange selection:text-bg-primary relative">
       <ScrollProgress />
@@ -386,7 +415,7 @@ export default function MenuPage() {
           <section className="bg-bg-primary pt-16 md:pt-20 pb-28 md:pb-32 px-6 md:px-12 relative">
             <div className="max-w-7xl mx-auto relative z-10 flex flex-col gap-24 md:gap-32">
               {menu.length > 0 && (
-                <div>
+                <div id="la-cuisine" className="scroll-mt-32">
                   <BoardHeading
                     kicker="Encas, salades, pizzas, hoagies, desserts & cafés"
                     title="La cuisine"

@@ -34,6 +34,7 @@ const THEME_URL = `https://business.untappd.com/locations/${LOCATION_ID}/themes/
 // frontend (App.tsx) — the full set of site-owned fixed categories.
 export const PROTECTED_SLUGS = [
   "ardoise",
+  "soir-de-match",
   "encas",
   "salades",
   "pizzas",
