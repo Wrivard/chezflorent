@@ -21,6 +21,7 @@ import {
 } from "@workspace/api-zod";
 import { requireAuth } from "../middlewares/requireAuth";
 import { autoSyncUntappdMenu, syncUntappdMenu } from "../lib/untappdSync";
+import { ensureMatchMenu } from "../lib/ensureMatchMenu";
 
 const router: IRouter = Router();
 
@@ -58,6 +59,13 @@ async function loadMenu() {
 
 router.get("/menu", async (_req, res): Promise<void> => {
   let result = await loadMenu();
+  // Vercel runs the Express app as a serverless function, so index.ts startup
+  // backfills never run there. Add only the missing category on the first menu
+  // read; existing CMS edits and items are left untouched.
+  if (!result.some((category) => category.slug === "soir-de-match")) {
+    await ensureMatchMenu();
+    result = await loadMenu();
+  }
   // Keep the drinks in step with the owner's Untappd edits: when the imported
   // categories are older than the TTL, re-pull before answering. Never throws;
   // on upstream failure the current menu is served as-is.
