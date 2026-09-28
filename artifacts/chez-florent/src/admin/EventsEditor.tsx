@@ -25,7 +25,13 @@ import {
 } from "./ui";
 import { MONTHS_FR, WEEKDAY_SHORT } from "./lib";
 import { CLOSURE_TAG, isClosureTag } from "../lib/closure";
-import { MATCH_TAGS, eventTagLabel, matchLeague } from "../lib/matchEvent";
+import {
+  MATCH_TAGS,
+  eventTagLabel,
+  matchEventTitle,
+  matchLeague,
+  matchLeagueLabel,
+} from "../lib/matchEvent";
 
 type EventKind = "event" | "closure" | "NHL" | "NFL";
 
@@ -118,15 +124,26 @@ function EventForm({
     } else if (next === "NHL" || next === "NFL") {
       setDraft((d) => ({
         ...d,
-        title: d.title.trim() === "" || d.title === "Fermé" || d.title === `Soir de match ${kind}`
-          ? `Soir de match ${next}`
+        title: d.title.trim() === "" ||
+          d.title === "Fermé" ||
+          d.title === "Soir de match NHL" ||
+          d.title === "Soir de match NFL" ||
+          d.title === "Soir de match Hockey" ||
+          d.title === "Soir de match Football"
+          ? `Soir de match ${matchLeagueLabel(next)}`
           : d.title,
         soldOut: false,
       }));
     } else {
       setDraft((d) => ({
         ...d,
-        title: d.title.trim() === "Fermé" || d.title === `Soir de match ${kind}` ? "" : d.title,
+        title: d.title.trim() === "Fermé" ||
+          d.title === "Soir de match NHL" ||
+          d.title === "Soir de match NFL" ||
+          d.title === "Soir de match Hockey" ||
+          d.title === "Soir de match Football"
+          ? ""
+          : d.title,
       }));
     }
   }
@@ -171,8 +188,8 @@ function EventForm({
         )}
       </div>
       <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:gap-3">
-        {kindButton("NHL", "Soir de match NHL", "Ajouter une date de hockey.")}
-        {kindButton("NFL", "Soir de match NFL", "Ajouter une date de football.")}
+        {kindButton("NHL", "Soir de match Hockey", "Ajouter une date de hockey.")}
+        {kindButton("NFL", "Soir de match Football", "Ajouter une date de football.")}
       </div>
       {isMatch && (
         <p className="mb-5 text-sm text-cream-soft/70">
@@ -363,7 +380,7 @@ export default function EventsEditor() {
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <h4 className="truncate font-serif text-base text-cream">
-              {ev.title}
+              {matchEventTitle(ev.title, ev.tag)}
             </h4>
             {closure && <Badge tone="danger">Fermeture</Badge>}
             {!closure && ev.soldOut && <Badge tone="danger">Complet</Badge>}

@@ -10,7 +10,12 @@ import {
   useCreateMessage,
 } from "@workspace/api-client-react";
 import { isClosureTag } from "./lib/closure";
-import { eventTagLabel, matchLeague, MATCH_MENU_HREF } from "./lib/matchEvent";
+import {
+  eventTagLabel,
+  matchEventTitle,
+  matchLeague,
+  MATCH_MENU_HREF,
+} from "./lib/matchEvent";
 
 export const EASE: [number, number, number, number] = [0.65, 0, 0.35, 1];
 export const EASE_SMOOTH: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -1542,7 +1547,7 @@ export function useAgendaEventsData(): AgendaEvent[] {
             id: String(e.id),
             date: { day: parts[2] ?? "", month: MONTHS_FR[monthIdx] ?? "" },
             isoDate: e.isoDate,
-            title: e.title,
+            title: matchEventTitle(e.title, e.tag),
             desc: e.description,
             tag: isClosureTag(e.tag) ? "" : eventTagLabel(e.tag),
             soldOut: e.soldOut,
