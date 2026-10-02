@@ -10,6 +10,7 @@ import {
   useCreateMessage,
 } from "@workspace/api-client-react";
 import { isClosureTag } from "./lib/closure";
+import { EVENT_RESERVATIONS } from "./lib/eventReservation";
 import {
   eventTagLabel,
   matchEventTitle,
@@ -1339,8 +1340,8 @@ const RENDEZVOUS: RendezvousItem[] = [
     title: "Soirée Hitster",
     desc: "Vinyles, vins nature et bouchées de l'ardoise — la soirée où on se donne rendez-vous.",
     slot: "press",
-    reservationUrl: "https://docs.google.com/forms/d/e/1FAIpQLSd7QevS68znnGXnA9_3nfo1PV928HBQGvxn4vAFEDjqBxhVxA/viewform",
-    reservationLabel: "Réserver pour Hitster",
+    reservationUrl: EVENT_RESERVATIONS.hitster.url,
+    reservationLabel: EVENT_RESERVATIONS.hitster.label,
   },
   {
     title: "Run club",
@@ -1351,8 +1352,8 @@ const RENDEZVOUS: RendezvousItem[] = [
     title: "Quiz",
     desc: "Testez vos connaissances en équipe, une pinte à la main. Le quiz du quartier, avec cartes-cadeaux à gagner pour les plus futés.",
     slot: "voice3",
-    reservationUrl: "https://docs.google.com/forms/d/e/1FAIpQLSfRMdy0X7i5rPHZxGY3zBeFgmL6CYWqT-ZpxTz0P9vTCzkSDg/viewform",
-    reservationLabel: "Réserver pour le quiz",
+    reservationUrl: EVENT_RESERVATIONS.quiz.url,
+    reservationLabel: EVENT_RESERVATIONS.quiz.label,
   },
 ];
 
@@ -1976,7 +1977,7 @@ function Agenda() {
             <span aria-hidden="true">→</span>
           </a>
           <p className="font-sans text-bg-primary/75 text-sm text-center max-w-md">
-            <span className="font-semibold text-bg-primary">Réservation des soirées par téléphone uniquement.</span>{" "}
+            <span className="font-semibold text-bg-primary">Réservez le quiz et Hitster en ligne dans le calendrier, ou appelez-nous.</span>{" "}
             Appelez-nous au{" "}
             <a href="tel:+14507431448" className="text-orange font-semibold underline underline-offset-2 hover:text-orange-dark whitespace-nowrap">
               450 743-1448

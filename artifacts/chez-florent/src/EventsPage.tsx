@@ -14,6 +14,7 @@ import {
   type AgendaEvent,
 } from "./App";
 import { MATCH_MENU_HREF } from "./lib/matchEvent";
+import { getEventReservation } from "./lib/eventReservation";
 
 const RESTO_PHONE = "450 743-1448";
 const RESTO_PHONE_HREF = "tel:+14507431448";
@@ -431,7 +432,9 @@ function DayModal({
 
         {/* Events */}
         <div className="px-6 md:px-8 py-6 flex flex-col gap-6">
-          {events.map((event) => (
+          {events.map((event) => {
+            const reservation = getEventReservation(event);
+            return (
             <article
               key={event.id}
               className="border-b border-border last:border-b-0 pb-6 last:pb-0"
@@ -453,6 +456,19 @@ function DayModal({
               <p className="font-sans font-light italic text-cream-soft/80 leading-relaxed mb-5">
                 {event.desc}
               </p>
+              <div className="flex flex-col items-start gap-3">
+              {reservation && (
+                <a
+                  href={reservation.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${reservation.label} (nouvel onglet)`}
+                  className="inline-flex items-center gap-3 px-6 py-3 border border-orange text-orange text-[0.72rem] font-medium tracking-[0.12em] uppercase rounded-[2px] hover:bg-orange hover:text-bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cream transition-colors"
+                >
+                  {reservation.label}
+                  <span aria-hidden="true">↗</span>
+                </a>
+              )}
               {event.closed ? (
                 <div className="inline-flex items-center gap-2 text-[0.7rem] font-medium tracking-[0.18em] uppercase text-cream-soft/60 border border-border px-5 py-3 rounded-[2px]">
                   Le restaurant est fermé ce jour-là
@@ -473,6 +489,7 @@ function DayModal({
                   Réserver par téléphone
                 </a>
               )}
+              </div>
               {event.matchLeague && (
                 <a
                   href={MATCH_MENU_HREF}
@@ -482,9 +499,10 @@ function DayModal({
                 </a>
               )}
             </article>
-          ))}
+            );
+          })}
 
-          {/* Phone-only reservation notice — inutile si la journée ne compte
+          {/* Reservation notice — inutile si la journée ne compte
               que des fermetures. */}
           {!events.every((e) => e.closed) && (
           <div className="flex items-start gap-3 rounded-[3px] border border-orange/40 bg-orange/[0.08] px-4 py-4">
@@ -492,8 +510,8 @@ function DayModal({
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
             </svg>
             <p className="font-sans text-cream-soft/90 text-[0.85rem] leading-relaxed">
-              <span className="font-semibold text-cream">Réservation par téléphone uniquement.</span>{" "}
-              Les places pour nos soirées ne se réservent pas en ligne — appelez-nous au{" "}
+              <span className="font-semibold text-cream">Réservation par téléphone{events.some((event) => getEventReservation(event)) ? " ou via le formulaire ci-dessus" : ""}.</span>{" "}
+              Pour réserver ou poser une question, appelez-nous au{" "}
               <a href={RESTO_PHONE_HREF} className="text-orange font-semibold underline underline-offset-2 hover:text-orange-dark whitespace-nowrap">
                 {RESTO_PHONE}
               </a>
