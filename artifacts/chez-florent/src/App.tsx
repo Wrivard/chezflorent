@@ -1326,6 +1326,7 @@ type RendezvousItem = {
   desc: string;
   slot: "press" | "voice1" | "voice2" | "voice3";
   reservationUrl?: string;
+  reservationLabel?: string;
 };
 
 const RENDEZVOUS: RendezvousItem[] = [
@@ -1338,6 +1339,8 @@ const RENDEZVOUS: RendezvousItem[] = [
     title: "Soirée Hitster",
     desc: "Vinyles, vins nature et bouchées de l'ardoise — la soirée où on se donne rendez-vous.",
     slot: "press",
+    reservationUrl: "https://docs.google.com/forms/d/e/1FAIpQLSd7QevS68znnGXnA9_3nfo1PV928HBQGvxn4vAFEDjqBxhVxA/viewform",
+    reservationLabel: "Réserver pour Hitster",
   },
   {
     title: "Run club",
@@ -1349,6 +1352,7 @@ const RENDEZVOUS: RendezvousItem[] = [
     desc: "Testez vos connaissances en équipe, une pinte à la main. Le quiz du quartier, avec cartes-cadeaux à gagner pour les plus futés.",
     slot: "voice3",
     reservationUrl: "https://docs.google.com/forms/d/e/1FAIpQLSfRMdy0X7i5rPHZxGY3zBeFgmL6CYWqT-ZpxTz0P9vTCzkSDg/viewform",
+    reservationLabel: "Réserver pour le quiz",
   },
 ];
 
@@ -1420,10 +1424,10 @@ function Rendezvous() {
                   href={r.reservationUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Réserver pour le quiz (nouvel onglet)"
+                  aria-label={`${r.reservationLabel} (nouvel onglet)`}
                   className="mt-5 inline-flex self-start items-center gap-3 border-b border-cream/30 pb-2 text-cream text-[0.75rem] font-medium tracking-[0.12em] uppercase hover:text-orange hover:border-orange focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cream transition-colors duration-300"
                 >
-                  Réserver pour le quiz
+                  {r.reservationLabel}
                   <span aria-hidden="true">↗</span>
                 </a>
               )}
