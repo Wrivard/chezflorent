@@ -1325,6 +1325,7 @@ type RendezvousItem = {
   title: string;
   desc: string;
   slot: "press" | "voice1" | "voice2" | "voice3";
+  reservationUrl?: string;
 };
 
 const RENDEZVOUS: RendezvousItem[] = [
@@ -1347,6 +1348,7 @@ const RENDEZVOUS: RendezvousItem[] = [
     title: "Quiz",
     desc: "Testez vos connaissances en équipe, une pinte à la main. Le quiz du quartier, avec cartes-cadeaux à gagner pour les plus futés.",
     slot: "voice3",
+    reservationUrl: "https://docs.google.com/forms/d/e/1FAIpQLSfRMdy0X7i5rPHZxGY3zBeFgmL6CYWqT-ZpxTz0P9vTCzkSDg/viewform",
   },
 ];
 
@@ -1413,6 +1415,18 @@ function Rendezvous() {
               <p className="font-sans font-light text-cream-soft/85 text-[0.95rem] leading-[1.7]">
                 {r.desc}
               </p>
+              {r.reservationUrl && (
+                <a
+                  href={r.reservationUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Réserver pour le quiz (nouvel onglet)"
+                  className="mt-5 inline-flex self-start items-center gap-3 border-b border-cream/30 pb-2 text-cream text-[0.75rem] font-medium tracking-[0.12em] uppercase hover:text-orange hover:border-orange focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cream transition-colors duration-300"
+                >
+                  Réserver pour le quiz
+                  <span aria-hidden="true">↗</span>
+                </a>
+              )}
             </motion.article>
           ))}
         </div>
