@@ -435,6 +435,61 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /menu/categories/{id}/items/order:
+    put:
+      operationId: reorderMenuItems
+      tags: [menu]
+      summary: Atomically reorder all items in a site-owned menu category
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MenuItemOrderInput"
+      responses:
+        "200":
+          description: Saved category with items in their confirmed order
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MenuCategory"
+        "400":
+          description: Invalid or duplicate item IDs
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Category is managed outside the CMS
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: Category membership or order changed since it was loaded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /menu/items/{id}:
     patch:
       operationId: updateMenuItem
@@ -906,6 +961,22 @@ components:
           type: ["string", "null"]
         sortOrder:
           type: integer
+    MenuItemOrderInput:
+      type: object
+      required: [itemIds, expectedItemIds]
+      properties:
+        itemIds:
+          type: array
+          uniqueItems: true
+          items:
+            type: integer
+            minimum: 1
+        expectedItemIds:
+          type: array
+          uniqueItems: true
+          items:
+            type: integer
+            minimum: 1
     MenuCategoryBase:
       type: object
       required: [id, slug, label, tagline, sortOrder]

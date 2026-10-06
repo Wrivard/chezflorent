@@ -11,3 +11,4 @@
 - [Untappd menu import](untappd-import.md) — auto-sync on stale GET /menu (created_at TTL, xact advisory lock, pgbouncer-safe); PROTECTED_SLUGS MUST mirror frontend FIXED_MENU_SLUGS; alcools fixed-but-hidden.
 - [Match-night promotion scope](match-night-promotions.md) — offers remain CMS-editable in the menu; only manually scheduled NHL/NFL events announce match dates and link to them.
 - [Event booking titles](event-booking-titles.md) — themes and hours change in titles; booking associations must tolerate suffix edits and not infer the activity from tags.
+- [Generated request validation](generated-validation.md) — verify integer and unique-item constraints; OpenAPI declarations alone do not guarantee generated Zod enforcement.

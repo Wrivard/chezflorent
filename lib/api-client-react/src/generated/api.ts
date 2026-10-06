@@ -35,6 +35,7 @@ import type {
   MenuCategoryUpdate,
   MenuItem,
   MenuItemInput,
+  MenuItemOrderInput,
   MenuItemUpdate,
   MenuMarquee,
   Message,
@@ -1607,6 +1608,93 @@ export const useCreateMenuItem = <
   TContext
 > => {
   return useMutation(getCreateMenuItemMutationOptions(options));
+};
+
+/**
+ * @summary Atomically reorder all items in a site-owned menu category
+ */
+export const getReorderMenuItemsUrl = (id: number) => {
+  return `/api/menu/categories/${id}/items/order`;
+};
+
+export const reorderMenuItems = async (
+  id: number,
+  menuItemOrderInput: MenuItemOrderInput,
+  options?: RequestInit,
+): Promise<MenuCategory> => {
+  return customFetch<MenuCategory>(getReorderMenuItemsUrl(id), {
+    ...options,
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(menuItemOrderInput),
+  });
+};
+
+export const getReorderMenuItemsMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof reorderMenuItems>>,
+    TError,
+    { id: number; data: BodyType<MenuItemOrderInput> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof reorderMenuItems>>,
+  TError,
+  { id: number; data: BodyType<MenuItemOrderInput> },
+  TContext
+> => {
+  const mutationKey = ["reorderMenuItems"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof reorderMenuItems>>,
+    { id: number; data: BodyType<MenuItemOrderInput> }
+  > = (props) => {
+    const { id, data } = props ?? {};
+
+    return reorderMenuItems(id, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ReorderMenuItemsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof reorderMenuItems>>
+>;
+export type ReorderMenuItemsMutationBody = BodyType<MenuItemOrderInput>;
+export type ReorderMenuItemsMutationError = ErrorType<Error>;
+
+/**
+ * @summary Atomically reorder all items in a site-owned menu category
+ */
+export const useReorderMenuItems = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof reorderMenuItems>>,
+    TError,
+    { id: number; data: BodyType<MenuItemOrderInput> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof reorderMenuItems>>,
+  TError,
+  { id: number; data: BodyType<MenuItemOrderInput> },
+  TContext
+> => {
+  return useMutation(getReorderMenuItemsMutationOptions(options));
 };
 
 /**

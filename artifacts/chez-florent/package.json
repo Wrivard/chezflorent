@@ -7,7 +7,7 @@
     "dev": "vite --config vite.config.ts --host 0.0.0.0",
     "build": "vite build --config vite.config.ts && vite build --config vite.config.ts --ssr src/prerender-entry.tsx --outDir dist/ssr && node scripts/prerender.mjs",
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
-    "test": "node --test src/lib/eventReservation.test.ts",
+    "test": "node --test src/lib/*.test.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
@@ -27,6 +27,9 @@
     "vite": "catalog:"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@tanstack/react-query": "catalog:",
     "@workspace/api-client-react": "workspace:*"
   }

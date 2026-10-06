@@ -1,5 +1,5 @@
 import { Router, type IRouter } from "express";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import {
   db,
   menuCategoriesTable,
@@ -18,9 +18,12 @@ import {
   UpdateMenuItemBody,
   UpdateMenuItemResponse,
   DeleteMenuItemParams,
+  ReorderMenuItemsParams,
+  ReorderMenuItemsBody,
+  ReorderMenuItemsResponse,
 } from "@workspace/api-zod";
 import { requireAuth } from "../middlewares/requireAuth";
-import { autoSyncUntappdMenu, syncUntappdMenu } from "../lib/untappdSync";
+import { autoSyncUntappdMenu, syncUntappdMenu, PROTECTED_SLUGS } from "../lib/untappdSync";
 import { ensureMatchMenu } from "../lib/ensureMatchMenu";
 
 const router: IRouter = Router();
@@ -189,6 +192,57 @@ router.delete(
 );
 
 // --- Items ---
+
+router.put("/menu/categories/:id/items/order", requireAuth, async (req, res): Promise<void> => {
+  const params = ReorderMenuItemsParams.safeParse(req.params);
+  const body = ReorderMenuItemsBody.safeParse(req.body);
+  if (!params.success || !Number.isSafeInteger(params.data.id) || !body.success) {
+    res.status(400).json({ error: "Ordre des plats invalide." });
+    return;
+  }
+  const { itemIds, expectedItemIds } = body.data;
+  if ([itemIds, expectedItemIds].some((ids) =>
+    ids.some((id) => !Number.isSafeInteger(id)) || new Set(ids).size !== ids.length
+  )) {
+    res.status(400).json({ error: "Chaque identifiant de plat doit être un entier unique." });
+    return;
+  }
+  const result = await db.transaction(async (tx) => {
+    // Serialize category reorders and block FK inserts until this save commits.
+    const [category] = await tx.select().from(menuCategoriesTable)
+      .where(eq(menuCategoriesTable.id, params.data.id)).for("update");
+    if (!category) return { status: 404, error: "Catégorie introuvable." } as const;
+    if (!PROTECTED_SLUGS.includes(category.slug) || category.slug === "alcools") {
+      return { status: 403, error: "Cette catégorie n'est pas gérée dans le menu du CMS." } as const;
+    }
+    const current = await tx.select().from(menuItemsTable)
+      .where(eq(menuItemsTable.categoryId, category.id))
+      .orderBy(menuItemsTable.sortOrder, menuItemsTable.id).for("update");
+    const currentIds = current.map((item) => item.id);
+    if (expectedItemIds.length !== currentIds.length ||
+      expectedItemIds.some((id, index) => id !== currentIds[index]) ||
+      itemIds.length !== currentIds.length ||
+      itemIds.some((id) => !currentIds.includes(id))) {
+      return { status: 409, error: "La liste des plats a changé. Elle a été actualisée; réessayez." } as const;
+    }
+    if (itemIds.length > 0) {
+      const positions = sql`case ${menuItemsTable.id} ${sql.join(
+        itemIds.map((id, index) => sql`when ${id} then ${index}::integer`), sql` `
+      )} end`;
+      await tx.update(menuItemsTable).set({ sortOrder: positions })
+        .where(eq(menuItemsTable.categoryId, category.id));
+    }
+    const items = await tx.select().from(menuItemsTable)
+      .where(eq(menuItemsTable.categoryId, category.id))
+      .orderBy(menuItemsTable.sortOrder, menuItemsTable.id);
+    return { status: 200, category: { ...category, items } } as const;
+  });
+  if (result.status !== 200) {
+    res.status(result.status).json({ error: result.error });
+    return;
+  }
+  res.json(ReorderMenuItemsResponse.parse(result.category));
+});
 
 router.post("/menu/items", requireAuth, async (req, res): Promise<void> => {
   const parsed = CreateMenuItemBody.safeParse(req.body);

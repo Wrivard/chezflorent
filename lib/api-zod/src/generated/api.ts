@@ -258,6 +258,38 @@ export const CreateMenuItemBody = zod.object({
 });
 
 /**
+ * @summary Atomically reorder all items in a site-owned menu category
+ */
+
+export const ReorderMenuItemsParams = zod.object({
+  id: zod.coerce.number().min(1),
+});
+
+export const ReorderMenuItemsBody = zod.object({
+  itemIds: zod.array(zod.number().min(1)),
+  expectedItemIds: zod.array(zod.number().min(1)),
+});
+
+export const ReorderMenuItemsResponse = zod.object({
+  id: zod.number(),
+  slug: zod.string(),
+  label: zod.string(),
+  tagline: zod.string(),
+  sortOrder: zod.number(),
+  items: zod.array(
+    zod.object({
+      id: zod.number(),
+      categoryId: zod.number(),
+      name: zod.string(),
+      price: zod.string(),
+      description: zod.string(),
+      image: zod.string().nullish(),
+      sortOrder: zod.number(),
+    }),
+  ),
+});
+
+/**
  * @summary Update a menu item
  */
 export const UpdateMenuItemParams = zod.object({

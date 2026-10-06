@@ -29,6 +29,7 @@ import {
   Textarea,
 } from "./ui";
 import { uploadImage } from "./lib";
+import MenuItemsTable from "./MenuItemsTable";
 
 function useMenuInvalidate() {
   const queryClient = useQueryClient();
@@ -178,6 +179,7 @@ type ItemModalState =
 
 function CategorySection({ category }: { category: MenuCategory }) {
   const invalidate = useMenuInvalidate();
+  const [orderBusy, setOrderBusy] = useState(false);
   const [editCat, setEditCat] = useState(false);
   const [itemModal, setItemModal] = useState<ItemModalState>({ mode: "closed" });
   const [dlg, setDlg] = useState<{
@@ -228,11 +230,12 @@ function CategorySection({ category }: { category: MenuCategory }) {
           )}
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="subtle" onClick={() => setEditCat((v) => !v)}>
+          <Button variant="subtle" disabled={orderBusy} onClick={() => setEditCat((v) => !v)}>
             {editCat ? "Fermer" : "Modifier la catégorie"}
           </Button>
           {category.slug !== "soir-de-match" && <IconButton
             label="Supprimer la catégorie"
+            disabled={orderBusy}
             className="border-red-400/30 text-red-300 hover:border-red-400/60"
             onClick={() =>
               openDlg(
@@ -287,83 +290,19 @@ function CategorySection({ category }: { category: MenuCategory }) {
         </div>
       )}
 
-      {/* Items table */}
-      <div className="mt-2 overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="text-left text-[0.65rem] uppercase tracking-[0.16em] text-cream-soft/45">
-              <th className="w-14 py-2 pl-1 font-semibold"></th>
-              <th className="py-2 font-semibold">Plat</th>
-              <th className="w-28 py-2 font-semibold">Prix</th>
-              <th className="w-20 py-2 text-right font-semibold pr-1">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {category.items.length === 0 && (
-              <tr>
-                <td colSpan={4} className="py-6 text-center text-cream-soft/50">
-                  Aucun plat dans cette catégorie.
-                </td>
-              </tr>
-            )}
-            {category.items.map((item) => (
-              <tr
-                key={item.id}
-                className="border-t border-border/70 align-middle transition-colors hover:bg-bg-tertiary/30"
-              >
-                <td className="py-2.5 pl-1">
-                  <div className="h-11 w-11 overflow-hidden rounded-md border border-border bg-bg-tertiary">
-                    {item.image ? (
-                      <img
-                        src={item.image}
-                        alt=""
-                        className="h-full w-full object-cover"
-                      />
-                    ) : null}
-                  </div>
-                </td>
-                <td className="py-2.5 pr-3">
-                  <div className="font-medium text-cream">{item.name}</div>
-                  <div className="line-clamp-1 text-xs text-cream-soft/55">
-                    {item.description}
-                  </div>
-                </td>
-                <td className="py-2.5 font-serif text-orange">{item.price}</td>
-                <td className="py-2.5 pr-1 text-right">
-                  <div className="inline-flex items-center gap-1.5">
-                    <IconButton
-                      label="Modifier le plat"
-                      onClick={() => setItemModal({ mode: "edit", item })}
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z" />
-                      </svg>
-                    </IconButton>
-                    <IconButton
-                      label="Supprimer le plat"
-                      className="border-red-400/30 text-red-300 hover:border-red-400/60"
-                      onClick={() =>
-                        openDlg(
-                          `Supprimer « ${item.name} » ?`,
-                          () => removeItem.mutate({ id: item.id }),
-                        )
-                      }
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M3 6h18M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
-                      </svg>
-                    </IconButton>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <MenuItemsTable
+        category={category}
+        onBusyChange={setOrderBusy}
+        externalBusy={itemModal.mode !== "closed" || dlg.open || editCat ||
+          createItem.isPending || updateItem.isPending || removeItem.isPending || updateCat.isPending || removeCat.isPending}
+        onEdit={(item) => setItemModal({ mode: "edit", item })}
+        onDelete={(item) => openDlg(`Supprimer « ${item.name} » ?`, () => removeItem.mutate({ id: item.id }))}
+      />
 
       <div className="mt-4">
         <Button
           variant="subtle"
+          disabled={orderBusy}
           onClick={() =>
             setItemModal({
               mode: "create",
@@ -431,7 +370,8 @@ function CategorySection({ category }: { category: MenuCategory }) {
             onSubmit={(draft) =>
               updateItem.mutate({
                 id: itemModal.item.id,
-                data: { ...draft, image: draft.image || null },
+                // Content edits must not overwrite an order changed in another tab.
+                data: { name: draft.name, price: draft.price, description: draft.description, image: draft.image || null },
               })
             }
             onCancel={() => setItemModal({ mode: "closed" })}

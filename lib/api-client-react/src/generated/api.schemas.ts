@@ -138,6 +138,11 @@ export interface MenuItemUpdate {
   sortOrder?: number;
 }
 
+export interface MenuItemOrderInput {
+  itemIds: number[];
+  expectedItemIds: number[];
+}
+
 export interface MenuCategoryBase {
   id: number;
   slug: string;
