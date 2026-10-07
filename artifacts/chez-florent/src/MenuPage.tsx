@@ -14,6 +14,7 @@ import {
   FIXED_MENU_SLUGS,
   type MenuCategory,
 } from "./App";
+import { splitMenuIntoColumns } from "./lib/menuColumns";
 
 // -----------------------------------------------------------------------------
 // DIETARY FAQ
@@ -82,6 +83,9 @@ function DishList({
   setActiveIndex: (i: number) => void;
   twoCol: boolean;
 }) {
+  const [leftColumn, rightColumn] = splitMenuIntoColumns(dishes);
+  const dishColumns = twoCol ? [leftColumn, rightColumn] : [[...leftColumn, ...rightColumn]];
+
   return (
     <div
       role="tabpanel"
@@ -98,56 +102,60 @@ function DishList({
           transition={{ duration: 0.4, ease: EASE }}
           className={`grid grid-cols-1 ${twoCol ? "md:grid-cols-2 md:gap-x-10 lg:gap-x-16" : ""}`}
         >
-          {dishes.map((dish, i) => {
-            const isActive = i === activeIndex;
-            return (
-              <div
-                key={`${activeCategory.id}-${i}`}
-                className={`group grid grid-cols-[40px_minmax(0,1fr)_auto] md:grid-cols-[60px_1fr_auto] gap-x-4 gap-y-1 md:gap-x-8 py-8 border-b border-border cursor-default transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset ${
-                  isActive ? "bg-bg-secondary/40" : "hover:bg-bg-secondary/30"
-                } px-3 md:px-6`}
-                onMouseEnter={() => setActiveIndex(i)}
-                onFocus={() => setActiveIndex(i)}
-                role="button"
-                tabIndex={0}
-                aria-pressed={isActive}
-                aria-label={`Aperçu de ${dish.name}`}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    setActiveIndex(i);
-                  }
-                }}
-              >
-                <div
-                  className={`row-span-2 font-serif italic text-lg md:text-xl pt-1 transition-colors ${
-                    isActive ? "text-orange" : "text-orange/70"
-                  }`}
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </div>
-                <motion.div
-                  className="min-w-0"
-                  animate={{ x: isActive ? 12 : 0 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                >
-                  <h3 className="menu-item-name font-medium text-[1.35rem] md:text-[1.6rem] text-cream leading-tight tracking-[-0.01em]">
-                    {dish.name}
-                  </h3>
-                </motion.div>
-                <div className="font-serif font-semibold text-[1.25rem] md:text-[1.5rem] text-orange md:whitespace-nowrap max-w-[55vw] md:max-w-none pt-1 justify-self-end text-right">
-                  {dish.price}
-                </div>
-                <motion.p
-                  className="col-start-2 col-span-2 md:col-span-1 font-sans font-light italic text-cream-soft/85 max-w-[600px] leading-relaxed text-sm md:text-base"
-                  animate={{ x: isActive ? 12 : 0 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                >
-                  {dish.desc}
-                </motion.p>
-              </div>
-            );
-          })}
+          {dishColumns.map((column, columnIndex) => (
+            <div key={`${activeCategory.id}-column-${columnIndex}`} className="grid grid-cols-1">
+              {column.map(({ item: dish, index }) => {
+                const isActive = index === activeIndex;
+                return (
+                  <div
+                    key={`${activeCategory.id}-${index}`}
+                    className={`group grid grid-cols-[40px_minmax(0,1fr)_auto] md:grid-cols-[60px_1fr_auto] gap-x-4 gap-y-1 md:gap-x-8 py-8 border-b border-border cursor-default transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-inset ${
+                      isActive ? "bg-bg-secondary/40" : "hover:bg-bg-secondary/30"
+                    } px-3 md:px-6`}
+                    onMouseEnter={() => setActiveIndex(index)}
+                    onFocus={() => setActiveIndex(index)}
+                    role="button"
+                    tabIndex={0}
+                    aria-pressed={isActive}
+                    aria-label={`Aperçu de ${dish.name}`}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setActiveIndex(index);
+                      }
+                    }}
+                  >
+                    <div
+                      className={`row-span-2 font-serif italic text-lg md:text-xl pt-1 transition-colors ${
+                        isActive ? "text-orange" : "text-orange/70"
+                      }`}
+                    >
+                      {String(index + 1).padStart(2, "0")}
+                    </div>
+                    <motion.div
+                      className="min-w-0"
+                      animate={{ x: isActive ? 12 : 0 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                    >
+                      <h3 className="menu-item-name font-medium text-[1.35rem] md:text-[1.6rem] text-cream leading-tight tracking-[-0.01em]">
+                        {dish.name}
+                      </h3>
+                    </motion.div>
+                    <div className="font-serif font-semibold text-[1.25rem] md:text-[1.5rem] text-orange md:whitespace-nowrap max-w-[55vw] md:max-w-none pt-1 justify-self-end text-right">
+                      {dish.price}
+                    </div>
+                    <motion.p
+                      className="col-start-2 col-span-2 md:col-span-1 font-sans font-light italic text-cream-soft/85 max-w-[600px] leading-relaxed text-sm md:text-base"
+                      animate={{ x: isActive ? 12 : 0 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                    >
+                      {dish.desc}
+                    </motion.p>
+                  </div>
+                );
+              })}
+            </div>
+          ))}
         </motion.div>
       </AnimatePresence>
     </div>
