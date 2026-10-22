@@ -12,3 +12,4 @@
 - [Match-night promotion scope](match-night-promotions.md) — offers remain CMS-editable in the menu; only manually scheduled NHL/NFL events announce match dates and link to them.
 - [Event booking titles](event-booking-titles.md) — themes and hours change in titles; booking associations must tolerate suffix edits and not infer the activity from tags.
 - [Generated request validation](generated-validation.md) — verify integer and unique-item constraints; OpenAPI declarations alone do not guarantee generated Zod enforcement.
+- [Dependency security updates](dependency-security-updates.md) — normalize audit-generated overrides to compatible ranges; keep Vitest internals aligned and check its separate Vite resolution.
